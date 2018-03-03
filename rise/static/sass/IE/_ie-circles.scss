@@ -1,0 +1,35 @@
+.circle {
+  &.small {
+    background-color: transparent;
+  }
+  &.large {
+      border: 15px solid $translucent-white;
+      height: 180px;
+      width: 180px;
+      &.no-m {
+          height: 100px;
+          width: 100px;
+          border: 0;
+      }
+  }
+  img {
+    top: 0;
+    left: 0;
+  }
+}
+
+.badge-wrap {
+  .badge-wrap {
+    top: 25%;
+  }
+  &.badge-right {
+      .badge-wrap {
+          right: -10px;
+      }
+  }
+  &.badge-left {
+      .badge-wrap {
+          left: -10px;
+      }
+  }
+}

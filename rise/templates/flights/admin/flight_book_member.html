@@ -1,0 +1,64 @@
+{% extends 'base_admin.html' %}
+
+{% load staticfiles %}
+
+{% block title %}Dashboard - Select Member to Book{% endblock title %}
+
+{% block meta_description %}Dashboard - Select Member to Book{% endblock meta_description %}
+
+{% block css %}
+{% with marketing=False%}
+{{ block.super }}
+{% endwith %}
+{% endblock css %}
+
+{% block body_class %}{% endblock %}
+{% block body %}
+{% include 'admin_header_fragment.html' with flights=True %}
+<div class="admin-content-wrap admin-form-page">
+    <h1>Select Member</h1>
+
+    {% if form.errors %}
+        <div class="error-message">
+        {% for field, errors in form.errors.items %}
+        {% for error in errors %}
+          {{ error }}<br/>
+        {% endfor %}
+        {% endfor %}
+        </div>
+    {% endif %}
+    <form method="post" action="">
+        {% csrf_token %}
+
+        <div class="select arrow">
+            <span class="value">{{ form.flight_type.value|default:"Regularly Scheduled Flight" }}</span>
+            <ul>
+                {% for value, text in form.member.field.choices %}
+                <li value="{{ value }}">{{ text }}</li>
+                {% endfor %}
+            </ul>
+            {{ form.member }}
+        </div>
+
+        {% comment %}
+
+        <div class="cf">
+            <button type="submit" class="admin-button no-ml">Add Companions (Optional)</button>
+        </div>
+
+        <fieldset id="companions">
+
+        </fieldset>
+
+        <hr>
+        {% endcomment %}
+
+        <div class="center">
+            <button type="submit" class="green">Next</button>
+        </div>
+    </form>
+    <div class="center">
+        <a href="{% url 'admin_dashboard' %}" class="return-to-profile">&#9664; Return To Dashboard</a>
+    </div>
+</div>
+{% endblock body %}

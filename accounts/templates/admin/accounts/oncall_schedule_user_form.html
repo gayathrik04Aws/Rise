@@ -1,0 +1,164 @@
+{% extends 'base_admin.html' %}
+{% load rise_utils %}
+{% load staticfiles %}
+{% block body %}
+    {% include 'admin_header_fragment.html' with staff=True %}
+    <div class="admin-content-wrap admin-form-page">
+        <h1>Add OnCall Schedule</h1>
+
+        <form action="/riseadmin/staff/oncallschedule/create" method="POST">
+            {% csrf_token %}
+
+            {% if form.errors %}
+                <div class="error-message">
+                {% for field, errors in form.errors.items %}
+                {% for error in errors %}
+                  {{ error }}<br/>
+                {% endfor %}
+                {% endfor %}
+                </div>
+            {% endif %}
+
+            <label for="{{ form.user.auto_id }}">Staff Member</label>
+            {{ form.user.errors }}
+            <div class="select arrow">
+                <span class="value"></span>
+                <ul>
+                    {% for value, text in form.user.field.choices %}
+                    <li value="{{ value }}">{{ text }}</li>
+                    {% endfor %}
+                </ul>
+                {{ form.user }}
+            </div>
+
+            <div class="fields date">
+                <div class="calendaricon"><figure class="calendar-icon"></figure></div>
+                {{ form.start_date.label_tag }}
+                {{ form.start_date|pickadate_data }}
+                <div class="when"> 
+                    <span class="value"></span> 
+                    {{ form.startHour }} 
+                </div>
+
+            </div>
+            <br/><br/>
+            <div class="fields date">
+
+                <div class="calendaricon"><figure class="calendar-icon"></figure></div>
+                {{ form.end_date.label_tag }}
+                {{ form.end_date|pickadate_data }}
+                <div class="when"> 
+                    <span class="value"></span> 
+                    {{ form.endHour }} 
+                </div>
+            </div>
+            <br/>
+            <label for="{{ form.airport.auto_id }}">Origin Airport</label>
+            {{ form.airport.errors }}
+            <div class="select arrow">
+                <span class="value"></span>
+                <ul>
+                    {% for value, text in form.airport.field.choices %}
+                    <li value="{{ value }}">{{ text }}</li>
+                    {% endfor %}
+                </ul>
+                {{ form.airport }}
+            </div>
+            <br/><br/>
+            <div class="check-cities-block">
+            </div>
+
+            <button type="submit" >Create Schedule</button>
+        <div id="oncall-date-pickers">
+        </div>
+
+        </form>
+
+
+    </div>
+{% endblock %}
+
+{% block javascript %}
+{{ block.super }}
+    <script src="{% static 'js/picker.js' %}"></script>
+    <script src="{% static 'js/picker.date.js' %}"></script>
+    <script>
+        (function() {
+            var $departDate = $('#{{ form.start_date.id_for_label }}');
+            var $returnDate = $('#{{ form.end_date.id_for_label }}');
+
+            var $departPicker = null;
+            var $returnPicker = null;
+
+            //var fmt = 'dddd, mmmm d';
+            var fmt = 'mmm dd, yyyy';
+            var fmtSubmit = 'yyyy-mm-dd';
+
+            $departDate.pickadate({
+                container: '#oncall-date-pickers',
+                format: fmt,
+                formatSubmit: fmtSubmit,
+                hiddenName: true,
+                onSet: function(ctx) {
+                    if('select' in ctx && $returnPicker != null)
+                        $returnPicker.set('min', new Date(ctx.select));
+                }
+
+            });
+            $departPicker = $departDate.pickadate('picker');
+            $departPicker.set('min', new Date());
+
+            if($returnDate.length > 0) {
+                $returnDate.pickadate({
+                    container: '#oncall-date-pickers',
+                    format: fmt,
+                    formatSubmit: fmtSubmit,
+                    hiddenName: true,
+                    onSet: function(ctx) {
+                        if('select' in ctx)
+                            $departPicker.set('max', new Date(ctx.select));
+                    }
+                });
+                $returnPicker = $returnDate.pickadate('picker');
+
+                $returnPicker.set('min', new Date());
+
+                if($returnPicker.get()) {
+                    $departPicker.set('max', $returnPicker.get());
+                }
+                if($departPicker.get()) {
+                    $returnPicker.set('min', $departPicker.get());
+                }
+            }
+        })();
+    </script>
+    <script>
+        $(document).ready(function() {
+             $('#id_airport').change(originCityChange);
+        });
+
+
+    function originCityChange(){
+
+        var origin_city = $('#id_airport').val();
+        var start_date = $('#id_start_date').val();
+        var end_date = $('#id_end_date').val();
+        var start_hour = $('#id_startHour').val()
+        var end_hour = $('#id_endHour').val()
+        $.ajax({
+                "type"     : "GET",
+                "url"      : encodeURI("{% url 'origin_city_flights'%}?city="+origin_city + "&startdate=" + start_date + "&enddate="+end_date +"&starthour=" + start_hour +"&endhour=" + end_hour),
+                "dataType" : "json",
+                "cache"    : false,
+                "success"  : function(json) {
+                    $('.check-cities-block').empty();
+                    var html = "";
+                    for(var j = 0; j < json.length; j++){
+                        html =  html + "<label class='check-radio-block'><input id='id_flights' name='flights' type='checkbox' value=" + json[j][0] + "><span>" + json[j][1] + "</span></label>"
+                    }
+                    $('.check-cities-block').html(html);
+                }
+        });
+    }
+    </script>
+{% endblock %}

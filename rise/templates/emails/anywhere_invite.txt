@@ -1,0 +1,10 @@
+{% extends 'emails/base.txt' %}
+
+{% block content %}Jump on Board!
+
+You're invited to join {{ creator_name }}'s RISE ANYWHERE flight.
+
+Click here to find out more!
+
+{{ protocol }}://{{ site.domain }}{% url 'join_anywhere' slug=public_key %}
+{% endblock content %}

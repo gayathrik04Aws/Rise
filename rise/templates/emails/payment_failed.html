@@ -1,0 +1,45 @@
+{% extends 'emails/base.html' %}
+
+{% block title %}Payment Failed{% endblock title %}
+
+
+{% block body %}
+<table border="0" cellpadding="20" cellspacing="0" width="100%">
+    <tr>
+        <td align="center" valign="top" class="bodyContent">
+            <div>
+                <h1>There is a problem with your payment.</h1>
+
+                <p>
+                    {% if payment_method %}
+                    We couldn't charge your {{ payment_method }} for your membership.
+                    {% else %}
+                        We are unable to bill your subscription because you have no payment method on file.
+                    {% endif %}
+                    Please go to your <a href="{{ protocol }}://{{ site.domain }}{% url 'profile_billing' %}">account</a> to make sure that your payment information is correct and up-to-date, or contact us at <a href="mailto:members@iflyrise.com">MEMBERS@IFLYRISE.COM</a> or 844-FLY-RISE.
+                </p>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td align="center" valign="top" style="padding-top:0;">
+            <table border="0" cellpadding="0" cellspacing="0" class="button">
+                <tr>
+                    <td valign="middle" width="250px">
+                        <div>
+                            <a href="{{ protocol }}://{{ site.domain }}{% url 'profile_billing' %}">My Account</a>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td align="center" valign="top" class="bodyContent">
+            <div class="center">
+                <a href="{{ protocol }}://{{ site.domain }}{% url 'profile_notifications' %}">Manage Alerts</a>
+            </div>
+        </td>
+    </tr>
+</table>
+{% endblock body %}

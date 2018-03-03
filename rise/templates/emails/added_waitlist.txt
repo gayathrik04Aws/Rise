@@ -1,0 +1,21 @@
+{% extends 'emails/base.txt' %}
+
+{% block content %}You've been added to the wishlist
+
+Flight {{ flight.flight_number }}
+
+You selected to be added to the wishlist for Flight {{ flight.flight_number }} from {{ flight.origin.name }}, {{ flight.origin.state }} to {{ flight.destination.name }}, {{ flight.destination.state }} on {{ flight.departure|date:"d F Y" }}. You will be notified again if a seat becomes available on the flight.
+
+Origin
+------
+{{ flight.origin.name }}, {{ flight.origin.state }}
+{{ flight.local_departure_time_display}} {{ flight.origin.get_timezone_display }}
+
+Destination
+-----------
+{{ flight.destination.name }}, {{ flight.destination.state }}
+{{ flight.local_arrival_time_display}} {{ flight.destination.get_timezone_display }}
+
+
+{{ protocol }}://{{ site.domain }}{% url 'profile' %}
+{% endblock content %}

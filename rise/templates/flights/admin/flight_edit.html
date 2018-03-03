@@ -1,0 +1,310 @@
+{% extends 'base_admin.html' %}
+
+{% load staticfiles %}
+
+{% block title %}Dashboard - {% if form.instance.id %}Update{% else %}Create{% endif %} Flight{% endblock title %}
+
+{% block meta_description %}Dashboard - {% if form.instance.id %}Update{% else %}Create{% endif %} Airport{% endblock meta_description %}
+
+{% block css %}
+{% with marketing=False%}
+{{ block.super }}
+{% endwith %}
+{% endblock css %}
+
+{% block body_class %}{% endblock %}
+{% block body %}
+{% include 'admin_header_fragment.html' with flights=True %}
+<div class="admin-content-wrap admin-form-page">
+    <h1>{% if form.instance.id %}Update{% else %}Add New{% endif %} Flight</h1>
+
+    {% if form.errors %}
+        <div class="error-message">
+        {% for field, errors in form.errors.items %}
+        {% for error in errors %}
+          {{ error }}<br/>
+        {% endfor %}
+        {% endfor %}
+        </div>
+    {% endif %}
+    <form method="post" action="">
+        {% csrf_token %}
+        <div class="distribute equal-width">
+            <div class="select arrow">
+              <span class="value">Origin Airport</span>
+              <ul>
+                  {% for value, text in form.origin.field.choices %}
+                  <li value="{{ value }}">{{ text }}</li>
+                  {% endfor %}
+              </ul>
+              {{ form.origin }}
+            </div>
+            <div class="select arrow">
+              <span class="value">Destination Airport</span>
+              <ul>
+                  {% for value, text in form.destination.field.choices %}
+                  <li value="{{ value }}">{{ text }}</li>
+                  {% endfor %}
+              </ul>
+              {{ form.destination }}
+            </div>
+        </div>
+        <div class="labels-for-equal-width admin-two">
+            <label></label>
+            <label>Departure Date</label>
+        </div>
+        <div class="distribute equal-width">
+            <div class="select arrow">
+              <span class="value">{{ form.plane.value|default:"Select" }}</span>
+              <ul>
+                  {% for value, text in form.plane.field.choices %}
+                  <li value="{{ value }}">{{ text }}</li>
+                  {% endfor %}
+              </ul>
+              {{ form.plane }}
+            </div>
+            {{ form.start_date }}
+        </div>
+        <div class="labels-for-equal-width admin-three">
+            <label>Takeoff Time</label>
+            <label>Duration</label>
+        </div>
+        <div class="distribute equal-width">
+            {{ form.takeoff_time }}
+            {{ form.duration }}
+            <div class="estimated-arrival">
+                <span class="ten">Estimated<br/>Arrival</span>
+                <span>00:00:00 CST</span>
+            </div>
+        </div>
+        <!-- <input type="text" placeholder="Pilot Name" name="pilot_name"> -->
+        <div class="select arrow">
+            <span class="value">Pilot Name</span>
+            <ul>
+                {% for value, text in form.pilot.field.choices %}
+                <li value="{{ value }}">{{ text }}</li>
+                {% endfor %}
+            </ul>
+            {{ form.pilot }}
+        </div>
+        <div class="distribute equal-width">
+            <!-- <input type="text" placeholder="Co-pilot Name" name="copilot_name"> -->
+            <div class="select arrow">
+                <span class="value">Co-Pilot Name</span>
+                <ul>
+                    {% for value, text in form.copilot.field.choices %}
+                    <li value="{{ value }}">{{ text }}</li>
+                    {% endfor %}
+                </ul>
+                {{ form.copilot }}
+            </div>
+            {{ form.flight_number }}
+        </div>
+
+        <div class="select arrow">
+            <span class="value">{{ form.flight_type.value|default:"Regularly Scheduled Flight" }}</span>
+            <ul>
+                {% for value, text in form.flight_type.field.choices %}
+                <li value="{{ value }}">{{ text }}</li>
+                {% endfor %}
+            </ul>
+            {{ form.flight_type }}
+        </div>
+
+        <div class="flight-type">
+            <div class="fl">
+            <label class="check-radio-block flight-type-checkbox">
+                {{ form.has_surcharge }}
+                <span>{{ form.has_surcharge.label }}</span>
+            </label>
+            </div>
+            {{ form.surcharge }}
+        </div>
+        <div class="revealable no-bb">
+            <label class="check-radio-block">
+                {{ form.has_restrictions }}
+                <span>{{ form.has_restrictions.label }}</span>
+            </label>
+            <div class="revealable-block">
+                <label>Select Membership Tiers</label>
+                <div class="revealable second-level">
+                    <label class="check-radio-block">
+                        {{ form.has_express_restriction }}
+                        <span>{{ form.has_express_restriction.label }}</span>
+                    </label>
+                    <div class="revealable-block">
+                        {{ form.express_restriction_days }}
+                    </div>
+                </div>
+                <div class="revealable second-level">
+                    <label class="check-radio-block">
+                        {{ form.has_executive_restriction }}
+                        <span>{{ form.has_executive_restriction.label }}</span>
+                    </label>
+                    <div class="revealable-block">
+                        {{ form.executive_restriction_days }}
+                    </div>
+                </div>
+                <div class="revealable second-level">
+                    <label class="check-radio-block">
+                        {{ form.has_chairman_restriction }}
+                        <span>{{ form.has_chairman_restriction.label }}</span>
+                    </label>
+                    <div class="revealable-block">
+                        {{ form.chairman_restriction_days }}
+                    </div>
+                </div>
+                <div class="add-corporations">
+                    {# <input type="text" placeholder="Specify Corporation (optional)" name="allowed_corporations">#}
+                    {# <a class="center small add-corporation-button">+<br/><br/>Add<br/>Another</a>#}
+                </div>
+            </div>
+        </div>
+        <div class="seat-restrictions-title">
+            Seat Restrictions
+        </div>
+        <ul class="seat-restrictions" data-prefix="flightplanseatrestriction_set">
+            {{ flightplanseatrestrictions_formset.management_form }}
+            {% for seat_restriction_form in flightplanseatrestrictions_formset %}
+            <li class="control-row seat-restriction">
+                {% if seat_restriction_form.errors %}
+                    <div class="error-message">
+                    {% for field, errors in seat_restriction_form.errors.items %}
+                        {% for error in errors %}
+                            {{ error }}<br/>
+                        {% endfor %}
+                    {% endfor %}
+                    </div>
+                {% endif %}
+                {{ seat_restriction_form.id }}
+                {{ seat_restriction_form.flight.as_hidden }}
+                <div class="select arrow fl">
+                    <span class="value">Plan</span>
+                    <ul>
+                        {% for value, text in seat_restriction_form.plan.field.choices %}
+                        <li value="{{ value }}">{{ text }}</li>
+                        {% endfor %}
+                    </ul>
+                    {{ seat_restriction_form.plan }}
+                </div>
+                {{ seat_restriction_form.seats }}
+                <div class="seat-restriction-delete fr">
+                    {{ seat_restriction_form.DELETE }}
+                    <figure class="icon-trashcan"></figure>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+        <ul class="maximum-inputs">
+            <li class="control-row">
+                <span class="">Maximum number<br/> of corporate members<br/> per flight (optional)</span>
+                {{ form.corporate_max }}
+            </li>
+            <li class="control-row">
+                <span class="">Maximum number<br/> of companion members<br/> per flight (optional)</span>
+                {{ form.companion_max }}
+            </li>
+        </ul>
+
+        <div class="check-radio-block">
+            <label for="id_allowed_corporations">
+                <input id="show-allowed-corporations" name="show_allowed_corporations" type="checkbox" value="1">
+                <span>Allowed Corporations</span>
+            </label>
+        </div>
+
+        <div class="allowed-corporations-block fadeOut">
+             {% for checkbox in form.allowed_corporations %}
+                {% if checkbox.choice_label %}
+                    <label class="check-radio-block">
+                    <input id="allowed-corporations-{{ forloop.counter }}" name="{{ checkbox.name }}" type="checkbox" value="{{ checkbox.choice_value }}" {% if checkbox.is_checked %}checked{% endif %}>
+                    <span>{{ checkbox.choice_label }}</span>
+                    </label>
+                 {% endif %}
+             {% endfor %}
+        </div>
+
+        <hr>
+
+        <div class="vip-flight">
+            <div class="fl">
+            <label class="check-radio-block flight-type-checkbox">
+                {{ form.vip }}
+                <span>{{ form.vip.label }}</span>
+            </label>
+            </div>
+        </div>
+
+        <div class="founder-flight">
+            <div class="fl">
+            <label class="check-radio-block flight-type-checkbox">
+                {{ form.founder }}
+                <span>{{ form.founder.label }}</span>
+            </label>
+            </div>
+        </div>
+
+        <div class="center">
+            <button type="submit" class="green">{% if form.instance.id %}Update{% else %}Create{% endif %} Flight</button>
+        </div>
+    </form>
+    <div class="center">
+        <a href="{% url 'admin_dashboard' %}" class="return-to-profile">&#9664; Return To Dashboard</a>
+    </div>
+</div>
+{% endblock body %}
+
+{% block javascript %}
+{{ block.super }}
+<script src="{% static 'js/jquery.formset.js' %}"></script>
+<script>
+    $('#show-allowed-corporations').on('change', function(){
+        if ($(this).is(':checked')){
+            $('.allowed-corporations-block').removeClass('fadeOut').addClass('fadeIn');
+        }
+        else{
+            $('.allowed-corporations-block').removeClass('fadeIn').addClass('fadeOut');
+        }
+    });
+    $(document).ready(function(){
+        $('.seat-restrictions').formset({
+            itemClass: 'seat-restriction',
+            addItemClass: 'add-seat-restriction',
+            buttonTemplate: '<a href="#" class="add-seat-restriction admin-button">Add A Restriction</a>',
+            callback: function(formset, formItem){
+                $('.select', $(formItem)).not('.fullscreen').on(clickAction, function(e) {
+                  e.stopPropagation();
+                  var options = $('ul', this),
+                      option = $('li', this),
+                      nativeSelect = $('select', this),
+                      value = $('.value', this);
+
+                  $(this).toggleClass('expand');
+                  options.toggleClass('expand');
+
+                  option.on(clickAction, function() {
+                    var optionValue = $(this).attr('value');
+
+                    value.html($(this).html());
+                    nativeSelect.attr('value', optionValue);
+                    nativeSelect.val(optionValue);
+                    nativeSelect.change();
+                  });
+                });
+                $('.select', $(formItem)).each(function() {
+                    var nativeSelect = $('select', this),
+                    value = $('.value', this);
+
+                    if (nativeSelect) {
+                        var text = $('option[value="' + nativeSelect.val() + '"]', this).text();
+                        value.text(text);
+                    }
+                });
+            }
+        });
+    });
+    $('.seat-restrictions').on('click clickAction', '.seat-restriction-delete', function(){
+        $('input[type=checkbox]', $(this)).click();
+    });
+</script>
+{% endblock javascript %}

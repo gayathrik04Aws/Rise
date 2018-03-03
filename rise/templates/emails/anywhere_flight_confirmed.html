@@ -1,0 +1,163 @@
+{% extends 'emails/base_anywhere.html' %}
+
+{% block title %}{{ title }}{% endblock title %}
+
+
+{% block body %}
+<table border="0" cellpadding="40" cellspacing="0" width="100%" class="anywhere-email">
+    <tr>
+       <td>
+            <table border="0" cellpadding="20" cellspacing="0" width="100%">
+
+                <tr>
+                    <td align="center" valign="top" class="bodyContent">
+                        <div>
+                            <h1>{{ title }}</h1>
+
+
+                            <p style="margin-bottom: 20px;">Time to get packing! Your RISE ANYWHERE flight to {{ leg1.destination.name }} on {{ leg1.departure|date:"M d, Y" }}  has successfully met the flight creators’ requirements and is now confirmed and ready to fly.</p>
+                            <p style="margin-bottom: 20px;">You will automatically be confirmed on the flight and will receive additional information 24 hours prior to your travel.</p>
+
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            <table border="0" cellpadding="4" cellspacing="0" width="100%">
+                <tr>
+                    <td>
+                        <hr />
+                    </td>
+                    <td width="120">
+                        <h3 class="section-header" style="margin: 0;">Flight Details</h3>
+                    </td>
+                    <td>
+                        <hr />
+                    </td>
+                </tr>
+            </table>
+            <table border="0" cellpadding="20" cellspacing="0" width="100%">
+                <tr>
+                    <td>
+                        <h2>{{ leg1.origin.name }}, {{ leg1.origin.state }} to {{ leg1.destination.name }}, {{ leg1.destination.state }}</h2>
+                    </td>
+                </tr>
+            </table>
+            <table border="0" cellpadding="20" cellspacing="0" width="100%" class="flightDetails">
+                <tr>
+                    <td>
+                        <h3 class="all-caps-header">Departing | {{leg1.departure|date:"M d, Y"}}</h3>
+
+                        <h2 class="time">{{ leg1.local_departure_time_display }} {{ leg1.origin.get_timezone_display }}</h2>
+                        <p class="location">{{ leg1.origin.name }} ({{ leg1.origin.code }})</p>
+
+                        <center><div class="vertical-line centered"></div> </center>
+                        <p class="duration">{{ leg1.duration }} MIN</p>
+                        <center><div class="vertical-line centered"></div> </center>
+
+                        <h2 class="time">{{ leg1.local_arrival_time_display}} {{ leg1.destination.get_timezone_display }}</h2>
+                        <p class="location">{{ leg1.destination.name }} ({{ leg1.destination.code }})</p>
+
+                    </td>
+                    {% if leg2 != None %}
+                    <td>
+                        <h3 class="all-caps-header">Returning | {{leg2.departure|date:"M d, Y"}}</h3>
+                        <h2 class="time">{{ leg2.local_departure_time_display}} {{ leg2.origin.get_timezone_display }}</h2>
+                        <p class="location">{{ leg2.origin.name }} ({{ leg2.origin.code }})</p>
+
+
+                        <center><div class="vertical-line centered"></div> </center>
+                        <p class="duration">{{ leg2.duration }} MIN</p>
+                        <center><div class="vertical-line centered"></div> </center>
+
+                        <h2 class="time">{{ leg2.local_arrival_time_display}} {{ leg2.destination.get_timezone_display }}</h2>
+                        <p class="location">{{ leg2.destination.name }} ({{ leg2.destination.code }})</p>
+                    </td>
+                    {% endif %}
+                </tr>
+            </table>
+            <table border="0" cellpadding="20" cellspacing="0" width="100%" class="price-table">
+                <tr>
+                    <td>
+                        <span class="price-subheader">Spots:</span>
+                        <p class="price-bottom">{{ seats }}</p>
+
+                    </td>
+
+                    <td>
+                        <span class="price-subheader">Spot cost:</span>
+                        <p class="price-bottom">${{ seat_cost|floatformat:0 }}</p>
+
+                    </td>
+                    {% if other_charges > 0 %}
+                    <td>
+                        <span class="price-subheader">{% if other_desc %}{{ other_desc }}: {% else %}Other Charges {% endif %}</span>
+                        <p class="price-bottom">${{ other_charges|floatformat:0 }}</p>
+                    </td>
+                    {% endif %}
+                    <td>
+                        <span class="price-subheader">Tax:</span>
+                        <p class="price-bottom">${{ tax|floatformat:0 }}</p>
+                    </td>
+                    <td>
+                        <span class="price-subheader">Your total cost:</span>
+                        <p class="price-bottom">${{ your_total|floatformat:0 }}</p>
+                    </td>
+                </tr>
+            </table>
+            <table border="0" cellpadding="20" cellspacing="0" width="100%">
+                <tr>
+                    <td>
+                        {% if passengers.count == 1 %}
+                            <span class="price-subheader">Passenger:</span>
+                            <p class="price-bottom">{{ passengers.0.user.get_full_name }}</p>
+                        {% else %}
+                            <span class="price-subheader">Passengers:</span>
+                            <p class="price-bottom">
+                                {% for passenger in passengers %}
+                                    <span class="name">{{ passenger.user.get_full_name }}</span>
+                                {% endfor %}
+                            </p>
+                        {% endif %}
+
+                        {% if seats > passengers.count %}
+                            <p style="text-align: left; font-size: 12px;">Please note that all passengers who are not RISE members will need to create free RISE ANYWHERE accounts and be added to your reservation by Member Relations.</p>
+                        {% endif %}
+                    </td>
+                </tr>
+            </table>
+            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                <tr>
+                    <td align="center" valign="top" style="padding-top: 40px; padding-bottom: 20px;">
+                        <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                            <tr>
+                                <td>
+                                <p style="text-align: left; margin-bottom: 20px; font-size: 14px;">Your RISE ANYWHERE flight payment of ${{ your_total|floatformat:0 }} will be processed within the next 24 hours. If you have any questions, please contact us at <a href="tel:+18447668313">844-766-8313.</a> Have a great trip!</p>
+                                    <p style="text-align: left; font-size: 14px;">Plans change? We're here to help. Call <a href="tel:+18447668313">844-766-8313</a> to speak to a RISE representative.</p>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center" valign="top" style="padding-top: 40px; padding-bottom: 40px;">
+                        <table border="0" cellpadding="0" cellspacing="0" class="button">
+                            <tr>
+                                <td valign="middle" width="250px">
+                                    <div>
+                                        <a href="{{ protocol }}://{{ site.domain }}{% url 'anywhere_flight_info' public_key %}">View Your Flight</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        <img src="http://cl.ly/100Q0H2k1E3j/footer-logo.png" width="119px" height="27px">
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+{% endblock body %}

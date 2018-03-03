@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block title %}Booking Similar Flights - {{ block.super }}{% endblock title %}
+
+{% block meta_description %}Booking Similar Flights - When{% endblock meta_description %}
+
+{% block css %}
+{% with marketing=False%}
+{{ block.super }}
+{% endwith %}
+{% endblock css %}
+
+{% block body_class %}booking{% endblock %}
+{% block body %}
+
+{% include 'reservations/book/booking_nav.html' with when=True %}
+
+<div class="content-wrap app-content-wrap">
+  <div class="block white center">
+    <h1>When would {% if user == booking_user %}you{% else %}{{ booking_userprofile.get_full_name }}{% endif %} like to leave {{ origin.city }}?</h1>
+  </div>
+  <div class="block white row center">
+    <div class="calendar-nav">
+      <div class="container">
+        {% if previous_date %}
+          <a href="{% url 'book_when_month' origin.code previous_date.year previous_date.month %}">
+            <div class="arrow-back"></div>
+          </a>
+        {% endif %}
+        <span class="cal-month">{{ start_date|date:'F' }}</span>
+        {% if next_date %}
+          <a href="{% url 'book_when_month' origin.code next_date.year next_date.month %}">
+            <div class="arrow-forward"></div>
+          </a>
+        {% endif %}
+      </div>
+    </div>
+    <div class="block white chart-key-desktop">
+      <div class="key-item">
+        <div class="key-icon full"></div><span>Full</span>
+        <figure class="question popover-button">
+          <div class="popover down">
+            <p>All flights full on the day you want to leave?
+               Select the day and sign up for Flight Alerts.</p>
+          </div>
+        </figure>
+      </div>
+      <div class="key-item">
+        <div class="key-icon open"></div><span>Open</span>
+      </div>
+      <div class="key-item">
+        <div class="key-icon unavailable"></div><span>Unavailable</span>
+        <figure class="question popover-button">
+          <div class="popover down">
+            <p>The Rise Flight Schedule is available for booking six weeks
+               in advance. Upgrade membership to view the calendar earlier.</p>
+            </div>
+        </figure>
+      </div>
+    </div>
+    <button type="button" class="button grey inline toggle-chart-key">Calendar Key</button>
+    <ul class="calendar">
+      <li class="cal-label"><h5>Monday</h5></li>
+      <li class="cal-label"><h5>Tuesday</h5></li>
+      <li class="cal-label"><h5>Wednesday</h5></li>
+      <li class="cal-label"><h5>Thursday</h5></li>
+      <li class="cal-label"><h5>Friday</h5></li>
+      <li class="cal-label"><h5>Saturday</h5></li>
+      <li class="cal-label"><h5>Sunday</h5></li>
+      {% for day, result in results.iteritems %}
+        {% if result %}
+          <li class="{% if result.no_flights or result.is_unavailable %}unavailable{% elif result.is_full %}full{% else %}{% endif %}">
+            <a href="{% url 'book_flights' origin.code day.year day.month day.day %}">{{ day.day|stringformat:"02d" }}</a>
+          </li>
+        {% else %}
+        <li class="out-of-month">
+          {{ day.day|stringformat:"02d" }}
+        </li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+
+<div class="mobile-chart-key center">
+  <div class="block white">
+    <h1>Calendar Key</h1>
+    <div class="block row left">
+      <div class="key-icon open"></div><span>Open</span>
+    </div>
+    <div class="block row left">
+      <div class="key-icon full"></div><span>Flights Full</span>
+      <p>All flights full on the day you want to leave? Select the day and sign up for Flight Alerts.</p>
+    </div>
+    <div class="block row left">
+      <div class="key-icon unavailable"></div><span>Unavailable</span>
+      <p>The Rise Flight Schedule is available for booking six weeks in advance. Upgrade membership to view the calendar earlier.</p>
+    </div>
+    <div class="block row">
+      <a class="action-block grey"><figure class="x-grey-sm"></figure>Close</a>
+    </div>
+  </div>
+</div>
+
+{% endblock body %}
+
+{% block javascript %}
+{{ block.super }}
+<script src="{% static 'js/reservations.js' %}"></script>
+{% endblock javascript %}

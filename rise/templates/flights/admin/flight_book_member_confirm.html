@@ -1,0 +1,100 @@
+{% extends 'base_admin.html' %}
+{% load flight_tags %}s
+{% load staticfiles %}
+
+{% block title %}Dashboard - Confirm Booking for {{ member.get_full_name }}{% endblock title %}
+
+{% block meta_description %}Dashboard - Confirm Booking for {{ member.get_full_name }}{% endblock meta_description %}
+
+{% block css %}
+{% with marketing=False%}
+{{ block.super }}
+{% endwith %}
+{% endblock css %}
+
+{% block body_class %}{% endblock %}
+{% block body %}
+{% include 'admin_header_fragment.html' with flights=True %}
+<div class="admin-content-wrap admin-form-page">
+    <h1>Confirm Reservation for {{ member.get_full_name }}</h1>
+
+    {% if form.errors %}
+        <div class="error-message">
+        {% for field, errors in form.errors.items %}
+        {% for error in errors %}
+          {{ error }}<br/>
+        {% endfor %}
+        {% endfor %}
+        </div>
+    {% endif %}
+    <form method="post" action="" class="alert-form">
+        {% csrf_token %}
+
+        {% if member.account.get_member_count > 1 %}
+        <div class="block narrow-block">
+            <label>{% if member.account.get_companion_count > 1 %}Add Companions (Optional){% else %}Add Team Members{% endif %}</label>
+            <div class="selection-grid">
+            {% for checkbox in form.companions %}
+            <div class="select-companions">
+                <label class="check-radio-block cf" for="companions-{{ forloop.counter }}">
+                    <input id="companions-{{ forloop.counter }}" name="{{ checkbox.name }}" type="checkbox" value="{{ checkbox.choice_value }}" {% if checkbox.is_checked %}checked="checked"{% endif %}>
+                    <span>{{ checkbox.choice_label }}</span>
+                </label>
+            </div>
+            {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="block">
+            <div class="card grey">
+                {% if flight.flight_type != 'R' %}
+                <div class="badge"><figure class="{% if flight.flight_type == 'F' %}funflight-solid{% elif flight.flight_type == 'P' %}promo-solid{% endif %}"></figure></div>
+                {% endif %}
+                <div class="origin-and-destination">
+                    <h5>Origin &amp; Destination</h5>
+                    <div class="flight-details">
+                        <span class="airport">{{ flight.origin.code }}</span> {{ flight.local_departure.date|date:'d M'}} / {{ flight.local_departure|time:"h:i A e" }}<br />
+                        <span class="airport">{{ flight.destination.code }}</span> {{ flight.local_arrival.date|date:'d M'}} / {{ flight.local_arrival|time:"h:i A e" }}
+                    </div>
+                </div>
+                <div class="origin">
+                    <div class="badge-wrap badge-right">
+                        <div class="circle x-large gradient {{ flight.origin.city|remove_spaces_lower_case }}">
+                            {{ flight.origin.code }}
+                            {% if flight.flight_type != 'R' %}
+                            <div class="badge-wrap">
+                                <figure class="{% if flight.flight_type == 'F' %}funflight-solid{% elif flight.flight_type == 'P' %}promo-solid{% endif %}"></figure>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="caption">
+                        <h5>Origin</h5>
+                        <h1>{{ flight.origin.city }}, {{ flight.origin.state }}</h1>
+                        <h4 class="grey">{{ flight.local_departure.date|date:'d M'}} / {{ flight.local_departure|time:"h:i A e" }}</h4>
+                    </div>
+                </div>
+                <div class="destination">
+                    <div class="circle x-large gradient {{ flight.destination.city|remove_spaces_lower_case }}">
+                        {{ flight.destination.code }}
+                    </div>
+                    <div class="caption">
+                        <h5>Destination</h5>
+                        <h1>{{ flight.destination.city }}, {{ flight.destination.state }}</h1>
+                        <h4 class="grey">{{ flight.local_arrival.date|date:'d M'}} / {{ flight.local_arrival|time:"h:i A e" }}</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="center">
+            <button type="submit" class="green">Confirm</button>
+            <div class="interstitial">
+                <span class="lined">Or</span>
+            </div>
+            <a href="{% url 'admin_flight_detail' pk=flight.pk %}" class="button dark-grey">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock body %}

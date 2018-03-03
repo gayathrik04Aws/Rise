@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block css %}
+{% with marketing=False%}
+{{ block.super }}
+{% endwith %}
+{% endblock css %}
+
+{% block title %}Contract - {{ block.super }}{% endblock title %}
+
+{% block meta_description %}View your RISE Contract{% endblock meta_description %}
+
+{% block body %}
+{% include 'account_profile/dashboard_nav.html' %}
+<div class="section profile-body">
+        {% include 'account_profile/profile-sidenav-mobile.html' with contract=True %}
+    <div class="content-wrap app-content-wrap no-mt-mobile edit group">
+        {% include 'account_profile/profile-sidenav.html' with contract=True %}
+        <div class="profile-content-wrap">
+        <div class="detail group">
+        <div class="edit-profile-header">
+        <h1>Your Contract</h1>
+        </div>
+      {% if not user.account or not user.account.contract %}
+        <h1>Your account does not have a current contract.</h1>
+      {% else %}
+      {% include 'account_profile/contract_dynamic.html' %}
+      {% include 'account_profile/contract_text.html' %}
+      {% endif %}
+  </div>
+</div>
+</div>
+    </div>
+
+{% endblock body %}
+

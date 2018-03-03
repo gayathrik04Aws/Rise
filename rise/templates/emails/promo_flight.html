@@ -1,0 +1,31 @@
+{% extends 'emails/base.html' %}
+
+{% block body %}
+<table border="0" cellpadding="20" cellspacing="0" width="100%">
+    <tr>
+        <td align="center" valign="top" class="bodyContent">
+            <div>
+                <h1>Upcoming Promo Flight!</h1>
+                <h2>{{ flight.origin.name }} > {{ flight.destination.name }}</h2>
+
+                <div>
+                    On {{ flight.local_departure|date:"M d, Y" }} at {{ flight.local_departure_time_display }} {{ flight.origin.get_timezone_display }}, Rise will be offering a special promotional flight from {{ flight.origin.name }} to {{ flight.destination.name }}.
+                </div>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td align="center" valign="top" style="padding-top:0;">
+            <table border="0" cellpadding="0" cellspacing="0" class="button">
+                <tr>
+                    <td valign="middle" width="250px">
+                        <div>
+                            <a href="{{ protocol }}://{{ site.domain }}{% url 'book_flight' flight.id %}">Book Promo Flight</a>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+{% endblock body %}

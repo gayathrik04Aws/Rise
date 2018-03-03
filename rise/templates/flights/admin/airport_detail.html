@@ -1,0 +1,39 @@
+{% extends 'base_admin.html' %}
+
+{% load staticfiles %}
+{% load humanize %}
+{% load flight_tags %}
+
+{% block title %}Dashboard - Airport Detail{% endblock title %}
+
+{% block meta_description %}Dashboard - Airport Detail{% endblock meta_description %}
+
+{% block body_class %}{% endblock %}
+{% block body %}
+{% include 'admin_header_fragment.html' with nav_airports=True %}
+<div class="admin-content-wrap admin-form-page detail-page">
+    <div class="admin-page-header">
+        <h1>{{airport.code}} / {{ airport.name }}</h1>
+    </div>
+    <div class="detail-section">
+    <div class="admin-detail-row">
+        <span class="title">Address</span>
+        <span class="value">
+            {{ airport.street_1 }},
+            {% if airport.street_2 %}
+                {{ airport.street_2  }}
+            {% endif %}
+            {{ airport.city }},
+            {{ airport.state }}
+            {{ airport.postal_code }}
+        </span>
+    </div>
+        <a href="{% url 'admin_edit_airport' airport.pk %}" class="admin-button">Edit Info</a>
+    </div>
+    <div class="detail-section">
+        <label>Notes</label>
+        <p>{{ airport.details }}</p>
+    </div>
+    {# <button class="green">Remove Airport</button> #}
+</div>
+{% endblock %}

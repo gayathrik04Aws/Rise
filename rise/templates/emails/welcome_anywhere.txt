@@ -1,0 +1,8 @@
+{% extends 'emails/base.txt' %}
+
+{% block content %}Welcome to RISE ANYWHERE!
+
+You're now officially a member of the RISE community.  Your free RISE ANYWHERE limited membership entitles you to book seats on RISE ANYWHERE charter flights.
+
+Questions? Contact us at members@iflyrise.com or 844-FLY-RISE.
+{% endblock content %}

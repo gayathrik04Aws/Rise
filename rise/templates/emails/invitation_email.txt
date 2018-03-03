@@ -1,0 +1,8 @@
+{% extends 'emails/base.txt' %}
+
+{% block content %}Congrats!
+
+{{ invite.created_by.get_full_name }}, has made arrangements for you to experience Rise. Call your dedicated Member Experience Representative to find out about this unique opportunity at 844-359-7473.
+
+Go to {{ protocol }}://{{ site.domain }}{% url 'invite_code' invite.code %} or call us at 844-FLY-RISE to join Rise.
+{% endblock content %}

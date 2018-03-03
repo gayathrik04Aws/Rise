@@ -1,0 +1,35 @@
+{% extends 'base_admin.html' %}
+
+{% load staticfiles %}
+
+{% block body %}
+{% include 'admin_header_fragment.html' with accounts=True %}
+<div class="admin-content-wrap admin-form-page">
+    <h1>Verify Bank Account</h1>
+
+    {% if form.errors %}
+    <div class="error-message">
+        {% for field, errors in form.errors.items %}
+        {% for error in errors %}
+        {{ error }}<br/>
+        {% endfor %}
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <form action="." method="POST" autocomplete="off">
+        {% csrf_token %}
+
+        <label for="{{ form.verify_1.auto_id }}">Verify Amount 1</label>
+        {{ form.verify_1 }}
+
+        <label for="{{ form.verify_2.auto_id }}">Verify Amount 2</label>
+        {{ form.verify_2 }}
+
+        <div class="center">
+            <button type="submit" class="green">Verify Bank Account</button>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

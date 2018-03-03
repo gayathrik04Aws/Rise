@@ -1,0 +1,469 @@
+
+<!-- TODO: integrate properly with base.html and base_anywhere.html. This is merely a placeholder until a more robust solution is found -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <title>{% block title %}{% endblock title %}</title>
+    <style type="text/css">
+
+    /* Client-specific Styles */
+    #outlook a{padding:0;} /* Force Outlook to provide a "view in browser" button. */
+    body{width:100% !important;} .ReadMsgBody{width:100%;} .ExternalClass{width:100%;} /* Force Hotmail to display emails at full width */
+    body{-webkit-text-size-adjust:none;} /* Prevent Webkit platforms from changing default text sizes. */
+
+    /* Reset Styles */
+    body{margin:0; padding:0;}
+    img{border:0; height:auto; line-height:100%; outline:none; text-decoration:none;}
+    table td{border-collapse:collapse;}
+    #backgroundTable{height:100% !important; margin:0; padding:0; width:100% !important;}
+
+    body, #backgroundTable {
+        background-color: #eae8e8;
+        font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+    }
+
+    #templateContainer {
+        border: 1px solid #DDDDDD;
+    }
+
+    h1, .h1 {
+        color: #01AF70;
+        display: block;
+        font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+        font-size: 20px;
+        font-weight: normal;
+        line-height:115%;
+        margin-top:0;
+        margin-right:0;
+        margin-bottom:10px;
+        margin-left:0;
+        text-align:center;
+    }
+
+    h2, .h2 {
+        color: #a1b2b2;
+        display: block;
+        font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+        font-size: 30px;
+        font-weight: normal;
+        line-height: 150%;
+        text-transform: uppercase;
+        margin-top: 0;
+        margin-right: 0;
+        margin-bottom: 15px;
+        margin-left: 0;
+        text-align: center;
+    }
+
+    h3, .h3 {
+        color: #a1b2b2;
+        display: block;
+        font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+        font-size: 18px;
+        font-weight: normal;
+        line-height: 150%;
+        text-transform: uppercase;
+        margin-top: 0;
+        margin-right: 0;
+        margin-bottom: 15px;
+        margin-left: 25px;
+        text-align: left;
+    }
+
+    .label {
+        color: #a1b2b2;
+        font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+        font-size: 12px;
+        font-weight: normal;
+        line-height: 150%;
+        text-transform: uppercase;
+        margin-top: 0;
+        margin-right: 0;
+        margin-bottom: 15px;
+        margin-left: 0;
+        text-align: left;
+    }
+
+    .location {
+        color: #526666;
+        font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+        font-size: 16px;
+        font-weight: bold;
+        line-height: 160%;
+    }
+
+    .time {
+        color: #526666;
+        font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+        font-size: 14px;
+        line-height: 160%;
+    }
+
+    /* UTILITY */
+    .center {
+        text-align: center;
+    }
+
+    .left {
+        text-align: left;
+    }
+
+    .right {
+        text-align: right;
+    }
+
+    .middle {
+        vertical-align: middle;
+    }
+
+    .rule{
+        border-top: 1px solid #eae8e8;
+    }
+
+    /* HEADER */
+    #templateHeader {
+        background-color: #FFFFFF;
+        border-bottom: 0;
+    }
+
+    .headerContent {
+        padding: 0;
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    #headerImage {
+        height: auto;
+        max-width: 600px !important;
+    }
+
+
+    /* BODY */
+    #templateContainer, .bodyContent {
+        background-color:#FFFFFF;
+    }
+
+    .bodyContent div{
+        color: #526666;
+        font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+        font-size: 14px;
+        line-height: 160%;
+        text-align: center;
+    }
+
+    .bodyContent div strong{
+        color:#132323;
+    }
+
+    .bodyContent div a,.bodyContent div a:visited{
+        color: #a1b2b2;
+        font-weight: normal;
+        text-decoration: none;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-size: 12px;
+    }
+
+    .bodyContent div a:hover {
+        text-decoration: underline;
+    }
+
+    .bodyContent img {
+        display:inline;
+        height:auto;
+    }
+
+    .payment_table {
+        color: #000;
+        font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+        font-size: 14px;
+        line-height: 160%;
+        text-align: left;
+        width: 400px;
+        font-weight: bold;
+    }
+
+    .payment_table .total td {
+        color: #a1b2b2;
+        border-top: 1px solid #eae8e8;
+        border-bottom: 1px solid #eae8e8;
+
+    }
+
+    .flightContent {
+        color: #526666;
+        font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+        font-size: 14px;
+        line-height: 160%;
+        padding-bottom: 20px;
+        padding-top: 20px;
+        padding-left: 20px;
+        padding-right: 20px;
+        border-bottom: 1px solid #e5e2e2;
+    }
+
+    .flightContent.last {
+        border-bottom: 0;
+    }
+
+    .flightContent.first {
+        padding-top: 0;
+    }
+
+    .reservationContent{
+        padding-left:0;
+        padding-right:0;
+    }
+
+    /* FOOTER */
+    #templateFooter {
+        background-color: #132323;
+        border-top: 0;
+    }
+
+    /* BUTTONS */
+    .button {
+        -moz-border-radius: 3px;
+        -webkit-border-radius: 3px;
+        border-radius: 3px;
+        background-color: #01AF70;
+        border: 0;
+        border-collapse: separate !important;
+    }
+
+    .button.grey {
+        background-color: #d8d8d8;
+    }
+
+    .button, .button a, .button a:visited, /* Yahoo! Mail Override */ .button a .yshortcuts /* Yahoo! Mail Override */{
+        color: #FFFFFF;
+        font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+        font-size: 12px;
+        font-weight: normal;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        line-height: 100%;
+        text-align: center;
+        text-decoration: none;
+    }
+
+    .button a {
+        display: block;
+        padding: 15px;
+    }
+    .anywhere-email a, .anywhere-email a:link {
+        color: #01AF70;
+        text-decoration: none;
+        text-transform: none;
+        letter-spacing: 0;
+        font-size: inherit;
+    }
+    .anywhere-email .button a, .anywhere-email .button a:link {
+        color: #ffffff;
+        text-decoration: none;
+        padding: 20px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-weight: 700;
+    }
+    .anywhere-email h1 {
+        font-size: 30px;
+        line-height: 36px;
+        font-weight: 700;
+        color: #141E1E;
+        margin: 0;
+        padding: 0;
+        margin-bottom: 16px;
+        margin-top:0;
+        margin-right:0;
+        margin-bottom:0;
+        margin-left:0;
+    }
+    .anywhere-email h2 {
+        font-size: 20px;
+        line-height: 28px;
+        color: #141E1E;   
+        margin: 0;
+        padding: 0;
+        font-weight: 700;
+        text-transform: none;
+        text-align: center;
+        margin-top:0;
+        margin-right:0;
+        margin-bottom:0;
+        margin-left:0;
+    }
+    .anywhere-email h3 {
+        margin-top:0;
+        margin-right:0;
+        margin-bottom:0;
+        margin-left:0;
+    }
+    .anywhere-email h3.section-header {
+        font-size: 18px;
+        line-height: 16px;
+        color: #A1B2B2;   
+        margin: 0;
+        padding: 0;
+        font-weight: 700;
+        font-family: "HelveticaNeue-CondensedBold", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+        text-align: center;
+        margin-top:0;
+        margin-right:0;
+        margin-bottom:0;
+        margin-left:0;
+
+    }
+
+    .anywhere-email h3.all-caps-header {
+        font-size: 10px;
+        line-height: 13px;  
+        color: #A1B2B2;
+        text-transform: uppercase;
+        font-weight: 700;
+        text-align: center;
+        margin-left: 0;
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+
+    .anywhere-email p {
+        font-size: 15px;
+        line-height: 24px;
+        font-weight: 300;
+        color: #768888;
+        text-align: center;
+        margin: 0;
+        padding: 0;
+    }
+
+    .anywhere-email p.location {
+        font-weight: 300;
+        font-style: 12px;
+        line-height: 18px;
+    }
+
+    .anywhere-email p.duration {
+        font-size: 12px;
+    }
+
+    hr {
+        height:0; 
+          border:0; 
+          border-top:1px solid #dddddd; 
+
+    }
+
+    .anywhere-email .vertical-line {
+        width: 0;
+        height: 20px;
+        border-left: 1px solid #D7E3E3;
+        margin: 5px 0;
+        display: inline-block;
+    }
+
+    .anywhere-email .price-subheader {
+        font-size: 10px;
+        font-weight: 700;
+    }
+    .anywhere-email table.price-table {
+        background-color: #D7E3E3;
+        border-collapse: separate;
+        border-spacing: 1px;
+        margin-top: 40px;
+        
+    }
+
+    .anywhere-email table.price-table td {
+        background-color: white;
+        text-align: left;
+    }
+
+    .anywhere-email table.price-table td p {
+        text-align: left;
+        font-size: 18px;
+    }
+
+
+    <!-- {% block extra_styles %}{% endblock extra_styles %} -->
+</style>
+</head>
+<body leftmargin="0" marginwidth="0" topmargin="0" marginheight="0" offset="0">
+    <center>
+        <table border="0" cellpadding="0" cellspacing="0" height="100%" width="100%" id="backgroundTable">
+            <tr>
+                <td align="center" valign="top">
+                    <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width:600px;" id="templateContainer">
+                        <tr>
+                            <td align="center" valign="top">
+                                {% block header %}
+                                <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width:600px;" id="templateHeader">
+                                    <tr>
+                                        <td class="headerContent">
+                                            <img src="https://cfa084d658b491813884-326c6674e44e477b9197a3210586152e.ssl.cf1.rackcdn.com/emails/header.2ebd1a9a9a01.jpg" width="100%" style="max-width:600px;" id="headerImage"  />
+                                        </td>
+                                    </tr>
+                                </table>
+                                {% endblock header %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center" valign="top">
+                                <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width:600px;" id="templateBody">
+                                    <tr>
+                                        <td valign="top">
+                                            {% block body %}
+                                            <table border="0" cellpadding="20" cellspacing="0" width="100%">
+                                                <tr>
+                                                    <td valign="top" class="bodyContent">
+                                                        <div>
+                                                            {% block content %}
+                                                            {% endblock content %}
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                            {% endblock body %}
+
+
+                                            
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center" valign="top">
+                                <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width:600px;" id="templateFooter">
+                                    <tr>
+                                        <td valign="top" class="footerContent">
+                                            {% block footer_content %}
+                                            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                                                <tr>
+                                                    <td id="footer_links" valign="middle" align="center">
+                                                        <a href="https://www.iflyrise.com"><img src="https://cfa084d658b491813884-326c6674e44e477b9197a3210586152e.ssl.cf1.rackcdn.com/emails/footer_url.87bd8173a7b9.png"></a>
+                                                        <a href="tel://8443597473"><img src="https://cfa084d658b491813884-326c6674e44e477b9197a3210586152e.ssl.cf1.rackcdn.com/emails/footer_phone.697de6e0ba8c.png"></a>
+                                                        <a href="mailto:info@iflyrise.com"><img src="https://cfa084d658b491813884-326c6674e44e477b9197a3210586152e.ssl.cf1.rackcdn.com/emails/footer_email.bd57f467ac46.png"></a>
+                                                        <a href="https://www.facebook.com/IFlyRise"><img src="https://cfa084d658b491813884-326c6674e44e477b9197a3210586152e.ssl.cf1.rackcdn.com/emails/footer_facebook.ef1f228f6cfd.png"></a>
+                                                        <a href="https://twitter.com/IFlyRise"><img src="https://cfa084d658b491813884-326c6674e44e477b9197a3210586152e.ssl.cf1.rackcdn.com/emails/footer_twitter.2fd5cec20b42.png"></a>
+                                                        <a href="https://www.instagram.com/IFlyRise"><img src="https://cfa084d658b491813884-326c6674e44e477b9197a3210586152e.ssl.cf1.rackcdn.com/emails/footer_instagram.c2804332ef5e.png"></a>
+                                                        <a href="http://www.pinterest.com/IFlyRise/"><img src="https://cfa084d658b491813884-326c6674e44e477b9197a3210586152e.ssl.cf1.rackcdn.com/emails/footer_pintrest.6bc02e77ff83.png"></a>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                            {% endblock footer_content %}
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                    <br />
+                </td>
+            </tr>
+        </table>
+    </center>
+</body>
+</html>

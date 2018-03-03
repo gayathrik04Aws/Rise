@@ -1,0 +1,27 @@
+{% extends 'emails/base.txt' %}
+
+{% block content %}{{ title }}
+{% if message %}
+{{ message }}
+{% endif %}
+{% for member in member_list %}
+   {{ member }}
+{% endfor %}
+{% for flight_reservation in flight_reservations  %}
+Flight {{ flight_reservation.flight.flight_number }} / {{ flight_reservation.flight.departure|date:"M d, Y" }}
+
+Origin
+------
+{{ flight_reservation.flight.origin.name }}, {{ flight_reservation.flight.origin.state }}
+{{ flight_reservation.flight.local_departure_time_display}} {{ flight_reservation.flight.origin.get_timezone_display }}
+
+Destination
+-----------
+{{ flight_reservation.flight.destination.name }}, {{ flight_reservation.flight.destination.state }}
+{{ flight_reservation.flight.local_arrival_time_display}} {{ flight_reservation.flight.destination.get_timezone_display }}
+
+
+{% endfor %}
+
+{{ protocol }}://{{ site.domain }}{% url 'reservations' 'upcoming' %}
+{% endblock content %}

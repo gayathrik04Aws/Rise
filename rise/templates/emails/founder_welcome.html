@@ -1,0 +1,31 @@
+{% extends 'emails/base.html' %}
+
+{% block body %}
+<table border="0" cellpadding="20" cellspacing="0" width="100%">
+    <tr>
+        <td align="center" valign="top" class="bodyContent">
+            <div>
+                <h1>Congratulations, {{ user.first_name }}!</h1>
+                <div>
+                    We are excited that you are a Rise Founding member under the corporate membership, {{ user.account.company_name }}. Click to complete your Rise profile registration, and check out the booking tool. <br>
+                    <br>
+                    The initial Rise Flight Schedule is attached.
+                </div>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td align="center" valign="top" style="padding-top:0;">
+            <table border="0" cellpadding="0" cellspacing="0" class="button">
+                <tr>
+                    <td valign="middle" width="250px">
+                        <div>
+                            <a href="{{ protocol }}://{{ site.domain }}{% url 'register_member' uidb64=uid token=token %}">Complete Profile</a>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+{% endblock body %}

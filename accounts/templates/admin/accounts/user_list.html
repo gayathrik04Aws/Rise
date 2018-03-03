@@ -1,0 +1,102 @@
+{% extends 'base_admin.html' %}
+
+{% load staticfiles %}
+{% load account_tags %}
+{% block title %}Users - {{ block.super }}{% endblock title %}
+
+{% block meta_description %}Users - Dashboard{% endblock meta_description %}
+
+{% block css %}
+{% with marketing=False%}
+{{ block.super }}
+{% endwith %}
+{% endblock css %}
+
+{% block body_class %}{% endblock %}
+{% block body %}
+{% include 'admin_header_fragment.html' with nav_users=True %}
+<div class="admin-content-wrap">
+    <div class="block admin">
+        <div class="admin-page-header no-bb">
+            <div class="fl">
+                <h1>Users</h1>
+            </div>
+            <div class="fr">
+                <div class="select admin-page-sort dark">
+                  <span class="value">Showing {{ user_filter_form.filter_user.value|default:"All Members" }}</span>
+                  <ul id="flight-sort-filter">
+                      {% for value, text in user_filter_form.filter_user.field.choices %}
+                      <li value="{{ value }}" {% if user_filter_form.filter_user.value == value %}class="active"{% endif %}>{{ text }}</li>
+                      {% endfor %}
+                  </ul>
+                  {{ user_filter_form.filter_user }}
+                </div>
+                {% comment %}
+                <div class="add-page-item">
+                    <a href="{% url 'admin_user_add' %}" class="add-page-item">+ Add New user</a>
+                </div>
+                {% endcomment %}
+            </div>
+            <div class="fr">
+                <form action="." method="GET">
+                    <input type="search" placeholder="Search" class="dark page-search admin-reveal fl" name="s">
+                </form>
+            </div>
+        </div>
+        <div class="control-row">
+            <div class="filters">
+                {% for value, text in user_filter_form.filter_user.field.choices %}
+                    {% if value %}
+                    <span class="filter {% if user_filter_form.filter_user.value == value %}class="ui-selected"{% endif %}"
+                        data-filter="{{ value }}">
+                        {{text}}
+                    </span>
+                    {% endif %}
+                {% endfor %}
+                <span>|</span>
+                <span class="filter ui-selected" data-filter="">ALL</span>
+            </div>
+        </div>
+    </div>
+
+    <table class="admin-table">
+        <thead>
+            <tr>
+                <th>Avatar</th>
+                <th>User Name</th>
+                 <th>Is Active</th>
+                <th>Account Name</th>
+                <th>Phone #</th>
+                <th>Email</th>
+                <th>Groups</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in userprofile_list %}
+            <tr class="link-row user-row fadeIn" href="{% url 'admin_account_user' user.account.id user.pk %}" data-last-name="{{ user.last_name|lower }}">
+                <td class="contact">
+                    {% if load_avatars %}
+                    <div class="circle">
+                        <img src="{{ user.user.avatar_url }}">
+                    </div>
+                    {% endif %}
+                </td>
+                <td class="name-cell"><b>{{ user.get_full_name }}</b></td>
+                <td class="active-cell">{% if user.user.is_active %}active{% else %}inactive{% endif %}</td>
+                <td class="account-cell">{% if user.account %}{{ user.account.account_name }}{% endif %}</td>
+                <td class="phone-cell">{{ user.phone }}</td>
+                <td class="email-cell"><a href="mailto:{{ user.email }}" class="underline-link">{{ user.email|truncatechars:20 }}</a></td>
+                <td class="groups-cell">
+                    {% for group in user.user.groups.all %}
+                        {% if forloop.counter > 1 %}, {% endif %}{{group.name}}
+                    {% endfor %}
+                </td>
+
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+{% endblock body %}

@@ -1,0 +1,124 @@
+{% extends 'emails/base.html' %}
+
+{% block title %}{{ title }}{% endblock title %}
+
+
+{% block body %}
+<table border="0" cellpadding="20" cellspacing="0" width="100%">
+    <tr>
+        <td align="center" valign="top" class="bodyContent">
+            <div>
+                <h1>{{ title }}</h1>
+
+                <p>
+                    Congratulations! Your RISE ANYWHERE flight to {{leg1.destination.name}} on {{leg1.departure|date:"M d, Y"}}  booked more passengers than the minimum
+                    required and your fare went down as a result.
+                </p>
+            </div>
+        </td>
+    </tr>
+
+
+
+    <tr><td>Your {{  method_of_payment }} has been refunded for the difference. </td></tr>
+    <tr><td><br/></td></tr>
+    <tr><td>FLIGHT DETAILS</td></tr>
+    <tr>
+        <table border="0" cellpadding="0" cellspacing="0" width="100%" class="flightContent first">
+            <tr><td colspan="4">{{ leg1.origin.name }}, {{ leg1.origin.state }} to {{ leg1.destination.name }}, {{ leg1.destination.state }}</td></tr>
+            <tr>
+                <td colspan="4"><h3>Departing | {{ leg1.departure|date:"M d, Y" }}</h3></td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="location">{{ leg1.origin.name }} ({{ leg1.origin.code }})</span><br>
+                    <span class="time">{{ leg1.local_departure_time_display}} {{ leg1.origin.get_timezone_display }}</span>
+                </td>
+                <td>
+                    <span>{{ leg1.duration }} MIN</span>
+                </td>
+
+                <td>
+                    <span class="location">{{ leg1.destination.name }} ({{ leg1.destination.code }})</span><br>
+                    <span class="time">{{ leg1.local_arrival_time_display}} {{ leg1.destination.get_timezone_display }}</span>
+                </td>
+            </tr>
+        </table>
+    </tr>
+    {% if leg2 != None %}
+      <tr>
+        <table border="0" cellpadding="0" cellspacing="0" width="100%" class="flightContent first">
+            <tr>
+                <td colspan="4"><h3>Returning | {{ leg2.departure|date:"M d, Y" }}</h3></td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="location">{{ leg2.origin.name }} ({{ leg2.origin.code }})</span><br>
+                    <span class="time">{{ leg2.local_departure_time_display}} {{ leg2.origin.get_timezone_display }}</span>
+                </td>
+                <td>
+                    <span>{{ leg2.duration }} MIN</span>
+                </td>
+
+                <td>
+                    <span class="location">{{ leg2.destination.name }} ({{ leg2.destination.code }})</span><br>
+                    <span class="time">{{ leg2.local_arrival_time_display}} {{ leg2.destination.get_timezone_display }}</span>
+                </td>
+            </tr>
+        </table>
+    </tr>
+    {% endif %}
+    <tr>
+        <table border="0" cellpadding="0" cellspacing="0" width="100%" class="flightContent first">
+            <tr><td>Spots: {{ seats }}</td></tr>
+
+            {% if passengers.count == 1 %}
+            <tr><td>Passenger: {{ passengers.0.user.get_full_name }}</td></tr>
+            {% else %}
+            <tr><td>Passengers:</td></tr>
+                {% for passenger in passengers %}
+                     <tr><td>{{ passenger.user.get_full_name }}</td></tr>
+                {% endfor %}
+
+            {% endif %}
+
+            {% if seats > passengers.count and flightset.leg1.status != 'L'%}
+              <tr><td>Please note that all passengers who are not RISE members will need to create free RISE ANYWHERE limited accounts and
+                be added to your reservation by Member Relations.</td></tr>
+            {% endif %}
+
+
+        <tr><td>You originally paid: ${{ previous_charge|floatformat:0 }}</td></tr>
+        <tr><td>Updated spot cost: ${{ seat_cost|floatformat:0 }}</td></tr>
+        {% if other_charges > 0 %}
+        <tr><td>{% if other_desc %}{{ other_desc }}: {% else %}Other Charges {% endif %}
+            ${{ other_charges|floatformat:0 }}</td></tr>
+        {% endif %}
+        <tr><td>Updated tax: ${{ tax|floatformat:0 }}</td></tr>
+        <tr><td>Updated total cost: ${{ your_total|floatformat:0 }}</td></tr>
+        <tr><td>Amount Refunded: ${{ amount_refunded|floatformat:0}}</td></tr>
+        <tr><td><br/>
+{% if flightset.leg1.status == 'L' %}
+We hope you had a great trip!
+{% else %}
+Have a great trip!
+{% endif %}
+        </td></tr>
+        </table>
+    </tr>
+    <tr>
+        <td align="center" valign="top" style="padding-top: 20px; padding-bottom: 20px;">
+            <table border="0" cellpadding="0" cellspacing="0" class="button">
+                <tr>
+                    <td valign="middle" width="250px">
+                        <div>
+                            <a href="{{ protocol }}://{{ site.domain }}{% url 'anywhere_flight_info' public_key %}">View Your Flight</a>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+
+</table>
+{% endblock body %}

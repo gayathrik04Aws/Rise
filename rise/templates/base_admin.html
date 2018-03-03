@@ -1,0 +1,172 @@
+{% load staticfiles %}{% load tz %}{% localtime off %}<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="{% block meta_description %}A private air travel membership service. One monthly fee. Fly all you want.{% endblock meta_description %}">
+  <meta name="viewport" content="minimum-scale=1.0, maximum-scale=1.0, initial-scale=1.0, user-scalable=0, width=device-width">
+  <script src="{{ TYPEKIT_URL }}"></script>
+  <script>try{Typekit.load();}catch(e){}</script>
+ {% if debug or STAGING %}
+  <link rel="stylesheet" type="text/css" href="//cloud.typography.com/7407912/677046/css/fonts.css" />
+  {% else %}
+  <link rel="stylesheet" type="text/css" href="//cloud.typography.com/7407912/646386/css/fonts.css" />
+  {% endif %}
+  {% block css %}
+  {% if marketing %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+  {% else %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/normalize.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/app.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/rsa-bootstrap-grid.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'fonts/din.css' %}"> <!-- change to typekit -->
+  {% endif %}
+  {% endblock css%}
+  <!--[if lte IE 9]>
+  <link rel="stylesheet" type="text/css" href="{% static 'css/ie9.css' %}">
+  <![endif]-->
+  <!--[if lte IE 8]>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/ie8.css' %}">
+    <script src="{% static 'js/html5shiv.min.js' %}"></script>
+    <script src="{% static 'js/html5shiv-printshiv.min.js' %}"></script>
+  <![endif]-->
+
+  {# apple-touch- favicon tags#}
+  <link rel="apple-touch-icon-precomposed" sizes="512x512" href="{% static 'img/Favicons/favicon-512.png' %}">
+  <link rel="apple-touch-icon-precomposed" sizes="152x152" href="{% static 'img/Favicons/favicon-152.png' %}">
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="{% static 'img/Favicons/favicon-144.png' %}">
+  <link rel="apple-touch-icon-precomposed" sizes="120x120" href="{% static 'img/Favicons/favicon-120.png' %}">
+  <link rel="apple-touch-icon-precomposed" sizes="114x114" href="{% static 'img/Favicons/favicon-114.png' %}">
+  <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{% static 'img/Favicons/favicon-72.png' %}">
+  <link rel="apple-touch-icon-precomposed" href="{% static 'img/Favicons/favicon-57.png' %}">
+
+  {# link rel favicon tags#}
+  <link rel="icon" sizes="512x512" href="{% static 'img/Favicons/favicon-512.png' %}">
+  <link rel="icon" sizes="48x48" href="{% static 'img/Favicons/favicon-48.png' %}">
+  <link rel="icon" sizes="32x32" href="{% static 'img/Favicons/favicon-32.png' %}">
+  <link rel="icon" sizes="16x16" href="{% static 'img/Favicons/favicon-16.png' %}">
+  <link rel="icon" href="{% static 'img/Favicons/favicon.ico' %}">
+
+  {# windows metro tiles#}
+  <meta name="msapplication-TileColor" content="#FFFFFF">
+  <meta name="msapplication-TileImage" content="{% static 'img/Favicons/favicon-144.png'%}">
+  <title>{% block title %}Rise Admin{% endblock title %}</title>
+
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-54186557-1', 'auto');
+  ga('send', 'pageview');
+
+  </script>
+</head>
+<body class="{% block body_class %}{% endblock body_class %}">
+
+    <div class="admin-rotate-device">
+      <div class="rotate-wrapper">
+        <figure class="logo-darkbg"></figure>
+        <h1 style="color: white;">Please rotate your device.</h1>
+      </div>
+    </div>
+
+    {% block messages %}
+    {% if messages %}
+    <div class="modal-wrapper show" style="display: block">
+        <div class="modal center">
+            <figure class="x-grey-lg"></figure>
+            <figure class="check-solid-green"></figure>
+            {% for message in messages %}
+            <p class="thick">{{ message }}</p>
+            {% endfor %}
+            <a class="dismiss action-block grey"><figure class="x-grey-sm"></figure>Close</a>
+        </div>
+    </div>
+    {% endif %}
+    {% endblock messages %}
+
+  <div class="body-wrapper">
+    {% block body %}
+    {% endblock body %}
+  </div>
+
+    {% block footer %}
+    <div class="section footer">
+      <div class="content-wrap">
+        {% if not user.is_authenticated %}
+          <form action="//iflyrise.us8.list-manage.com/subscribe/post-json?u=b707659b2ede5934e1dd71cb6&id=ee4e51aded&c=?" method="GET" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+            <p class="center">Not ready to fly?&nbsp;<br/>Subscribe to Rise updates.</p>
+            <div class="error-message general-error">You have entered an invalid email address.</div>
+            <div class="error-message already-subscribed">You are already subscribed.</div>
+            <div class="form-success" style="display: none;">Thank you for signing up—we'll be in touch!</div>
+            <input type="email" value="" name="EMAIL" class="email" id="mce-EMAIL" placeholder="Enter Email Address" /><button type="submit" class="button green">Subscribe</button>
+            <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+            <div style="position: absolute; left: -5000px;"><input type="text" name="b_b707659b2ede5934e1dd71cb6_ee4e51aded" tabindex="-1" value=""></div>
+          </form>
+        {% endif %}
+            <span class="cf">
+            <ul class="footer-info">
+              <li>
+                  <p>Call <a href="tel:844-359-7473">844 359 7473</a></p>
+                  <p>Email <a href="mailto:info@iflyrise.com" target="_blank">info@iflyrise.com</a></p>
+                  <p>On <a href="https://www.twitter.com/iflyrise" target="_blank">Twitter</a> &amp; <a href="http://www.facebook.com/iflyrise" target="_blank">Facebook</a></p>
+              </li>
+
+              <li>
+                <a href="https://www.google.com/maps/dir/''/Dallas+Love+Field+Airport,+7363+Herb+Kelleher+Way,+Dallas,+TX+75235/data=!4m5!4m4!1m0!1m2!1m1!1s0x864e9c2f710fada1:0x4e321b426559641e?sa=X&ei=d3aUVLDILJWTsQTj_YH4DQ&ved=0CCEQwwUwAA">
+                <p>7363 Herb Kelleher Way</p>
+                <p>Love Field Airport<span class="desktop-comma">,</span><span class="mobile-break"><br/><br/></span> Dallas, TX 75235</p>
+                </a>
+                <p>2014 &#169; Rise. All Rights Reserved.</p>
+              </li>
+            </ul>
+
+            <ul class="rise-footer-nav">
+              <li>
+                <p><a href="http://rise.breezy.hr/" target="_blank">Careers</a></p>
+                <p><a href="{{ WP_URL }}/faq/">FAQ</a></p>
+                <p><a href="{{ WP_URL }}/about/">About</a></p>
+              </li>
+              <li>
+                  <p><a href="{{ WP_URL }}/blog/">Blog</a></p>
+                  {% if not user.is_authenticated %}
+                  <p><a href="{% url 'login' %}">Sign In</a></p>
+                  {% elif user.is_authenticated %}
+                  <p><a href="{% url 'logout' %}">Sign Out</a></p>
+                  {% endif %}
+                  <p><a href="{{ WP_URL }}/press/">Press</a></p>
+              </li>
+
+              <li>
+                <a href="/" id="footer-logo"><span class="travel-better">Travel Better.&trade;</span><img src="{% static 'img/logo_darkbg.png' %}" alt="I Fly Rise Logo" id="footer-logo"></a>
+              </li>
+            </ul>
+            </span>
+        <p class="legal">NOTICE: Rise acts solely as agent for the Members in arranging flights and other travel-related
+            services on the Members’ behalf. Rise is not an operator of aircraft, nor does it provide air transportation.
+            FAA-licensed and DOT-registered air carriers will exercise full and complete operational control of all
+            aircraft. Subject to additional terms and conditions in the Rise membership documents.
+            Click here to view website <a href="{{ WP_URL }}/terms/">Terms and Conditions</a>.</p>
+      </div>
+    </div>
+
+    {% endblock footer %}
+
+
+    <script src="{% static 'js/jquery-1.11.1.min.js' %}"></script>
+    <script src="{% static 'js/jquery-ui.min.js' %}"></script>
+    <script src="{% static 'js/jquery.formatter.min.js' %}"></script>
+    <!-- <script src="{% static 'js/froogaloop2.min.js' %}"></script> -->
+    <script src="{% static 'js/carousel.js' %}"></script>
+    <script src="{% static 'js/rangeslider.min.js' %}"></script>
+    <script src="{% static 'js/moment.min.js' %}"></script>
+    <script src="{% static 'js/csrf.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+    <script src="{% static 'js/admin.js' %}"></script>
+
+    {% block javascript %}
+    {% endblock javascript %}
+</body>
+</html>
+{% endlocaltime %}

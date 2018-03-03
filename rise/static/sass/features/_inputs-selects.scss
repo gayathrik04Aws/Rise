@@ -1,0 +1,561 @@
+.select, select {
+  background-color: $input-bg;
+  background-image: url('../img/row-expand.png');
+  background-repeat: no-repeat;
+  background-size: 12px 12px;
+  background-position: right 20px center;
+  border: 1px solid $input-border;
+  cursor: pointer;
+  color: $runway;
+  font-size: 14px;
+  height: 60px;
+  line-height: 60px;
+  margin: 5px 0;
+  padding: 0 25px;
+  padding-right: 50px;
+  position: relative;
+  width: 100%;
+  -webkit-appearance:none;
+  &.dark {
+    background-color: $grey1;
+    background-image: url(../img/plus-black.png);
+    background-repeat: no-repeat;
+    background-size: 12px 12px;
+    background-position: right 20px center;
+    color: $runway;
+    font-family: 'din';
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    ul {
+      border-top: 0;
+      &.expand {
+        border: 1px solid $input-border;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      }
+      li {
+        background-color: $grey1;
+        color: $sky;
+        font-family: 'Gotham Ssm A', 'Gotham Ssm B';
+        letter-spacing: 0;
+        font-weight: 300;
+        text-transform: none;
+      }
+    }
+  }
+  &.arrow {
+    background-image: none;
+    &:after {
+      // border-left: 1px solid $grey2;
+      background-image: url(../img/arrow-down.png);
+      background-size: 6px 5px;
+      background-repeat: no-repeat;
+      background-position: center;
+      border-left: 1px solid $input-border;
+      content: ' ';
+      display: block;
+      height: 100%;
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 30px;
+    }
+  }
+  .value {
+    color: $sky;
+    display: block;
+    font-size: 15px;
+    font-weight: 300;
+    height: 100%;
+    letter-spacing: 1px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+    text-rendering: optimizeLegibility;
+  }
+  a {
+    color: $sky;
+  }
+  ul {
+    height: 0;
+    margin: 0;
+    margin-bottom: 10px;
+    overflow: auto;
+    padding: 0;
+    left: -1px;
+    position: absolute;
+    @include calc(width, '100% + 2px');
+    &.expand {
+      border: 1px solid $input-border;
+      height: 175px;
+      background-color: white;
+      z-index: 1000;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+  }
+  li {
+    background-color: $grey1;
+    border-top: 0;
+    display: block;
+    padding: 10px 25px;
+    width: 100%;
+    line-height: 18px;
+    &.active {
+        background-image: url(../img/check-green-sm.png);
+        background-size: 12px 9px;
+        background-repeat: no-repeat;
+        background-position:  right 20px center;
+    }
+  }
+  select {
+    @include appearance(none);
+    background: transparent;
+    border: 0;
+    color: transparent;
+    cursor: pointer;
+    display: none;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+  }
+  &.fullscreen {
+    background-color: transparent;
+    background-image: none;
+    background-size: 15px 15px;
+    border: 0;
+    font-size: 50px;
+    @include tablet-gothic-family;
+    height: 70px;
+    // left: 0;
+    line-height: 70px;
+    max-width: initial;
+    // padding-right: 25px;
+    padding: 0;
+    // position: absolute;
+    text-align: center;
+    text-transform: uppercase;
+    // top: 50%;
+    width: 100%;
+    // @include transform(translateY(-125%));
+    &.hide-icon {
+      background-image: none;
+    }
+    .value {
+      color: $land;
+      font-size: 50px;
+      line-height: 70px;
+      margin-right: 20px;
+      padding-left: 40px;
+      white-space: initial;
+      width: 100%;
+      &:after {
+        content: '+';
+        margin-left: 20px;
+      }
+    }
+    .value.current_selection {
+      line-height:1.15;
+    }
+    ul {
+      border: 0;
+      box-shadow: none;
+      height: 312px;
+      padding: 0;
+      top: -100%;
+      @include transform(scaleY(0));
+      @include transition(all 0.1s ease-in);
+      &.expand {
+        background-color: transparent;
+        @include transform(scaleY(1));
+        @include transition(all 0.8s cubic-bezier(0,1.21,.18,1));
+      }
+    }
+    li {
+      background-color: transparent;
+      border: 0;
+      color: white;
+      font-size: 35px;
+      height: 50px;
+      line-height: 50px;
+      padding: 0;
+      position: relative;
+      @include transition(font-size 0.3s ease-in-out);
+      &.active {
+        background-image: none;
+        color: $land;
+        font-size: 50px;
+        height: 70px;
+        line-height: 70px;
+        padding-left: 40px;
+        @include transition(font-size 0.3s ease-in-out);
+        &:after {
+          background-image: url(../img/check-green-lg.png);
+          background-repeat: no-repeat;
+          background-size: 18px 14px;
+          background-position: right center;
+          content: '';
+          display: inline-block;
+          height: 14px;
+          margin-bottom: 10px;
+          margin-left: 20px;
+          width: 18px;
+        }
+      }
+    }
+  }
+  &.admin-page-sort {
+    height: 40px;
+    line-height: 40px;
+    font-size: 12px;
+    width: 240px;
+  }
+}
+
+.no-labels label {
+  visibility: hidden;
+  line-height: 0;
+  margin: 0;
+  height: 0;
+  width: 0;
+}
+
+.textarea {
+  margin: 10px 0;
+}
+
+textarea {
+  background-color: $input-bg;
+  // border: 1px solid $grey2;
+  border: 1px solid $input-border;
+  color: $sky;
+  @include gotham-family;
+  font-size: 14px;
+  line-height: 24px; // Typically pixel-based, Chrome has bug which renders pixel-based incorrectly though
+  margin: 5px 0;
+  padding: 10px 25px;
+  position: relative;
+  width: 100%;
+  min-height: 125px;
+}
+
+input {
+  @include gotham-family;
+  @include appearance(none);
+  border-radius: 0;
+  // background-color: $grey1;
+  background-color: $input-bg;
+  // border: 1px solid $grey2;
+  border: 1px solid $input-border;
+  color: $runway;
+  font-size: 14px;
+  font-weight: 300;
+  height: 60px;
+  margin: 5px 0;
+  padding: 0 25px;
+  position: relative;
+  width: 100%;
+  @include placeholder {
+    color: $sky;
+  }
+  &[type=search] {
+    background-image: url(../img/icon-mag.png);
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    background-size: 17px 16px;
+    box-sizing: border-box;
+    padding-right: 50px;
+  }
+  &[type=checkbox],
+  &[type=radio] {
+    @include appearance(none); // This needs checkbox images for on and off states
+    background-image: url('../img/checkbox-off.png');
+    background-repeat: no-repeat;
+    background-size: 20px 20px;
+    background-position: top left;
+    background-color: white;
+    border: 0;
+    display: table-cell;
+    height: 20px;
+    width: 20px;
+    &:checked {
+      background-image: url('../img/checkbox-on.png');
+    }
+    &:focus {
+      box-shadow: none;
+    }
+  }
+  &.dark {
+    background-color: $input-bg-dark;
+    background-image: url(../img/mag-black.png);
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    background-size: 12px 12px;
+    color: $runway;
+    font-family: 'din';
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    line-height: 50px;
+    text-transform: uppercase;
+    @include mobelux-placeholder($sky);
+  }
+  &:focus {
+    border-color: $input-border-focus;
+    box-shadow: 0 0 4px $input-border-focus;
+    outline: 0;
+  }
+  &.error {
+    border-color: #e35740;
+    @include mobelux-placeholder(#e35740);
+    &:focus {
+      box-shadow: none;
+    }
+  }
+  &.icon-replace {
+    border: 0;
+    padding: 0;
+    background-color: none;
+    background-repeat: no-repeat;
+    background-position: center;
+    display: inline-block;
+    margin: 0;
+    &.trashcan {
+      background-image: url(../img/icon-trashcan.png);
+      background-size: 18px 21px;
+      height: 21px;
+      width: 18px;
+    }
+  }
+}
+
+.alert{
+
+    input {
+        background-color: $modal-dark-bg;
+    }
+    .check-radio-block{
+        input{
+            background-color:transparent;
+        }
+    }
+}
+
+.check-radio-block {
+  @extend p;
+  color: $runway;
+  display: block;
+  letter-spacing: 0;
+  margin: 20px 0;
+  text-transform: none;
+  span {
+    display: table-cell;
+    vertical-align: bottom;
+  }
+  &.bold {
+    color: $sky;
+    font-family: 'din';
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 1px;
+    line-height: 17px;
+    text-transform: uppercase;
+  }
+  &.inline {
+    display: inline-block;
+    margin-right: 15px;
+  }
+  input[type=checkbox], input[type=radio] {
+    width: 35px;
+  }
+  em {
+    font-weight: 700;
+    text-rendering: optimizeLegibility;
+  }
+}
+
+label {
+  @extend h5;
+  display: block;
+  margin-top: 10px;
+  text-align: left;
+  &+p {
+    margin-top: 0;
+  }
+  &+.check-radio-block {
+    margin-top: 10px;
+  }
+}
+
+.expandable-height {
+  height: 0;
+  overflow: hidden;
+  &.desktop {
+    @media screen and (min-width: 768px) {
+      overflow: visible;
+      height: auto;
+    }
+  }
+  .expandable-form {
+    padding-left: 50px;
+  }
+}
+
+////\\\\ Tablet
+
+@media screen and (min-width: 768px) {
+  .selection-grid {
+    font-size: 0;
+    width: 100%;
+    text-align:justify;
+    .selection-grid-item {
+      display: inline-block;
+      width: 245px;
+      font-size: 12px;
+      &:nth-child(even) {
+        float: right;
+      }
+    }
+  }
+  .yes-no-grid{
+      label{
+          display:inline-block;
+      }
+  }
+  .select, input {
+    margin: 10px 0;
+  }
+  .select {
+    max-width: 265px;
+    &.sort-page-control {
+      line-height: 40px;
+      height: 40px;
+      max-width: 190px;
+    }
+    &.fullwidth {
+        max-width: none;
+    }
+    &.fullscreen {
+      margin: 80px 0;
+    }
+  }
+
+  input[type=search].reveal {
+    background-color: white;
+    width: 30px;
+    border: 0;
+    height: 40px;
+    line-height: 40px;
+    border-left: 1px solid $grey2;
+    float: right;
+    background-position: right center;
+    padding-right: 15px;
+    &:focus {
+      width: 200px;
+      box-shadow: none;
+    }
+  }
+  input[type=search].admin-reveal {
+    @extend input[type=search].reveal;
+    float: none;
+    margin-right: 20px;
+    padding-right: 50px;
+    border-left: 0;
+    border-right: 1px solid $grey2;
+    background-position: right 15px center;
+    &:focus {
+      width: 250px;
+    }
+  }
+  .textarea {
+    margin: 20px 0;
+  }
+}
+
+////\\\\ Desktop Breakpoint *************************
+
+@media screen and (min-width: 1024px) {
+  .select {
+    &.fullscreen {
+      font-size: 120px;
+      height: 100px;
+      .value {
+        line-height: 80px;
+        line-height:.85; /* resolves a text clipping issue */
+        font-size: 120px;
+        padding-left: 80px;
+      }
+      .value.current_selection {
+        line-height:.7;
+      }
+      ul {
+        height: auto;
+        top: -100%;
+      }
+      li {
+        font-size: 70px;
+        height: 100px;
+        letter-spacing: 3px;
+        line-height: 70px;
+        &:hover {
+          color: $land;
+        }
+        &.active {
+          height: 130px;
+          line-height: 100px;
+          padding-left: 80px;
+          font-size: 120px;
+          &:after {
+            background-image: url(../img/check-green-lg.png);
+            background-size: 36px 28px;
+            height: 28px;
+            margin-left: 40px;
+            margin-bottom: 25px;
+            width: 36px;
+          }
+        }
+      }
+    }
+  }
+}
+
+@-moz-document url-prefix() {
+    input[type=radio], input[type=checkbox] {
+        @include appearance(initial);
+        background: none;
+        height: 20px;
+        width: 20px !important;
+    }
+    .check-radio-block {
+        input[type=radio], input[type=checkbox] {
+            display: inline-block;
+            margin-right: 10px;
+            vertical-align: top;
+            &+span {
+                display: inline-block;
+                padding-top: 8px;
+                vertical-align: top;
+                @include calc(width, '100% - 40px');
+            }
+        }
+    }
+    body.registration .check-radio-block.other-city span {
+      transform: translateY(-17px) !important;
+    }
+    input[type="checkbox"]:checked {
+      background-image: none;
+    }
+}
+
+
+
+
+@media screen and (max-width:767px) {
+    .select.fullscreen.mobile_touchups ul {top:0;}
+}
+@media screen and (max-width:479px) {
+    .select.fullscreen.mobile_touchups ul {top:75px;}
+}

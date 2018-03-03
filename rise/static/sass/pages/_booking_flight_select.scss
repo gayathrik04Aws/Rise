@@ -1,0 +1,55 @@
+// .flight-select {
+//     #flight_buttons {
+//         padding: 0 20px;
+//     }
+// }
+
+
+@media screen and (min-width: 768px) {
+  .booking {
+    .flight-table-filters {
+      border-top: 1px solid $grey2;
+      margin-top: 80px;
+      text-align: center;
+      .select {
+        background-color: $grey1;
+        display: inline-block;
+        height: 50px;
+        line-height: 50px;
+        margin: 0 25px;
+        text-align: left;
+        position: relative;
+        top: -25px;
+        .value {
+          font-size: 14px;
+        }
+      }
+
+      &.rise-remove-borders {
+        border:0;
+      }
+    }
+  }
+  .flight-select {
+    .flight-date-header {
+      display: none;
+    }
+    form {
+        max-width: none;
+    }
+  }
+}
+
+
+.booking {
+  .flight-table-filters {
+    &.format-companion-booking {
+      margin-top: 50px;
+      margin-bottom: 10px;
+      .select {
+        margin:0;
+        top:0;
+      }
+    }
+  }
+}

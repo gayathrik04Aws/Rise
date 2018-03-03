@@ -1,0 +1,230 @@
+.circle {
+  background-repeat: no-repeat;
+  background-size: 100%;
+  background-position: center;
+  border-radius: 50%;
+  display: inline-block;
+  text-align: center;
+  overflow: hidden;
+  vertical-align: middle;
+  height: 40px;
+  line-height: 100%;
+  width: 40px;
+  img {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    @include transform(translateY(-50%) translateX(-50%));
+    z-index: 0;
+  }
+  &.small {
+    height: 30px;
+    line-height: 30px;
+    margin: 10px 10px 0 10px;
+    width: 30px;
+    @media screen and (min-width: 768px) {
+      margin-bottom: 10px;
+      height: 40px;
+      width: 40px;
+    }
+  }
+  &.medium {
+    color: #ffffff;
+    height: 60px;
+    line-height: 60px;
+    margin: 10px;
+    width: 60px;
+    @media screen and(min-width: 768px) {
+      height: 80px;
+      width: 80px;
+    }
+  }
+  &.large {
+    border: 8px solid $translucent-white;
+    height: 100px;
+    line-height: 100px;
+    margin: 10px;
+    width: 100px;
+    &.no-m {
+      margin: 0;
+    }
+  }
+  &.x-large {
+    color: #ffffff;
+    font-family: 'din';
+    font-size: 30px;
+    height: 100px;
+    line-height: 95px;
+    width: 100px;
+  }
+  &.with-additional {
+    img {
+      opacity: 0.8;
+    }
+  }
+  &.additional {
+    margin: 10px 0 0;
+    margin-left: -25px;
+    opacity: 0.8;
+    @media screen and (min-width: 768px) {
+      margin-bottom: 10px;
+    }
+  }
+  &.mr5 {
+    margin-right: 5px;
+  }
+  &.gradient {
+    background-color: #0c5b50;
+    &.austin {
+      background-image: url(../img/circle-thumbs/gradient/thumb-austin.png);
+    }
+    &.telluride {
+      background-image: url(../img/circle-thumbs/gradient/thumb-telluride.png)
+    }
+    &.dallas {
+      background-image: url(../img/circle-thumbs/gradient/thumb-dallas.png)
+    }
+    &.houston {
+      background-image: url(../img/circle-thumbs/gradient/thumb-houston.png)
+    }
+    &.midland {
+      background-image: url(../img/circle-thumbs/gradient/thumb-midland.png)
+    }
+    &.vail {
+      background-image: url(../img/circle-thumbs/gradient/thumb-vail.png)
+    }
+    &.vegas {
+      background-image: url(../img/circle-thumbs/gradient/thumb-vegas.png)
+    }
+    &.corpuschristi {
+        background-image: url(../img/circle-thumbs/gradient/thumb-corpuschristi.png); }
+    &.neworleans {
+        background-image: url(../img/circle-thumbs/gradient/thumb-neworleans.png); }
+    &.oklahomacity {
+        background-image: url(../img/circle-thumbs/gradient/thumb-oklahomacity.png); }
+    &.sanantonio{
+        background-image: url(../img/circle-thumbs/gradient/thumb-sanantonio.png); }
+    &.santafe {
+        background-image: url(../img/circle-thumbs/gradient/thumb-santafe.png); }
+    &.shreveport {
+        background-image: url(../img/circle-thumbs/gradient/thumb-shreveport.png); }
+    &.spring {
+        background-image: url(../img/circle-thumbs/gradient/thumb-spring.png); }
+    &.tulsa {
+        background-image: url(../img/circle-thumbs/gradient/thumb-tulsa.png); }
+    &.lubbock {
+        background-image: url(../img/circle-thumbs/gradient/thumb-lubbock.png); }
+    &.aspen {
+        background-image: url(../img/circle-thumbs/gradient/thumb-aspen.png); }
+    &.steamboat {
+        background-image: url(../img/circle-thumbs/gradient/thumb-steamboat.png); }
+  }
+  &.solid {
+    &.austin {
+      background-image: url(../img/circle-thumbs/solid/thumb-austin.png)
+    }
+    &.dallas {
+      background-image: url(../img/circle-thumbs/solid/thumb-dallas.png)
+    }
+    &.houston {
+      background-image: url(../img/circle-thumbs/solid/thumb-houston.png)
+    }
+    &.midland {
+      background-image: url(../img/circle-thumbs/solid/thumb-midland.png)
+    }
+    &.corpuschristi {
+        background-image: url(../img/circle-thumbs/solid/thumb-corpuschristi.png); }
+    &.neworleans {
+        background-image: url(../img/circle-thumbs/solid/thumb-neworleans.png); }
+    &.oklahomacity {
+        background-image: url(../img/circle-thumbs/solid/thumb-oklahomacity.png); }
+    &.sanantonio{
+        background-image: url(../img/circle-thumbs/solid/thumb-sanantonio.png); }
+    &.santafe {
+        background-image: url(../img/circle-thumbs/solid/thumb-santafe.png); }
+    &.shreveport {
+        background-image: url(../img/circle-thumbs/solid/thumb-shreveport.png); }
+    &.spring {
+        background-image: url(../img/circle-thumbs/solid/thumb-spring.png); }
+    &.tulsa {
+        background-image: url(../img/circle-thumbs/solid/thumb-tulsa.png); }
+    &.lubbock {
+        background-image: url(../img/circle-thumbs/solid/thumb-lubbock.png); }
+    &.vail {
+        background-image: url(../img/circle-thumbs/solid/thumb-vail.png); }
+    &.telluride {
+        background-image: url(../img/circle-thumbs/solid/thumb-telluride.png); }
+    &.aspen {
+        background-image: url(../img/circle-thumbs/solid/thumb-aspen.png); }
+    &.steamboat {
+        background-image: url(../img/circle-thumbs/solid/thumb-steamboat.png); }
+  }
+  &.marketing {
+    border: 5px solid rgba(255,255,255,.2);
+  }
+}
+
+.badge-wrap {
+  display: inline-block;
+  position: relative;
+  .badge-wrap {
+    position: absolute;
+    top: 50%;
+    @include transform(translateY(-50%));
+    &.hidden {
+      @include transform(translateY(-50%) scale(0));
+    }
+  }
+  &:hover {
+    .hidden {
+      @include transform(translateY(-50%) scale(1));
+    }
+  }
+  &.badge-right {
+    .badge-wrap {
+      right: -5px;
+      .badge-wrap {
+        right: -10px;
+        top: 5px;
+      }
+    }
+  }
+  &.badge-left {
+    .badge-wrap {
+      left: -5px;
+    }
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .circle {
+    &.large {
+      border: 15px solid $translucent-white;
+      height: 180px;
+      width: 180px;
+      &.no-m {
+        height: 100px;
+        width: 100px;
+        border: 0;
+      }
+    }
+  }
+  .badge-wrap {
+    .badge-wrap {
+      top: 50%;
+    }
+    &.badge-right {
+      .badge-wrap {
+        right: -10px;
+      }
+    }
+    &.badge-left {
+      .badge-wrap {
+        left: -10px;
+      }
+    }
+  }
+}
+

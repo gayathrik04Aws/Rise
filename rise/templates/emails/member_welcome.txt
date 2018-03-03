@@ -1,0 +1,8 @@
+{% extends 'emails/base.txt' %}
+
+{% block content %}Congratulations, {{ user.first_name }}!
+
+We are so glad you are a Rise Founding Member. Click to complete your Rise profile registration to begin booking flights and flying with Rise.
+
+{{ protocol }}://{{ site.domain }}{% url 'register_member' uidb64=uid token=token %}
+{% endblock content %}

@@ -1,0 +1,9 @@
+{% autoescape off %}Company Membership Inquiry
+
+Submission Information
+-------------------
+    Company: {{ company }}
+    Name: {{ first_name }} {{ last_name }}
+    Email: {{ email }}
+    Phone: {{ phone_number }}
+{% endautoescape %}

@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% load staticfiles %}
+
+{% block title %}Edit Profile - {{ block.super }}{% endblock title %}
+
+{% block meta_description %}Basic Information - Manage Account{% endblock meta_description %}
+
+{% block css %}
+{% with marketing=False%}
+{{ block.super }}
+{% endwith %}
+{% endblock css %}
+
+{% block body_class %}{% endblock %}
+{% block body %}
+{% include 'account_profile/dashboard_nav.html' %}
+<div class="section profile-body">
+    {% include 'account_profile/profile-sidenav-mobile.html' with billing_info=True %}
+    <div class="content-wrap app-content-wrap no-mt-mobile edit group">
+        {% include 'account_profile/profile-sidenav.html' with billing=True %}
+        <div class="profile-content-wrap">
+            <div class="detail group no-labels">
+                <h1>Add New Bank Account</h1>
+
+                {% if form.errors %}
+                <div class="error-message">
+                    {% for field, errors in form.errors.items %}
+                    {% for error in errors %}
+                    <div class="error-message">{{ error }}</div>
+                    {% endfor %}
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                {% if messages %}
+                {% for message in messages %}
+                <div class="error-message">{{ message }}</div>
+                {% endfor %}
+                {% endif %}
+
+                <form id="bank-form" action="." method="POST">
+                    {% csrf_token %}
+
+                    <input type="hidden" data-stripe="country" value="US">
+                    <input type="hidden" data-stripe="account_holder_name" value="{{ account_holder_name }}">
+                    <input type="hidden" data-stripe="account_holder_type" value="{{ account_holder_type }}">
+                    <label for="routing-number">Routing Number</label>
+                    <input {% if form.errors %}class="error"{% endif %} type="text" id="routing-number" placeholder="Routing Number" data-stripe="routingNumber" value="{{ routing_number|default:"" }}" />
+
+                    <label for="account-number">Account Number</label>
+                    <input {% if form.errors %}class="error"{% endif %} type="text" id="account-number" placeholder="Account Number" data-stripe="accountNumber" />
+                    <label for="{{ form.nickname.auto_id }}">Nickname</label>
+                    {{ form.nickname.errors }}
+                    {{ form.nickname }}
+                    <button type="submit" class="button green">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock body %}
+
+{% block javascript %}
+{{ block.super }}
+<script src="{% static 'js/binaryajax.min.js' %}"></script>
+<script src="{% static 'js/exif.min.js' %}"></script>
+<script src="{% static 'js/profile.js' %}"></script>
+<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+<script charset="utf-8">
+    Stripe.setPublishableKey('{{ STRIPE_PUBLISHABLE_KEY }}');
+</script>
+<script type="text/javascript" src="{% static 'js/jquery.payment.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/payment.js' %}"></script>
+{% endblock javascript %}

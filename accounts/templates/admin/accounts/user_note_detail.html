@@ -1,0 +1,45 @@
+{% extends 'base_admin.html' %}
+
+{% load staticfiles %}
+
+{% block title %}Note for {{ member.get_full_name }} - {{ block.super }}{% endblock title %}
+
+{% block meta_description %}Note for {{ member.get_full_name }}{% endblock meta_description %}
+
+{% block css %}
+{% with marketing=False%}
+{{ block.super }}
+{% endwith %}
+{% endblock css %}
+
+{% block body_class %}{% endblock %}
+{% block body %}
+{% include 'admin_header_fragment.html' with users=True %}
+<div class="admin-detail-view">
+    <div class="block admin">
+        <div class="admin-page-header no-bb">
+            <h1>{{ member.get_full_name }}</h1>
+        </div>
+        <div>
+
+            <ul class="profile-items group">
+                <li>
+                    <span class="item-title">Created by:</span>
+                    <span class="item-value">{{ user_note.created_by.get_full_name }}</span>
+                </li>
+                <li>
+                    <span class="item-title">Date:</span>
+                    <span class="item-value">{{ user_note.created|date:'m/d/Y' }}</span>
+                </li>
+                <li>
+                    <span class="item-title">Body:</span>
+                    <span class="item-value">{{ user_note.body }}</span>
+                </li>
+            </ul>
+            <hr>
+            <div class="page-controls">
+                <a href="{% url 'admin_account_user_add_note' member.account.id member.id %}" class="button dark-grey inline">Add New Note</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

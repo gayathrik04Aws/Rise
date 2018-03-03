@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load account_tags %}
+
+{% block title %}Anywhere - {{ block.super }}{% endblock title %}
+
+{% block meta_description %}Rise Anywhere{% endblock meta_description %}
+
+{% block css %}
+    {% with marketing=False%}
+        {{ block.super }}
+    {% endwith %}
+{% endblock css %}
+
+{% block body_class %}anywhere{% endblock %}
+{% block body %}
+
+{% block booking-nav %}{% include 'reservations/book/anywhere_booking_nav.html' with flights=True %}{% endblock %}
+    <div class="section">
+    {% block simple_content_header %}{% endblock %}
+        <div class="content-wrap app-content-wrap">
+            {% block simple_content %}{% endblock %}
+        </div>
+    </div>
+{% endblock body %}
+
+{% block footer %}{% endblock %}
+
+{% block javascript %}
+    {{ block.super }}
+    <script src="{% static 'js/picker.js' %}"></script>
+    <script src="{% static 'js/picker.date.js' %}"></script>
+{% endblock %}

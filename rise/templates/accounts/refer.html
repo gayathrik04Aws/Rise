@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block css %}
+{% with marketing=True%}
+{{ block.super }}
+<meta property="og:title" content="Refer friends. Earn free flights." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="http://{{ request.META.HTTP_HOST }}{{ request.path }}" />
+<meta property="og:image" content="{% static 'img/Favicons/favicon-152.png' %}" />
+<meta property="og:description" content="Not everyone flies between DAL, HOU and AUS, but almost everyone knows someone who does. Refer them to Rise and earn Free Flights!" />
+{% endwith %}
+{% endblock css %}
+
+{% block title %}Refer - {{ block.super }}{% endblock title %}
+
+{% block meta_description %}Rise fly all you want memberships beginning at $1,650 per month for unlimited flights between Dallas, Houston and Austin.{% endblock meta_description %}
+
+{% block body %}
+{% include 'marketing_page_nav.html' %}
+
+<div class="section refer">
+  <div class="content-wrap">
+    <h1>MORE MEMBERS = MORE FLIGHTS</h1>
+
+    <p>You have the ability to help RISE expand our flights and services by referring us to your friends.</p>
+    <p>It's that simple.</p>
+    <p>In addition to receiving a free guest pass, if you help us sign a new member in June, you can choose to either GET A GIFT or GIVE A GIFT.</p>
+    <h3 class="small">Tell Your Friends</h3>
+    <div class="refer-share">
+        <a href="mailto:?subject=Friends%20don%E2%80%99t%20let%20Friends%20Fly%20Commercial&body=If%20you%E2%80%99re%20flying%20regularly%20between%20Texas%20cities%2C%20you%20need%20to%20RISE.%0D%0AI%E2%80%99m%20a%20RISE%20member%2C%20and%20I%20think%20it%E2%80%99s%20a%20great%20air%20travel%20service.%20Definitely%20something%20to%20look%20into%2C%20especially%20if%20you%E2%80%99re%20traveling%20regularly%20between%20Texas%20cities."><img src="{% static 'img/share/email.png' %}" alt="Email"></a>
+        <a href="https://www.facebook.com/sharer/sharer.php?u=https://{{ site.domain }}{% url 'refer_form' %}&title=Friends%20don%E2%80%99t%20let%20Friends%20Fly%20Commercial&description=Flying%20frequently%3F%20It%E2%80%99s%20time%20to%20Travel%20Better%20with%20RISE.%20Learn%20more%20about%20private%20flight-sharing%20-%20and%20fly%20free%20with%20me%20through%20the%20end%20of%20the%20month." target="_blank">
+            <img src="{% static 'img/share/facebook.png' %}" alt="Facebook">
+        </a>
+        <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://{{ site.domain }}{% url 'refer_form' %}&title=Friends%20don%E2%80%99t%20let%20Friends%20Fly%20Commercial&summary=Flying%20frequently%3F%20It%E2%80%99s%20time%20to%20Travel%20Better%20with%20RISE.%20Learn%20more%20about%20private%20flight-sharing%20-%20and%20fly%20free%20with%20me%20through%20the%20end%20of%20the%20month."  target="_blank">
+            <img src="{% static 'img/share/linkedin.png' %}" alt="LinkedIn">
+        </a>
+    </div>
+  </div>
+</div>
+
+<div class="section refer-form">
+  <div class="content-wrap">
+    <div class="form white-bg">
+        <form action="." method="POST" id="referral-form" class="white-bg">
+            {% csrf_token %}
+
+            {% if form.errors %}
+            <div class="error-message">
+            Please see fields below.
+            </div>
+            {% endif %}
+
+            {% if messages %}
+            {% for message in messages %}
+                <div class="error-message">{{ message }}</div>
+            {% endfor %}
+            {% endif %}
+
+            <div class="no-labels">
+                <h3 class="small">Your Information</h3>
+                <label for="id_your_name">Your Name</label>
+                <input {% if form.your_name.errors %}class="error"{% endif %} type="text" name="{{ form.your_name.html_name }}" value="{{ form.your_name.value|default:"" }}" placeholder="Your Name" id="your_name"></input>
+                <label for="id_your_email">Your Email</label>
+                <input {% if form.your_email.errors %}class="error"{% endif %} type="text" name="{{ form.your_email.html_name }}" value="{{ form.your_email.value|default:"" }}" placeholder="Your Email" id="your-email"></input>
+
+                <h3 class="small">Referral Information</h3>
+                <div class="referrals" data-prefix="referral">
+                    {{ referral_forms.management_form }}
+                    {% for referral in referral_forms %}
+                    <div class="referral-item">
+                        <label for="{{ referral.name.auto_id }}">Referral Name</label>
+                        <input {% if referral.name.errors %}class="error"{% endif %} type="text" name="{{ referral.name.html_name }}" value="{{ referral.name.value|default:"" }}" placeholder="Referral Name" id="{{ referral.name.auto_id }}" autocomplete="off"></input>
+                        <label for="{{ referral.email.auto_id }}">Referral Email</label>
+                        <input {% if referral.email.errors %}class="error"{% endif %} type="text" name="{{ referral.email.html_name }}" value="{{ referral.email.value|default:"" }}" placeholder="Referral Email" id="{{ referral.email.auto_id }}" autocomplete="off"></input>
+                        <label for="{{ referral.phone.auto_id }}">Referral Phone</label>
+                        <input {% if referral.phone.errors %}class="error"{% endif %} type="text" name="{{ referral.phone.html_name }}" value="{{ referral.phone.value|default:"" }}" placeholder="Referral Phone" id="{{ referral.phone.auto_id }}" class="referral-phone" autocomplete="off"></input>
+                    </div>
+                    {% endfor %}
+                    <a href="#" class="add"></a>
+                </div>
+                <h4 class="center">
+                    <a href="#" class="add-referral"><img src="{% static 'img/plus-icon.png' %}"> Add Another Referral</a>
+                </h4>
+            </div>
+
+            <div class="center">
+                <button type="submit" class="button green">Submit</button>
+            </div>
+        </form>
+    </div>
+    <div class="block center">
+        <a href="{{ WP_URL }}" class="return"> &#9664; Return to Home</a>
+    </div>
+  </div>
+</div>
+
+{% endblock body %}
+
+{% block javascript %}
+    {{block.super }}
+    <script type="text/javascript">
+    $('.add-referral').on('click clickAction', function(e){
+        e.preventDefault();
+        // $('.add').click();
+        var $referrals = $('.referrals');
+        var $total = $referrals.find('[name=referral' + '-TOTAL_FORMS]');
+        var template = $('.referral-item').first().clone();
+        var count = Number($total.val());
+
+        template.find('label').each(function(idx, label){
+            $label = $(label);
+            $label.attr('for', $label.attr('for').replace("0", count));
+        });
+        template.find('input, select, textarea').each(function(idx, field){
+            $field = $(field);
+            $(field).val('');
+            if($field.attr('id')) {
+                $field.attr('id', $field.attr('id').replace("0", count));
+            }
+            if($field.attr('name')) {
+                $field.attr('name', $field.attr('name').replace("0", count));
+            }
+        });
+        $referrals.append(template);
+        $total.val(count + 1);
+        return false;
+    });
+    </script>
+{% endblock javascript %}

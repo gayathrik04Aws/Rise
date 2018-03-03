@@ -1,0 +1,36 @@
+@import 'bourbon/bourbon';
+@import 'global/variables';
+@import 'global/mixins';
+@import 'global/text';
+@import 'features/icons';
+
+
+.distribute {
+    @include clearfix;
+    input {
+        display: table-cell;
+        margin: 0;
+        width: 33%;
+    }
+    .select {
+        margin: 0;
+    }
+}
+
+
+.dashboard-banner-top {
+    margin-bottom: 20px;
+    max-width: 1040px;
+    margin: 0 auto;
+    text-align: left;
+    .right-side {
+        float: right;
+    }
+}
+
+nav {
+    @include clearfix;
+    .right-side {
+        float:right;
+    }
+}

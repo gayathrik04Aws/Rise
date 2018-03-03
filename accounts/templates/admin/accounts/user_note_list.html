@@ -1,0 +1,49 @@
+{% extends 'base_admin.html' %}
+
+{% load staticfiles %}
+
+{% block title %}Notes for {{ member.get_full_name }} - {{ block.super }}{% endblock title %}
+
+{% block meta_description %}Notes for {{ member.get_full_name }}{% endblock meta_description %}
+
+{% block css %}
+{% with marketing=False%}
+{{ block.super }}
+{% endwith %}
+{% endblock css %}
+
+{% block body_class %}{% endblock %}
+{% block body %}
+{% include 'admin_header_fragment.html' with nav_users=True %}
+<div class="admin-content-wrap">
+    <div class="block admin">
+        <div class="admin-page-header no-bb">
+            <div class="fl">
+                <h1>Notes for {{ member.get_full_name }}</h1>
+            </div>
+        </div>
+    </div>
+
+    <table class="admin-table">
+        <thead>
+            <tr>
+                <th>Note</th>
+                <th>Created by</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for note in object_list %}
+            <tr class="link-row" href="{% url 'admin_account_user_note_detail' member.account.id member.pk note.pk %}">
+                <td class="body">{{ note.body|truncatechars:255 }}</td>
+                <td class="created-by"><b>{{ note.created_by.get_full_name }}</b></td>
+                <td class="created">{{ note.created|date:"m/d/Y" }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <hr>
+    <a href="{% url 'admin_account_user_add_note' member.account.id member.id %}" class="button dark-grey inline">Add Note</a>
+
+</div>
+{% endblock body %}

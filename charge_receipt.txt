@@ -1,0 +1,19 @@
+{% autoescape off %}Congratulations — You're now officially a member of Rise. We'll be in touch with information on completing your member profile, selecting a membership tier, and booking flights. 
+
+Questions? Contact us at members@iflyrise.com or 844-FLY-RISE.
+
+Invoice Number: {{ charge.stripe_id }}
+Invoice Date: {{ charge.created|date:"m/d/Y" }}
+
+Thank you for your payment to Rise, LLC.
+
+Billing Information
+-------------------
+{{ user.get_full_name }}
+{{ user_profile.billing_address }}
+{% if charge.card %}{{ charge.card.brand }} {{ charge.card.last4 }}{% endif %}
+
+${{ charge.amount|floatformat:2 }} - {{ charge.description }}
+
+TOTAL: ${{ charge.amount|floatformat:2 }}
+{% endautoescape %}

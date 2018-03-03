@@ -1,0 +1,177 @@
+{% extends 'base.html' %}
+
+{% load flight_tags %}
+{% load staticfiles %}
+
+{% block title %}Booking - {{ block.super }}{% endblock title %}
+
+{% block meta_description %}Booking - Similar Flights{% endblock meta_description %}
+
+{% block css %}
+{% with marketing=False%}
+{{ block.super }}
+{% endwith %}
+{% endblock css %}
+
+{% block body_class %}booking flight-select{% endblock %}
+{% block body %}
+
+{% include 'reservations/book/booking_nav.html' with flights=True similar=True %}
+
+<div class="content-wrap app-content-wrap">
+  <div class="block white">
+    <h1 class="center">Similar Flights</h1>
+    {% if perms.accounts.can_manage_companions %}
+    <div class="flight-table-filters">
+      {% comment %}
+      <div class="select">
+        <span class="value">Filter Results</span>
+        <ul>
+          <li>Filter</li>
+          <li>Filter</li>
+          <li>Filter</li>
+        </ul>
+      </div>
+      {% endcomment %}
+
+      <div class="select">
+        <span class="value">No. of Passengers</span>
+        <ul>
+            {% for value, text in companion_form.companion_count.field.choices %}
+            <li value="{{ value }}">{{ text }}</li>
+            {% endfor %}
+        </ul>
+        <form id="companion_count" action="." method="POST">
+          {% csrf_token %}
+          {{ companion_form.companion_count }}
+        </form>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+
+  <div class="block white distribute flight-date-header">
+    <h1 class="inline">Flights {{ date|date:'M d, Y' }}</h1><button type="button" class="inline grey toggle-chart-key">Chart Key</button>
+  </div>
+</div>
+
+  <!--Table labels-->
+  <div class="block row white flight-table table-labels">
+    <div class="origin">
+      Origin
+    </div>
+    <div class="arrow">&nbsp;</div>
+    <div class="duration">
+    </div>
+    <div class="destination">
+      Destination
+    </div>
+    <div class="flight-number"></div>
+    <div class="actions"></div>
+  </div>
+
+  <!--Table row-->
+  {% for flight in flights %}
+    <div class="block row white flight-table {% if flight.is_full %}full{% elif flight.is_available %}{% elif flight.is_booked %}unavailable{% else %}unavailable{% endif %}" data-flight-id="{{ flight.pk }}" data-destination="{{ flight.destination.code|upper }}">
+      <div class="origin">
+        <div class="badge-wrap badge-right">
+          <span class="airport {{ flight.origin.city|remove_spaces_lower_case }}">{{ flight.origin.code }} </span>
+          <div class="badge-wrap">
+            {% if flight.is_fun_flight %}<figure class="funflight-solid"></figure>{% endif %}
+            {% if flight.is_promotional_flight %}<figure class="promo-solid"></figure>{% endif %}
+          </div>
+        </div>
+        <div>
+          <h1 class="city-name">{{ flight.origin.city }}, {{ flight.origin.state }}</h1>
+          <span class="time">{{ flight.local_departure|time:"h:i A" }}</span>
+        </div>
+      </div>
+      <div class="arrow">&nbsp;</div>
+      <div class="duration">
+        <span>{{ flight.duration|human_duration }}</span>
+      </div>
+      <div class="destination">
+        <span class="airport {{ flight.destination.city|remove_spaces_lower_case }}">{{ flight.destination.code }} </span>
+        <div>
+          <h1 class="city-name">{{ flight.destination.city }}, {{ flight.destination.state }}</h1>
+          <span class="time">{{ flight.local_arrival|time:"h:i A" }}</span>
+        </div>
+      </div>
+      <div class="flight-number">
+        {% if flight.is_promotional_flight %}
+        <figure class="promo-solid"></figure>
+        {% elif flight.is_fun_flight %}
+        <figure class="funflight-solid"></figure>
+        {% endif %}
+        {{ flight.flight_number }}
+      </div>
+      <div class="actions">
+        {% if flight.is_full or not flight.is_available %}
+        <figure class="mag popover-button">
+          <div class="popover">
+            <a href="{% url 'book_similar_flights' flight_pk=flight.pk %}">Search for similar flights</a>
+          </div>
+        </figure>
+        {% endif %}
+        {% if flight.is_full or not flight.is_available %}
+        <figure class="hourglass popover-button">
+          <div class="popover">
+            <h5>Flight Alert</h5>
+            <ul>
+              {% comment %}<li>SMS Text</li>
+              <li>Email</li>{% endcomment %}
+              <li><a href="{% url 'flight_waitlist' pk=flight.pk %}" class="waitlist">Add to Waitlist</a></li> {# TODO: make this a dynamic call #}
+            </ul>
+          </div>
+        </figure>
+        {% endif %}
+      </div>
+    </div>
+{% endfor %}
+
+<div class="content-wrap">
+
+  <form action="." method="POST" class="fullscreen">
+      {% csrf_token %}
+      <input type="hidden" id="flight_id" name="flight" value="">
+      <div id="flight_buttons" class="block center">
+        <button name="complete" class="green disabled" disabled="disabled">Complete Booking</button>
+        <div class="interstitial"><span class="lined">Or</span></div>
+        <button name="add" class="dark-grey disabled" disabled="disabled">Add Another Flight</button>
+      </div>
+  </form>
+
+</div>
+
+<div class="mobile-chart-key center">
+  <div class="block white">
+    <h1>Chart Key</h1>
+    <div class="block row left">
+      <div class="key-icon"><figure class="promo"></figure></div><span>Promo Flight</span>
+      <p>Rise is offering an a special promotional flight!</p>
+    </div>
+    <div class="block row left">
+      <div class="key-icon"><figure class="funflight"></figure></div><span>Fun Flight</span>
+      <p>Rise is offering an a special fun flight!</p>
+    </div>
+    <div class="block row left">
+      <div class="key-icon upgrade"></div><span>Upgrade</span>
+      <p>Upgrade your membership plan to book flights which are only available to certain tiers. You can easily upgrade in your Profile
+          or by contacting Rise.</p>
+    </div>
+    <div class="block row left">
+      <div class="key-icon full"></div><span>Flight Full</span>
+      <p>All flights full on the day you want to leave? Select the day and sign up for Flight Alerts.</p>
+    </div>
+    <div class="block row">
+      <a class="action-block grey"><figure class="x-grey-sm"></figure>Close</a>
+    </div>
+  </div>
+</div>
+
+{% endblock body %}
+
+{% block javascript %}
+    {{ block.super }}
+    <script src="{% static 'js/reservations.js' %}"></script>
+{% endblock javascript %}

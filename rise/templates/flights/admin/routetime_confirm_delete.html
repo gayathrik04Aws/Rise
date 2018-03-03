@@ -1,0 +1,34 @@
+{% extends 'base_admin.html' %}
+
+{% load staticfiles %}
+{% load flight_tags %}
+
+{% block title %}Dashboard - Delete Route Time {{ routetime.flight_number }}{% endblock title %}
+
+{% block meta_description %}Dashboard - Delete Route Time {{ routetime.flight_number }}{% endblock meta_description %}
+
+{% block body_class %}{% endblock %}
+{% block body %}
+
+{% include 'admin_header_fragment.html' with nav_routes=True %}
+
+<div class="admin-content-wrap admin-form-page">
+    <h1>Delete Route Time {{ routetime.flight_number }}</h1>
+
+    <form method="POST" action=".">
+        {% csrf_token %}
+
+        <p>
+            Are you sure you want to delete the route Time {{ routetime.flight_number }}?
+        </p>
+
+        <div class="center">
+            <button type="submit" class="red">Delete Route Time</button>
+        </div>
+    </form>
+    <div class="center">
+        <a href="{% url 'admin_route_detail' routetime.route_id %}" class="return-to-profile">&#9664; Return To Routes</a>
+    </div>
+</div>
+
+{% endblock body %}

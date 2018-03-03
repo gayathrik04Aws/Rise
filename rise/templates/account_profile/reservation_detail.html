@@ -1,0 +1,158 @@
+{% extends 'base.html' %}
+{% load flight_tags %}
+
+{% load staticfiles %}
+
+{% block title %}Reservations - {{ block.super }}{% endblock title %}
+
+{% block meta_description %}Reservations - Manage Account{% endblock meta_description %}
+
+{% block css %}
+{% with marketing=False%}
+{{ block.super }}
+{% endwith %}
+{% endblock css %}
+
+{% block body_class %}booking{% endblock %}
+{% block body %}
+{% include 'account_profile/dashboard_nav.html' with dashboard=True light=True %}
+
+<div class="block pattern background-{{ flight_reservation.flight.destination.name|remove_spaces_lower_case }} fullscreen reservation-detail">
+
+    {% if flight_messages %}
+    <div class="block showcase-block flight-message-block">
+      <div id="showcase">
+        <figure class="alert-icon"></figure>
+        <!-- TODO: RETRIEVE MESSAGES -->
+        {% for flight_message in flight_messages %}
+        <div class="showcase-slide bubble">
+          <div class="showcase-message">
+            <p>{{ flight_message.message }}</p>
+            {% comment %}
+            # TODO: add link to detail page for each message
+            <a class="action-block green" href="">Details</a>
+            {% endcomment %}
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    <div class="flight-reservation-route cf">
+        {{ flight_reservation.flight.origin.code }}
+        <figure class="arrow-reservation-route"></figure>
+        {{ flight_reservation.flight.destination.code }}
+    </div>
+
+    <div class="flight-reservation-number">Flight {{ flight_reservation.flight.flight_number }}</div>
+
+
+    <div class="flight-reservation-status">
+        <span>
+            {% if flight_reservation.flight.actual_departure %}
+            <label class="green center">Departed</label>
+            <p>{{ flight_reservation.flight.origin.city }}, {{ flight_reservation.flight.origin.state }} at {{ flight_reservation.flight.local_actual_departure|date:"h:i A" }} on {{ flight_reservation.flight.local_actual_departure|date:"d M Y" }}</p>
+            {% else %}
+            <label class="green center">Departs</label>
+            <p>{{ flight_reservation.flight.origin.city }}, {{ flight_reservation.flight.origin.state }} at {{ flight_reservation.flight.local_departure|date:"h:i A" }} on {{ flight_reservation.flight.local_departure|date:"d M Y" }}</p>
+            {% endif %}
+        </span>
+        <span>
+            {% if flight_reservation.flight.actual_arrival %}
+            <label class="green center">Arrived</label>
+            <p>{{ flight_reservation.flight.oridestinationgin.city }}, {{ flight_reservation.flight.destination.state }} at {{ flight_reservation.flight.local_actual_arrival|date:"h:i A" }} on {{ flight_reservation.flight.local_actual_arrival|date:"d M Y" }}</p>
+            {% else %}
+            <label class="green center">Arrives</label>
+            <p>{{ flight_reservation.flight.destination.city }}, {{ flight_reservation.flight.destination.state }} at {{ flight_reservation.flight.local_arrival|date:"h:i A" }} on {{ flight_reservation.flight.local_arrival|date:"d M Y" }}</p>
+            {% endif %}
+        </span>
+        <span>
+            <label class="green center">Duration</label>
+            <p>{{ flight_reservation.flight.duration|human_duration }}</p>
+        </span>
+    </div>
+
+    {% if flight_reservation.is_cancelled %}
+    <div class="divider"></div>
+
+    You have cancelled this flight reservation.
+
+    {% endif %}
+
+    <div class="divider"></div>
+
+        <div class="flight-reservation-members-wrap">
+            <ul class="flight-reservation-members">
+                {% for passenger in flight_reservation.all_passengers %}
+                <li class="member passenger">
+                    <div class="circle">
+                        <img src="{{ passenger.userprofile.avatar_url }}" />
+                    </div>
+                    <div class="caption">
+                        <p>{{ passenger.userprofile.get_full_name }}</p>
+                        {% if passenger.userprofile.account.is_corporate and passenger.userprofile.account.company_name %}
+                        <h4>{{ passenger.userprofile.account.company_name }}<h4>
+                        {% endif %}
+                    </div>
+                </li>
+                {% endfor %}
+
+                {% if flight_reservation.flight.pilot %}
+                <li class="member">
+                    <div class="circle">
+                        <img src="{{ flight_reservation.flight.pilot.avatar_url }}" />
+                    </div>
+                    <div class="caption">
+                        <p>{{ flight_reservation.flight.pilot.get_full_name }}</p>
+                        <h4>Pilot<h4>
+                    </div>
+                </li>
+                {% endif %}
+                {% if flight_reservation.flight.copilot %}
+                <li class="member">
+                    <div class="circle">
+                        <img src="{{ flight_reservation.flight.copilot.avatar_url }}" />
+                    </div>
+                    <div class="caption">
+                        <p>{{ flight_reservation.flight.copilot.get_full_name }}</p>
+                        <h4>Co-Pilot<h4>
+                    </div>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+
+    {% if flight_reservation.flight.is_complete %}
+        <a href="{% url 'book_similar_flights' flightreservation_pk=flight_reservation.pk %}" class="button green">Repeat flight</a>
+        <a href="mailto:info@iflyrise.com" class="button dark-grey">Leave Feedback</a>
+    {% else %}
+        <a href="{% url 'book_from' %}" class="button green">Book Another Flight</a>
+    {% endif %}
+    {% if flight_reservation.is_cancelable and flight_reservation.flight.flight_type != 'A' %}
+        <a href="{% url 'book_cancel_flight_reservation' flight_reservation.id %}?next={% url 'reservation_detail' flight_reservation.id %}" class="button dark-grey cancel-flight-button">Cancel Flight</a>
+    {% endif %}
+
+    <a href="{% url 'reservations' 'upcoming' %}" class="return-to-profile">&#9664; Return to Reservations</a>
+</div>
+
+{% if flight_reservation.is_cancelable %}
+<div id="cancel-modal" class="modal-wrapper">
+    <div class="modal center">
+        <figure class="x-grey-lg"></figure>
+        <figure class="alert-icon"></figure>
+        <p class="thick">Are you sure you want to cancel this flight?</p>
+        <a href="{% url 'book_cancel_flight_reservation' flight_reservation.id %}?next={% url 'reservation_detail' flight_reservation.id %}" class="action-block green condensed">Cancel this flight</a>
+    </div>
+</div>
+{% endif %}
+{% endblock body %}
+
+{% block javascript %}
+{{ block.super }}
+<script src="{% static 'js/binaryajax.min.js' %}"></script>
+<script src="{% static 'js/exif.min.js' %}"></script>
+<script src="{% static 'js/profile.js' %}"></script>
+<script src="{% static 'js/reservations.js' %}"></script>
+<script src="{% static 'js/showcase.min.js' %}"></script>
+{% endblock javascript %}

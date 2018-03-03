@@ -1,0 +1,64 @@
+<div class="sidenav mobile">
+    <div class="avatar">
+  <div class="badge-wrap badge-right">
+    <div class="circle large no-m">
+      <img src="{{ user.avatar_url }}">
+    </div>
+    <div class="badge-wrap">
+        <form action="{% url 'profile_avatar' %}" method="POST" id="update-avatar-mobile" class="bare group" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="file" name="avatar" value="{{ user.avatar }}" id="avatar-file-input-mobile" accept="image/*" style="display:none"></input>
+            <a href="avatar" id="change-avatar-mobile"><figure class="camera-circle"></figure></a>
+        </form>
+    </div>
+  </div>
+</div>
+    <div class="expandable-wrap">
+        <div class="sidenav-header">
+            <div class="toggle-expandable">
+                <h2>Manage Account</h2>
+                <div class="current-page">
+                    {% if basic_info %}Basic Information
+                    {% elif plan_options %}Plan Options
+                    {% elif billing_info %}Billing Information
+                    {% elif team_members %}Team Members
+                    {% elif notifications %}Notifications
+                    {% elif companions %}Companions
+                    {% elif invitations %}Invitations
+                    {% elif contract %}View Contract
+                    {% endif %}
+                </div>
+                <p>Signed in as {{ user.first_name }}</p>
+                <a href="{% url 'logout' %}">Sign Out</a>
+            </div>
+        </div>
+        <div class="expandable-height desktop">
+            <ul class="profile-menu">
+                <a href="{% url 'profile' %}" {% if account or accountedit %}class="sidenav-active"{% endif %}>
+                    <li class="current">
+                        Basic Information
+                    </li>
+                </a>
+                {% if perms.accounts.can_manage_plan %}
+                <a href="{% url 'profile_plan' %}"><li>Plan Options</li></a>
+                {% endif %}
+                {% if perms.accounts.can_manage_billing %}
+                <a href="{% url 'profile_billing' %}"><li>Billing Information</li></a>
+                {% endif %}
+                {% if user.account.is_corporate and perms.accounts.can_manage_team %}
+                <a href="{% url 'profile_members' %}"><li>Team Members</li></a>
+                {% elif perms.accounts.can_manage_companions %}
+                <a href="{% url 'profile_companions' %}"><li>Companions</li></a>
+                {% endif %}
+                <a href="{% url 'profile_notifications' %}"><li>Notifications</li></a>
+                {% if perms.accounts.can_manage_invites %}
+                <a href="{% url 'profile_invitations' %}"><li>Invitations</li></a>
+                {% endif %}
+               {% if user.account.contract %}
+                <a href="{% url 'contract_view' %}"><li>View Contract</li></a>
+                {% endif %}
+                <a href="{% url 'logout' %}"><li class="desktop">Sign Out</li></a>
+            </ul>
+        </div>
+    </div>
+</div>

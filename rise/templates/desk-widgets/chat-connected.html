@@ -1,0 +1,60 @@
+<title>{{ site.company_name }}</title>
+<link rel="icon" type="image/vnd.microsoft.icon" href='{{ "/favicon.png" | portal_image_url: image_asset_host }}' />
+<link rel="icon" type="image/png" href='{{ "/favicon.png" | portal_image_url: image_asset_host }}' />
+<script src="{{ TYPEKIT_URL }}"></script>
+<script>try{Typekit.load();}catch(e){}</script>
+
+<link rel="stylesheet" type="text/css" href="//cloud.typography.com/7407912/677046/css/fonts.css" />
+<script>
+$(function() {
+    $('a[href*="endsession"]').on('click', function() {
+        $('.chat-widget--connected__overlay').addClass('show');
+        $('.chat-widget--connected__session__end').remove();
+        $('.chat-widget--connected__session__timer').css('border-right', 'none');
+    });
+
+    // Watch for chat updates and handle specific events
+    var target = $('.chat-widget--connected__messages')[0];
+    var observerSetup = function(mutations) {
+        mutations.forEach(function(mutation) {
+            if ($('.chat_message_header_agent').length) {
+                $('.chat-widget--connected__waiting-status').remove();
+            }
+        });
+    }
+    var observer = new window.MutationObserver(observerSetup) || new window.WebkitMutationObserver(observerSetup);
+
+    observer.observe(target, {
+        attributes: true,
+        childList: true,
+        characterData: true
+    });
+});
+</script>
+
+<div class="chat-widget--connected">
+    <div class="chat-widget--connected__header">
+        <img class="chat-widget--connected__logo" src="https://cfa084d658b491813884-326c6674e44e477b9197a3210586152e.ssl.cf1.rackcdn.com/img/logo-white.f2806c821ac5.png" alt="Rise">
+        <div class="chat-widget--connected__session">
+            <div class="chat-widget--connected__session__timer">
+                <div id="session_{{ chat_session.id }}" class="chat_timer_block">&nbsp;</div>
+            </div>
+            <div class="chat-widget--connected__session__end">{{ end_session_button }}</div>
+        </div>
+    </div>
+
+    <div class="chat-widget--connected__overlay-wrapper">
+        <div class="chat-widget--connected__overlay"></div>
+        <div class="chat-widget--connected__initial-question">
+            <span class="chat-widget--connected__label">Your Question</span>
+            <p class="chat-widget--connected__initial-question__text">{{ chat_session.subject }}</p>
+        </div>
+
+        <div id="chat_session_text_{{ chat_session.id }}" class="chat-widget--connected__messages">
+            <div id="chat_ended_session_div" style="display:none;">{{system.snippets.chat_ended}}</div>
+            {{ messages_block }}
+        </div>
+        <div class="chat-widget--connected__waiting-status chat_bottom_area" id="chat_waiting_area"><span id="est_wait"></span></div>
+    </div>
+    <div class="chat-widget--connected__new-message">{{ chat_send_area }}</div>
+</div>

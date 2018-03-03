@@ -1,0 +1,110 @@
+{% extends 'anywhere/admin/base_list.html' %}
+
+{% block admin_body %}
+    {% include 'anywhere/admin/_tabs.html' with current='ready' %}
+    {% if form.errors %}
+        <div class="error">
+            {{ form.errors }}
+        </div>
+    {% endif %}
+    <table class="admin-table request-list">
+        <thead>
+        <tr>
+            <th>Flight</th>
+            <th>Origin / Destination</th>
+            <th>Dates</th>
+            <th>Length</th>
+            <th>Requested By</th>
+            <th>Spots Reserved</th>
+            <th>{# ACTIONS #}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for obj in object_list %}
+             <tr onclick="{% if obj.leg1.status != 'L' %}javascript:viewDetail('{% url "admin_flight_detail" obj.leg1.pk %}');
+                    {% elif obj.leg2%}
+                javascript:viewDetail('{% url "admin_flight_detail" obj.leg2.pk %}');
+                    {% endif %}
+                    ">
+                <td>
+                {% if obj.days_to_departure <= 3 and obj.days_to_departure > 1%}
+                        <div class="warning red">
+                            <p>{{ obj.days_to_departure }} days</p>
+                        </div>
+                    {% elif obj.days_to_departure == 1 %}
+                        <div class="warning red">
+                            <p>{{ obj.days_to_departure }} day</p>
+                        </div>
+                    {% elif obj.days_to_departure < 1 %}
+                     <div class="warning red">
+                            <p>Today</p>
+                        </div>
+                    {% elif obj.days_to_departure <= 7 %}
+                     <div class="warning yellow">
+                            <p>{{ obj.days_to_departure }} days</p>
+                        </div>
+                {% endif %}
+                    {{ obj.leg1.flight_number }}
+                    {% if obj.is_round_trip %}
+                        <br />{{ obj.leg2.flight_number }}
+                    {% endif %}
+                </td>
+                <td>
+                    {{ obj.leg1.origin }} -&gt; {{ obj.leg1.destination }}
+                    {% if obj.is_round_trip %}
+                        <br />{{ obj.leg2.origin }} -&gt; {{ obj.leg2.destination }}
+                    {% endif %}
+                </td>
+                <td>
+                    {{ obj.leg1.local_departure|date:"m/d/Y (H:i e)" }}
+                    {% if obj.is_round_trip %}
+                        <br />{{ obj.leg2.local_departure|date:"m/d/Y (H:i e)" }}
+                    {% endif %}
+                </td>
+                <td>
+                    {{ obj.leg1.duration_as_timedelta }}
+                    {% if obj.is_round_trip %}
+                        <br />{{ obj.leg2.duration_as_timedelta }}
+                    {% endif %}
+                </td>
+                <td>
+                    {{ obj.flight_creator_user.get_full_name }}
+                    <br />{{ obj.created }}
+                </td>
+                <td>
+                    {{ obj.leg1.seats_reserved }} of {{ obj.leg1.seats_total }}
+                    {% if obj.is_round_trip %}
+                        <br />{{ obj.leg2.seats_reserved }} of {{ obj.leg2.seats_total }}
+                    {% endif %}
+                </td>
+                <td>
+                    <form method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="{{ form.flightset.html_name }}" value="{{ obj.pk }}" />
+                         {% if obj.leg1.status == 'L' and obj.leg2 %}
+                            <a href="{% url 'admin_flight_detail' obj.leg2.pk %}">View</a>
+                        {% else %}
+                            <a href="{% url 'admin_flight_detail' obj.leg1.pk %}">View</a>
+                        {% endif %}
+                        <button type="submit" name="{{ form.flightset_action.html_name }}" value="confirm">Confirm</button>
+                        <a id="mail" href="{% url 'admin_anywhere_send_message' pk=obj.pk pk_type="flight_set" %}">&nbsp;</a>
+
+                    </form>
+                </td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="7" class="center">No results</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+{% block javascript %}
+{{ block.super }}
+    <script>
+    function viewDetail(link){
+        window.location=link;
+    }
+    </script>
+{% endblock %}

@@ -1,0 +1,322 @@
+.block {
+  display: block;
+  padding: 20px;
+  position: relative;
+  width: 100%;
+  font-size: 0;
+
+  &.admin {
+    padding: 0 40px 40px;
+    &.no-pb {
+      padding-bottom: 0;
+    }
+  }
+  &.white {
+    background-color: white;
+  }
+  &.grey {
+    background-color: $grey2;
+  }
+  &.pattern {
+    -webkit-background-size: cover;
+-moz-background-size: cover;
+-o-background-size: cover;
+background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: #ffffff;
+    @include transition(background-image 1s ease-in-out);
+    &.dashboard-banner {
+      background-image: url(../img/banner_images/profile_banners/banner-dallas.jpg);
+    }
+    &.banner-austin, &.banner-kaus, &.banner-aus {
+      background-image: url(../img/banner_images/profile_banners/banner-austin.jpg);
+    }
+    &.banner-telluride, &.banner-ktex, &.banner-tex {
+      background-image: url(../img/banner_images/profile_banners/banner-telluride.jpg); }
+    &.banner-dallas, &.banner-kdal, &.banner-dal {
+      background-image: url(../img/banner_images/profile_banners/banner-dallas.jpg); }
+    &.banner-houston, &.banner-kdwh, &.banner-khou, &.banner-hou {
+      background-image: url(../img/banner_images/profile_banners/banner-houston.jpg); }
+    &.banner-midland, &.banner-kmaf, &.banner-maf {
+      background-image: url(../img/banner_images/profile_banners/banner-midland.jpg); }
+    &.banner-vail, &.banner-kege, &.banner-ege {
+      background-image: url(../img/banner_images/profile_banners/banner-vail.jpg); }
+    &.banner-vegas, &.banner-klas, &.banner-las {
+      background-image: url(../img/banner_images/profile_banners/banner-vegas.jpg); }
+    &.banner-corpuschristi, &.banner-kcrp, &.banner-crp {
+      background-image: url(../img/banner_images/profile_banners/banner-corpuschristi.jpg); }
+    &.banner-neworleans, &.banner-knew, &.banner-new {
+      background-image: url(../img/banner_images/profile_banners/banner-neworleans.jpg); }
+    &.banner-oklahomacity, &.banner-kokc, &.banner-okc {
+      background-image: url(../img/banner_images/profile_banners/banner-oklahomacity.jpg); }
+    &.banner-sanantonio, &.banner-ksat, &.banner-sat {
+      background-image: url(../img/banner_images/profile_banners/banner-sanantonio.jpg); }
+    &.banner-santafe, &.banner-ksaf, &.banner-saf  {
+      background-image: url(../img/banner_images/profile_banners/banner-santafe.jpg); }
+    &.banner-shreveport, &.banner-kshv, &.banner-shv {
+      background-image: url(../img/banner_images/profile_banners/banner-shreveport.jpg); }
+    &.banner-spring, &.banner-kdwh, &.banner-dwh {
+      background-image: url(../img/banner_images/profile_banners/banner-spring.jpg); }
+    &.banner-tulsa, &.banner-ktul, &.banner-tul {
+      background-image: url(../img/banner_images/profile_banners/banner-tulsa.jpg); }
+    &.banner-lubbock, &.banner-klbb, &.banner-lbb {
+      background-image: url(../img/banner_images/profile_banners/banner-lubbock.jpg); }
+    &.banner-aspen, &.banner-kase, &.banner-ase {
+      background-image: url(../img/banner_images/profile_banners/banner-aspen.jpg); }
+    &.banner-steamboat, &.banner-ksbs, &.banner-sbs {
+      background-image: url(../img/banner_images/profile_banners/banner-steamboat.jpg); }
+    
+
+    &[class*="background-"] {
+      /* fallback bg */
+      background-image: url(../img/background_images/mobile/telluride-mobile.jpg);
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      -o-background-size: cover;
+      background-size: cover;
+    }  
+
+    &.background-austin, &.background-kaus, &.background-aus {
+      background-image: url(../img/background_images/mobile/austin-mobile.jpg);
+    }
+    &.background-telluride, &.background-ktex, &.background-tex {
+      background-image: url(../img/background_images/mobile/telluride-mobile.jpg);
+    }
+    &.background-dallas, &.background-kdal, &.background-dal {
+      background-image: url(../img/background_images/mobile/dallas-mobile.jpg);
+    }
+    &.background-houston, &.background-khou,  &.background-hou {
+      background-image: url(../img/background_images/mobile/houston-mobile.jpg);
+    }
+    &.background-vail, &.background-kege, &.background-ege {
+        background-image: url(../img/background_images/mobile/vail-mobile.jpg);
+    }
+    &.background-corpuschristi, &.background-kcrp, &.background-crp {
+      background-image: url(../img/background_images/mobile/corpuschristi-mobile.jpg);
+    }
+    &.background-neworleans, &.background-knew, &.background-new {
+      background-image: url(../img/background_images/mobile/neworleans-mobile.jpg);
+    }
+    &.background-oklahomacity, &.background-kokc, &.background-okc {
+      background-image: url(../img/background_images/mobile/oklahomacity-mobile.jpg);
+    }
+    &.background-sanantonio, &.background-ksat, &.background-sat {
+      background-image: url(../img/background_images/mobile/sanantonio-mobile.jpg);
+    }
+    &.background-santafe, &.background-ksaf, &.background-saf {
+      background-image: url(../img/background_images/mobile/santafe-mobile.jpg);
+    }
+    &.background-shreveport, &.background-kshv, &.background-shv {
+      background-image: url(../img/background_images/mobile/shreveport-mobile.jpg);
+    }
+    &.background-spring, &.background-kdwh, &.background-dwh  {
+      background-image: url(../img/background_images/mobile/spring-mobile.jpg);
+    }
+    &.background-tulsa, &.background-ktul, &.background-tul {
+      background-image: url(../img/background_images/mobile/tulsa-mobile.jpg);
+    }
+    &.background-lubbock, &.background-klbb, &.background-lbb {
+      background-image: url(../img/background_images/mobile/lubbock-mobile.jpg);
+    }
+    &.background-aspen, &.background-kase, &.background-ase {
+      background-image: url(../img/background_images/mobile/aspen-mobile.jpg);
+    }
+    &.background-steamboat, &.background-ksbs, &.background-sbs {
+      background-image: url(../img/background_images/mobile/steamboat-mobile.jpg);
+    }
+
+    h1, h1, h3, h4, h5, p {
+      color: #ffffff;
+    }
+    label.green {
+      color: $land;
+    }
+    &.reservation-detail {
+      padding-top: 75px;
+      &:not([class*='background-']) {
+        p,.flight-reservation-route {color:#a1b2b2;}
+      }
+    }
+  }
+  &.header-block,
+  &.narrow-block {
+    max-width: 682px;
+    margin: auto;
+    p {
+      color: $grey5;
+      line-height: 24px;
+    }
+  }
+  /* don't have a need for this anymore
+  &.row {
+    border-top: 1px solid $grey4;
+    &.no-bt {
+        border-top: 0;
+    }
+    &.companion {
+      border-top: 0;
+      border-bottom: 1px solid $grey4;
+      padding: 20px 0;
+      .caption {
+        width: 175px;
+      }
+    }
+    &.no-bt {
+      border-top: 0;
+    }
+  }
+  &.bb {
+    border-bottom: $base-border;
+  }
+  &.no-bb {
+      border-bottom: 0;
+  }
+  */
+  &.fullscreen {
+    display: table-cell;
+    height: 100vh;
+    text-align: center;
+    vertical-align: middle;
+    width: 100vw;
+    *.hide {
+      opacity: 0;
+    }
+    &.align-fullscreen {
+      vertical-align: top;
+      padding-top: 20%;
+      overflow-y: scroll;
+    }
+  }
+  .row {
+    padding: 20px 0;
+  }
+
+  &#available-flights {
+    padding: 0;
+  }
+
+  &#upcoming-flights, &#pending-flights {
+    width: 100%;
+    display:-moz-inline-stack;
+    display:inline-block;
+    zoom:1;
+    *display:inline;
+    vertical-align: top;
+    box-sizing: border-box;
+    text-align: center;
+    border:  0;
+    position: static;
+    padding: 0;
+
+
+    a.button {
+      text-align: center;
+      max-width: 180px;
+      display: inline-block;
+      &.lg {
+        font-size: 16px;
+        max-width: 250px;
+        letter-spacing: 3.2px;
+      }
+      &.book-button {
+        margin: 60px 0;
+      }
+    }
+  }
+  &#pending-flights {
+    margin-bottom: 45px;
+  }
+  &#upcoming-flights {
+    margin-bottom: 45px;
+  }
+
+}
+
+#dashboard-flights-wrapper {
+    min-height: 200px;
+    position: relative;
+}
+
+.app-content-wrap .block {
+  padding: 20px 0;
+}
+
+@media screen and (min-width: 768px) {
+.block.pattern {
+    &[class*="background-"] {
+        /* fallback bg */
+        background-image: url(../img/background_images/desktop/image-bg-austin.jpg);
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+    }  
+    &.background-austin {
+        background-image: url(../img/background_images/desktop/image-bg-austin.jpg);
+    }
+    &.background-telluride {
+        background-image: url(../img/background_images/desktop/image-bg-telluride.jpg);
+    }
+    &.background-dallas {
+        background-image: url(../img/background_images/desktop/image-bg-dallas.jpg);
+    }
+    &.background-houston {
+        background-image: url(../img/background_images/desktop/image-bg-houston.jpg);
+    }
+    &.background-vail {
+        background-image: url(../img/background_images/desktop/image-bg-vail.jpg);
+    }
+    &.background-corpuschristi {
+        background-image: url(../img/background_images/desktop/image-bg-corpuschristi.jpg);
+    }
+    &.background-neworleans {
+        background-image: url(../img/background_images/desktop/image-bg-neworleans.jpg);
+    }
+    &.background-oklahomacity {
+        background-image: url(../img/background_images/desktop/image-bg-oklahomacity.jpg);
+    }
+    &.background-sanantonio {
+        background-image: url(../img/background_images/desktop/image-bg-sanantonio.jpg);
+    }
+    &.background-santafe {
+        background-image: url(../img/background_images/desktop/image-bg-santafe.jpg);
+    }
+    &.background-shreveport {
+        background-image: url(../img/background_images/desktop/image-bg-shreveport.jpg);
+    }
+    &.background-spring {
+        background-image: url(../img/background_images/desktop/image-bg-spring.jpg);
+    }
+    &.background-tulsa {
+        background-image: url(../img/background_images/desktop/image-bg-tulsa.jpg);
+    }
+    &.background-lubbock {
+        background-image: url(../img/background_images/desktop/image-bg-lubbock.jpg);
+    }
+    &.background-aspen {
+        background-image: url(../img/background_images/desktop/image-bg-aspen.jpg);
+    }
+    &.background-steamboat {
+        background-image: url(../img/background_images/desktop/image-bg-steamboat.jpg);
+    }
+}
+
+}
+
+@media screen and (min-width: 1024px) {
+  .block {
+    &#pending-flights {
+      padding-left: 20px;
+      margin-bottom: 45px;
+      padding-right: 0;
+      width: 50%;
+    }
+    &#upcoming-flights {
+      padding-right: 20px;
+      padding-left: 0;
+      margin-bottom: 45px;
+      width: 50%;
+    }
+  }
+}

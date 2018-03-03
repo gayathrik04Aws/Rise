@@ -1,0 +1,141 @@
+.center {
+  text-align: center;
+}
+
+.left {
+  text-align: left;
+}
+
+.right {
+  text-align: right;
+}
+
+.inline {
+  display: inline-block;
+}
+
+.distribute {
+  @include display(flex);
+  @include flex-direction(row);
+  @include justify-content(space-between);
+  &.equal-width { // Padding throws of width of flexbox elements, particularly troublesome for selects
+    * {
+      @include flex(1);
+    }
+    label {
+      @include flex(none);
+    }
+    &.singles {
+      @include display(block);
+    }
+  }
+  &.with-labels {
+    .full-input {
+      @include flex(1);
+      input, .select {
+        margin-right: 0;
+      }
+      .select {
+        margin-right: 0;  
+      }
+    }
+  }
+  input, .select {
+    margin-right: 10px;
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+  .select {
+    
+    padding-right: 25px;
+  }
+}
+
+.equal-with-labels {
+  @include clearfix;
+  width: 100%;
+  .full-input {
+    width: 100%;
+  }
+}
+
+.control-row {
+  @include clearfix;
+  div {
+    display: inline-block;
+    vertical-align: middle;
+  }
+  .popover {
+    display: none;
+    margin-top: -30px;
+    &.show {
+      display: block;
+    }
+  }
+}
+
+.labels-for-equal-width {
+  label {
+    display: inline-block;
+    vertical-align: middle;
+  }
+  &.admin-three {
+    label {
+      width: 31.46%;
+      &.admin-left {
+        margin-right: 2%;
+      }
+
+      &.admin-middle {
+        margin-right: 2%;
+      }
+
+    }
+  }
+  &.admin-two {
+    font-size: 0;
+    label {
+      width: 50%;
+      
+      
+      &.admin-left {
+        margin-left: 0;
+        margin-right: 2%;
+      }
+      &.admin-right {
+        width: 48%;
+      }
+    }
+  }
+}
+
+
+@-moz-document url-prefix() {
+    .distribute.three-wide input {
+      max-width: 30.333%;
+    }
+}
+
+
+////\\\\ Tablet
+@media screen and (min-width: 768px) {
+  .distribute { 
+    &.equal-width.singles {
+      @include display(flex);
+    }
+    input, .select {
+      margin-right: 20px;
+    }
+    
+    button.profile, .button.profile {
+      width: 100%;
+    }
+  }
+  .equal-with-labels {
+    margin-top: 10px;
+    .full-input {
+      width: 240px;
+    }
+  }
+}

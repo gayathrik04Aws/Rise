@@ -1,0 +1,6 @@
+{% extends 'emails/base.txt' %}
+
+{% block content %}{% if flight.is_cancelled %}FLIGHT CANCELED{% elif flight.is_delayed %}FLIGHT DELAYED{% else %}Flight {{ flight.flight_number }} Alert{% endif %}
+
+{{ message }}
+{% endblock content %}

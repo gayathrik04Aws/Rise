@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% load staticfiles %}
+
+{% block title %}Companions - {{ block.super }}{% endblock title %}
+
+{% block meta_description %}Companions - Manage{% endblock meta_description %}
+
+{% block css %}
+{% with marketing=False%}
+{{ block.super }}
+{% endwith %}
+{% endblock css %}
+
+{% block body_class %}{% endblock %}
+{% block body %}
+{% include 'account_profile/dashboard_nav.html' %}
+<div class="section profile-body">
+    {% include 'account_profile/profile-sidenav-mobile.html' with companions=True %}
+    <div class="content-wrap app-content-wrap no-mt-mobile group">
+    {% include 'account_profile/profile-sidenav.html' with companion=True %}
+    <div class="profile-content-wrap">
+        <div class="detail group">
+            <h1>Companions</h1>
+
+                {% for companion in userprofile_list %}
+                <div class="block row companion">
+                  <div class="actionable-row">
+                    <div class="left-side">
+                      <div class="circle mr5">
+                          <img src="{{ companion.user.avatar_url }}">
+                      </div>
+                      <div class="caption">
+                        <p>
+                          <strong>{{ companion.get_full_name|truncatechars:20 }}</strong>
+                        </p>
+                      </div>
+                    </div>
+                    <div class="actions">
+                      <a class="action"><figure class="icon-info toggle-expandable"></figure></a>
+                      <a href="{% url 'profile_companions_delete' companion.pk %}" class="action"><figure class="icon-trashcan"></figure></a>
+                    </div>
+                  </div>
+                  <div class="expandable-height">
+                  <div class="expandable-form">
+                      <label>Email</label>
+                      <p>{{ companion.email }}</p>
+
+                      {% if companion.phone %}
+                      <label>Phone</label>
+                      <p>{{ companion.phone }}</p>
+                      {% endif %}
+
+                      {% if companion.mobile_phone %}
+                      <label>Mobile Phone</label>
+                      <p>{{ companion.mobile_phone }}</p>
+                      {% endif %}
+
+                      <label>DOB</label>
+                      <p>{{ companion.date_of_birth|date:"m d Y" }}</p>
+
+                      {% if companion.billing_address %}
+                      <label>Address</label>
+                      <p>
+                          {{ companion.billing_address.street_1 }}<br>
+                          {% if companion.billing_address.street_2 %}{{ companion.billing_address.street_2 }}<br/>{% endif %}
+                          {{ companion.billing_address.city }}, {{ companion.billing_address.state }} {{ companion.billing_address.postal_code }}
+                      </p>
+                      {% endif %}
+
+                      {% if companion.shipping_address %}
+                      <label>Address</label>
+                      <p>
+                          {{ companion.shipping_address.street_1 }}<br>
+                          {% if companion.shipping_address.street_2 %}{{ companion.shipping_address.street_2 }}<br/>{% endif %}
+                          {{ companion.shipping_address.city }}, {{ companion.shipping_address.state }} {{ companion.shipping_address.postal_code }}
+                      </p>
+                      {% endif %}
+
+                      <div class="">
+                          <a href="{% url 'profile_companions_edit' pk=companion.id %}" class="button dark-grey inline">Edit</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {% endfor %}
+
+                <a class="button dark-grey" href="{% url 'profile_companions_add' %}">Add Companion</a>
+                <a href="#" id="team_member_picker" class="button green mt20">Book A New Flight</a>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{% include 'account_profile/team_member_picker_modal.html' with selected_user=member %}
+{% endblock body %}
+
+{% block javascript %}
+{{ block.super }}
+<script src="{% static 'js/binaryajax.min.js' %}"></script>
+<script src="{% static 'js/exif.min.js' %}"></script>
+<script src="{% static 'js/profile.js' %}"></script>
+
+<script src="{% static 'js/reservations.js' %}"></script>
+{% endblock javascript %}

@@ -1,0 +1,166 @@
+{% extends 'base_admin.html' %}
+
+{% load staticfiles %}
+{% load humanize %}
+{% load account_tags %}
+
+{% block title %}Register - {{ block.super }}{% endblock title %}
+
+{% block meta_description %}Register - Register{% endblock meta_description %}
+
+{% block css %}
+{% with marketing=False%}
+{{ block.super }}
+{% endwith %}
+{% endblock css %}
+
+{% block body_class %}register-account thanks{% endblock %}
+{% block body %}
+
+<div class="content-wrap app-content-wrap">
+    <div class="block center">
+      <a href="{{ WP_URL }}" style="display: inline-block;"><figure class="logo-form"></figure></a>
+    </div>
+</div>
+
+<div class="form block white">
+
+        <h1 class="caps">Congratulations!</h1>
+        <p class="registration-text center">
+            Continue to your <a href="{% url 'dashboard' %}">Dashboard</a>, to finish setting up your <br>
+            profile and to check out the flight booking tool.
+        </p>
+
+    <hr>
+
+
+    <div class="info-column">
+        <h1 class="thanks-header">{{ user.get_full_name }}</h1>
+        <p>
+            <strong>Origin city</strong><br/>
+            {{ user.account.origin_city.name }}
+        </p>
+        <p>
+            <strong>Date of Birth</strong><br/>
+            {{ user.user_profile.date_of_birth|date:"d F Y" }}
+        </p>
+    </div>
+    <div class="info-column">
+        <p>
+            <strong>Phone</strong><br/>
+            {{ user.user_profile.phone }}
+        </p>
+        <p>
+            <strong>Email</strong><br/>
+            {{ user.email }}
+        </p>
+    </div>
+
+    <hr>
+
+    <h1 class="thanks-header">Billing</h1>
+
+    <div>
+    {% if user.account.is_corporate %}
+        <h5 class="no-margin">member count: <span class="green">{{ user.account.member_count }}</span></h5>
+        <h5 class="no-margin">available legs: <span class="green">{{ user.account.pass_count }}</span></h5>
+    {% else %}
+        <h5 class="no-margin">{{ user.account.plan.name }} Member for {{ user.account.contract.contract_length }} months contract&nbsp;</h5>
+        <h5 class="green no-margin">{{ user.account.contract.amount|floatformat:2|intcomma }} monthly</h5>
+    {% endif %}
+    </div>
+    <div class="info-column">
+        {% if user.account.is_credit_card %}
+            {% with card=user.account.get_credit_card %}
+                <p>
+                    <strong>{{ card.brand }} {{ card.last4 }}</strong><br/>
+                    {{ user.get_full_name }}<br/>
+                    Expires {{ card.exp_month }}/{{ card.exp_year }}
+                </p>
+            {% endwith %}
+        {% elif user.account.is_ach %}
+        {% with bank_account=user.account.get_bank_account %}
+        <p>
+            <strong>{{ bank_account.bank_name }}<br>{{ bank_account.last4 }}<br>&nbsp;</strong>
+        </p>
+        {% endwith %}
+        {% elif user.account.is_manual %}
+            <p>
+                {{ user.account.id }}
+                <strong>Manual Payment</strong><br/><br/><br/>
+            </p>
+        {% endif %}
+    </div>
+
+    <div class="info-column">
+        {% if user.user_profile.billing_address %}
+            {% with address=user.user_profile.billing_address %}
+                <p>
+                    <strong>Billing Address</strong><br/>
+                    {{ address.street_1|truncatechars:20 }}<br/>
+                    {% if address.street_2 %}{{ address.street_2|truncatechars:20 }}<br/>{% endif %}
+                    {{ address.city|truncatechars:10 }}, {{ address.state }} {{ address.postal_code }}
+                </p>
+            {% endwith %}
+        {% endif %}
+    </div>
+
+    <div class="info-column">
+        {% if user.user_profile.shipping_address %}
+            {% with address=user.user_profile.shipping_address %}
+                <p>
+                    <strong>Shipping Address</strong><br/>
+                    {{ address.street_1 }}<br/>
+                    {% if address.street_2 %}{{ address.street_2 }}<br/>{% endif %}
+                    {{ address.city }}, {{ address.state }} {{ address.postal_code }}
+                </p>
+            {% endwith %}
+        {% endif %}
+    </div>
+
+    <hr>
+
+    <h1 class="thanks-header center">Cancellation / Refund Policy</h1>
+    <p class="legal center" style="max-width: 80%; margin: 0 auto;">
+        {% if not user|anywhere_only %}
+            RISE membership is based on the contract term. Following the introductory 90-day membership period, you may cancel your membership with 60 days’ notice in writing, subject to any early termination fees. Learn more in our
+            <a href="{{ WP_URL }}/terms/">Terms of Service</a>.
+        {% endif %}
+    </p>
+    <br/>
+    <div class="center">
+    <a href="{% url 'dashboard' %}" class="green small">CONTINUE TO YOUR DASHBOARD</a>
+    </div>
+</div>
+<br/>
+<div class="block center">
+    <a class="action-block grey" href="{{ WP_URL }}"><figure class="arrow-back"></figure><span>Return to Home</span></a>
+</div>
+<br/>
+{% endblock body %}
+
+{% block footer %}
+{{ block.super }}
+<img src="https://secure-track.admaxim.com/adtracker/track/track/converted?cpnIds=50314&conversionType=register" width="0" height="0" />
+{% endblock footer %}
+
+{% block javascript %}
+{{ block.super }}
+<script type="text/javascript">
+/* <![CDATA[ */
+var google_conversion_id = 943383099;
+var google_conversion_language = "en";
+var google_conversion_format = "3";
+var google_conversion_color = "ffffff";
+var google_conversion_label = "qKCHCODUqGAQu8TrwQM";
+var google_remarketing_only = false;
+/* ]]> */
+</script>
+<script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js">
+</script>
+<noscript>
+<div style="display:inline;">
+<img height="1" width="1" style="border-style:none;" alt="" src="//www.googleadservices.com/pagead/conversion/943383099/?label=qKCHCODUqGAQu8TrwQM&amp;guid=ON&amp;script=0"/>
+</div>
+</noscript>
+{% endblock javascript %}

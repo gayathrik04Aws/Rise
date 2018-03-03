@@ -1,0 +1,46 @@
+{% extends 'base_admin.html' %}
+
+{% block title %}{{ block.super }} - Add Manual Charge{% endblock %}
+
+{% block body %}
+    {% include 'admin_header_fragment.html' with accounts=True %}
+
+    <div class="admin-content-wrap admin-form-page">
+        <h1>Add Manual Charge</h1>
+
+        {% if form.non_field_errors %}
+        <div class="error-message">
+        {% for error in form.non_field_errors %}
+        {{ error }}<br/>
+        {% endfor %}
+        </div>
+        {% endif %}
+
+        <form action="." method="POST">
+            {% csrf_token %}
+
+            <label for="{{ form.amount.auto_id }}">Amount</label>
+            {{ form.amount.errors }}
+            {{ form.amount }}
+
+            <label for="{{ form.description.auto_id }}">Description</label>
+            {{ form.description.errors }}
+            {{ form.description }}
+
+            <label for="{{ form.charge_to.auto_id }}">Charge To</label>
+            <div class="select arrow">
+              <span class="value">{{ form.charge_to.value|default:"Select" }}</span>
+              <ul>
+                  {% for value, text in form.charge_to.field.choices %}
+                  <li value="{{ value }}">{{ text }}</li>
+                  {% endfor %}
+              </ul>
+              {{ form.charge_to }}
+            </div>
+
+            <button type="submit" class="green">Save Charge</button>
+
+        </form>
+    </div>
+
+{% endblock body %}

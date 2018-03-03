@@ -1,0 +1,46 @@
+{% extends 'emails/base.txt' %}
+
+{% block content %}{{ title }}
+{% if leg2 %}
+We are sorry to inform you that your RISE ANYWHERE flights from {{ leg1.origin.name }} to {{ leg1.destination.name }} and back did not meet your trigger requirements.
+
+The flights have been cancelled and you will not be charged.
+{% else %}
+We are sorry to inform you that your RISE ANYWHERE flight to {{ leg1.destination.name }} did not meet your trigger requirements.
+
+The flight has been cancelled and you will not be charged.
+{% endif %}
+Questions? Please contact a RISE Representative at 844-766-8313 or click here to create another flight:
+{{ protocol }}://{{ site.domain }}{% url 'anywhere_index' %}
+
+
+Departing | {{leg1.departure|date:"M d, Y"}}
+
+Origin
+{{ leg1.origin.name }}, {{ leg1.origin.state }}
+{{ leg1.local_departure_time_display}} {{ leg1.origin.get_timezone_display }}
+
+{{ leg1.duration}} MIN
+
+Destination
+{{ leg1.destination.name }}, {{ leg1.destination.state }}
+{{ leg1.local_arrival_time_display}} {{ leg1.destination.get_timezone_display }}
+
+{% if leg2 != None %}
+Returning | {{leg2.departure|date:"M d, Y"}}
+
+Origin
+{{ leg2.origin.name }}, {{ leg2.origin.state }}
+{{ leg2.local_departure_time_display}} {{ leg2.origin.get_timezone_display }}
+
+{{ leg2.duration}} MIN
+
+Destination
+{{ leg2.destination.name }}, {{ leg2.destination.state }}
+{{ leg2.local_arrival_time_display}} {{ leg2.destination.get_timezone_display }}
+
+{% endif %}
+CANCELLED
+
+{{ protocol }}://{{ site.domain }}{% url 'anywhere_index' %}
+{% endblock content %}

@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load flight_tags %}s
+{% load staticfiles %}
+
+{% block title %}Booking - {{ block.super }}{% endblock title %}
+
+{% block meta_description %}Booking - From{% endblock meta_description %}
+
+{% block css %}
+{% with marketing=False%}
+{{ block.super }}
+{% endwith %}
+{% endblock css %}
+
+{% block body_class %}booking{% endblock %}
+{% block body %}
+
+<form class="fullscreen" action="." method="POST" style="overflow-y: scroll;">
+    {% csrf_token %}
+
+    <div class="block pattern background-{{ view.default_airport.city|remove_spaces_lower_case }} fullscreen" style="overflow-y: scroll;">
+      <h1>Where would {% if user == booking_user %}you{% else %}{{ booking_userprofile.get_full_name }}{% endif %} like to fly from?</h1>
+      <div class="select fullscreen mobile_touchups">
+        <span class="value current_selection">{{ booking_userprofile.origin_airport }}</span>
+        <ul>
+            {% for choice in form.airport.field.choices %}
+            {% with airport=choice.2 value=choice.0 text=choice.1 %}
+            <li {% if value == form.airport.value %}class="active"{% endif %} value="{{ value }}">{{ airport.name }}</li>
+            {% endwith %}
+            {% endfor %}
+        </ul>
+
+        <select class="select" id="{{ form.airport.auto_id }}" name="{{ form.airport.html_name }}">
+            {% for choice in form.airport.field.choices %}
+            {% with airport=choice.2 value=choice.0 text=choice.1 %}
+            <option {% if value == form.airport.value %}selected="selected"{% endif %} value="{{ value }}">{{ text }}</option>
+            {% endwith %}
+            {% endfor %}
+        </select>
+      </div>
+      <button type="submit" class="button green">Choose Date</button>
+    </div>
+
+</form>
+
+{% include 'reservations/book/booking_nav.html' with from=True %}
+
+
+
+{% if plan == "executive" %}
+<div id="executive_completed_modal" class="modal-wrapper" style="display: block; z-index: 10000; opacity: 1;">
+    <div class="modal center">
+        <figure class="x-grey-lg"></figure>
+        <p class="thick">Congratulations! You have succesfully upgraded to Executive. Enjoy your new membership perks.</p>
+        <div class="block row center no-bb">
+            <p class="small-caps-condensed">Membership Level</p>
+            <h1>Executive</h1>
+        </div>
+        <div class="block row center">
+            <p>You can now have up to four reservations at one time plus you will receive one free companion pass per month.</p>
+        </div>
+        <a href="{% url 'book_from' %}" class="action-block grey condensed">Continue Booking Flights<figure class="arrow-right-grey"></figure></a>
+    </div>
+</div>
+{% elif plan = "chairman" %}
+<div id="chairman_completed_modal" class="modal-wrapper" style="display: block; z-index: 10000; opacity: 1;">
+    <div class="modal center">
+        <figure class="x-grey-lg"></figure>
+        <p class="thick">Congratulations! You have succesfully upgraded to Chairman. Enjoy your new membership perks.</p>
+        <div class="block row center no-bb">
+            <p class="small-caps-condensed mem-level">Membership Level</p>
+            <h1>Chairman</h1>
+            <p class="small">You can now have up to six reservations at one time plus you will receive one free companion pass per month.</p>
+        </div>
+        <a href="{% url 'book_from' %}" class="action-block grey condensed">Continue Booking Flights<figure class="arrow-right-grey"></figure></a>
+    </div>
+</div>
+{% endif %}
+
+{% endblock body %}
+
+{% block javascript %}
+{{ block.super }}
+<script src="{% static 'js/reservations.js' %}"></script>
+{% endblock javascript %}

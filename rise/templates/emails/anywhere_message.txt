@@ -1,0 +1,23 @@
+{% extends 'emails/base.txt' %}
+
+{% block content %}{{ title }}
+
+{{ message }}
+
+---
+
+Flight Details
+
+Departing | {{depart_date|date:"M d, Y"}}
+
+{{ origin.name }}, {{ origin.state }} to {{ destination.name }}, {{ destination.state }}
+{{ depart_when}}
+
+{% if is_roundtrip %}
+Returning | {{return_date|date:"M d, Y"}}
+{{ destination.name }}, {{ destination.state }} to {{ origin.name }}, {{ origin.state }}
+{{ return_when}}
+
+{% endif %}
+{{ protocol }}://{{ site.domain }}{% url 'anywhere_index' %}
+{% endblock content %}

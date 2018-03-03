@@ -1,0 +1,58 @@
+.origin-and-destination {
+  display: none;
+}
+
+.card {
+  display: table;
+  font-size: 0;
+  height: 170px;
+  padding: 0;
+  text-align: left;
+  .circle.x-large {
+    margin-right: 20px;
+  }
+  .badge {
+    display: none;
+  }
+  .origin {
+    background-image: url(../img/flight-card-arrow-lg.png);
+    background-repeat: no-repeat;
+    background-size: auto 100%;
+    background-position: right;
+    display: table-cell;
+    height: 100%;
+    padding-left: 30px;
+    vertical-align: middle;
+    width: (435px / 1037px) * 100%;
+  }
+  .destination {
+    border-right: 2px solid $grey2;
+    display: table-cell;
+    height: 100%;
+    padding-left: 20px;
+    vertical-align: middle;
+    width: (365px / 1037px) * 100%;
+  }
+  .passengers {
+    display: table-cell;
+    height: 100%;
+    text-align: center;
+    vertical-align: middle;
+    width: (237px / 1037px) * 100%;
+  }
+  .badge-wrap {
+    &.badge-right {
+      .badge-wrap {
+        right: 20px;
+      }
+    }
+    &.badge-left {
+      .badge-wrap {
+        left: -3px;
+      }
+    }
+    .badge-wrap {
+      top: 20px;
+    }
+  }
+}

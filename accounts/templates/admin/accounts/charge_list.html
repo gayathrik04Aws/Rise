@@ -1,0 +1,52 @@
+{% extends 'base_admin.html' %}
+
+{% load humanize %}
+{% load tz %}
+
+{% block body %}
+    {% include 'admin_header_fragment.html' with accounts=True %}
+    <div class="admin-content-wrap">
+
+        <div class="block admin no-pb">
+            <div class="admin-page-header no-bb">
+                <div class="fl">
+                    <h1>Charges</h1>
+                </div>
+            </div>
+            {% if perms.accounts.can_charge_members %}
+            <div class="control-row">
+                <div class="add-page-item">
+                    <a href="{% url 'admin_account_charges_add' account.pk %}" class="add-page-item">+ Add New Charge</a>
+                </div>
+            </div>
+            {% endif %}
+
+        </div>
+
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Type</th>
+                    <th>Amount</th>
+                    <th>Created</th>
+                    <th>Description</th>
+                    <th>Charged By</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for charge in charge_list %}
+
+                <tr class="link-row {% if charge.has_failed %}error-background{% endif %}" href="{% url 'admin_account_charge' charge.account_id charge.id %}">
+                    <td>{% if charge.is_credit_card %}Credit Card{% elif charge.is_bank_account %}Bank Account{% else %}Manual{% endif %}</td>
+                    <td>${{ charge.amount|floatformat:2|intcomma }}</td>
+                    <td>{% localtime on %}{{ charge.created|date:"m/d/Y h:i A" }}{% endlocaltime %}</td>
+                    <td>{{ charge.description|default:"" }}</td>
+                    <td>{% if charge.created_by %}{{ charge.created_by.first_name }}&nbsp;{{ charge.created_by.last_name }} {% endif %}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+
+{% endblock body %}

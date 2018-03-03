@@ -1,0 +1,9 @@
+{% load anywhere_tags %}
+<div class="ra-tabs">
+    <a class="ra-tab{% if current == 'pending' %} active{% endif %}" href="{% url 'admin_anywhere_pending' %}">Ready for approval <span class="count">{% anywhere_request_count 'pending' %}</span></a>
+    <a class="ra-tab{% if current == 'unconfirmed' %} active{% endif %}" href="{% url 'admin_anywhere_unconfirmed' %}">Unconfirmed <span class="count">{% anywhere_request_count 'unconfirmed' %}</span></a>
+    <a class="ra-tab{% if current == 'ready' %} active{% endif %}" href="{% url 'admin_anywhere_ready' %}">Ready for confirmation <span class="count">{% anywhere_request_count 'ready' %}</span></a>
+    <a class="ra-tab{% if current == 'confirmed' %} active{% endif %}" href="{% url 'admin_anywhere_confirmed' %}">Confirmed <span class="count">{% anywhere_request_count 'confirmed' %}</span></a>
+
+    <a class="ra-tab{% if current == 'new' %}active{% endif %}" href="{% url 'admin_new_anywhere' %}">Add New Anywhere Flight</a>
+</div>

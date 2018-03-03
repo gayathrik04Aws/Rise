@@ -1,0 +1,47 @@
+{% extends 'base_admin.html' %}
+
+{% load staticfiles %}
+
+{% block title %}Dashboard - List Planes{% endblock title %}
+
+{% block meta_description %}Dashboard - List Planes{% endblock meta_description %}
+
+{% block body %}
+{% include 'admin_header_fragment.html' with nav_planes=True %}
+<div class="admin-content-wrap">
+    <div class="block admin no-pb">
+        <div class="admin-page-header no-bb">
+            <div class="fl">
+                <h1>Planes</h1>
+            </div>
+            <div class="fr">
+                <div class="add-page-item">
+                    <a href="{% url 'admin_add_plane' %}" class="add-page-item">+ Add New Plane</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br/><br/>
+    <table class="admin-table">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Model</th>
+                <th>Tail Number</th>
+                <th>Seats</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for plane in plane_list %}
+            <tr class="link-row" href="{% url 'admin_plane' plane.pk %}">
+                <td><img src="{% static 'img/plane-photo.png' %}"></td>
+                <td><b>{{ plane.model }}</b></td>
+                <td>{{ plane.registration }}</td>
+                <td>{{ plane.seats }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock body %}

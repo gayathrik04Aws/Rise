@@ -1,0 +1,162 @@
+{% extends 'base.html' %}
+
+{% load humanize %}
+{% load account_tags %}
+{% load staticfiles %}
+{% load safe_settings %}
+
+{% block title %}Plan Options - {{ block.super }}{% endblock title %}
+
+{% block meta_description %}Plan Options - Manage Account{% endblock meta_description %}
+
+{% block css %}
+{% with marketing=False%}
+{{ block.super }}
+{% endwith %}
+{% endblock css %}
+
+{% block body_class %}{% endblock %}
+
+{% block body %}
+
+{% include 'account_profile/dashboard_nav.html' %}
+
+<div class="section profile-body">
+    {% include 'account_profile/profile-sidenav-mobile.html' with plan_options=True %}
+    <div class="content-wrap app-content-wrap no-mt-mobile group">
+    {% include 'account_profile/profile-sidenav.html' with plan=True %}
+        <div class="profile-content-wrap">
+            <div class="detail group">
+            <h1>Plan Options</h1>
+            {% if user.account.status != 'A' %}
+            <h2>Your account is not currently active. </h2><h3>Contact a RISE Representative at <a href="tel:+18447668313">844-766-8313</a> for more information.</h3>
+            {% endif %}
+            {% if user.account.is_corporate %}
+            <p>
+            <b>Team Membership</b> ${{ user.account.corporate_amount|floatformat:0|intcomma }} per month
+            </p>
+            <hr>
+            <div class="corporate-passes">
+                <div class="corporate-pass-wrapper plans">
+                    <div class="corporate-pass">
+                        <figure class="user"></figure>
+                        <p class="offset">Named Members</p>
+                        <p><b>{{ user.account.member_count }}</b></p>
+                    </div>
+                </div>
+                <div class="corporate-pass-wrapper plans">
+                    <div class="corporate-pass">
+                        <figure class="sms-passes"></figure>
+                        <p class="offset">Available Legs</p>
+                        <p><b>{{ user.account.pass_count }}</b></p>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <p>
+                <b>Corporate Membership Benefits</b>
+                <br/>
+                Your company’s named Rise Members will enjoy being able to fly simultaneously on the number of legs your company has purchased per month. All flight legs are 100% shareable between the named corporate members, and the following benefits of flying Rise:
+            </p>
+            <ul class="basic-list">
+                <li>Unlimited flights</li>
+                <li>Pool of reservations to be shared by your associate Rise members</li>
+                <li>Access to Rise Fun Flights and exclusive Rise member benefits</li>
+                <li>First class private travel experience</li>
+                <li>Hours of time savings</li>
+                <li>No lines. No hidden fees.</li>
+            </ul>
+            <p>
+                <b>Membership Term</b>
+                <br/>
+                With Rise Corporate Membership there is no long-term contract and you can cancel your membership at any time; however, we do require a 90-day written notice of cancellation.
+            </p>
+            <p>Contact Rise Support at <a href="tel://8443597473">844 359 7473</a> or <a href="mailto:members@iflyrise.com">members@iflyrise.com</a> to make a change to your plan.</p>
+
+            {% else %}
+            <div class="account-profile-header">
+            {% comment %}    <span class="title">{{ user.account.plan.name }}</span>
+                <span class="secondary">${{ user.account|active_plan_pricing|floatformat:0|intcomma }} per month</span>
+             {% if user.account|has_discounted_plan %}
+                   <span><br><i>Your subscription predates the current pricing for your plan.</i></span>
+                    {% endif %}{% endcomment %}
+                    {% if not user.account.contract %}
+                    <span class="title"><b>{{ user.account.plan.name }}</b></span>&nbsp;&nbsp;
+
+                    {% elif user.account.contract_end_date %}
+
+                   <span class="title"><b>{{ user.account.contract.description_without_price }}</b>&nbsp;&nbsp;(ends {{ user.account.contract_end_date|date:"m/d/y" }})&nbsp;&nbsp;</span><br>
+
+                    {% else %}
+                     <span class="title"><b>{{ user.account.contract.description_without_price }}</b>&nbsp;&nbsp;(not yet activated)</span>&nbsp;&nbsp;<br>
+
+                {% endif %}
+                    <span>${{ user.account|active_plan_pricing|floatformat:0|intcomma }} per month</span><br><br>
+                {% if user.account|has_discounted_plan %}
+                   <span><i>Your subscription predates the current pricing for your plan.</i></span>
+                    {% endif %}
+            </div>
+
+            <div class="pass-wrapper plans">
+                <div class="passes plans">
+                    <figure class="sms-passes"></figure>
+                    <h3>Available Legs</h3>
+                    <p>{{ user.account.pass_count }} / Month</p>
+                </div>
+            </div>
+
+            <div class="passes-announcement">
+            You are currently using <span class="count">{{ user.account.passes_in_use|num2words }}</span> pass{{ user.account.passes_in_use|pluralize:"es" }}.<br/>
+            {% if user.account.complimentary_passes > 0 %}
+                You have <span class="count">{{ user.account.complimentary_passes|num2words }}</span> complimentary pass{{ user.account.complimentary_passes|pluralize:"es" }} available for use.
+            {% endif %}
+            You have <span class="count">{{ user.account.available_passes|num2words }}</span> pass{{ user.account.available_passes|pluralize:"es" }} remaining.
+            </div>
+            <p class="about-passes">
+                A leg will be released for your use again once a flight is completed. Unused legs do not carry over from month to month. Upgrade your membership for more legs.
+            </p>
+            <hr/>
+            <div class="pass-wrapper plans">
+                <div class="passes plans">
+                    <figure class="companion-passes"></figure>
+                    <h3>Companion Passes</h3>
+                    <p>{{ user.account.companion_pass_count }} / Month</p>
+                </div>
+            </div>
+
+
+
+            <div class="passes-announcement">
+            {% if user.account.available_companion_passes == 0 and user.account.companion_pass_count > 0 %}
+            You have used your free pass this month.<br/>
+            {% endif %}
+            You have <span class="count">{{ user.account.available_companion_passes|num2words }}</span> pass{{ user.account.available_companion_passes|pluralize:"es" }} remaining this month.<br/>
+            {% if user.account.complimentary_companion_passes > 0 %}
+                You have <span class="count">{{ user.account.complimentary_companion_passes }}</span> complimentary companion pass{{ user.account.complimentary_companion_passes|pluralize:"es" }} available for use.
+            {% endif %}
+            </div>
+            <p class="about-passes">
+            {% if user.account.companion_pass_count > 0 %}A new pass will be available next month for your use. Your free pass every month does not carry over to the next month if it is not used. {% endif %}Additional passes may be purchased for ${% settings_value "COMPANION_PASS_COST" %} for each leg.
+            </p>
+
+
+            <div class="two-page-controls">
+                <a href="{% url 'profile_plan_change' %}" class="button black">Change Plan</a>
+                {% if user.account.can_cancel %}
+                <a href="#" class="button dark-grey cancel-account fr">Cancel Account</a>
+                {% endif %}
+            </div>
+
+            {% endif %}
+            </div> <!-- /.detail.group -->
+        </div> <!-- /.profile-content-wrap -->
+    </div> <!-- /.content-wrap -->
+</div>
+{% endblock body %}
+
+{% block javascript %}
+    {{ block.super }}
+    <script src="{% static 'js/binaryajax.min.js' %}"></script>
+    <script src="{% static 'js/exif.min.js' %}"></script>
+    <script src="{% static 'js/profile.js' %}"></script>
+{% endblock javascript %}

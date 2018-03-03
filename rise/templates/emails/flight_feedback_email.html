@@ -1,0 +1,116 @@
+{% extends 'emails/base.html' %}
+
+{% block extra_styles %}
+    .surveyTable{
+        border-collapse: collapse;
+    }
+    .surveyTable td{
+        border-width: 1px;
+        border-color: #cccccc;
+        border-style: solid;
+        color: #526666;
+        cursor: pointer;
+        font-family: Verdana, Arial, sans-serif;
+        font-size: 14px;
+        line-height: 160%;
+        text-align: center;
+        padding: 0;
+        vertical-align: middle;
+    }
+    .surveyTable td:hover{
+        background-color: #edf0f0;
+    }
+    .surveyTable td a{
+        color: #526666;
+        display: block;
+        line-height: 41px;
+        text-decoration: none;
+        height: 41px;
+        width: 44px;
+    }
+    .surveyTable td.ten{
+        background-color: #1f2828;
+        color: #ffffff;
+        width: 49px;
+    }
+    .surveyTable td.ten:hover{
+        background-color: #000000;
+    }
+    .surveyTable td.ten a{
+        color: #ffffff;
+    }
+    #surveyImage{
+        display: block;
+        border: 0;
+    }
+{% endblock extra_styles %}
+
+{% block body %}
+<table border="0" cellpadding="20" cellspacing="0" width="100%">
+    <tr>
+        <td align="center" valign="top" class="bodyContent">
+            <div>
+                <h1>{{ subject }}</h1>
+                On a scale of 1-10, how likely would you be to recommend Rise to a colleague or friend?
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td align="center" valign="top" class="bodyContent" style="padding-bottom:5px;">
+            <img src="http://9c5cf859783072df49e6-326c6674e44e477b9197a3210586152e.r14.cf1.rackcdn.com/emails/flight-survey-scale.png" width="453" id="surveyImage"  />
+        </td>
+    </tr>
+    <tr>
+        <td align="center" valign="top" class="bodyContent">
+            <table cellpadding="0" cellspacing="0" width="450" class="surveyTable">
+                <tr>
+                    <td align="center" valign="top" class="bodyContent">
+                        <a href="https://iflyrise.typeform.com/to/c5cxIk?email={{ email }}">1</a>
+                    </td>
+                    <td align="center" valign="top" class="bodyContent">
+                        <a href="https://iflyrise.typeform.com/to/c5cxIk?email={{ email }}">2</a>
+                    </td>
+                    <td align="center" valign="top" class="bodyContent">
+                        <a href="https://iflyrise.typeform.com/to/c5cxIk?email={{ email }}">3</a>
+                    </td>
+                    <td align="center" valign="top" class="bodyContent">
+                        <a href="https://iflyrise.typeform.com/to/c5cxIk?email={{ email }}">4</a>
+                    </td>
+                    <td align="center" valign="top" class="bodyContent">
+                        <a href="https://iflyrise.typeform.com/to/c5cxIk?email={{ email }}">5</a>
+                    </td>
+                    <td align="center" valign="top" class="bodyContent">
+                        <a href="https://iflyrise.typeform.com/to/c5cxIk?email={{ email }}">6</a>
+                    </td>
+                    <td align="center" valign="top" class="bodyContent">
+                        <a href="https://iflyrise.typeform.com/to/c5cxIk?email={{ email }}">7</a>
+                    </td>
+                    <td align="center" valign="top" class="bodyContent">
+                        <a href="https://iflyrise.typeform.com/to/c5cxIk?email={{ email }}">8</a>
+                    </td>
+                    <td align="center" valign="top" class="bodyContent">
+                        <a href="https://iflyrise.typeform.com/to/c5cxIk?email={{ email }}">9</a>
+                    </td>
+                    <td align="center" valign="top" class="bodyContent ten">
+                        <a href="https://iflyrise.typeform.com/to/c5cxIk?email={{ email }}">10</a>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td align="center" valign="top" style="padding-top:20px; padding-bottom: 21px;">
+            <table border="0" cellpadding="0" cellspacing="0" class="button">
+                <tr>
+                    <td valign="middle" width="250px">
+                        <div>
+                            <a href="https://iflyrise.typeform.com/to/c5cxIk?email={{ email }}">Submit Feedback</a>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+
+</table>
+{% endblock body %}

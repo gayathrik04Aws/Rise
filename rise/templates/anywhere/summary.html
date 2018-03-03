@@ -1,0 +1,67 @@
+{% extends 'anywhere/base.html' %}
+
+
+
+{% block simple_content_header %}
+<div class="anywhere-header">Rise Anywhere</div>
+{% endblock %}
+
+{% block simple_content %}
+    <div class="top-text">
+        <h1>THANK YOU!</h1>
+        <p>We've received your flight request and are working to fulfill it.</p>
+    <p>You will receive an email with additional information soon.</p>
+    </div>
+
+
+    <div class="interstitial header">
+        <span class="white">Request Details</span>
+    </div>
+    <div class="request-details">
+        <h2>{{ object.created_by }} {% if object.seats > 1 %} and {{ object.seats|add:"-1" }} Companion{{ object.seats|add:"-1"|pluralize }}{% endif %}</h2>
+        {% if object.sharing == "PUBLIC" %}
+             <p>You can share the flight once it's approved and we will list the flight for other RISE members to join at that time. </p>
+            {% elif object.sharing == "INVITEONLY" %}
+            <p>You will be able to invite other passengers once your flight is approved. </p>
+            {% else %}
+            <p>You will be booking this flight in its entirety.</p>
+            {% endif %}
+
+    </div>
+
+    <div class="flight-details">
+        <div class="departing">
+            <h5>Departing Flight</h5>
+            <div>
+                <h4>{{ object.depart_date }}</h4>
+                <p>{{ object.origin_city }} to {{ object.destination_city }}<br>
+                {{ object.get_depart_when_display }} {% if object.depart_when != "anytime" %}preferred{% endif %}</p>
+            </div>
+        </div>
+        {% if object.is_round_trip %}
+        <div class="divider"></div>
+        <div class="returning">
+            <h5>Returning Flight</h5>
+            <div>
+                <h4>{{ object.return_date }}</h4>
+                <p>{{ object.destination_city }} to {{ object.origin_city }}<br>
+                {{ object.get_return_when_display }} {% if object.return_when != "anytime" %}preferred{% endif %}
+                </p>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+<br>
+    <h3>Your Estimated Cost</h3>
+    {% if object.sharing == "PRIVATE" and object.estimated_cost > 0 %}
+        ${{ object.estimated_cost|floatformat:0 }} (not including 7.5% Federal Excise Tax)
+        {% else %}
+        ${{ your_price|floatformat:0 }} (not including 7.5% Federal Excise Tax)
+    {% endif %}
+    <p></p>
+    <div><a href="{% url 'learn_anywhere' %}">Cancellation Policies, Terms & Conditions</a></div>
+    <div class="divider"></div>
+
+    <a class="button anywhere-blue xl" href="{% url 'dashboard' %}">View Dashboard</a>
+
+{% endblock %}

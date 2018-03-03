@@ -1,0 +1,34 @@
+{% extends 'base_admin.html' %}
+
+{% load staticfiles %}
+{% load flight_tags %}
+
+{% block title %}Dashboard - Delete Route {{ route.name }}{% endblock title %}
+
+{% block meta_description %}Dashboard - Delete Route {{ route.name }}{% endblock meta_description %}
+
+{% block body_class %}{% endblock %}
+{% block body %}
+
+{% include 'admin_header_fragment.html' with nav_routes=True %}
+
+<div class="admin-content-wrap admin-form-page">
+    <h1>Delete Route {{ route.name }}</h1>
+
+    <form method="POST" action=".">
+        {% csrf_token %}
+
+        <p>
+            Are you sure you want to delete the route {{ route.name }}?
+        </p>
+
+        <div class="center">
+            <button type="submit" class="red">Delete Route</button>
+        </div>
+    </form>
+    <div class="center">
+        <a href="{% url 'admin_list_routes' %}" class="return-to-profile">&#9664; Return To Routes</a>
+    </div>
+</div>
+
+{% endblock body %}

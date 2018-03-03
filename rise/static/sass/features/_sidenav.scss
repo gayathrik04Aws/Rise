@@ -1,0 +1,192 @@
+.sidenav {
+    background: $grey1;
+    width: 100vw;
+    .avatar {
+        display: none;
+    }
+    &.mobile {
+        display: block;
+        margin-top: 60px;
+    }
+    &.desktop {
+        display: none;
+    }
+    .sidenav-header {
+        padding: 20px;
+        background-image: url(../img/dropdown-arrow.png);
+        background-size: 20px;
+        background-repeat: no-repeat;
+        background-position: right 20px bottom 23px;
+        &:hover {
+            cursor: pointer;
+        }
+        p {
+            font-size: 12px;
+            color: $sky;
+            margin-bottom: 0;
+            margin-top: 10px;
+            display: none;
+        }
+        a {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: none;
+        }
+        h2 {
+            @include tablet-gothic-family;
+            text-transform: uppercase;
+            color: $sky;
+            font-size: 12px;
+            letter-spacing: 1px;
+            margin-top: 0;
+        }
+        .current-page {
+            font-weight: 500;
+            font-size: 20px;
+        }
+    }
+    ul.profile-menu {
+        margin: 0;
+        border-bottom: 1px solid $grey2;
+        li {
+            color: $runway;
+            font-size: 12px;
+            font-weight: 500;
+            padding: 20px;
+            border-top: 1px solid $grey2;
+            a {
+                font-weight: 500;
+                font-size: 12px;
+                color: $runway;
+                img {
+                    display: none;
+                }
+                &:hover {
+                    color: $land;
+                }
+            }
+            &.desktop {
+                display: none;
+                @media screen and (min-width: 768px) {
+                    display: block;
+                }
+            }
+        }
+    }
+}
+
+span.profile-menu-mobile-label {
+    display: inital;
+}
+
+span.profile-menu-desktop-label {
+    display: none;
+}
+
+////\\\\ Tablet break
+@media screen and (min-width: 768px) {
+    .sidenav {
+        @include clearfix;
+        display: inline-block;
+        background: transparent;
+        width: 180px;
+        margin: 0;
+        &.mobile {
+            display: none;
+        }
+        &.desktop {
+            display: inline-block;
+            vertical-align: top;
+        }
+        .avatar {
+            @include clearfix;
+            width: 100px;
+            margin-bottom: 53px;
+            display: block;
+            & * {
+                vertical-align: middle;
+                display: inline-block;
+            }
+            .badge-wrap.badge-right .badge-wrap {
+                right: -25px;
+            }
+        }
+        .sidenav-header {
+            border-bottom: 0;
+            padding: 0;
+            background: transparent;
+            p, a {
+                display: block;
+            }
+            h2 {
+                font-weight: 500;
+                font-size: 20px;
+                text-transform: none;
+                letter-spacing: 0;
+                color: $runway;
+                margin-bottom: 3px;
+                @include gotham-family;
+            }
+            .current-page {
+                display: none;
+            }
+        }
+        ul.profile-menu {
+            display: block;
+            margin: 40px 0 0 0;
+            border-bottom: 0;
+            li {
+                padding: 0;
+                border: 0;
+                margin: 0 0 20px 0;
+                &:nth-last-of-type(-n+2) {
+                    display: list-item;
+                }
+                a {
+                    text-transform: uppercase;
+                    color: $sky;
+                    font-weight: 500;
+                    letter-spacing: 1.5px;
+                    &.sidenav-active {
+                        color: $land;
+                        img {
+                            width: 8px;
+                            display: inline;
+                            background-size: contain;
+                            margin-bottom: 1px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    span.profile-menu-mobile-label {
+        display: none;
+    }
+    span.profile-menu-desktop-label {
+        display: initial;
+    }
+}
+
+////\\\\ Desktop
+@media screen and (min-width: 1024px) {
+    .sidenav {
+        width: 270px;
+        ul.profile-menu li {
+            width: 65%;
+            a {
+                &.sidenav-active {
+                    color: $land;
+                    img {
+                        width: 8px;
+                        display: inline;
+                        background-size: contain;
+                        margin-bottom: 1px;
+                        margin-left: 5px;
+                    }
+                }
+            }
+        }
+    }
+}

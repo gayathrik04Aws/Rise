@@ -1,0 +1,36 @@
+{% extends 'base_admin.html' %}
+
+{% load staticfiles %}
+
+{% block title %}Dashboard - List Routes{% endblock title %}
+
+{% block meta_description %}Dashboard - List Routes{% endblock meta_description %}
+
+{% block body_class %}{% endblock %}
+{% block body %}
+{% include 'admin_header_fragment.html' with nav_routes=True %}
+<div class="admin-content-wrap admin-form-page">
+    <div style="display: inline-block">
+        <h1>Routes<h1>
+    </div>
+
+    {# TODO: This table is duplicated, except for the final column, on the dashboard view.  Could this table be a reusable template fragment? #}
+    <table>
+        <thead>
+            <tr><th>Name</th><th>Origin</th><th>Destination</th><th>Length</th></tr>
+        </thead>
+        <tbody>
+            {% for route in object_list %}
+            <tr>
+                <td><a href="{% url 'admin_route_detail' route.pk %}">{{ route.name }}</a></td>
+                <td>{{ route.origin }}</td>
+                <td>{{ route.destination }}</td>
+                <td>{{ route.duration_as_timedelta }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{% url 'admin_add_route' %}">Add new Route</a>
+</div>
+
+{% endblock body %}

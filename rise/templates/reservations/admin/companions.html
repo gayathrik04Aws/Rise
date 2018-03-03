@@ -1,0 +1,85 @@
+{% extends 'base_admin.html' %}
+
+{% load flight_tags %}
+{% load staticfiles %}
+
+{% block title %}Booking - {{ block.super }}{% endblock title %}
+
+{% block meta_description %}Booking - Companions{% endblock meta_description %}
+
+{% block css %}
+{% with marketing=False%}
+{{ block.super }}
+{% endwith %}
+{% endblock css %}
+
+{% block body_class %}booking companion-select{% endblock %}
+{% block body %}
+
+{% include 'admin_header_fragment.html' with nav_waitlist=True %}
+<div class="content-wrap app-content-wrap">
+    <div class="block center">
+        <h1>Who is flying with {{ booking_userprofile.get_full_name }}?</h1>
+    </div>
+    <div class="block">
+        <form action="." method="POST">
+            {% csrf_token %}
+
+            {% if form.errors %}
+            <div class="error-message">
+                {{ form.companions.errors }}
+            </div>
+            {% endif %}
+
+            <div class="avatar-grid">
+                <ul>
+                    {% for choice in form.companions.field.choices %}
+                    {% with user=choice.2 %}
+                    <li class="companion companion-check">
+                        <div class="badge-wrap badge-right">
+                            <div class="circle medium">
+                                <img src="{{ user.avatar_url }}">
+                            </div>
+                            <div class="badge-wrap">
+                                <figure class="check-solid-grey"></figure>
+                            </div>
+                        </div>
+
+                        <p class="thick">{{ user.first_name }} <span class="surname">{{ user.last_name }}</span></p>
+
+                        <input type="checkbox" name="{{ form.companions.name }}" value="{{ choice.0 }}" {% if choice.0|safe|in_list:form.companions.value or choice.0|in_list:form.companions.value %}checked="checked"{% endif %}>
+                    </li>
+                    {% endwith %}
+                    {% endfor %}
+                    {% comment %}
+                    <li>
+                        <div class="badge-wrap badge-right">
+                            <div class="circle medium">
+                                <a href="{% url 'book_add_companion' flight_reservation.pk %}"><img src="{% static 'img/icon-default-user-small.png' %}"></a>
+                                <div class="badge-wrap">
+                                    <figure class="plus-green-solid"></figure>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    {% endcomment %}
+                </ul>
+            </div>
+
+            <div class="block center">
+                <button class="button dark-grey" type="submit">submit</button>
+                {# <a href="{% url 'book_flights' flight_reservation.flight.origin.code booking_date.year booking_date.month booking_date.day %}" class="action-block grey"><figure class="arrow-back"></figure>Back to flights</a> #}
+            </div>
+
+        </form>
+    </div>
+
+</div>
+
+{% endblock body %}
+
+
+{% block javascript %}
+{{ block.super }}
+<script src="{% static 'js/reservations.js' %}"></script>
+{% endblock javascript %}

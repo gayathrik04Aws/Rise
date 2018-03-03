@@ -1,0 +1,23 @@
+.dropdown-alert {
+  background-color: $runway;
+  top: -100%;
+}
+
+.modal-wrapper {
+  display: none;
+  &.show {
+    display: block;
+  }
+}
+
+.alert {
+  background: $grey3;
+  .badge {
+    margin-bottom: 0;
+  }
+}
+
+.badge {
+  display: block;
+  margin: 0;
+}

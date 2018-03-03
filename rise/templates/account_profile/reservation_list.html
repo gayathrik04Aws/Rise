@@ -1,0 +1,427 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+{% load account_tags %}
+
+{% block title %}Reservations - {{ block.super }}{% endblock title %}
+
+{% block meta_description %}Reservations - Manage Account{% endblock meta_description %}
+
+{% block css %}
+{% with marketing=False%}
+{{ block.super }}
+{% endwith %}
+{% endblock css %}
+
+{% block body_class %}my-reservations{% endblock %}
+{% block body %}
+
+{% include 'account_profile/dashboard_nav.html' with reservations=True %}
+
+<div class="dashboard-reservations">
+    <div class="content-wrap app-content-wrap">
+        <div class="reservation-page-controls">
+            <h1 class="fl">My Reservations</h1>
+            <div class="fr">
+                <div class="profile-page-control">
+                    <div class="select dark sort-page-control">
+                        <span class="value">Sort</span>
+                        <ul>
+                            {% for value, text in filter_reservations_form.reservation_filters.field.choices %}
+                            <li value="{{ value }}">{{ text }}</li>
+                            {% endfor %}
+                        </ul>
+                        {{ filter_reservations_form.reservation_filters }}
+                    </div>
+                </div>
+            </div>
+            <div class="fr">
+                <div class="profile-page-control">
+                    <form action="." method="GET">
+                        <input type="search" placeholder="Search" class="dark reveal fl" name="s">
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="block">
+            {% if flight_reservations %}
+                   <h2>Confirmed Reservations</h2>
+            {% for flight_reservation in flight_reservations %}
+            <div class="card no-passenger fadeIn">
+                {% if flight_reservation.is_cancelled %}
+                <div class="message-layer">
+                    <figure class="x-grey-lg"></figure>
+                    <div class="valign">
+                        <h4 class='grey'>Flight {{ flight_reservation.flight.flight_number }}</h4>
+                            <p>
+                                {% if flight_reservation.cancelled_by == request.user %}
+                                    You cancelled this flight{% if flight_reservation.date_cancelled %} on {{ flight_reservation.date_cancelled|date:"F d, Y"  }}{% endif %}.
+                                {% elif flight_reservation.date_cancelled %}
+                                    {% if flight_reservation.cancellation_reason %}{{ flight_reservation.cancellation_reason }} {% else %}Flight was cancelled {% endif %} {% if flight_reservation.date_cancelled %} on {{ flight_reservation.date_cancelled|date:"F d, Y"  }}{% endif %}.
+                                {% endif %}
+                                For questions, call <a href="tel:844-332-4780">844 332 4780</a>.
+                        </p>
+                    </div>
+                </div>
+                {% elif flight_reservation.flight.flight_flight_messages.all %}
+                <div class="message-layer">
+                    <figure class="x-grey-lg"></figure>
+                    <div class="valign">
+                        {% comment %}
+                            TODO: more fine grain display of relevant flight message. Right now, just first one in list.
+                                    Uses default reversed created ordering, so displays most recent message for flight.
+                        {% endcomment %}
+                        {% with flight_reservation.flight.flight_flight_messages.all|first as flight_message %}
+                            <h4 class='grey'>Flight {{ flight_reservation.flight.flight_number }}</h4>
+                            <p>{{ flight_message.message }}</p>
+                        {% endwith %}
+                    </div>
+                </div>
+                {% endif %}
+                {% if flight_reservation.flight.flight_type != 'R' %}<div class="badge">
+                    {% if flight_reservation.flight.is_fun_flight %}
+                    <figure class="funflight-solid"></figure>
+                    {% elif flight_reservation.flight.is_promotional_flight %}
+                    <figure class="promo-solid"></figure>
+                    {% endif %}
+
+                </div>{% endif %}
+                <a href="{% url 'reservation_detail' flight_reservation.pk %}"><figure class="pencil-green"></figure></a> <!-- Pencil edit icon-->
+                <div class="origin-and-destination">
+                    <h5>Origin &amp; Destination</h5>
+                    <div class="flight-details">
+                        <span class="airport">{{ flight_reservation.flight.origin.code }}</span> {{ flight_reservation.flight.local_departure|date:"d M / h:i A" }}<br />
+                        <span class="airport">{{ flight_reservation.flight.destination.code }}</span> {{ flight_reservation.flight.local_arrival|date:"d M / h:i A" }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="origin col-xs-6">
+                        <div class="rflex-wrapper rflex-align-center rflex-break-md">
+                            <div class="badge-wrap badge-right">
+                                <div class="circle x-large gradient houston">
+                                    {{ flight_reservation.flight.origin.code }}
+                                    <div class="badge-wrap">
+                                        {% if flight_reservation.flight.is_fun_flight %}<figure class="funflight-solid"></figure>
+                                        {% elif flight_reservation.flight.is_promotional_flight %}
+                                            <figure class="promo-solid"></figure>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="caption">
+                                <h5>Origin</h5>
+                                <h1>{{ flight_reservation.flight.origin.name }}, {{ flight_reservation.flight.origin.state }}</h1>
+                                <h4 class="grey">{{ flight_reservation.flight.local_departure|date:"d M / h:i A" }}</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="destination col-xs-6">
+                        <div class="rflex-wrapper rflex-align-center rflex-break-md">
+                            <div class="badge-wrap badge-right">
+                                <div class="circle x-large gradient houston">
+                                    {{ flight_reservation.flight.destination.code }}
+                                    <div class="badge-wrap">
+                                         <figure class="anywhere-solid"></figure>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="caption">
+                                <h5>Destination</h5>
+                                <h1>{{ flight_reservation.flight.destination.name }}, {{ flight_reservation.flight.destination.state }}</h1>
+                                <h4 class="grey">{{ flight_reservation.flight.local_arrival|date:"d M / h:i A" }}</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {% with flight_companions=flight_reservation.get_companions %}
+
+                <div class="passengers format-simple">
+                    <h5>Passengers:{% if flight_reservation.primary_passenger %}
+                        <strong class="simple-name">&nbsp;{{flight_reservation.primary_passenger.userprofile.get_full_name}}</strong>{% endif %}
+                      {% if flight_companions %}
+
+                        {% for companion_passenger in flight_companions %}
+                            {% if companion_passenger.id != flight_reservation.primary_passenger.id %}
+                            <strong class="simple-name">&nbsp;{{companion_passenger.userprofile.get_full_name}}</strong>
+                            {% endif %}
+                        {% endfor %}
+                      {% endif %}
+                    </h5>
+                </div>
+
+
+                {% endwith %}
+
+            </div>
+            {% endfor %}
+            {% else %}
+            <div class="alert">
+                <div class="badge"><figure class="alert-icon"></figure></div>
+                <p>There are no {% if status != 'all' %}{{status}}{% endif %} reservations for this selection.</p>
+            </div>
+            {% endif %}
+
+
+         <div class="block">
+            {% if waitlist %}
+                   <h2>WISHLISTED FLIGHTS</h2>
+            {% for req in waitlist %}
+            <div class="card no-passenger fadeIn">
+
+                {% if req.flight.flight_type != 'R' %}<div class="badge">
+                    {% if req.flight.is_fun_flight %}
+                    <figure class="funflight-solid"></figure>
+                    {% elif req.flight.is_promotional_flight %}
+                    <figure class="promo-solid"></figure>
+                    {% endif %}
+
+                </div>{% endif %}
+                <a href="{% url 'cancel_waitlist' req.pk %}"> <figure class="icon-cancel move-me"></figure> </a>
+                <div class="origin-and-destination">
+                    <h5>Origin &amp; Destination</h5>
+                    <div class="flight-details">
+                        <span class="airport">{{ req.flight.origin.code }}</span> {{ req.flight.local_departure|date:"d M / h:i A" }}<br />
+                        <span class="airport">{{ req.flight.destination.code }}</span> {{ req.flight.local_arrival|date:"d M / h:i A" }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="origin col-xs-6">
+                        <div class="rflex-wrapper rflex-align-center rflex-break-md">
+                            <div class="badge-wrap badge-right">
+                                <div class="circle x-large gradient houston">
+                                    {{ req.flight.origin.code }}
+                                    <div class="badge-wrap">
+                                        {% if req.flight.is_fun_flight %}<figure class="funflight-solid"></figure>
+                                        {% elif req.flight.is_promotional_flight %}
+                                            <figure class="promo-solid"></figure>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="caption">
+                                <h5>Origin</h5>
+                                <h1>{{ req.flight.origin.name }}, {{ req.flight.origin.state }}</h1>
+                                <h4 class="grey">{{ req.flight.local_departure|date:"d M / h:i A" }}</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="destination col-xs-6">
+                        <div class="rflex-wrapper rflex-align-center rflex-break-md">
+                            <div class="badge-wrap badge-right">
+                                <div class="circle x-large gradient houston">
+                                    {{ req.flight.destination.code }}
+                                    <div class="badge-wrap">
+                                         <figure class="anywhere-solid"></figure>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="caption">
+                                <h5>Destination</h5>
+                                <h1>{{ req.flight.destination.name }}, {{ req.flight.destination.state }}</h1>
+                                <h4 class="grey">{{ req.flight.local_arrival|date:"d M / h:i A" }}</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+            {% endfor %}
+
+            {% endif %}
+
+         {% if pending_reservations %}
+              <h2>PENDING FLIGHTS</h2>
+            {% for flight_reservation in pending_reservations %}
+            <div class="card no-passenger fadeIn">
+                {% if flight_reservation.is_cancelled %}
+                <div class="message-layer">
+                    <figure class="x-grey-lg"></figure>
+                    <div class="valign">
+                        <h4 class='grey'>Flight {{ flight_reservation.flight.flight_number }}</h4>
+                            <p>
+                                {% if flight_reservation.cancelled_by == request.user %}
+                                    You cancelled this flight{% if flight_reservation.date_cancelled %} on {{ flight_reservation.date_cancelled|date:"F d, Y"  }}{% endif %}.
+                                {% elif flight_reservation.date_cancelled %}
+                                    {% if flight_reservation.cancellation_reason %}{{ flight_reservation.cancellation_reason }}{% else %}Flight was cancelled {% endif %} {% if flight_reservation.date_cancelled %} on {{ flight_reservation.date_cancelled|date:"F d, Y"  }}{% endif %}.
+                                {% endif %}
+                                For questions, call <a href="tel:844-332-4780">844 332 4780</a>.
+                        </p>
+                    </div>
+                </div>
+                {% elif flight_reservation.flight.flight_flight_messages.all %}
+                <div class="message-layer">
+                    <figure class="x-grey-lg"></figure>
+                    <div class="valign">
+                        {% comment %}
+                            TODO: more fine grain display of relevant flight message. Right now, just first one in list.
+                                    Uses default reversed created ordering, so displays most recent message for flight.
+                        {% endcomment %}
+                        {% with flight_reservation.flight.flight_flight_messages.all|first as flight_message %}
+                            <h4 class='grey'>Flight {{ flight_reservation.flight.flight_number }}</h4>
+                            <p>{{ flight_message.message }}</p>
+                        {% endwith %}
+                    </div>
+                </div>
+                {% endif %}
+
+                <a href="{% url 'reservation_detail' flight_reservation.pk %}"><figure class="pencil-green"></figure></a> <!-- Pencil edit icon-->
+                <div class="origin-and-destination">
+                    <h5>Origin &amp; Destination</h5>
+                    <div class="flight-details">
+                        <span class="airport">{{ flight_reservation.flight.origin.code }}</span> {{ flight_reservation.flight.local_departure|date:"d M / h:i A" }}<br />
+                        <span class="airport">{{ flight_reservation.flight.destination.code }}</span> {{ flight_reservation.flight.local_arrival|date:"d M / h:i A" }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="origin col-xs-6">
+                        <div class="rflex-wrapper rflex-align-center rflex-break-md">
+                            <div class="badge-wrap badge-right">
+                                <div class="circle x-large gradient houston">
+                                    {{ flight_reservation.flight.origin.code }}
+                                    <div class="badge-wrap">
+                                        {% if flight_reservation.flight.is_fun_flight %}<figure class="funflight-solid"></figure>
+                                        {% elif flight_reservation.flight.is_promotional_flight %}
+                                            <figure class="promo-solid"></figure>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="caption">
+                                <h5>Origin</h5>
+                                <h1>{{ flight_reservation.flight.origin.name }}, {{ flight_reservation.flight.origin.state }}</h1>
+                                <h4 class="grey">{{ flight_reservation.flight.local_departure|date:"d M / h:i A" }}</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="destination col-xs-6">
+                        <div class="rflex-wrapper rflex-align-center rflex-break-md">
+                            <div class="badge-wrap badge-right">
+                                <div class="circle x-large gradient houston">
+                                    {{ flight_reservation.flight.destination.code }}
+                                    <div class="badge-wrap">
+                                         <figure class="anywhere-solid"></figure>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="caption">
+                                <h5>Destination</h5>
+                                <h1>{{ flight_reservation.flight.destination.name }}, {{ flight_reservation.flight.destination.state }}</h1>
+                                <h4 class="grey">{{ flight_reservation.flight.local_arrival|date:"d M / h:i A" }}</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {% with flight_companions=flight_reservation.get_companions %}
+                {% if flight_companions %}
+
+                <div class="passengers format-simple">
+                    <h5>Passengers:{% if flight_reservation.primary_passenger %}<strong class="simple-name">&nbsp;{{flight_reservation.primary_passenger.userprofile.get_full_name}}</strong>{% endif %}{% for companion_passenger in flight_companions %}<strong class="simple-name">&nbsp;{{companion_passenger.userprofile.get_full_name}}</strong>{% endfor %}</h5>
+                </div>
+
+                {% endif %}
+                {% endwith %}
+
+            </div>
+            {% endfor %}
+
+            {% endif %}
+
+         {% if unapproved_requests %}
+              <h2>PENDING RISE ANYWHERE REQUESTS</h2>
+            {% for req in unapproved_requests %}
+            <div class="card no-passenger fadeIn">
+                <div class="origin-and-destination">
+                    <h5>Origin &amp; Destination</h5>
+                    <div class="flight-details">
+                        <span class="airport">{{ req.origin_city.code }}</span> {{ req.depart_date|date:"d M Y" }}<br />
+                        <span class="airport">{{ req.destination_city.code }}</span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="origin col-xs-6">
+                        <div class="rflex-wrapper rflex-align-center rflex-break-md">
+                            <div class="badge-wrap badge-right">
+                                <div class="circle x-large gradient houston">
+                                    {{ req.origin_city.code }}
+                                    <div class="badge-wrap">
+                                         <figure class="anywhere-solid"></figure>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="caption">
+                                <h5>Origin</h5>
+                                <h1>{{ req.origin_city.name }}, {{ req.origin_city.state }}</h1>
+                                <h4 class="grey">DEPARTING {{ req.depart_date|date:"d M Y" }}</h4>
+                                <h4 class="grey">
+                                    {{ req.depart_when }}
+                                </h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="destination col-xs-6">
+                        <div class="rflex-wrapper rflex-align-center rflex-break-md">
+                            <div class="badge-wrap badge-right">
+                                <div class="circle x-large gradient houston">
+                                    {{ req.destination_city.code }}
+                                    <div class="badge-wrap">
+                                         <figure class="anywhere-solid"></figure>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="caption">
+                                <h5>Destination</h5>
+                                <h1>{{ req.destination_city.name }}, {{ req.destination_city.state }}</h1>
+                                {% if req.is_round_trip %}
+                                  <h4 class="grey">RETURNING {{ req.depart_date|date:"d M Y" }}</h4>
+                                    <h4 class="grey">
+                                    {{ req.depart_when }}
+                                </h4>
+                                    {% else %}
+                                     <h4 class="grey">ONE WAY
+                                </h4>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+ <div class="passengers">
+                            <h5>Passengers: {{ req.seats }}</h5>
+
+
+                          </div>
+            </div>
+            {% endfor %}
+
+            {% endif %}
+        </div>
+        <div class="center">
+            {% if user|anywhere_only %}
+                <a href="{% url 'anywhere_index' %}" class="button green mt20">Book A New Flight</a>
+            {% else %}
+                <a href="{% url 'book_from' %}" class="button green mt20">Book A New Flight</a>
+            {% endif %}
+            <a href="{% url 'dashboard' %}" class="return-to-profile">
+                &#9664; Return To Dashboard
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock body %}
+
+{% block javascript %}
+{{ block.super }}
+<script src="{% static 'js/binaryajax.min.js' %}"></script>
+<script src="{% static 'js/exif.min.js' %}"></script>
+<script src="{% static 'js/profile.js' %}"></script>
+<script src="{% static 'js/reservations.js' %}"></script>
+<script src="{% static 'js/showcase.min.js' %}"></script>
+{% endblock javascript %}

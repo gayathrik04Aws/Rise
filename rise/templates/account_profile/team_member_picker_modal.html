@@ -1,0 +1,29 @@
+<div id="team_picker_modal" class="modal-wrapper">
+    <div class="modal center">
+        <figure class="x-grey-lg"></figure>
+        <figure class="booking-icon"></figure>
+        <p class="thick">Which {% if user.account.account_type == 'I' %}companion{% else %}team member{% endif %} would you like to book a flight for?</p>
+        <form {% if user.account.account_type == 'I' %}action="{% url 'book_companion_view' %}" {% else %}action="{% url 'book_team_member' %}" {% endif %} method="POST">
+            {% csrf_token %}
+            {% with flying_members=user.account.get_flying_members %}
+            <div class="select corporate-team-member dark">
+                <span class="value">{% if user.account.account_type == 'I' %}Companion{% else %}Member{% endif %} </span>
+                <ul>
+                    {% for member in flying_members  %}
+                        <li value="{{ member.id }}">{{ member.get_full_name }}</li>
+                    {% endfor %}
+                </ul>
+                <select name="member">
+                    {% for member in flying_members  %}
+                    <option value="{{ member.id }}" {% if member == user or member == selected_user %}selected="selected"{% endif %}>{{ member.get_full_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            {% endwith %}
+
+            <div class="center">
+                <button type="submit" class="lets-fly-booking">Let's Fly &#9654;</button>
+            </div>
+        </form>
+    </div>
+</div>

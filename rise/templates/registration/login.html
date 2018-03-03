@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block title %}Login - {{ block.super }}{% endblock title %}
+
+{% block meta_description %}Login{% endblock meta_description %}
+
+{% block css %}
+{% with marketing=False%}
+{{ block.super }}
+{% endwith %}
+{% endblock css %}
+
+{% block body_class %}registration login{% endblock %}
+
+{% block body %}
+<div class="section">
+    <div class="content-wrap group">
+        <div class="center">
+            <a href="/"  style="display: inline-block;"><figure class="logo-form"></figure></a>
+        </div>
+        <div class="form white-bg">
+            <form action="" method="POST" class="group" class="">
+                {% csrf_token %}
+                <h1>Account Sign In</h1>
+
+                {% if form.errors %}
+                    <div class="error-message">
+                    {% for field, errors in form.errors.items %}
+                    {% for error in errors %}
+                      {{ error }}<br/>
+                    {% endfor %}
+                    {% endfor %}
+                    </div>
+                {% endif %}
+
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="error-message">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+
+                <div class="no-labels">
+                    <label for="id_username">Email</label>
+        	        <input id="id_username" type="email" name="{{ form.username.html_name }}" maxlength="254" placeholder="Email" value="{{ form.username.value|default:"" }}">
+                    <label for="id_password">Password</label>
+        		    <input id="id_password" type="password" name="{{ form.password.html_name }}" placeholder="Password">
+                        <a href="{% url 'password_reset' %}" class="green small forgot-password">FORGOT?</a>
+                </div>
+                <br/>
+                <hr/>
+                <div class="center">
+                    <input type="submit" class="button green" value="Sign In" />
+                    <p>Don't have an account? <a href="{% url 'invite_form' %}">Sign Up!</a></p>
+                </div>
+
+            </form>
+        </div>
+        <br/>
+        <div class="block center">
+            <a href="{{ WP_URL }}" class="return"> &#9664; Return to Home</a>
+        </div>
+        <br/>
+    </div>
+</div>
+{% endblock body %}
+
+{% block footer %}
+{% endblock footer %}

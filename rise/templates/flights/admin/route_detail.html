@@ -1,0 +1,111 @@
+{% extends 'base_admin.html' %}
+
+{% load staticfiles %}
+{% load humanize %}
+{% load flight_tags %}
+
+{% block title %}Dashboard - Route Detail{% endblock title %}
+
+{% block meta_description %}Dashboard - Route Detail{% endblock meta_description %}
+
+{% block body_class %}{% endblock %}
+{% block body %}
+{% include 'admin_header_fragment.html' with nav_routes=True %}
+<div class="admin-detail-view admin-form-page">
+    <h1>Route {{ route.name }}</h1>
+<hr>
+<div class="flight-schedule">
+<div class="distribute equal-width">
+<div>
+    <ul>
+        <label>Departs</label>
+        <li><b>{{ route.origin.code }}</b></li>
+        <li>{{ route.origin }}</li>
+        <li>{{ route.origin.city}}, {{ route.origin.state }}</li>
+    </ul>
+</div>
+<div>
+    <ul>
+        <label>Arrives</label>
+        <li><b>{{ route.destination.code }}</b></li>
+        <li>{{ route.destination }}</li>
+        <li>{{ route.destination.city}}, {{ route.destination.state }}</li>
+    </ul>
+</div>
+<div>
+    <ul>
+        <label>Duration</label>
+        <li>{{ route.duration|simple_duration }}</li>
+    </ul>
+</div>
+{%  if not anywherepath %}
+<div>
+    <ul>
+        <label>Plane/Tail Number</label>
+        <li>{{ route.plane.registration}}</li>
+    </ul>
+</div>
+{% endif %}
+{%  if anywherepath %}
+<div>
+    <ul>
+        <label>Cost</label>
+        <li>${{ route.cost}}</li>
+    </ul>
+</div>
+{% endif %}
+</div>
+    <div>
+        {%  if anywherepath %}
+            <a href="{% url 'anywhere_admin_edit_route' route.pk %}" class="admin-button no-ml">Edit Details</a>
+        {% else %}
+            <a href="{% url 'admin_edit_route' route.pk %}" class="admin-button no-ml">Edit Details</a>
+        {% endif %}
+    </div>
+</div>
+
+ {%  if not anywherepath %}
+    <div class="control-row">
+        <div>
+            <span class="section-label">Route Times</span>
+        </div>
+        <div class="add-page-item">
+            <a href="{% url 'admin_add_routetime' route.pk %}" class="admin-add-link pull-right">+ Add Route Time</a>
+        </div>
+    </div>
+    <table class="admin-table no-border no-hover">
+        <thead>
+            <tr>
+                <th>Flight Number</th>
+                <th>Plane/Tail Number</th>
+                <th>Liftoff</th>
+                <th>Repeats</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for route_time in route.routetime_set.all %}
+
+            <tr class="link-row"  href="{% url 'admin_edit_routetime' route.pk route_time.pk %}">
+                <td>{{ route_time.flight_number }}</td>
+                <td>{% if route_time.plane %}
+                    {{ route_time.plane.registration }}
+                    {% elif route.plane %}
+                    {{ route.plane.registration }}(default)
+                    {% endif %}
+                </td>
+                <td>{{ route_time.departure|time:"h:i A" }}</td>
+                <td><figure class="icon-repeat"></figure>&nbsp;&nbsp;&nbsp;{{ route_time|route_time_days }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endif %}
+<div class="center">
+     {%  if anywherepath %}
+         <a href="{% url 'anywhere_admin_list_routes' %}" class="return-to-profile">&#9664; Return To Routes</a>
+     {% else %}
+        <a href="{% url 'admin_list_routes' %}" class="return-to-profile">&#9664; Return To Routes</a>
+     {% endif %}
+</div>
+</div>
+{% endblock body %}

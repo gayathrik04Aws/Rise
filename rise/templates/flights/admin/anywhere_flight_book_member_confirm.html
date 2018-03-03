@@ -1,0 +1,141 @@
+{% extends 'base_admin.html' %}
+{% load flight_tags %}s
+{% load staticfiles %}
+
+{% block title %}Dashboard - Confirm Booking for {{ member.get_full_name }}{% endblock title %}
+
+{% block meta_description %}Dashboard - Confirm Booking for {{ member.get_full_name }}{% endblock meta_description %}
+
+{% block css %}
+{% with marketing=False%}
+{{ block.super }}
+{% endwith %}
+{% endblock css %}
+
+{% block body_class %}{% endblock %}
+{% block body %}
+{% include 'admin_header_fragment.html' with flights=True %}
+<div class="admin-content-wrap admin-form-page">
+    <h1>Confirm Reservation for {{ member.get_full_name }}</h1>
+    {% if reservation != None %}
+        <h2>Adding as passenger to {{ flightset.flight_creator_user.get_full_name }}'s existing reservation</h2>
+    {% endif %}
+    {% if form.errors %}
+        <div class="error-message">
+        {% for field, errors in form.errors.items %}
+        {% for error in errors %}
+          {{ error }}<br/>
+        {% endfor %}
+        {% endfor %}
+        </div>
+    {% endif %}
+    <form method="post" action="" class="alert-form">
+        {% csrf_token %}
+
+{% comment %}
+        {% if member.account.get_member_count > 1 %}
+        <div class="block narrow-block">
+            <label>{% if member.account.get_companion_count > 1 %}Add Companions (Optional){% else %}Add Team Members{% endif %}</label>
+            <div class="selection-grid">
+            {% for checkbox in form.companions %}
+            <div class="select-companions">
+                <label class="check-radio-block cf" for="companions-{{ forloop.counter }}">
+                    <input id="companions-{{ forloop.counter }}" name="{{ checkbox.name }}" type="checkbox" value="{{ checkbox.choice_value }}" {% if checkbox.is_checked %}checked="checked"{% endif %}>
+                    <span>{{ checkbox.choice_label }}</span>
+                </label>
+            </div>
+            {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+{% endcomment %}
+
+        <div class="block">
+            <div class="card grey">
+                <div class="badge"><figure class="riseanywhere-solid"></figure></div>
+                <div class="origin-and-destination">
+                    <h5>Origin &amp; Destination</h5>
+                    <div class="flight-details">
+                        <span class="airport">{{ flightset.leg1.origin.code }}</span> {{ flightset.leg1.local_departure.date|date:'d M'}} / {{ flightset.leg1.local_departure|time:"h:i A e" }}<br />
+                        <span class="airport">{{ flightset.leg1.destination.code }}</span> {{ flightset.leg1.local_arrival.date|date:'d M'}} / {{ flightset.leg1.local_arrival|time:"h:i A e" }}
+                    </div>
+                </div>
+                <div class="origin">
+                    <div class="badge-wrap badge-right">
+                        <div class="circle x-large gradient {{ flightset.leg1.origin.city|remove_spaces_lower_case }}">
+                            {{ flightset.leg1.origin.code }}
+                            <div class="badge-wrap">
+                                <figure class="riseanywhere-solid"></figure>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="caption">
+                        <h5>Origin</h5>
+                        <h1>{{ flightset.leg1.origin.city }}, {{ flightset.leg1.origin.state }}</h1>
+                        <h4 class="grey">{{ flightset.leg1.local_departure.date|date:'d M'}} / {{ flightset.leg1.local_departure|time:"h:i A e" }}</h4>
+                    </div>
+                </div>
+                <div class="destination">
+                    <div class="circle x-large gradient {{ flightset.leg1.destination.city|remove_spaces_lower_case }}">
+                        {{ flightset.leg1.destination.code }}
+                    </div>
+                    <div class="caption">
+                        <h5>Destination</h5>
+                        <h1>{{ flightset.leg1.destination.city }}, {{ flightset.leg1.destination.state }}</h1>
+                        <h4 class="grey">{{ flightset.leg1.local_arrival.date|date:'d M'}} / {{ flightset.leg1.local_arrival|time:"h:i A e" }}</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% if flightset.leg2 != None %}
+        <div class="block">
+            <div class="card grey">
+                {% if flight.flight_type != 'R' %}
+                <div class="badge"><figure class="riseanywhere-solid"></figure></div>
+                {% endif %}
+                <div class="origin-and-destination">
+                    <h5>Origin &amp; Destination</h5>
+                    <div class="flight-details">
+                        <span class="airport">{{ flightset.leg2.origin.code }}</span> {{ flightset.leg2.local_departure.date|date:'d M'}} / {{ flightset.leg2.local_departure|time:"h:i A e" }}<br />
+                        <span class="airport">{{ flightset.leg2.destination.code }}</span> {{ flightset.leg2.local_arrival.date|date:'d M'}} / {{ flightset.leg2.local_arrival|time:"h:i A e" }}
+                    </div>
+                </div>
+                <div class="origin">
+                    <div class="badge-wrap badge-right">
+                        <div class="circle x-large gradient {{ flightset.leg2.origin.city|remove_spaces_lower_case }}">
+                            {{ flightset.leg2.origin.code }}
+                            <div class="badge-wrap">
+                                <figure class="riseanywhere-solid"></figure>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="caption">
+                        <h5>Origin</h5>
+                        <h1>{{ flightset.leg2.origin.city }}, {{ flightset.leg2.origin.state }}</h1>
+                        <h4 class="grey">{{ flightset.leg2.local_departure.date|date:'d M'}} / {{ flightset.leg2.local_departure|time:"h:i A e" }}</h4>
+                    </div>
+                </div>
+                <div class="destination">
+                    <div class="circle x-large gradient {{ flightset.leg2.destination.city|remove_spaces_lower_case }}">
+                        {{ flightset.leg2.destination.code }}
+                    </div>
+                    <div class="caption">
+                        <h5>Destination</h5>
+                        <h1>{{ flightset.leg2.destination.city }}, {{ flightset.leg2.destination.state }}</h1>
+                        <h4 class="grey">{{ flightset.leg2.local_arrival.date|date:'d M'}} / {{ flightset.leg2.local_arrival|time:"h:i A e" }}</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        <div class="center">
+            <button type="submit" class="green">Confirm</button>
+            <div class="interstitial">
+                <span class="lined">Or</span>
+            </div>
+            <a href="{% url 'admin_flight_detail' pk=flightset.leg1.id %}" class="button dark-grey">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock body %}

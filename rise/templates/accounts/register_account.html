@@ -1,0 +1,163 @@
+{% extends 'base_admin.html' %}
+
+{% load staticfiles %}
+{% load humanize %}
+{% load account_tags %}
+{% load safe_settings %}
+
+{% block title %}Register - {{ block.super }}{% endblock title %}
+
+{% block meta_description %}Register - Register{% endblock meta_description %}
+
+{% block css %}
+{% with marketing=False%}
+{{ block.super }}
+{% endwith %}
+{% endblock css %}
+
+{% block body_class %}register-account{% endblock %}
+{% block body %}
+
+<div class="content-wrap app-content-wrap">
+    <div class="block center">
+        <a href="/"><figure class="logo-form"></figure></a>
+    </div>
+</div>
+    <div class="form block white">
+
+        <form action="." method="POST" id="submit-profile-form">
+
+            <h1 class="caps center">Welcome, {{ user.first_name }}</h1>
+
+            <p class="center registration-text">Complete your profile to get started.</p>
+
+            {% if form.errors %}
+                {% for field, errors in form.errors.items %}
+                {% for error in errors %}
+                <div class="error-message">{{ error }}</div>
+                {% endfor %}
+                {% endfor %}
+            {% endif %}
+
+            {% csrf_token %}
+
+            {{ form.new_password1 }}
+
+            {{ form.new_password2 }}
+
+            <label for="{{ form.date_of_birth.auto_id }}">Date of Birth</label>
+            {{ form.date_of_birth }}
+
+            {% if form.member_plan %}
+            <label for="{{ form.member_plan.auto_id }}">
+                Choose Membership Level <a href="{{ WP_URL }}/faq/#faq-membership-levels" class="green small">Learn more</a>
+            </label>
+
+
+            <div class="membership-table">
+                {% for choice in form.member_plan.field.choices %}
+                {% with plan=choice.2 %}
+                    <div class="block row">
+                        <div class="membership-level">
+                            <h3>{{ plan.name }}</h3>
+                            {% comment %}<div class="membership-price">
+                                ${{ plan.amount|floatformat:0|intcomma }}
+                            </div>{% endcomment %}
+                            <span>{{ plan.pass_count|num2words|capfirst }} Reservation{{ plan.pass_count|pluralize }} at a Time</span>
+                        </div>
+                       {% comment %} <div class="checkbox">
+                            <input type="radio" name="{{ form.member_plan.name }}" value="{{ choice.0 }}" {% if form.member_plan.value|safe == choice.0|safe %}checked="checked"{% endif %} id="{{ plan.name }}">
+                        </div>{% endcomment %}
+                    {% if plan|requires_contract %}
+
+                    <div id="contract" class="block row">
+                        {% for contractchoice in form.contract.field.choices %}
+                            {% with contract=contractchoice.2 %}
+                                {% if contract.plan.id == plan|get_plan_id %}
+                                    <div class="membership-price">
+                                   <span class="membership-description">{{ contract.contract_length }} months</span>${{ contract.amount|floatformat:0|intcomma }} / mo
+                                </div> <div class="checkbox">
+                                     <input type="radio"  name="contract" value="{{ contract.id }}" {% if form.contract.value|safe == contractchoice.0|safe %}checked="checked"{% endif %} id="{{ contract.id }}">
+                                        </div>
+                                    <br>
+                                {% endif %}
+                            {% endwith %}
+                        {% endfor %}
+                    </div>
+
+                        {% else %}
+                         <div class="checkbox">
+                            <input type="radio" name="{{ form.member_plan.name }}" value="{{ choice.0 }}" {% if form.member_plan.value|safe == choice.0|safe %}checked="checked"{% endif %} id="{{ plan.name }}">
+                        </div>
+                    {% endif %}
+                    </div>
+                {% endwith %}
+                {% endfor %}
+            </div>
+
+            {% else %}
+            <label for="{{ form.company_name.auto_id }}">Company Name</label>
+            {{ form.company_name }}
+            {% endif %}
+
+            <div>
+                <label class="check-radio-block background-check" id="{{ form.approve_membership_agreement.auto_id }}">{{ form.approve_membership_agreement }}<span>Accept <a target="_blank" href="{{ WP_URL }}/membership/">Membership Agreement</a></span></label>
+            </div>
+
+            <div>
+                <label class="check-radio-block background-check" id="{{ form.approve_background_check.auto_id }}">{{ form.approve_background_check }}<span>Accept <a target="_blank" href="{{ WP_URL }}/terms/">Terms and Conditions</a></span></label>
+            </div>
+            <div>
+                <label class="check-radio-block background-check" id="{{ form.approve_carriage_contract.auto_id }}">{{ form.approve_carriage_contract }}<span>Accept <a target="_blank" href="http://monarchair.com/section/contract-carriage">Contract of Carriage</a></span></label>
+            </div>
+            <div> <label for="{{ form.date_of_birth.contract_signature }}">Signature</label>
+            {{ form.contract_signature }}
+            </div>
+            <div> <label for="{{ form.date_of_birth.contract_signdate }}">Date</label>
+            {{ form.contract_signdate }}
+            </div>
+            <div class="center">
+                <button class="green" type="submit" id="submit-profile">Continue Profile Set Up</button>
+            </div>
+        </form>
+    </div>
+    <br/>
+    <div class="block center">
+        <a class="action-block grey" href="{{ WP_URL }}"><figure class="arrow-back"></figure>Return To Home</a>
+    </div>
+    <br/>
+{% endblock body %}
+
+{% block javascript %}
+{{ block.super }}
+{% if user.account.is_trial and not user.account.is_corporate %}
+<script charset="utf-8">
+    $('#submit-profile').on(clickAction, function(e) {
+        e.preventDefault();
+        plan = $('input[name="member_plan"]:checked')
+        if (plan){
+            plan_name = plan.attr('id');
+            if (plan_name != 'Trial'){
+                message = 'A ${% settings_value "DEPOSIT_COST" %} deposit fee (+ {% settings_value "DEPOSIT_TAX_PERCENT" %} sales tax) will be charged for selecting the ' + plan_name + ' Membership Level.';
+                var $message = $('<div class="modal-wrapper" style="display: block; z-index: 10000; opacity: 1;"><div class="modal center"><figure class="x-grey-lg"></figure><figure class="alert-icon"></figure><p class="thick">'+message+'</p><div class="action-wrapper"><a href="" class="dismiss grey condensed"><figure class="arrow-left-grey"></figure> Cancel</a> | <a href="" class="grey condensed" id="confirm_membership">Confirm <figure class="arrow-right-grey"></figure></a></div></div>');
+                $('body').prepend($message);
+                $("#confirm_membership").on(clickAction, function(e){
+                    e.preventDefault();
+                    $message.hide();
+                    $('#submit-profile-form').submit();
+                });
+                $('.x-grey-lg').on(clickAction, function(e) {
+                    e.preventDefault();
+                    $message.remove();
+                });
+                return false;
+            }else{
+                $('#submit-profile-form').submit();
+            }
+
+        }
+    });
+
+</script>
+{% endif %}
+{% endblock javascript %}

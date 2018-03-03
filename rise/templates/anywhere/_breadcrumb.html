@@ -1,0 +1,5 @@
+{% for url, text, cls in breadcrumbs %}
+<div class="nav-breadcrumb {{ cls }}">
+    <a{% if url %} href="{{ url }}"{% endif %}>{{ text }}</a>
+</div>
+{% endfor %}

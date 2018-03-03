@@ -1,0 +1,32 @@
+{% extends 'base_admin.html' %}
+
+{% block body %}
+    {% include 'admin_header_fragment.html' with accounts=True %}
+    <div class="admin-content-wrap admin-form-page">
+        <h1>{% if member %}Edit {{ member.get_full_name }}{% else %}Create Note{% endif %}</h1>
+
+        <form action="." method="POST">
+            {% csrf_token %}
+
+            {% if form.errors %}
+                <div class="error-message">
+                {% for field, errors in form.errors.items %}
+                {{ field }}
+                {% for error in errors %}
+                  {{ error }}<br/>
+                {% endfor %}
+                {% endfor %}
+                </div>
+            {% endif %}
+
+            <label for="{{ form.body.auto_id }}">Note:</label>
+            {{ form.body.errors }}
+            {{ form.body }}
+
+            {{ form.userprofile.as_hidden }}
+
+            <button type="submit" class="green">Save Note</button>
+
+        </form>
+    </div>
+{% endblock %}

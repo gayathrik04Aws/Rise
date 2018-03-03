@@ -1,0 +1,11 @@
+.distribute {
+  @include clearfix;
+  input {
+    display: table-cell;
+    margin: 0;
+    width: 33%;
+  }
+  .select {
+    margin: 0;
+  }
+}

@@ -1,0 +1,288 @@
+/* Colors*/
+$land: #01af70;
+$runway: #132323;
+$grey: #526666;
+$copy-light: #a1b2b2;
+$copy-dark: #768888;
+
+em {
+  color: $land;
+  font-style: normal;
+}
+/* Gotham A */
+
+h1 {
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 30px;
+  color: $runway;
+  &.white {
+    color: white;
+  }
+  &.caps {
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+  &.condensed {
+    font-family: 'din';
+    &.caps {
+      letter-spacing: 1px;
+    }
+  }
+ &.small {
+     font-size: 20px;
+ }
+}
+
+h2 {
+  font-family: 'Gotham Ssm A', 'Gotham Ssm B';
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 18px;
+  color: $runway;
+}
+
+h3 {
+  font-family: 'din';
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  &.grey {
+    color: $sky;
+  }
+}
+
+h4 {
+  font-family: 'din';
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  &.grey {
+    color: $sky;
+  }
+}
+
+h5 {
+  color: $sky;
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 12px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  &.green {
+    color: $land;
+  }
+  &.no-margin {
+      margin: 0;
+  }
+}
+
+p {
+  color: $runway;
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 19px;
+  &.thick {
+    font-weight: 500;
+  }
+  &.white {
+    color: white;
+  }
+  &.grey {
+    color: $copy-grey;
+  }
+  &.registration-text {
+    color: #768888;
+    line-height: 21px;
+    text-rendering: optimizeLegibility;
+    max-width: 475px;
+    strong {
+        color: $runway;
+    }
+    &.invitation {
+      padding-right: 20px;
+      @media screen and (min-width: 768px) {
+        padding-right: 0;
+      }
+    }
+  }
+  &.strong-grey {
+    font-weight: 800;
+    color: #768888;
+  }
+  &.small {
+    font-size: 18px;  
+  }
+}
+
+.fine-print {
+  p {
+    font-size: 13px;
+    line-height: 21px;
+    text-align: center;
+    width: 100%;
+  }
+  .mobile-break {
+    display: block;
+    @media screen and (min-width: 768px) {
+      display: none;
+    }
+  }
+}
+
+.nav-counter {
+  font-size: 20px;
+  font-weight: 300;
+  line-height: 16px;
+  color: $copy-light;
+}
+
+.small-caps {
+  font-size: 10px;
+  font-weight: 300;
+  line-height: 16px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.small-caps-m {
+  font-size: 12px;
+  font-weight: 300;
+  line-height: 16px;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+}
+
+.calendar li {
+  font-size: 21px;
+  font-weight: 300;
+  color: $runway;
+}
+
+.legal {
+  font-size: 10px;
+  font-weight: 300;
+  line-height: 15px;
+  color: $copy-dark;
+}
+
+/* Tablet Gothic */
+
+.calendar-nav {
+  font-family: 'din';
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: $runway;
+}
+
+.small-caps-condensed {
+  font-family: 'din';
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.small-caps-condensed-m {
+  font-family: 'din';
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.small-caps-condensed-l {
+  font-family: 'din';
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.small-caps-condensed-xl {
+  font-family: 'din';
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  line-height: 27px;
+  text-transform: uppercase;
+}
+
+.departure-selected {
+  font-family: 'din';
+  font-size: 50px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: $land;
+}
+
+.departure-select {
+  font-family: 'din';
+  font-size: 35px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  line-height: 47px;
+  color: #fff;
+}
+
+.p-modal-error {
+  font-family: 'din';
+  font-size: 20px;
+  font-weight: 300;
+  line-height: 27px;
+}
+
+.alert p, .bubble p{
+  font-family: 'din';
+  font-size: 20px;
+  font-weight: 300;
+  line-height: 27px;
+}
+
+.flight-table {
+  font-family: 'din';
+  font-size: 15px;
+  font-weight: 300;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.table-labels {
+  color: $sky;
+  font-size: 10px;
+  font-weight: 300;
+  line-height: 16px;
+  letter-spacing: 1.5px;
+}
+
+.upper {
+  text-transform: uppercase;
+}
+
+.errorlist{
+    color:$alert;
+}
+
+////\\\\ Tablet Breakpoint *******************
+
+@media screen and (min-width: 768px) {
+  h1, h1.white {
+    font-size: 30px;
+  }
+}
+
+
+////\\\\ Desktop Breakpoint *************************
+
+@media screen and (min-width: 1024px) {
+  .calendar li {
+    font-size: 42px;
+    font-weight: 300;
+  }
+}

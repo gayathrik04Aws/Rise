@@ -1,0 +1,13 @@
+{% autoescape off %}
+
+Name: {{ name }}
+Email: {{ email }}
+
+Referrals
+-------------------
+{% for referral in referrals %}
+    Name: {{ referral.name }}
+    Email: {{ referral.email }}
+    PHone: {{ referral.phone }}
+{% endfor %}
+{% endautoescape %}

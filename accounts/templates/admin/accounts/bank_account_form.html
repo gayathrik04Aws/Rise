@@ -1,0 +1,40 @@
+{% extends 'base_admin.html' %}
+
+{% load staticfiles %}
+
+{% block body %}
+{% include 'admin_header_fragment.html' with accounts=True %}
+<div class="admin-content-wrap admin-form-page">
+    <h1>Update Bank Account</h1>
+
+    <form action="." method="POST" id="bank-form" autocomplete="off">
+        {% csrf_token %}
+
+        <input type="hidden" data-stripe="country" value="US">
+        <input type="hidden" data-stripe="account_holder_name" value="{{ account_holder_name }}">
+        <input type="hidden" data-stripe="account_holder_type" value="{{ account_holder_type }}">
+
+        <label for="routing-number">Routing Number</label>
+        <input {% if form.errors %}class="error"{% endif %} type="text" id="routing-number" placeholder="Routing Number" data-stripe="routingNumber" value="{{ routing_number|default:"" }}" />
+
+        <label for="cc-month">Account Number</label>
+        <input {% if form.errors %}class="error"{% endif %} type="text" id="account-number" placeholder="Account Number" data-stripe="accountNumber" />
+        <label for="{{ form.nickname.auto_id }}">Nickname</label>
+        {{ form.nickname.errors }}
+        {{ form.nickname }}
+        <div class="center">
+            <button type="submit" class="green">Save Bank Account</button>
+        </div>
+    </form>
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+<script charset="utf-8">
+Stripe.setPublishableKey('{{ STRIPE_PUBLISHABLE_KEY }}');
+</script>
+<script type="text/javascript" src="{% static 'js/jquery.payment.js' %}"></script>
+<script src="{% static 'js/payment.js' %}"></script>
+{% endblock %}

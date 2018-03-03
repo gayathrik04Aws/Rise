@@ -1,0 +1,72 @@
+{% load account_tags %}
+
+<nav class="booking">
+
+  <div class="left-side">
+
+    <div class="nav-button">
+      <a href="{% url 'dashboard' %}" style="display: block">
+        <figure class="logomark"></figure>
+      </a>
+    </div>
+    <div class="breadcrumb">
+      {% include 'anywhere/_breadcrumb.html'%}
+    </div>
+
+  </div>
+
+  <div class="right-side">
+    <!-- <div class="nav-button flights popover-button">
+      {% with flight_reservation_count=reservation.flightreservation_set.count %}
+      <figure class="plane-grey"></figure><h5 class="flight_reservation_count">{{ flight_reservation_count|default:"0" }}</h5>
+      {% if flight_reservation_count and flight_reservation_count > 0 %}
+      <div class="popover">
+        <div class="block white">
+            {% for flight_reservation in reservation.flightreservation_set.all %}
+            <div class="actionable-row flight-reservation-{{ flight_reservation.id }}">
+                <div class="left-side">
+                    <div class="booked-flight-number"><em>{{ forloop.counter|stringformat:"02d" }}</em></div>
+                    <div class="booked-flight-details">
+                    <div class="origin"><h2>{{ flight_reservation.flight.origin.city }}, {{ flight_reservation.flight.origin.state }}</h2>&nbsp;<h4>{{ flight_reservation.flight.local_departure|date:"M d, Y / h:i A" }}</h4><br/></div>
+                    <figure class="flight-card-arrow-sm"></figure>
+                    <div class="destination"><h2>{{ flight_reservation.flight.destination.city }}, {{ flight_reservation.flight.destination.state }}</h2>&nbsp;<h4>{{ flight_reservation.flight.local_arrival|date:"M d, Y / h:i A" }}</h4></div>
+                  </div>
+                </div>
+                {% if flight_reservation.flight.flight_type != 'A' %}
+                <div class="actions">
+                  <a class="cancel-flight-reservation" data-id=".flight-reservation-{{ flight_reservation.id }}" href="{% url 'book_cancel_flight_reservation' flight_reservation.id %}?next={{ request.path|urlencode }}"><figure class="x-green-sm"></figure></a>
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+      {% endwith %}
+    </div>
+    <div class="nav-button passes popover-button">
+      <div><figure class="sms-passes"></figure><h5 class="total_available_passes">{{ user.account.total_available_passes }}</h5></div>
+      <div><figure class="companion-passes"></figure><h5 class="total_available_companion_passes">{{ user.account.total_available_companion_passes }}</h5></div>
+      <div class="popover">
+        <h3>Passes Available</h3>
+        <p><em class="total_available_passes">{{ user.account.total_available_passes }}</em> Available Legs Pass{{ user.account.total_available_passes|pluralize:"es" }}</p>
+        <p><em class="total_available_companion_passes">{{ user.account.total_available_companion_passes }}</em> Companion Pass{{ user.account.total_available_companion_passes|pluralize:"es" }}</p>
+      </div>
+    </div> -->
+    <div class="nav-button"><a href="{% url 'dashboard' %}" style="display: block"><figure class="x-blue-sm"></figure></a></div>
+  </div>
+</nav>
+
+<div id="time_remaining_alert" class="dropdown-alert">
+  <p class="thick">Just a heads up &mdash; you have <em id="time_remaining">three minutes</em> remaining to complete your flights before they are released</p>
+  <a class="action-block green left">Ok, Thanks</a>
+</div>
+
+<div id="timeout-modal" class="modal-wrapper" style="display: block;">
+    <div class="modal center">
+        <figure class="x-grey-lg"></figure>
+        <figure class="alert-icon"></figure>
+        <p class="thick">Oops! Your time has run out. Please choose your flights again.</p>
+      <a href="{% url 'anywhere_index' %}" class="button green">Book a New Rise Anywhere Flight</a>
+    </div>
+</div>

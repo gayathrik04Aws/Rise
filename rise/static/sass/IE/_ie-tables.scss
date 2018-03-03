@@ -1,0 +1,250 @@
+.flight-table {
+  font-size: 0;
+  .origin, .destination {
+    .airport {
+      background-repeat: no-repeat;
+      background-size: 100%;
+      background-position: center;
+      border-radius: 100%;
+      color: #ffffff;
+      display: inline-block;
+      font-family: 'din';
+      font-size: 20px;
+      font-weight: 300;
+      height: 60px;
+      letter-spacing: 1px;
+      line-height: 60px;
+      margin-right: 10px;
+      overflow: hidden;
+      text-align: center;
+      vertical-align: middle;
+      width: 60px;
+      &.austin {
+        background-image: url(../img/circle-thumbs/gradient/thumb-austin.png)
+      }
+      &.telluride {
+        background-image: url(../img/circle-thumbs/gradient/thumb-telluride.png)
+      }
+      &.dallas {
+        background-image: url(../img/circle-thumbs/gradient/thumb-dallas.png)
+      }
+      &.houston {
+        background-image: url(../img/circle-thumbs/gradient/thumb-houston.png)
+      }
+      &.midland {
+        background-image: url(../img/circle-thumbs/gradient/thumb-midland.png)
+      }
+      &.vail {
+        background-image: url(../img/circle-thumbs/gradient/thumb-vail.png)
+      }
+      &.vegas {
+        background-image: url(../img/circle-thumbs/gradient/thumb-vegas.png)
+      }
+      &.corpuschristi {
+        background-image: url(../img/circle-thumbs/gradient/thumb-corpuschristi.png); }
+      &.neworleans {
+        background-image: url(../img/circle-thumbs/gradient/thumb-neworleans.png); }
+      &.oklahomacity {
+        background-image: url(../img/circle-thumbs/gradient/thumb-oklahomacity.png); }
+      &.sanantonio{
+        background-image: url(../img/circle-thumbs/gradient/thumb-sanantonio.png); }
+      &.santafe {
+        background-image: url(../img/circle-thumbs/gradient/thumb-santafe.png); }
+      &.shreveport {
+        background-image: url(../img/circle-thumbs/gradient/thumb-shreveport.png); }
+      &.spring {
+        background-image: url(../img/circle-thumbs/gradient/thumb-spring.png); }
+      &.tulsa {
+        background-image: url(../img/circle-thumbs/gradient/thumb-tulsa.png); }
+      &.lubbock {
+        background-image: url(../img/circle-thumbs/gradient/thumb-lubbock.png); }
+      &.aspen {
+        background-image: url(../img/circle-thumbs/gradient/thumb-aspen.png); }
+      &.steamboat {
+        background-image: url(../img/circle-thumbs/gradient/thumb-steamboat.png); }
+    }
+  }
+  &.full {
+    background-image: url(../img/1x/pattern-green.png);
+    .actions {
+      figure {
+        cursor: pointer;
+        display: table-cell;
+        position: relative;
+      }
+    }
+  }
+  .origin {
+    width: (282px / 1038px) * 100%;
+  }
+  .city-name {
+    display: block;
+    margin: 0;
+    text-transform: none;
+  }
+  .destination {
+    width: (351px / 1038px) * 100%;
+  }
+  .duration {
+    display: inline-block;
+    width: (232px / 1038px) * 100%;
+    position: relative;
+    padding-right: 40px;
+    text-align: center;
+    z-index: 0;
+    span {
+      background-color: #ffffff;
+      color: $runway;
+      font-family: 'Gotham Ssm A', 'Gotham Ssm B';
+      font-weight: 500;
+      padding: 0 10px;
+    }
+    &:after {
+      background: $grey2;
+      bottom: 10px;
+      content: '';
+      display: block;
+      height: 1px;
+      position: relative;
+      z-index: -1;
+    }
+  }
+  .flight-number {
+    text-align: left;
+    width: (66px / 1038px) * 100%;
+    figure {
+      display: none;
+    }
+  }
+  .actions {
+    display: inline-table;
+    width: (107px / 1038px) * 100%;
+  }
+  .arrow {
+    display: none;
+  }
+  &.table-labels {
+    border-top: 0;
+    .duration{
+      &:after {
+        display: none;
+      }
+    }
+    .flight-number {
+      width: (172px / 1038px) * 100%;
+      &:after {
+        content: 'Flight No.';
+      }
+    }
+    .actions {
+      display: none;
+    }
+  }
+  .popover {
+    background-color: $runway;
+    border-radius: 5px;
+    border: 0;
+    display: none;
+    height: auto;
+    padding: 20px;
+    right: 60px;
+    top: -20px;
+    width: 150px;
+    white-space: normal;
+    &.show {
+      display: block;
+    }
+    h5 {
+      margin: 0;
+      line-height: 20px;
+    }
+    a, li {
+      color: #ffffff;
+      display: block;
+      font-weight: 300;
+      font-size: 14px;
+      line-height: 26px;
+      margin: 0;
+      padding: 0;
+      text-transform: none;
+      @include transition(none);
+      &.active {
+        background-image: url(../img/1x/check-green-sm.png);
+        background-repeat: no-repeat;
+        background-position: right;
+        background-size: 12px 9px;
+        padding-right: 25px;
+      }
+    }
+    &:after {
+      border-left: 16px solid $runway;
+      border-top: 6px solid transparent;
+      border-bottom: 6px solid transparent;
+      content: '';
+      display: block;
+      position: absolute;
+      right: -16px;
+      top: 24px;
+    }
+  }
+}
+
+.profile-stats {
+  height: 90px;
+  margin: auto;
+  max-width: 1040px;
+  padding: 0;
+  text-align: center;
+  width: 100%;
+  .avatar {
+    display: inline-block;
+    position: relative;
+    top: -100px;
+    z-index: 500;
+  }
+  .left-side {
+    display: inline-block;
+    height: 100%;
+    vertical-align: top;
+    .stat {
+      border-left: 1px solid $grey4;
+      padding-left: 30px;
+      text-align: left;
+    }
+  }
+  .right-side {
+    display: inline-block;
+    height: 100%;
+    vertical-align: top;
+    .stat {
+      border-right: 1px solid $grey4;
+      padding-right: 30px;
+      text-align: right;
+    }
+  }
+  .stat {
+    display: inline-block;
+    // height: 100%;
+    vertical-align: bottom;
+    width: 32%;
+  }
+  .stat-number {
+    color: $land;
+    display: block;
+    font-family: tablet-gothic-condensed;
+    font-size: 30px;
+    font-weight: 300;
+  }
+  .stat-name {
+    color: $sky;
+    display: block;
+    font-family: 'Gotham Ssm A', 'Gotham Ssm B';
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    line-height: 12px;
+    text-transform: uppercase;
+  }
+  .left-side, .right-side {
+    width: 40%;
+  }
+}

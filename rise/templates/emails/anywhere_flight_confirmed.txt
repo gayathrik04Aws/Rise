@@ -1,0 +1,68 @@
+{% extends 'emails/base.txt' %}
+
+{% block content %}{{ title }}
+
+Time to get packing! Your RISE ANYWHERE flight to {{leg1.destination.name}} on {{leg1.departure|date:"M d, Y"}}  has successfully met the flight creators’ requirements and is now confirmed and ready to fly.
+You will automatically be confirmed on the flight and will receive additional information 24 hours prior to your travel.
+
+
+Departing | {{leg1.departure|date:"M d, Y"}}
+
+Origin
+{{ leg1.origin.name }}, {{ leg1.origin.state }}
+{{ leg1.local_departure_time_display}} {{ leg1.origin.get_timezone_display }}
+
+{{ leg1.duration}} MIN
+
+Destination
+{{ leg1.destination.name }}, {{ leg1.destination.state }}
+{{ leg1.local_arrival_time_display}} {{ leg1.destination.get_timezone_display }}
+
+{% if leg2 != None %}
+Returning | {{leg2.departure|date:"M d, Y"}}
+
+Origin
+{{ leg2.origin.name }}, {{ leg2.origin.state }}
+{{ leg2.local_departure_time_display}} {{ leg2.origin.get_timezone_display }}
+
+{{ leg2.duration}} MIN
+
+Destination
+{{ leg2.destination.name }}, {{ leg2.destination.state }}
+{{ leg2.local_arrival_time_display}} {{ leg2.destination.get_timezone_display }}
+
+{% endif %}
+
+Spots: {{ seats }}
+
+{% if passengers.count == 1 %}
+Passenger: {{ passengers.0.user.get_full_name }}
+{% else %}
+Passengers:
+    {% for passenger in passengers %}
+        {{ passenger.user.get_full_name }}
+    {% endfor %}
+
+{% endif %}
+
+{% if seats > passengers.count %}
+    Please note that all passengers who are not RISE members will need to create free RISE ANYWHERE accounts and
+    be added to your reservation by Member Relations.
+{% endif %}
+
+Spot cost: ${{ seat_cost|floatformat:0 }}
+{% if other_charges > 0 %}
+    {% if other_desc %}{{ other_desc}}{% else %}Other charges:{% endif %} ${{ other_charges|floatformat:0 }}
+{% endif %}
+Tax: ${{ tax|floatformat:0 }}
+Your total cost: ${{ your_total|floatformat:0 }}
+
+
+Your RISE ANYWHERE flight payment of  ${{ your_total|floatformat:0 }} will be processed within the next 24 hours. If you have any questions, please contact us at 844-766-8313.
+
+Have a great trip!
+
+Plans change.  We're here to help.  Call 844-766-8313 to speak to a RISE representative.
+
+{{ protocol }}://{{ site.domain }}{% url 'anywhere_flight_info' public_key %}
+{% endblock content %}

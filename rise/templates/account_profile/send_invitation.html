@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+{% load humanize %}
+
+{% block title %}Send Invitation - {{ block.super }}{% endblock title %}
+
+{% block meta_description %}Send Invitations{% endblock meta_description %}
+
+{% block css %}
+{% with marketing=False%}
+{{ block.super }}
+{% endwith %}
+{% endblock css %}
+
+{% block body_class %}{% endblock %}
+{% block body %}
+{% include 'account_profile/dashboard_nav.html' %}
+<div class="section profile-body">
+    {% include 'account_profile/profile-sidenav-mobile.html' with invitations=True %}
+
+    <div class="content-wrap app-content-wrap no-mt-mobile edit group">
+
+        {% include 'account_profile/profile-sidenav.html' with invitation=True %}
+
+        <div class="profile-content-wrap">
+            <div class="detail group">
+                <form action="{% url 'profile_send_invitation' %}" method="POST" id="send-invitation" class="bare group">
+                    {% csrf_token %}
+
+                    <h1>Send an Invitation</h1>
+
+                    {% if form.errors %}
+                    <div class="error-message">
+                        {% for field, errors in form.errors.items %}
+                        {% for error in errors %}
+                            {{ error }}<br/>
+                        {% endfor %}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    <div class="no-labels">
+                        <div class="distribute equal-width">
+
+                            <label for="id_first_name">First Name</label>
+                            <input {% if form.first_name.errors %}class="error"{% endif %} type="text" name="{{ form.first_name.html_name }}" value="{{ form.first_name.value|default:"" }}" placeholder="First Name" id="first-name"></input>
+
+                            <label for="id_last_name">Last Name</label>
+                            <input {% if form.last_name.errors %}class="error"{% endif %} type="text" name="{{ form.last_name.html_name }}" value="{{ form.last_name.value|default:"" }}" placeholder="Last Name" id="last-name"></input>
+                        </div>
+
+                        <label for="id_email">Email Address</label>
+                        <input {% if form.email.errors %}class="error"{% endif %} type="text" name="{{ form.email.html_name }}" value="{{ form.email.value|default:"" }}" placeholder="Email Address" id="email-address"></input>
+                    </div>
+
+                    <button type="submit" class="button green">Send Invite</button>
+
+                </form>
+            </div> <!-- /.detail.group -->
+        </div> <!-- /.profile-content-wrap -->
+    </div> <!-- /.content-wrap -->
+</div>  <!-- /.profile-body   -->
+{% endblock body %}
+
+{% block javascript %}
+{{ block.super }}
+<script src="{% static 'js/binaryajax.min.js' %}"></script>
+<script src="{% static 'js/exif.min.js' %}"></script>
+<script src="{% static 'js/profile.js' %}"></script>
+{% endblock javascript %}

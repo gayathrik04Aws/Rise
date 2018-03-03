@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+{% load humanize %}
+{% load account_tags %}
+
+{% block title %}Invitations - {{ block.super }}{% endblock title %}
+
+{% block meta_description %}Invitations{% endblock meta_description %}
+
+{% block css %}
+{% with marketing=False%}
+{{ block.super }}
+{% endwith %}
+{% endblock css %}
+
+{% block body_class %}{% endblock %}
+{% block body %}
+{% include 'account_profile/dashboard_nav.html' %}
+<div class="section profile-body">
+ {% include 'account_profile/profile-sidenav-mobile.html' with invitations=True %}
+    <div class="content-wrap app-content-wrap no-mt-mobile edit group">
+        {% include 'account_profile/profile-sidenav.html' with invitation=True %}
+        <div class="profile-content-wrap">
+          <div class="detail group">
+            <h1>Invitations</h1>
+            <div class="page-announcement">You have <span class="green">{{ user.account.invites|default:0|num2words }}</span> invitation{{ user.account.invites|pluralize }} remaining.</div>
+            <ul class="invitation-instructions">
+                <li><strong>If one sent invite is accepted,</strong> you will be awarded a special gift from Rise.</li>
+                <li><strong>If three sent invites are accepted,</strong> you'll receive a free Companion Pass.</li>
+            </ul>
+            {% if pending_invites %}
+            <label>Pending Invites</label>
+            <ul class="invitations-list pending">
+                {% for invite in pending_invites %}
+                <li>
+                    <figure class="invites-grey"></figure>
+                    <span class="recipient">{{ invite.first_name }} {{ invite.last_name }}</span>
+                    <span class="sent">Sent {{ invite.created_on|date:"d M Y" }}</span>
+                </li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            {% if redeemed_invites %}
+            <label>{{ redeemed_invites|length|num2words }} Completed</label>
+            <ul class="invitations-list">
+                {% for invite in redeemed_invites %}
+                <li>
+                    <figure class="accepted figure-mobile"></figure>
+                    <figure class="invites-grey figure-desktop"></figure>
+                    <div class="recipient">{{ invite.first_name }} {{ invite.last_name }}</div>
+                    <span class="sent"><figure class="accepted figure-desktop"></figure>Accepted {% if invite.is_physical %}<i>via printed invite</i>{% endif %}</span>
+                </li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+
+            <div class='two-page-controls'>
+                {% if user.account.invites == 0 %}
+                <a href="{% url 'profile_request_invitations' %}" class="button dark-grey">Request More Invites</a>
+                {% else %}
+                <a href="{% url 'profile_send_invitation' %}" class="button black ">Send an Invite</a>
+                {% endif %}
+            </div>
+          </div>
+      </div>
+  </div>
+</div>
+{% endblock body %}
+
+{% block javascript %}
+{{ block.super }}
+<script src="{% static 'js/binaryajax.min.js' %}"></script>
+<script src="{% static 'js/exif.min.js' %}"></script>
+<script src="{% static 'js/profile.js' %}"></script>
+{% endblock javascript %}

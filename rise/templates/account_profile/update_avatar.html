@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block body %}
+<div style="width:200px;margin:100px auto;">
+    <div class="profile{% if form.avatar.errors %} error{% endif %}" style="background-image:url({{ user.avatar_url }})" id="avatar-image">
+</div>
+<form action="#" method="POST" class="bare group" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="file" name="{{ form.avatar.html_name }}" value="{{ form.avatar.value|default:"" }}" id="avatar-file-input" accept="image/*" style="display:none"></input>
+    <a href="profile/change-picture" id="change-avatar">Change Picture</a>
+    <input type="submit">
+</form>
+{% endblock body %}
+
+{% block javascript %}
+    {{ block.super }}
+    <script src="{% static 'js/binaryajax.min.js' %}"></script>
+    <script src="{% static 'js/exif.min.js' %}"></script>
+    <script src="{% static 'js/profile.js' %}"></script>
+{% endblock javascript %}

@@ -1,0 +1,111 @@
+{% extends 'emails/base_anywhere.html' %}
+
+{% block title %}{{ title }}{% endblock title %}
+
+{% block body %}
+<table border="0" cellpadding="40" cellspacing="0" width="100%" class="anywhere-email">
+
+    <tr>
+        <td>
+            <table border="0" cellpadding="20" cellspacing="0" width="100%">
+                <tr>
+                    <td align="center" valign="top" class="bodyContent">
+                        <div>
+                            {% if flightset != None and flight_creator != None %}
+                            <h1>Congratulations!</h1>
+
+
+                            <p style="margin-bottom: 20px;">You have been invited to join {{ flight_creator.get_full_name }}’s RISE ANYWHERE flight to from {{ flightset.origin.name }} to {{ flightset.destination.name }} on {{ flightset.leg1.departure|date:"M d, Y" }}.</p>
+
+                            <p style="margin-bottom: 20px;">Before we can confirm your spot, you must become a RISE ANYWHERE limited member. To join as a RISE ANYWHERE limited member you will need to complete your RISE profile and security check. Once approved, you will be notified and you will be added to the flight.</p>
+
+                            {% else %}
+                            <h1>Welcome to RISE Anywhere!</h1>
+                                 <p style="margin-bottom: 20px;">Before you can fly, you must become a RISE ANYWHERE member. To join as a RISE ANYWHERE member you will need to complete your RISE profile and security check. Once approved, you will be notified and you will be added to the flights you join.</p>
+                            {% endif %}
+                        <p>Need more information? Please call us at <a href="tel:+18447668313">844-766-8313</a> and a RISE Representative will be happy to assist you.</p>
+
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        {% if flightset != None %}
+            <table border="0" cellpadding="4" cellspacing="0" width="100%">
+                <tr>
+                    <td>
+                        <hr />
+                    </td>
+                    <td width="120">
+                        <h3 class="section-header" style="margin: 0;">Flight Details</h3>
+                    </td>
+                    <td>
+                        <hr />
+                    </td>
+                </tr>
+            </table>
+            <table border="0" cellpadding="20" cellspacing="0" width="100%">
+                <tr>
+                    <td>
+                        <h2>{{ flightset.leg1.origin.name }}, {{ flightset.leg1.origin.state }} to {{ flightset.leg1.destination.name }}, {{ flightset.leg1.destination.state }}</h2>
+                    </td>
+                </tr>
+            </table>
+            <table border="0" cellpadding="20" cellspacing="0" width="100%" class="flightDetails">
+                <tr>
+                    <td>
+                        <h3 class="all-caps-header">Departing | {{flightset.leg1.departure|date:"M d, Y"}}</h3>
+
+                        <h2 class="time">{{ flightset.leg1.local_departure_time_display}} {{ flightset.leg1.origin.get_timezone_display }}</h2>
+                        <p class="location">{{ flightset.leg1.origin.name }} ({{ flightset.leg1.origin.code }})</p>
+
+                        <center><div class="vertical-line centered"></div> </center>
+                        <p class="duration">{{ flightset.leg1.duration }} MIN</p>
+                        <center><div class="vertical-line centered"></div> </center>
+
+                        <h2 class="time">{{ flightset.leg1.local_arrival_time_display}} {{ flightset.leg2.destination.get_timezone_display }}</h2>
+                        <p class="location">{{ flightset.leg1.destination.name }} ({{ flightset.leg1.destination.code }})</p>
+
+                    </td>
+                    {% if leg2 != None %}
+                    <td>
+                        <h3 class="all-caps-header">Departing | {{flightset.leg2.departure|date:"M d, Y"}}</h3>
+
+                        <h2 class="time">{{ flightset.leg2.local_departure_time_display}} {{ flightset.leg2.origin.get_timezone_display }}</h2>
+                        <p class="location">{{ flightset.leg2.origin.name }} ({{ flightset.leg2.origin.code }})</p>
+
+                        <center><div class="vertical-line centered"></div> </center>
+                        <p class="duration">{{ flightset.leg2.duration }} MIN</p>
+                        <center><div class="vertical-line centered"></div> </center>
+
+                        <h2 class="time">{{ flightset.leg2.local_arrival_time_display}} {{ flightset.leg2.destination.get_timezone_display }}</h2>
+                        <p class="location">{{ flightset.leg2.destination.name }} ({{ flightset.leg2.destination.code }})</p>
+
+                    </td>
+                    {% endif %}
+                </tr>
+            </table>
+{% endif %}
+            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                <tr>
+                    <td align="center" valign="top" style="padding-top: 40px; padding-bottom: 40px;">
+                        <table border="0" cellpadding="0" cellspacing="0" class="button">
+                            <tr>
+                                <td valign="middle" width="250px">
+                                    <div>
+                                        <a href="{{ protocol }}://{{ site.domain }}{{ user.generate_register_login_url }}">Complete Your Profile</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        <img src="http://cl.ly/100Q0H2k1E3j/footer-logo.png" width="119px" height="27px">
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+{% endblock body %}

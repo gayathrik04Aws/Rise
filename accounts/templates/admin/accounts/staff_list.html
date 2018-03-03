@@ -1,0 +1,99 @@
+{% extends 'base_admin.html' %}
+
+{% load staticfiles %}
+
+{% block title %}Staff - {{ block.super }}{% endblock title %}
+
+{% block meta_description %}Staff - Dashboard{% endblock meta_description %}
+
+{% block css %}
+{% with marketing=False%}
+{{ block.super }}
+{% endwith %}
+{% endblock css %}
+
+{% block body_class %}{% endblock %}
+{% block body %}
+{% include 'admin_header_fragment.html' with nav_staff=True %}
+<div class="admin-content-wrap">
+    <div class="block admin">
+        <div class="admin-page-header no-bb">
+            <div class="fl">
+                <h1>Staff</h1>
+            </div>
+            <div class="fr">
+                {% comment %}
+                <input type="search" placeholder="@TODO: Search" class="dark page-search admin-reveal">
+                <div class="select admin-page-sort dark">
+                    <span class="value">Showing All users</span>
+                    <ul>
+                        <li value="1">All users</li>
+                        <li value="2">Sort</li>
+                        <li value="3">Sort</li>
+                        <li value="4">Sort</li>
+                        <li value="5">Sort</li>
+                    </ul>
+                    <select>
+                        <option value="1">All users</option>
+                        <option value="2">Sort</option>
+                        <option value="3">Sort</option>
+                        <option value="4">Sort</option>
+                        <option value="5">Sort</option>
+                    </select>
+                </div>
+                {% endcomment %}
+
+                <div class="add-page-item">
+                    <a href="{% url 'admin_staff_user_add' %}" class="add-page-item">+ Add New Staff Member&nbsp;&nbsp;&nbsp;</a>
+                </div>
+                <div class="add-page-item">
+                <a href="{% url 'admin_oncall_schedule' %}" class="add-page-item">Configure RISE Rep Schedule&nbsp;&nbsp;&nbsp;</a>
+            </div>
+            </div>
+        </div>
+        <div class="control-row">
+
+
+        </div>
+    </div>
+
+    <table class="admin-table">
+        <thead>
+            <tr>
+                <th>Avatar</th>
+                <th>User Name</th>
+                <th>Account Name</th>
+                <th>Phone #</th>
+                <th>Email</th>
+                <th>Groups</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in user_list %}
+            {% if user.account and user.userprofile %}
+            <tr class="link-row" href="{% url 'admin_account_user' user.account.id user.userprofile.pk %}">
+            {% else %}
+            <tr class="link-row" href="{% url 'admin_staff_user_edit' user.userprofile.pk %}">
+
+            {% endif %}
+                <td class="contact">
+                    <div class="circle">
+                        <img src="{{ user.avatar_url }}">
+                    </div>
+                </td>
+                <td class="name-cell"><b>{{ user.get_full_name }}</b></td>
+                <td class="account-cell">{% if user.account %}{{ user.account.account_name }}{% endif %}</td>
+                <td class="phone-cell">{{ user.userprofile.phone }}</td>
+                <td class="email-cell"><a href="mailto:{{ user.email }}" class="underline-link">{{ user.email|truncatechars:20 }}</a></td>
+                <td class="groups-cell">
+                    {% for group in user.groups.all %}
+                        {% if forloop.counter > 1 %}, {% endif %}{{group.name}}
+                    {% endfor %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+{% endblock body %}

@@ -1,0 +1,40 @@
+{% extends 'emails/base.txt' %}
+
+{% block content %}{{ title }}
+{% if message %}
+{{ message }}
+{% else %}
+Thank you!
+We have received your RISE ANYWHERE booking.
+Please note that your RISE ANYWHERE reservation is not guaranteed until the flight is confirmed.  You will receive
+ a separate email once the flight has filled or is confirmed.  Your selected payment method will be billed at that time.
+{% endif %}
+
+Plans Change?  Please call 844-766-8313 to speak with a RISE Representative.
+
+{% for member in member_list %}
+    {{ member }}
+{% endfor %}
+
+{% for flight_reservation in flight_reservations  %}
+Flight {{ flight_reservation.flight.flight_number }} / {{ flight_reservation.flight.departure|date:"M d, Y" }}
+
+Origin
+------
+{{ flight_reservation.flight.origin.name }}, {{ flight_reservation.flight.origin.state }}
+{{ flight.local_departure|date:"h:i A e"}}
+
+Destination
+-----------
+{{ flight_reservation.flight.destination.name }}, {{ flight_reservation.flight.destination.state }}
+{{ flight.local_arrival|date:"h:i A e"}}
+
+
+{% endfor %}
+
+Subtotal:  ${{ subtotal|floatformat:0 }}
+Tax:  ${{ tax_total|floatformat:0 }}
+Total: ${{ total_cost|floatformat:0 }}
+
+{{ protocol }}://{{ site.domain }}{% url 'reservations' 'upcoming' %}
+{% endblock content %}

@@ -1,0 +1,42 @@
+{% extends 'base_admin.html' %}
+
+{% load staticfiles %}
+{% load humanize %}
+{% load flight_tags %}
+
+{% block title %}Braintree transaction test harness{% endblock title %}
+
+{% block meta_description %}Braintree transaction test harness{% endblock meta_description %}
+
+{% block body_class %}{% endblock %}
+{% block body %}
+<h1>Use this to set Test Environment transactions to "Settled" so that they can be refunded properly.</h1>
+<h2>If we need additional statuses in future we can set them in the billing/admin_forms/choices</h2>
+
+<p>Get the charge ID from the reservations_reservation table.</p>
+{% if form.errors %}
+        <div class="error-message">
+        {% for field, errors in form.errors.items %}
+        {% for error in errors %}
+          {{ error }}<br/>
+        {% endfor %}
+        {% endfor %}
+        </div>
+    {% elif messages %}
+      <div class="error-message">
+      {% for msg in messages %}
+      {{ msg }}<br>
+      {% endfor %}
+      </div>
+    {% endif %}
+    <form method="post" action="">
+        {% csrf_token %}
+<table><tr><td>Charge ID:</td><td>{{ form.charge_id }}</td></tr>
+    <tr><td>Status:</td><td>{{ form.status }}</td></tr></table>
+        <div class="center">
+            <button type="submit" class="green">Update</button>
+        </div>
+        </form>
+{% endblock body %}
+
+

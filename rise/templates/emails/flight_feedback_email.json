@@ -1,0 +1,9 @@
+{
+    "first_name": "A Passenger",
+    "subject": "Your Recent Rise Flight Experience",
+    "flight": {
+        "flight_number": "1234"
+    },
+    "message_html": "Thank you again for choosing Rise for your recent flight travel! We are committed to delivering the finest service experience in the sky to our Members, and your feedback is essential in this mission. Your feedback will be shared with the Rise Team to help in our efforts to provide a positive and memorable experience with each and every interaction.<br><br>The Rise Team values your loyalty and business, and would appreciate hearing how we were able to meet your expectations, or how we can serve you even better in the future.<br><br>Thank you,<br><br> The Rise Team",
+    "message_txt": "Thank you again for choosing Rise for your recent flight travel! We are committed to delivering the finest service experience in the sky to our Members, and your feedback is essential in this mission. Your feedback will be shared with the Rise Team to help in our efforts to provide a positive and memorable experience with each and every interaction.\n\nThe Rise Team values your loyalty and business, and would appreciate hearing how we were able to meet your expectations, or how we can serve you even better in the future.\n\nThank you,\n\nThe Rise Team"
+}

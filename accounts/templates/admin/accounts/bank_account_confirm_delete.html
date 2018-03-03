@@ -1,0 +1,23 @@
+{% extends 'base_admin.html' %}
+
+{% load staticfiles %}
+
+{% block body %}
+{% include 'admin_header_fragment.html' with accounts=True %}
+<div class="admin-content-wrap admin-form-page">
+    <h1>Delete Bank Account</h1>
+
+    <form action="." method="POST">
+        {% csrf_token %}
+
+        <p>
+            Are you sure you want to delete the bank account {{ bankaccount.bank_name }} for {{ bankaccount.account.account_name }}?
+        </p>
+
+        <div class="center">
+            <button type="submit" class="green">Delete Bank Account</button>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

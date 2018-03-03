@@ -1,0 +1,53 @@
+{% load staticfiles %}
+{% load rise_utils %}
+
+<nav class="rise-admin">
+    <div class="rise-admin-wrapper">
+        <div class="left-side">
+            <div class="nav-button">
+                <a href="{% url 'dashboard' %}">
+                    <figure class="logo hide-print"></figure>
+                    <img src="{% static "img/logo.png" %}" class="logo show-print">
+                </a>
+            </div>
+        </div>
+        <div class="right-side">
+            <ul class="basic-nav">
+                {% if perms.accounts.can_view_flights %}<li><a href="{% url 'admin_dashboard' %}" {% if dashboard %}class="rise-admin-active"{% endif %}>Dashboard</a></li>{% endif %}
+                {% if perms.accounts.can_view_flights %}<li><a href="{% url 'admin_anywhere' %}" {% if anywhere %}class="rise-admin-active"{% endif %}>Anywhere</a></li>{% endif %}
+                {% if perms.accounts.can_view_flights %}<li><a href="{% url 'admin_list_flights' %}" {% if flights %}class="rise-admin-active"{% endif %}>Flights</a></li>{% endif %}
+                {% if perms.accounts.can_edit_flights %}<li><a href="{% url 'admin_list_routes' %}" {% if nav_routes %}class="rise-admin-active"{% endif %}>Routes</a></li>{% endif %}
+                {% if perms.accounts.can_edit_flights %}<li><a href="{% url 'admin_airports' %}" {% if nav_airports %}class="rise-admin-active"{% endif %}>Airports</a></li>{% endif %}
+                {% if perms.accounts.can_edit_flights %}<li><a href="{% url 'admin_planes' %}" {% if nav_planes %}class="rise-admin-active"{% endif %}>Planes</a></li>{% endif %}
+                {% if perms.accounts.can_view_members %}<li><a href="{% url 'admin_accounts' %}" {% if accounts %}class="rise-admin-active"{% endif %}>Accounts</a></li>{% endif %}
+                {% if perms.accounts.can_view_members %}<li><a href="{% url 'admin_users' %}" {% if nav_users %}class="rise-admin-active"{% endif %}>Users</a></li>{% endif %}
+                {% if perms.accounts.can_book_members %}<li><a href="{% url 'admin_list_waitlist' %}" {% if nav_waitlist %}class="rise-admin-active"{% endif %}>Wait List</a></li>{% endif %}
+                {% if perms.accounts.can_manage_staff %}<li><a href="{% url 'admin_staff' %}" {% if nav_staff %}class="rise-admin-active"{% endif %}>Staff</a></li>{% endif %}
+                {% if perms.accounts.can_manage_announcements %}<li><a href="{% url 'admin_announcements_list' %}" {% if announcements %}class="rise-admin-active"{% endif %}>Communications</a></li>{% endif %}
+                {% if perms.accounts.can_view_reports %}<li><a href="{% url 'admin_reports' %}" {% if reports %}class="rise-admin-active"{% endif %}>Reports</a></li>{% endif %}
+            </ul>
+            <div class="nav-button avatar toggle-expandable popover-button popover-control">
+                <div class="badge-wrap badge-left popover-control toggle-expandable">
+                    <div class="circle">
+                        <img src="{{ user.avatar_url }}">
+                        <div class="badge-wrap">
+                          <figure class="arrow-down-green"></figure>
+                        </div>
+                    </div>
+                </div>
+                <div class="popover">
+                    <ul>
+                        <li class="grey">Hi, {{ user.first_name }}</li>
+                    {% if user.account %}
+                        <a href="{% url 'dashboard' %}"><li>Dashboard</li></a>
+                        <a href="{% url 'profile' %}"><li class="active">Manage Account</li></a>
+                        <a href="{% url 'reservations' 'upcoming' %}"><li>Reservations</li></a>
+                    {% endif %}
+                        <a href="{{ WP_URL }}"><li>Rise Homepage</li></a>
+                        <a href="{% url 'logout' %}"><li class="row"><h5 class="green">Sign Out</h5></li></a>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>

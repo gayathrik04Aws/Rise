@@ -1,0 +1,205 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% load staticfiles %}
+{% load account_tags %}
+{% load safe_settings %}
+{% block title %}Edit Member - {{ block.super }}{% endblock title %}
+
+{% block meta_description %}Edit Member - Manage Account{% endblock meta_description %}
+
+{% block css %}
+{% with marketing=False%}
+{{ block.super }}
+{% endwith %}
+{% endblock css %}
+
+{% block body_class %}{% endblock %}
+{% block body %}
+{% include 'account_profile/dashboard_nav.html' %}
+<div class="section profile-body">
+    {% include 'account_profile/profile-sidenav-mobile.html' with team_members=True %}
+    <div class="content-wrap app-content-wrap no-mt-mobile group">
+    {% include 'account_profile/profile-sidenav.html' with companion=True %}
+    <div class="profile-content-wrap">
+            <div class="detail group">
+            {% if member %}
+            <li class="member group block row">
+                <div class="actionable-row">
+                    <div class="left-side">
+                        <div class="circle mr5">
+                            <img src="{{ member.avatar_url }}">
+                        </div>
+                        <div class="caption member">
+                            <p>
+                                <strong>{{ member.get_full_name }}</strong><br/>
+                                Authorized Member
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </li>
+
+            <form id="addUpdateMemberForm" action="" method="POST" class="bare group" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% if form.errors %}
+                <div class="error-message">
+                {% for field, errors in form.errors.items %}
+                {% for error in errors %}
+                  {{ error }}<br/>
+                {% endfor %}
+                {% endfor %}
+                </div>
+                {% endif %}
+
+                {% if messages %}
+                {% for message in messages %}
+                    <div class="error-message">{{ message }}</div>
+                {% endfor %}
+                {% endif %}
+
+                <div class="no-labels">
+                    <div class="distribute equal-width">
+                        <label for="id_first_name">First Name</label>
+                        <input {% if form.first_name.errors %}class="error"{% endif %} type="text" name="{{ form.first_name.html_name }}" value="{{ form.first_name.value|default:"" }}" placeholder="First Name" id="first-name"></input>
+
+                        <label for="id_last_name">Last Name</label>
+                        <input {% if form.last_name.errors %}class="error"{% endif %} type="text" name="{{ form.last_name.html_name }}" value="{{ form.last_name.value|default:"" }}" placeholder="Last Name" id="last-name"></input>
+                    </div>
+
+                    <label for="id_email">Email Address</label>
+                    <input {% if form.email.errors %}class="error"{% endif %} type="text" name="{{ form.email.html_name }}" value="{{ form.email.value|default:"" }}" placeholder="Email Address" id="email-address"></input>
+                    <div class="group">
+                        <div class="two-column">
+                            <label for="id_phone">Phone Number</label>
+                            <input {% if form.phone.errors %}class="error"{% endif %} type="text" name="{{ form.phone.html_name }}" value="{{ form.phone.value|default:"" }}" placeholder="Phone Number" id="id_phone"></input>
+                        </div>
+                        <div class="two-column">
+                            <label for="id_mobile_phone">Cell Phone (Optional)</label>
+                            <input {% if form.mobile_phone.errors %}class="error"{% endif %} type="text" name="{{ form.mobile_phone.html_name }}" value="{{ form.mobile_phone.value|default:"" }}" placeholder="Cell Phone" id="id_mobile_phone"></input>
+                        </div>
+                    </div>
+
+                    <label class="check-radio-block">
+                        <input {% if form.is_active.errors %}class="error"{% endif %} type="checkbox" name="{{ form.is_active.html_name }}" {% if form.is_active.value %}checked{% endif %} id="is-active"></input>
+                        <span>Is Active</span>
+                    </label>
+                </div>
+                <div class="equal-with-labels">
+                    <div class="full-input fl">
+                        <label>Date of Birth</label>
+                        <input {% if form.date_of_birth.errors %}class="error"{% endif %} type="text" name="{{ form.date_of_birth.html_name }}" value="{{ form.date_of_birth.value|date:"m/d/Y"|default:"" }}" placeholder="MM/DD/YEAR" id="id_date_of_birth"></input>
+                    </div>
+                    <div class="full-input fr">
+                        <label>Weight Range</label>
+                        <div class="select arrow">
+                          <span class="value">{{ form.weight.value|default:"Select" }}</span>
+                          <ul>
+                              {% for value, text in form.weight.field.choices %}
+                              <li value="{{ value }}">{{ text }}</li>
+                              {% endfor %}
+                          </ul>
+                          {{ form.weight }}
+                        </div>
+                    </div>
+                </div>
+                <div class="no-labels">
+                    <label for="id_ship_street_1">Street Address Line 1</label>
+                    <input {% if form.ship_street_1.errors %}class="error"{% endif %} type="text" name="{{ form.ship_street_1.html_name }}" value="{{ form.ship_street_1.value|default:"" }}" placeholder="Street Address Line 1" id="ship-street-1"></input>
+                    <label for="id_ship_street_2">Street Address Line 2</label>
+                    <input {% if form.ship_street_2.errors %}class="error"{% endif %} type="text" name="{{ form.ship_street_2.html_name }}" value="{{ form.ship_street_2.value|default:"" }}" placeholder="Street Address Line 2" id="ship-street-2"></input>
+                    <label for="id_ship_city">City</label>
+                    <input {% if form.city.errors %}class="error"{% endif %} type="text" name="{{ form.ship_city.html_name }}" value="{{ form.ship_city.value|default:"" }}" placeholder="City" id="ship-city"></input>
+
+                    <div class="distribute equal-width">
+                        <div class="select arrow">
+                          <span class="value">{{ form.ship_state.value|default:"Select" }}</span>
+                          <ul>
+                              {% for value, text in form.ship_state.field.choices %}
+                              <li value="{{ value }}">{{ text }}</li>
+                              {% endfor %}
+                          </ul>
+                          {{ form.ship_state }}
+                        </div>
+                        <label for="id_postal_code">Zip</label>
+                        <input {% if form.ship_postal_code.errors %}class="error"{% endif %} type="text" name="{{ form.ship_postal_code.html_name }}" value="{{ form.ship_postal_code.value|default:"" }}" placeholder="Zip" id="postal-code"></input>
+                    </div>
+                </div>
+                <label>Roles</label>
+                <div class="group">
+                {% for checkbox in form.member_groups %}
+                    <label class="check-radio-block">
+                        <input id="member-group-{{ forloop.counter }}" name="{{ checkbox.name }}" type="checkbox" value="{{ checkbox.choice_value }}" {% if checkbox.is_checked %}checked="checked"{% endif %}> <span>{{ checkbox.choice_label }} {% if checkbox.choice_label != 'Coordinator' and account_is_full and not member_paid %}(subject to ${{ fee|floatformat:0 }} one-time fee){% endif %}</span>
+                    </label>
+                {% endfor %}
+                {% if user.account.is_full and not member_paid %}
+                    <div id="divPaymentMethod">
+                    <label for="{{ form.payment_method.auto_id }}" class="center">--SELECT PAYMENT METHOD--</label>
+                    {{ form.payment_method.errors }}
+
+                    <div class="select arrow">
+                        <span class="value">{{ form.payment_method.value|default:"Select" }}</span>
+                      <ul>
+                           {% for choice in form.payment_method.field.choices %}
+                           <li value="{{ choice.0 }}" >{{ choice.1 }} {% if choice.0|is_default_payment_method %} -- DEFAULT{% endif %}</li>
+                           {% endfor %}
+                       </ul>
+                      <select id="id_payment_method" name="payment_method" >
+                      {% for choice in form.payment_method.field.choices %}
+                        <option value="{{ choice.0 }}" {% if choice.0|is_default_payment_method %}selected{% endif %}>{{ choice.1 }} {% if choice.0|is_default_payment_method %} -- DEFAULT{% endif %}</option>
+                        {% endfor %}
+                    </select>
+                    </div>
+                    </div>
+                    <p><b>Your account is full, and this user is not a paid flying member.</b></p><p> If you make this user a full account member, they will be subject to a one time fee of ${{ fee }}.</p>
+                    {% else %}
+                    <div id="divPaymentMethod" class="hidden"></div>
+                {% endif %}
+                </div>
+                {% comment %}
+                <label>Permissions</label>
+                    <div class="group">
+                    <label class="check-radio-block">
+                        <input {% if form.can_fly.errors %}class="error"{% endif %} type="checkbox" name="{{ form.can_fly.html_name }}" {% if form.can_fly.value %}checked{% endif %} id="can-fly"></input>
+                        <span>Can Fly</span>
+                    </label>
+                    <label class="check-radio-block">
+                        <input {% if form.can_book_flights.errors %}class="error"{% endif %} type="checkbox" name="{{ form.can_book_flights.html_name }}" {% if form.can_book_flights.value %}checked{% endif %} id="can-book-flights"></input>
+                        <span>Can create itineraries that cost money</span>
+                    </label>
+                    <label class="check-radio-block">
+                        <input {% if form.can_book_promo_flights.errors %}class="error"{% endif %} type="checkbox" name="{{ form.can_book_promo_flights.html_name }}" {% if form.can_book_promo_flights.value %}checked{% endif %} id="can-book-promo-flights"></input>
+                        <span>Can book fun flights</span>
+                    </label>
+                    <label class="check-radio-block">
+                        <input {% if form.can_manage_billing.errors %}class="error"{% endif %} type="checkbox" name="{{ form.can_manage_billing.html_name }}" {% if form.can_manage_billing.value %}checked{% endif %} id="can-manage-billing"></input>
+                        <span>Can Manage Billing</span>
+                    </label>
+                    </div>
+                    {% endcomment %}
+
+                <button type="button" class="button green" onclick="javascript:addUpdateMember('{% if user.account.is_full and not member_paid %}True{% else %}False{% endif %}');">Update Member</button>
+            </form>
+            {% else %}
+                <h1>Member not found.</h1>
+            {% endif %}
+        </div>
+  </div>
+</div>
+
+<div id="memberChargeModal" class="modal-wrapper" style="z-index: 10000; opacity: 1;">
+    <div class="modal center">
+        <figure class="x-grey-lg"></figure>
+        <figure class="alert-icon"></figure>
+        <p class="thick">Your payment method will now be charged ${% settings_value "DEPOSIT_COST" %} + ${% settings_value "DEPOSIT_TAX_PERCENT" %} sales tax. Continue with payment?</p>
+        <a id="confirm_credit_card_payment" href="javascript:submitAddUpdateMemberForm();" class="action-block grey condensed">Confirm Payment<figure class="arrow-right-grey"></figure></a>
+    </div>
+</div>
+{% endblock body %}
+
+{% block javascript %}
+{{ block.super }}
+<script src="{% static 'js/binaryajax.min.js' %}"></script>
+<script src="{% static 'js/exif.min.js' %}"></script>
+<script src="{% static 'js/profile.js' %}"></script>
+{% endblock javascript %}

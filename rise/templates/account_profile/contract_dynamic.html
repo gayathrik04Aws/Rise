@@ -1,0 +1,34 @@
+{% load account_tags %}
+
+<p>This is a Member Agreement made pursuant to all Terms & Conditions by and between:
+ RISE Alpha, LLC, with a principal address of 7363 Herb Kelleher Way, Dallas, Texas 75235 and
+</p>
+
+<table id="contractTable"><tr><td>
+    {{ user.first_name }} {{ user.last_name }}
+{% if address %}
+    <br>{{ address.street_1 }}
+    {%  if address.street_2 %}
+    <br>{{ address.street_2 }}
+    {% endif %}
+    <br>{{ address.city }}, {{ address.state }} {{ address.zip }}
+{% endif %}
+</td><td>Signed Client</td></tr>
+<tr><td>Effective Date:</td><td>{{ user.account.contract_start_date| date:"M d, Y" }}</td></tr>
+    <tr><td>Membership Term:</td><td>{{ contract.contract_length }} months</td></tr>
+    <tr><td>Product:</td><td>Monthly RISE membership - {{ user.account.plan.name }}</td></tr>
+    <tr><td>Initiation Fee:</td><td>${{ onboarding_fee |floatformat:0 }}</td></tr>
+    <tr><td>Monthly Membership Fee:</td><td>${{ contract.amount|floatformat:0 }}, Acknowledged in RISE Active Profile</td></tr>
+    <tr><td>Payment Frequency:</td><td>{% if user.account.get_subscription != None %} Monthly, due on {{ user.account | get_next_due_date | date:"M d, Y" }}, once every 30 days on anniversary date{% else %}No active subscription.{% endif %}</td></tr>
+    <tr><td>Additional Consideration:</td><td>{% if user.account.plan.name == 'Executive' or user.account.plan.name == 'Chairman' %}
+        One (1) complimentary Guest Pass every month, valued at $1500
+        {% else %}N/A
+    {% endif %}</td></tr>
+</table>
+
+<style>
+    table#contractTable td {
+        padding:10px;
+        width:50%;
+    }
+</style>

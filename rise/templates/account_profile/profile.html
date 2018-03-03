@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block title %}Basic Information - {{ block.super }}{% endblock title %}
+
+{% block meta_description %}Basic Information - Manage Account{% endblock meta_description %}
+
+{% block css %}
+{% with marketing=False%}
+{{ block.super }}
+{% endwith %}
+{% endblock css %}
+
+{% block body_class %}{% endblock %}
+{% block body %}
+{% include 'account_profile/dashboard_nav.html' with profile=True %}
+<div class="section profile-body">
+        {% include 'account_profile/profile-sidenav-mobile.html' with basic_info=True %}
+    <div class="content-wrap app-content-wrap no-mt-mobile group">
+        {% include 'account_profile/profile-sidenav.html' with profile=True %}
+      <div class="profile-content-wrap">
+      <h1>Basic Information</h1>
+      <div class="detail group">
+        <div class="profile-page-header">
+            <h2>{{ user.get_full_name }}</h2>
+            {% if user.account.status != 'A' %}
+                <br>
+            <h3>Your account is not currently active. </h3><h3>Contact a RISE Representative at <a href="tel:+18447668313">844-766-8313</a> for more information.</h3>
+            {% endif %}
+            <div class="avatar-actions">
+                <form action="{% url 'profile_avatar' %}" method="POST" id="update-avatar-tablet" class="bare group" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="file" name="avatar" value="{{ user.avatar }}" id="avatar-file-input-tablet" accept="image/*" style="display:none"></input>
+                </form>
+                <a href="avatar" id="change-avatar-tablet">
+                    <figure class="icon-camera"></figure>
+                    <h5 class="center"><em>Change<br/>Photo</em></h5>
+                </a>
+            </div>
+        </div>
+        <div class="pass-wrapper">
+            <div class="passes">
+                <figure class="sms-passes"></figure>
+                <h3>Available Legs</h3>
+                <p>{{ account.pass_count|stringformat:"02d" }} per month</p>
+            </div>
+            <div class="passes">
+            <figure class="companion-passes"></figure>
+                <h3>Companion Passes</h3>
+                <p>{{ account.companion_pass_count|stringformat:"02d" }} per month</p>
+            </div>
+        </div>
+        <hr/>
+        <div class="profile-items-wrapper">
+            <ul class="profile-items group">
+                <li>
+                    <span class="item-title">Email</span>
+                    <span class="item-value">{{ user.email|truncatechars:25 }}</span>
+                </li>
+                <li>
+                    <span class="item-title">Company</span>
+                    <span class="item-value">{{ account.company_name }}</span>
+                </li>
+                <li>
+                    <span class="item-title">Phone</span>
+                    <span class="item-value">{{ user.userprofile.phone }}</span>
+                </li>
+                <li>
+                    <span class="item-title">Cell</span>
+                    <span class="item-value">{{ user.userprofile.mobile_phone }}</span>
+                </li>
+                <li class="tall">
+                    <span class="item-title multiline">Address</span>
+                    <span class="item-value multiline">
+                        {{ user.userprofile.shipping_address.street_1 }}<br/>
+                        {% if user.userprofile.shipping_address.street_2 %}
+                            {{ user.userprofile.shipping_address.street_2 }}<br/>
+                        {% endif %}
+                        {{ user.userprofile.shipping_address.city }},
+                        {{ user.userprofile.shipping_address.state }}
+                        {{ user.userprofile.shipping_address.postal_code }}
+                    </span>
+                </li>
+                <li class="tall">
+                    <span class="item-title">Weight Range</span>
+                    <span class="item-value">{{ user.userprofile.get_weight_display }}</span>
+                </li>
+                <li>
+                    <span class="item-title">Date of Birth</span>
+                    <span class="item-value">{{ user.userprofile.date_of_birth }}</span>
+                </li>
+                <li>
+                    <span class="item-title">Origin Airport</span>
+                    <span class="item-value">{{ user.userprofile.origin_airport.name }}</span>
+                </li>
+            </ul>
+            <ul class="profile-items-additional">
+                {% comment %}
+                <li>
+                    {# <span class="item-title">Food Preferences</span> #}
+                    <span class="item-title">Drink Preferences</span>
+                    <span class="item-value">
+                        {{ user.user_profile.food_options.all|join:", " }}
+                    </span>
+                </li>
+                {% endcomment %}
+                <li>
+                    <span class="item-title">Allergies</span>
+                    <span class="item-value allergies">{{ user.userprofile.allergies }}</span>
+                </li>
+                </li>
+            </ul>
+        </div>
+        <hr>
+        <div class="page-controls">
+            <a href="{% url 'profile_edit' %}" class="button green">Edit Info</a>
+        </div>
+      </div>
+      </div>
+  </div>
+</div>
+{% endblock body %}
+
+{% block javascript %}
+{{ block.super }}
+<script src="{% static 'js/binaryajax.min.js' %}"></script>
+<script src="{% static 'js/exif.min.js' %}"></script>
+<script src="{% static 'js/profile.js' %}"></script>
+{% endblock javascript %}

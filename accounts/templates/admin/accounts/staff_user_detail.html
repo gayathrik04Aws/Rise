@@ -1,0 +1,92 @@
+{% extends 'base_admin.html' %}
+
+{% load staticfiles %}
+
+{% block title %}Users - {{ block.super }}{% endblock title %}
+
+{% block meta_description %}Users - Dashboard{% endblock meta_description %}
+
+{% block css %}
+{% with marketing=False%}
+{{ block.super }}
+{% endwith %}
+{% endblock css %}
+
+{% block body_class %}{% endblock %}
+{% block body %}
+{% include 'admin_header_fragment.html' with users=True %}
+<div class="admin-detail-view">
+    <div class="block admin">
+        <div class="admin-page-header no-bb">
+            <h1><a href="{% url 'admin_account' account_user.account.pk %}">{{ account_user.account.account_name }}</a> > {{ account_user.get_full_name }}</h1>
+        </div>
+        <div>
+
+            <ul class="profile-items group">
+                <li>
+                    <span class="item-title">Email</span>
+                    <span class="item-value">{{ account_user.email|truncatechars:30 }}</span>
+                </li>
+                <li>
+                    <span class="item-title">Account</span>
+                    <span class="item-value"><a href="{% url 'admin_account' account_user.account.id %}">{{ account_user.account.account_name }}</a></span>
+                </li>
+                <li>
+                    <span class="item-title">Phone</span>
+                    <span class="item-value">{{ account_user.user_profile.phone }}</span>
+                </li>
+                <li>
+                    <span class="item-title">Cell</span>
+                    <span class="item-value">{{ account_user.user_profile.mobile_phone }}</span>
+                </li>
+                <li class="tall">
+                    <span class="item-title multiline">Address</span>
+                    <span class="item-value multiline">
+                        {{ account_user.user_profile.shipping_address.street_1 }}<br/>
+                        {% if account_user.user_profile.shipping_address.street_2 %}
+                            {{ account_user.user_profile.shipping_address.street_2 }}<br/>
+                        {% endif %}
+                        {{ account_user.user_profile.shipping_address.city }},
+                        {{ account_user.user_profile.shipping_address.state }}
+                        {{ account_user.user_profile.shipping_address.postal_code }}
+                    </span>
+                </li>
+                <li class="tall">
+                    <span class="item-title">Weight Range</span>
+                    <span class="item-value">{{ account_user.user_profile.get_weight_display }}</span>
+                </li>
+                <li>
+                    <span class="item-title">Date of Birth</span>
+                    <span class="item-value">{{ account_user.user_profile.date_of_birth }}</span>
+                </li>
+                <li>
+                    <span class="item-title">Origin Airport</span>
+                    <span class="item-value">{{ account_user.user_profile.origin_airport.name }}</span>
+                </li>
+            </ul>
+            <ul class="profile-items-additional">
+                {% comment %}
+                <li>
+                    {# <span class="item-title">Food Preferences</span> #}
+                    <span class="item-title">Drink Preferences</span>
+                    <span class="item-value">
+                        {{ account_user.user_profile.food_options.all|join:", " }}
+                    </span>
+                </li>
+                {% endcomment %}
+                <li>
+                    <span class="item-title">Allergies</span>
+                    <span class="item-value allergies">{{ account_user.user_profile.allergies }}</span>
+                </li>
+                </li>
+            </ul>
+            <hr>
+            <div class="page-controls">
+                <a href="{% url 'admin_staff_user_edit' account_user.id %}" class="button green inline">Edit Info</a>
+                <a href="{% url 'admin_account_user_add_note' account_user.account.id account_user.id %}" class="button dark-grey inline">Add Note</a>
+                <a href="{% url 'admin_account_user_notes' account_user.account.id account_user.id %}" class="button dark-grey inline">View Notes</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

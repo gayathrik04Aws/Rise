@@ -1,0 +1,11 @@
+{% extends 'emails/base.txt' %}
+
+{% block content %}New Rise Anywhere Member: {{ account.account_name }}
+
+Hello, this email is to let you know there is a new RISE member who needs to complete a background check before their membership is processed.
+
+Thanks for everything you do!
+
+{{ protocol }}://{{ site.domain }}{% url 'admin_account' account.pk %}
+
+{% endblock content %}

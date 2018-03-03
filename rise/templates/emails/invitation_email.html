@@ -1,0 +1,28 @@
+{% extends 'emails/base.html' %}
+
+{% block body %}
+<table border="0" cellpadding="20" cellspacing="0" width="100%">
+    <tr>
+        <td align="center" valign="top" class="bodyContent">
+            <div>
+                <h1>Congrats!</h1>
+                {{ invite.created_by.get_full_name }}, has made arrangements for you to experience Rise. Call your dedicated Member Experience Representative to find out about this unique opportunity at 844-359-7473.
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td align="center" valign="top" style="padding-top:0;">
+            <table border="0" cellpadding="0" cellspacing="0" class="button">
+                <tr>
+                    <td valign="middle" width="250px">
+                        <div>
+                            <a href="{{ protocol }}://{{ site.domain }}{% url 'invite_code' invite.code %}">Learn More</a>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+
+</table>
+{% endblock body %}

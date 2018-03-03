@@ -1,0 +1,45 @@
+{% extends 'emails/base.html' %}
+
+{% block title %}Wishlist Confirmation{% endblock title %}
+
+
+{% block body %}
+<table border="0" cellpadding="20" cellspacing="0" width="100%">
+    <tr>
+        <td align="center" valign="top" class="bodyContent">
+            <div>
+                <h1>Member {{ member.get_full_name }} been added to the wishlist.</h1>
+                <h2>Flight {{ flight.flight_number }}</h2>
+                <p>
+                    Member {{ member.get_full_name }} been added to the wishlist for Flight {{ flight.flight_number }} from {{ flight.origin.name }}, {{ flight.origin.state }} to {{ flight.destination.name }}, {{ flight.destination.state }} on {{ flight.departure|date:"M d, Y" }}.
+                </p>
+            </div>
+        </td>
+    </tr>
+
+    <tr>
+        <table border="0" cellpadding="0" cellspacing="0" width="100%" class="flightContent first last">
+            <tr>
+                <td class="center middle">
+                    <img src="https://cfa084d658b491813884-326c6674e44e477b9197a3210586152e.ssl.cf1.rackcdn.com/emails/cities/{{ flight.origin.code|lower }}.png" width="100" height="100" alt="{{ flight.origin.name }}" />
+                </td>
+                <td>
+                    <span class="label">Origin</span><br>
+                    <span class="location">{{ flight.origin.name }}, {{ flight.origin.state }}</span><br>
+                    <span class="time">{{ flight.local_departure_time_display}} {{ flight.origin.get_timezone_display }}</span>
+                </td>
+
+                <td class="center middle">
+                    <img src="https://cfa084d658b491813884-326c6674e44e477b9197a3210586152e.ssl.cf1.rackcdn.com/emails/cities/{{ flight.destination.code|lower }}.png" width="100" height="100" alt="{{ flight.destination.name }}" />
+                </td>
+                <td>
+                    <span class="label">Destination</span><br>
+                    <span class="location">{{ flight.destination.name }}, {{ flight.destination.state }}</span><br>
+                    <span class="time">{{ flight.local_arrival_time_display}} {{ flight.destination.get_timezone_display }}</span>
+                </td>
+            </tr>
+        </table>
+    </tr>
+
+</table>
+{% endblock body %}

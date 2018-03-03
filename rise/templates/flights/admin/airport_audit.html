@@ -1,0 +1,48 @@
+{% extends 'base_admin.html' %}
+
+{% load staticfiles %}
+{% load humanize %}
+{% load flight_tags %}
+{% load tz %}
+
+{% block title %}Dashboard - Airport Detail{% endblock title %}
+
+{% block meta_description %}Dashboard - Airport Detail{% endblock meta_description %}
+
+{% block body_class %}{% endblock %}
+{% block body %}
+{% include 'admin_header_fragment.html' with nav_airports=True %}
+<div class="admin-content-wrap admin-form-page detail-page">
+    <div class="admin-page-header">
+        <h1>{{airport.code}} / {{ airport.name }}</h1>
+    </div>
+    <div class="detail-section">
+        <h2>Audit Logs</h2>
+
+        <table class="admin-table no-border no-hover">
+            <thead>
+                <tr>
+                    <th>Timestamp</th>
+                    <th>Actor</th>
+                    <th>Changes</th>
+                </tr>
+            </thead>
+            <tbody class="billing">
+                {% localtime on %}
+                {% for log in logs %}
+                <tr>
+                    <td>{{ log.timestamp|date:"m/d/y h:i A" }}</td>
+                    <td>{{ log.actor.get_full_name }}</td>
+                    <td>
+                        {% for field, values in log.changes_dict.iteritems %}
+                        {{ field }}: {{ values.0 }} → {{ values.1 }}<br>
+                        {% endfor %}
+                    </td>
+                </tr>
+                {% endfor %}
+                {% endlocaltime %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

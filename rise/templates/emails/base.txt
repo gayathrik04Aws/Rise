@@ -1,0 +1,11 @@
+{% autoescape off %}{% block content %}{% endblock content %}
+
+https://www.iflyrise.com
+844-359-7473
+info@iflyrise.com
+
+https://www.facebook.com/IFlyRise
+https://twitter.com/IFlyRise
+https://www.instagram.com/IFlyRise
+http://www.pinterest.com/IFlyRise/
+{% endautoescape %}

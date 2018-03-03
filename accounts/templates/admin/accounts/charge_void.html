@@ -1,0 +1,22 @@
+{% extends 'base_admin.html' %}
+
+{% block title %}{{ block.super }} - Void Charge{% endblock %}
+
+{% block body %}
+{% include 'admin_header_fragment.html' with accounts=True %}
+
+<div class="admin-content-wrap admin-form-page">
+    <h1>Void Charge</h1>
+
+    <form action="." method="POST">
+        {% csrf_token %}
+
+        <label for="{{ form.description.auto_id }}">Description</label>
+        {{ form.description.errors }}
+        {{ form.description }}
+
+        <button type="submit">Void Charge</button>
+
+    </form>
+</div>
+{% endblock %}

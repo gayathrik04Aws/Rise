@@ -1,0 +1,196 @@
+{% extends 'base_admin.html' %}
+
+{% load staticfiles %}
+
+{% block title %}New RISE Anywhere Flight{% endblock title %}
+
+{% block meta_description %}New RISE Anywhere Flight{% endblock meta_description %}
+
+{% block css %}
+{% with marketing=False%}
+{{ block.super }}
+{% endwith %}
+{% endblock css %}
+
+{% block body_class %}{% endblock %}
+{% block body %}
+{% include 'admin_header_fragment.html' with flights=True %}
+<div class="admin-content-wrap admin-form-page">
+    <h1>{% if form.instance.id %}Update{% else %}Add New{% endif %} Flight</h1>
+    <fieldset>
+    {% if form.errors %}
+        <div class="error-message">
+        {% for field, errors in form.errors.items %}
+        {% for error in errors %}
+          {{ error }}<br/>
+        {% endfor %}
+        {% endfor %}
+        </div>
+    {% endif %}
+    <form method="post" action="">
+        {% csrf_token %}
+
+        <!-- row 1  -->
+        <div class="labels-for-equal-width admin-two">
+            <label class="admin-left">Origin</label>
+            <label class="admin-right">Destination</label>
+        </div>
+        <div class="distribute equal-width">
+            <div class="select arrow">
+              <span class="value">Origin Airport</span>
+              <ul>
+                  {% for value, text in form.origin.field.choices %}
+                  <li value="{{ value }}">{{ text }}</li>
+                  {% endfor %}
+              </ul>
+              {{ form.origin }}
+            </div>
+            <div class="select arrow">
+              <span class="value">Destination Airport</span>
+              <ul>
+                  {% for value, text in form.destination.field.choices %}
+                  <li value="{{ value }}">{{ text }}</li>
+                  {% endfor %}
+              </ul>
+              {{ form.destination }}
+            </div>
+        </div>
+
+
+
+        <!-- row 2  -->
+
+        <div class="labels-for-equal-width admin-three">
+            <label class="admin-left">Date</label>
+            <label class="admin-middle">Takeoff Time</label>
+            <label class="admin-right">Duration</label>
+        </div>
+        <div class="distribute equal-width">
+            {{ form.start_date }}
+            {{ form.takeoff_time }}
+            {{ form.duration }}
+        </div>
+
+        <div class="labels-for-equal-width admin-two">
+            <label class="admin-left required">Plane Model</label>
+            <label class="admin-right required">Flight Number</label>
+        </div>
+        <div class="distribute equal-width">
+            <div class="select arrow select-plane">
+              <span class="value">{{ form.plane.value|default:"Select" }}</span>
+              <ul>
+                  {% for value, text in form.plane.field.choices %}
+                  <li value="{{ value }}">{{ text }}</li>
+                  {% endfor %}
+              </ul>
+              {{ form.plane }}
+            </div>
+            {{ form.flight_number }}
+        </div>
+
+
+         <div class="labels-for-equal-width admin-two">
+            <label class="admin-left">Pilot</label>
+            <label class="admin-right">Co-Pilot</label>
+        </div>
+
+
+
+        <div class="distribute equal-width">
+            <!-- <input type="text" placeholder="Pilot Name" name="pilot_name"> -->
+            <div class="select arrow pilot-name">
+                <span class="value">Pilot Name</span>
+                <ul>
+                    {% for value, text in form.pilot.field.choices %}
+                    <li value="{{ value }}">{{ text }}</li>
+                    {% endfor %}
+                </ul>
+                {{ form.pilot }}
+            </div>
+
+            <!-- <input type="text" placeholder="Co-pilot Name" name="copilot_name"> -->
+            <div class="select arrow">
+                <span class="value">Co-Pilot Name</span>
+                <ul>
+                    {% for value, text in form.copilot.field.choices %}
+                    <li value="{{ value }}">{{ text }}</li>
+                    {% endfor %}
+                </ul>
+                {{ form.copilot }}
+            </div>
+
+        </div>
+
+         <div class="labels-for-equal-width admin-two">
+            <label class="admin-left">Sharing</label>
+            <label class="admin-right">Leg Cost<a href="javascript:explainCostEstimate();"> ?</a></label>
+        </div>
+         <div class="distribute equal-width">
+            <div class="select arrow">
+                <span class="value">Sharing</span>
+                <ul>
+                    {% for value, text in form.sharing.field.choices %}
+                    <li value="{{ value }}">{{ text }}</li>
+                    {% endfor %}
+                </ul>
+                {{ form.sharing }}
+            </div>
+            {{ form.full_flight_cost }}
+        </div>
+
+       <div class="labels-for-equal-width admin-two">
+            <label class="admin-left">Other Cost Amount</label>
+            <label class="admin-right">Other Cost Description</label>
+        </div>
+        <div class="distribute equal-width">
+            {{ form.other_cost }}
+            {{ form.other_cost_desc }}
+        </div>
+        <div class="labels-for-equal-width">
+            <label class="admin-left"># Spots Required to Confirm</label>
+
+        </div>
+
+        <div class="distribute equal-width">
+            {{ form.seats_required }}
+        </div>
+        <div class="labels-for-equal-width">
+            <label class="admin-left">Flight Creator:</label>
+
+        </div>
+         <div class="distribute equal-width">
+            {{ form.flight_creator }}
+        </div>
+     <div class="labels-for-equal-width">
+            <label class="admin-left"># Spots to Reserve for Flight Creator:</label>
+
+        </div>
+         <div class="distribute equal-width">
+            {{ form.selected_seats }}
+        </div>
+    {% for hidden in form.hidden_fields %}
+        {{ hidden }}
+    {% endfor %}
+    </fieldset>
+    <div id="cost_estimate_modal" class="modal-wrapper" style="z-index: 10000; opacity: 1;">
+    <div class="modal center">
+        <figure class="x-grey-lg"></figure>
+        <figure class="alert-icon"></figure>
+        <p class="thick">Costs for round-trip flights are dependent on the time between legs.  If the time between departure and return is more than 48 hours, the cost is doubled because they must pay for the plane to come home between legs. <br><br>
+            Please be considerate of our customers; if a flight return is set for two days after departure and their time-of-day requests allow it, schedule the return for less than 48 hours from departure to lower their cost.</p>
+    </div>
+</div>
+     <div class="center">
+            <button type="submit" class="button anywhere-blue centered">{% if form.instance.id %}Update{% else %}Create{% endif %} Flight</button>
+     </div>
+
+ </form>
+
+</div>
+{% endblock body %}
+
+{% block javascript %}
+{{ block.super }}
+<script src="{% static 'js/jquery.formset.js' %}"></script>
+<script src="{% static 'js/anywhere_flights.js' %}"></script>
+{% endblock javascript %}

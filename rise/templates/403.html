@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block title %}403 - {{ block.super }}{% endblock title %}
+
+{% block meta_description %}403{% endblock meta_description %}
+
+{% block css %}
+{% with marketing=False%}
+{{ block.super }}
+{% endwith %}
+{% endblock css %}
+
+{% block body_class %}site-error{% endblock %}
+{% block body %}
+{% include 'basic_header_fragment.html' %}
+
+<div class="section main-body error-page last">
+	<div class="content-wrap">
+		<div class="alert">
+			<div class="badge"><figure class="alert-icon"></figure></div>
+			<h1>403 - Forbidden</h1>
+			<p>Oops! It appears the page you were trying to access <span class="desktop-break"><br/></span>is not available.</p>
+			<br/>
+	        	<div class="block center">
+	            		<a href="{{ WP_URL }}" class="return"> &#9664; Return to Home</a>
+	        	</div>
+	        	<br/>
+		</div>
+	</div>
+</div>
+
+{% endblock body %}

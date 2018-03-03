@@ -1,0 +1,116 @@
+{% extends 'emails/base_flight_alert_temp.html' %}
+
+{% block title %}Flight {{ flight.flight_number }} Alert{% endblock title %}
+
+
+{% block body %}
+    <table border="0" cellpadding="40" cellspacing="0" width="100%" class="anywhere-email">
+    <tr>
+        <td>
+            <table border="0" cellpadding="20" cellspacing="0" width="100%">
+                <tr>
+                    <td align="center" valign="top" class="bodyContent">
+                        <div>
+                             <h2>{% if flight.is_cancelled %}FLIGHT CANCELED{% elif flight.is_delayed %}FLIGHT DELAYED{% else %}Flight {{ flight.flight_number }} Alert{% endif %}</h2>
+
+                                <h1>{{ message }}</h1>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+
+            <table border="0" cellpadding="4" cellspacing="0" width="100%">
+                <tr>
+                    <td>
+                        <hr />
+                    </td>
+                    <td width="120">
+                        <h3 class="section-header" style="margin: 0;">Flight Details</h3>
+                    </td>
+                    <td>
+                        <hr />
+                    </td>
+                </tr>
+            </table>
+            <table border="0" cellpadding="20" cellspacing="0" width="100%">
+                <tr>
+                    <td>
+                        <h2>{{ flight.origin.name }}, {{ flight.origin.state }} to {{ flight.destination.name }}, {{ flight.destination.state }}</h2>
+                    </td>
+                </tr>
+            </table>
+            <table border="0" cellpadding="20" cellspacing="0" width="100%" class="flightDetails">
+                <tr>
+                    <td>
+                        <h3 class="all-caps-header">Departing | {{flight.departure|date:"M d, Y"}}</h3>
+
+                        <h2 class="time">{{ flight.local_departure_time_display}} {{ flight.origin.get_timezone_display }}</h2>
+                        <p class="location">{{ flight.origin.name }} ({{ flight.origin.code }})</p>
+
+                        <center><div class="vertical-line centered"></div> </center>
+                        <p class="duration">{{ flight.duration }} MIN</p>
+                        <center><div class="vertical-line centered"></div> </center>
+
+                        <h2 class="time">{{ flight.local_arrival_time_display}} {{ flight.destination.get_timezone_display }}</h2>
+                        <p class="location">{{ flight.destination.name }} ({{ flight.destination.code }})</p>
+
+                    </td>
+
+                </tr>
+            </table>
+
+            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                <tr>
+                    <td align="center" valign="top" style="padding-top: 40px; padding-bottom: 20px;">
+                        <table border="0" cellpadding="0" cellspacing="0" width="100%" align="center">
+                            <tr>
+                                <td>
+                                     <div style="text-align:center;">
+                                        {% if flight.flight_type == 'A' %}
+                                            <a href="{{ protocol }}://{{ site.domain }}{% url 'anywhere_index' %}">Schedule a new flight</a>
+                                        {% else %}
+                                            <a href="{{ protocol }}://{{ site.domain }}{% url 'book_from' %}">Schedule a new flight</a>
+                                        {% endif %}
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center" valign="top" style="padding-top: 40px; padding-bottom: 40px;">
+                        <table border="0" cellpadding="0" cellspacing="0" class="button">
+                            <tr>
+                                <td valign="middle" width="250px">
+                                    <div>
+                            <a href="{{ protocol }}://{{ site.domain }}{% url 'profile' %}">Go To Profile</a>
+                        </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+              <tr>
+                    <td align="center" valign="top" style="padding-top: 40px; padding-bottom: 40px;">
+                        <table border="0" cellpadding="0" cellspacing="0">
+                            <tr>
+                                <td valign="middle" width="250px">
+                                      <div class="center">
+                <a href="{{ protocol }}://{{ site.domain }}{% url 'profile_notifications' %}">Manage Alerts</a>
+            </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        <img src="http://cl.ly/100Q0H2k1E3j/footer-logo.png" width="119px" height="27px">
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+
+{% endblock body %}

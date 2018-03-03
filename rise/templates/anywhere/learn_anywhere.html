@@ -1,0 +1,22 @@
+{% extends 'anywhere/base.html' %}
+{% load staticfiles %}
+
+
+{% block title %}Learn - Rise Anywhere Flight {{ block.super }}{% endblock title %}
+
+{% block meta_description %}Learn - Rise Anywhere Flight{% endblock meta_description %}
+
+{% block css %}
+{% with marketing=False%}
+{{ block.super }}
+{% endwith %}
+{% endblock css %}
+
+{% block body_class %}About Rise Anywhere{% endblock %}
+
+{% block body %}
+Learn more.
+{% endblock %}
+
+{% block footer %}
+{% endblock footer %}

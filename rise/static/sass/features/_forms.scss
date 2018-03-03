@@ -1,0 +1,148 @@
+//This partial includes all style properties for form elements
+//Standard tags are at the top, classes are at the bottom
+
+button {
+  background: transparent;
+  border: 0px;
+  cursor: pointer;
+  display: block;
+  height: 100%;
+  overflow: visible;
+  padding: 0px;
+  width: 100%;
+}
+
+.no-labels label {
+    display: none;
+}
+
+form {
+  margin: 50px auto;
+  text-align: left;
+  width: 75%;
+
+  &.bare {
+      margin:0;
+      width:100%;
+  }
+
+  h3.small {
+    font-size: 10px;
+    letter-spacing: 1px;
+    margin: 20px 0 10px;
+    width: initial;
+    clear: left;
+  }
+
+  span {
+    color: $runway;
+    font-size: 15px;
+    font-weight: 300;
+    line-height: 24px;
+  }
+}
+
+input[type="checkbox"] {
+  @include reset-appearance;
+  background: url(../img/checkbox-off.png);
+  background-size: 100%;
+  float: left;
+  height: 20px;
+  margin: 2px 10px 20px 0px;
+  width: 20px;
+
+  &:checked {
+    background: url(../img/checkbox-on.png);
+    background-size: 100%;
+  }
+
+  &#same-as-billing {
+    margin: 2px 10px 0px 0px;
+  }
+}
+
+input[type="radio"] {
+  @include reset-appearance;
+  background: url(../img/radio-off.png);
+  background-size: 100%;
+  height: 20px;
+  margin: 0 0 -4px;
+  width: 20px;
+
+  &:checked {
+    background: url(../img/radio-on.png);
+    background-size: 100%;
+  }
+}
+
+select {
+  @include reset-appearance;
+  background: $grey1;
+  border: 1px solid $grey3;
+  border-radius: 0px;
+  display: block;
+  font-family: 'Gotham Ssm A', 'Gotham Ssm B', Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 300;
+  height: 60px;
+  margin-bottom: 20px;
+  padding: 0px 25px;
+  width: 100%;
+}
+
+textarea {
+  background: $grey4;
+  border: 1px solid $grey1;
+  color: $runway;
+  font-family: 'Gotham Ssm A', 'Gotham Ssm B', Helvetica, Arial, sans-serif;
+  font-size: 15px;
+  font-weight: 300;
+  height: 120px;
+  margin-bottom: 20px;
+  padding: 25px 25px;
+  width: 100%;
+  @include mobelux-placeholder($grey3);
+
+  &.error {
+    border: 1px solid $red;
+  }
+}
+
+.dropdown-arrow {
+  background-image: url(../img/arrow-down.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 6px 6px;
+  background-color: $grey4;
+  border: 1px solid $grey3;
+  border-left: 0px;
+  display: block;
+  height: 60px;
+  position: absolute;
+  top: 0px;
+  right: 10px;
+  pointer-events: none;
+  width: 40px;
+}
+
+
+.error-message {
+  background: url('../img/pattern-lines-red.png');
+  background-size: 24px 24px;
+  color: #e35740;
+  display: block;
+  font-weight: 300;
+  font-size: 15px;
+  line-height: 24px;
+  margin: 0 0px 20px;
+  padding: 10px 0px;
+  text-align: center;
+  width: 100%;
+}
+
+.form-success {
+  @extend .error-message;
+  background: url(../img/pattern-lines-green.png);
+  background-size: 24px 24px;
+  color: $land;
+}

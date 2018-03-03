@@ -1,0 +1,444 @@
+nav {
+  background: $grey1;
+  border-bottom: 1px solid $grey2;
+  height: 80px;
+  position: fixed;
+  top: 0;
+  text-align: justify;
+  font-size: 0;
+  z-index: 8000;
+  width: 100%;
+  &.basic {
+    padding: 0 25px;
+  }
+  &.light {
+    background: $translucent-nav;
+    border: 0;
+    position: absolute;
+    @include transition(none);
+    .logo {
+      background-image: url(../img/logo-darkbg.png);
+    }
+    h5 a {
+      color: #ffffff;
+    }
+    &+.mobile-nav-dropdown {
+        position: absolute;
+    }
+  }
+  * {
+    display: inline-block;
+    vertical-align: middle;
+  }
+  .circle {
+    img {
+      vertical-align: initial;
+    }
+  }
+  .nav-button {
+    border-left: 1px solid $grey2;
+    cursor: pointer;
+    height: 80px;
+    line-height: 80px;
+    position: relative;
+    text-align: center;
+    &:hover {
+      background-color: rgba(0,0,0,0.02);
+    }
+  }
+
+  .right-side {
+    height: 100%;
+    text-align: right;
+    width: 92%;
+  }
+  &.rise-admin {
+    .nav-button {
+      border-left: 0;
+    }
+    .rise-admin-wrapper {
+      display: block;
+      margin: 0 auto;
+      height: 80px;
+    }
+    .left-side {
+      width: 127px;
+
+      .nav-button {
+        width: 127px;
+        a {
+          width: 127px;
+        }
+      }
+    }
+    .right-side {
+      height: 100%;
+      float: right;
+      text-align: right;
+      width: calc(100% - 127px);
+      .avatar {
+        max-width: 73px;
+        
+        .popover {
+          right: 15px;
+          &.show {
+            padding: 0 20px;
+          }
+        }
+        &.active {
+          figure {
+            @include transform(rotateX(-180deg));
+          }
+        }
+      }
+    }
+    .nav-button {
+      width: 80px;
+    }
+    ul.basic-nav {
+      font-size: 12px;
+      line-height: 80px;
+      margin: 0;
+      margin-right: 10px;
+      li {
+        padding: 0 5px;
+        &:first-child:before {
+          content: "";
+        }
+        &:before {
+          content: "/";
+          position: relative;
+          font-size: 10px;
+          font-weight: bold;
+          color: $grey4;
+          padding-right: 13px;
+        }
+        a {
+          color: $sky;
+          font-size: 10px;
+          letter-spacing: 2px;
+          font-weight: 500;
+          text-transform: uppercase;
+          &.rise-admin-active {
+            color: $land;
+          }
+          &:hover {
+            color: $land;
+          }
+        }
+      }
+    }
+  }
+  
+
+
+
+
+
+
+  &.booking {
+    .left-side {
+      height: 100%;
+      .nav-button {
+        width: 64px;
+      }
+    }
+    .right-side {
+      height: 100%;
+      @include calc(width, '100% - 64px');
+    }
+    .nav-button {
+      width: 25%;
+    }
+  }
+  &.profile {
+    .left-side {
+      .nav-button {
+        width: 127px;
+      }
+    }
+    .right-side {
+      @include calc(width, '100% - 127px');
+      .nav-button {
+        @include calc(width, '100% - 73px');
+      }
+      .avatar {
+        max-width: 73px;
+        padding-left: 8px;
+        .popover {
+          display: none;
+          right: 15px;
+          padding: 0 20px;
+        }
+        &.active {
+          figure {
+            @include transform(rotateX(-180deg));
+          }
+        }
+      }
+      a.book-now-link {
+        font-size: 10px;
+        font-weight: 500;
+        letter-spacing: 2px;
+        color: $land;
+        text-transform: uppercase;
+        display: block;
+        @include gotham-family;
+      }
+    }
+  }
+  .nav-button.passes {
+    float: none;
+    position: relative;
+    width: 50%;
+    div {
+      line-height: initial;
+      width: 50%;
+      &:first-child {
+        border-right: 1px solid $grey2;
+      }
+    }
+    figure {
+      margin-left: 5px;
+    }
+    .popover {
+      display: none;
+      text-align: left;
+      left: 50%;
+      padding: 20px;
+      width: auto;
+      @include transform(translateX(-50%));
+      h4, p{
+        display: block;
+        margin: 0;
+      }
+      h4 {
+        line-height: initial;
+        margin-top: 0;
+      }
+      h3 {
+        color: $sky;
+        display: block;
+        font-size: 14px;
+        font-weight: 500;
+        margin: 0;
+        width: 100%;
+      }
+      p {
+        display: block;
+        line-height: 18px;
+        text-align: left;
+        width: 100%;
+      }
+      &.show {
+        display: block;
+      }
+    }
+  }
+  &:after {
+    content: '';
+    display: inline-block;
+    width: 100%;
+  }
+  h5 {
+    margin: 5px;
+    margin-right: 0;
+    font-size: 9.16px;
+  }
+}
+.nav-button.flights {
+  .popover {
+    left: -65px;
+    padding: 0;
+    width: 100vw;
+  }
+  .origin {
+    display: block;
+  }
+  .destination {
+    display: block;
+  }
+  .flight-card-arrow-sm {
+    display: none;
+  }
+  .booked-flight-number {
+    margin-right: 10px;
+    vertical-align: top;
+  }
+  .booked-flight-details {
+    h2 {
+      margin: 0;
+      font-weight: 700;
+    }
+    h4 {
+      color: $sky;
+      font-weight: 500;
+    }
+  }
+}
+.anywhere {
+  .booking {
+    font-size: 0;
+    .left-side {
+      height: 80px;
+      width: calc(100% - 80px);
+      overflow: hidden;
+      .nav-button {
+        width: 310px;
+        a {
+          padding: 0;
+          width: 100%;
+        }
+        
+        &:first-child {
+          border-left: 0;
+        }
+      }
+      
+      .nav-breadcrumb {
+        display: inline-block;
+        a {
+          font-size: 10px;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+        }
+        &.active a {
+          font-weight: bold;
+        }
+      }
+      
+    }
+    .right-side {
+      width: 80px;
+      max-width: 80px;
+      .nav-button {
+        width: 80px;
+        max-width: 80px;
+      }
+    }
+  }
+}
+
+.nav-breadcrumb {
+  background: url(../img/flight-card-arrow-lg.png);
+  background-repeat: no-repeat;
+  background-size: auto 80px;
+  background-position: right;
+  border-left: 0;
+  cursor: pointer;
+  color: $sky;
+  display: none;
+  height: 100%;
+  line-height: 80px;
+  padding: 0 20px;
+  padding-right: 35px;
+  position: relative;
+  text-align: center;
+  width: initial;
+  a {
+    color: $sky;
+  }
+  &.hide {
+    display: none;
+  }
+  .plane-green {
+    display: none;
+    margin-right: 15px;
+  }
+  span {
+    vertical-align: top;
+  }
+  h4 {
+    margin: 0;
+  }
+  &.active {
+    a {
+      color: $runway;
+    }
+    .plane-green {
+      display: inline-block;
+    }
+    color: $runway;
+  }
+}
+
+
+
+////\\\\ Tablet Breakpoint *************************
+
+@media screen and (min-width: 768px) {
+  nav {
+    height: 80px;
+    &.booking {
+      .left-side {
+        .nav-button {
+          width: 80px;
+        }
+      }
+      .right-side {
+        max-width: 328px;
+      }
+    }
+    &.profile {
+      .right-side {
+        max-width: 328px;
+        .nav-button {
+          @include calc(width, '100% - 82px');
+        }
+        .avatar {
+          max-width: 80px;
+        }
+      }
+    }
+    .nav-button {
+      line-height: 80px;
+    }
+  }
+  .nav-button.flights {
+    .popover {
+      background: #ffffff;
+      left: -170px;
+      padding: 10px;
+      width: 410px;
+    }
+    .origin {
+      display: inline-block;
+    }
+    .destination {
+      display: inline-block;
+    }
+    .flight-card-arrow-sm {
+      display: inline-block;
+      margin: 0 15px;
+    }
+    .booked-flight-details {
+      h4 {
+        display: block;
+        &+br {
+          display: none;
+        }
+      }
+    }
+  }
+  .nav-breadcrumb {
+    display: inline-block;
+  }
+}
+
+////\\\\ Desktop Breakpoint *************************
+
+@media screen and (min-width: 1024px) {
+  nav {
+    &.profile {
+      .right-side {
+        .avatar {
+          .popover {
+            &.show {
+              display: initial;
+            }
+          }
+        }
+      }
+    }
+  }
+}

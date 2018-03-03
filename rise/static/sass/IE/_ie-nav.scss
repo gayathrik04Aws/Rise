@@ -1,0 +1,329 @@
+nav {
+  background: $grey1;
+  border-bottom: 1px solid $grey2;
+  height: 80px;
+  position: fixed;
+  top: 0;
+  text-align: justify;
+  font-size: 0;
+  z-index: 8000;
+  width: 100%;
+  &.basic {
+    padding: 0 25px;
+  }
+  &.light {
+    background: $translucent-nav;
+    border: 0;
+    .logo {
+      background-image: url(../img/logo-darkbg.png);
+    }
+    h5 a {
+      color: #ffffff;
+    }
+  }
+  * {
+    display: inline-block;
+    vertical-align: middle;
+  }
+  .circle {
+    img {
+      vertical-align: initial;
+    }
+  }
+  .nav-button {
+    border-left: 1px solid $grey2;
+    cursor: pointer;
+    height: 100%;
+    line-height: 80px;
+    position: relative;
+    text-align: center;
+    &:hover {
+      background-color: rgba(0,0,0,0.02);
+    }
+  }
+  .left-side {
+    height: 100%;
+    .nav-button {
+      &:first-child {
+        border-left: 0;
+      }
+    }
+  }
+  .right-side {
+    height: 100%;
+  }
+  &.rise-admin {
+    .nav-button {
+      border-left: 0;
+    }
+    .rise-admin-wrapper {
+      display: block;
+      width: 1065px;
+      margin: 0 auto;
+      height: 79px;
+    }
+    .left-side {
+      margin-right: 150px;
+      .nav-button {
+        width: 127px;
+      }
+    }
+    .right-side {
+      height: 100%;
+      float: right;
+      text-align: right;
+      .avatar {
+        max-width: 73px;
+        padding-left: 8px;
+        .popover {
+          right: 15px;
+          &.show {
+            display: block !important;
+          }
+        }
+        &.active {
+          figure {
+            @include transform(rotateX(-180deg));
+          }
+        }
+      }
+    }
+    .nav-button {
+      width: 80px;
+    }
+    ul.basic-nav {
+      font-size: 12px;
+      line-height: 80px;
+      margin: 0;
+      margin-right: 10px;
+      li {
+        padding: 0 5px;
+        &:first-child:before {
+          content: "";
+        }
+        &:before {
+          content: "/";
+          position: relative;
+          font-size: 10px;
+          font-weight: bold;
+          color: $grey4;
+          padding-right: 13px;
+        }
+        a {
+          color: $sky;
+          font-size: 10px;
+          letter-spacing: 2px;
+          font-weight: 500;
+          text-transform: uppercase;
+          &.rise-admin-active {
+            color: $land;
+          }
+          &:hover {
+            color: $land;
+          }
+        }
+      }
+    }
+  }
+  &.booking {
+    @include clearfix;
+    .left-side {
+      height: 100%;
+      .nav-button {
+        width: 80px;
+      }
+    }
+    .right-side {
+      float: right;
+      height: 100%;
+      max-width: 328px;
+      width: 93%;
+    }
+    .nav-button {
+      width: 25%;
+    }
+  }
+  &.profile {
+    top: -100%;
+    @include clearfix;
+    .left-side {
+      .nav-button {
+        width: 127px;
+      }
+    }
+    &.show {
+      top: 0;
+    }
+    .right-side {
+      float: right;
+      width: 100%;
+      max-width: 328px;
+      .nav-button {
+        width: 71%;
+      }
+      .avatar {
+        max-width: 80px;
+        padding-left: 8px;
+        .popover {
+          display: none;
+          right: 15px;
+          padding: 0 20px;
+        }
+        &.active {
+          figure {
+            @include transform(rotateX(-180deg));
+          }
+        }
+      }
+      a.book-now-link {
+        font-size: 10px;
+        font-weight: 500;
+        letter-spacing: 2px;
+        color: $land;
+        text-transform: uppercase;
+        display: block;
+        @include gotham-family;
+      }
+    }
+  }
+  .nav-button.passes {
+    float: none;
+    position: relative;
+    width: 50%;
+    div {
+      line-height: initial;
+      width: 50%;
+      &:first-child {
+        border-right: 1px solid $grey2;
+      }
+    }
+    figure {
+      margin-left: 5px;
+    }
+    .popover {
+      display: none;
+      text-align: left;
+      left: -10%;
+      padding: 20px;
+      width: auto;
+      @include transform(translateX(-50%));
+      h4, p{
+        display: block;
+        margin: 0;
+      }
+      h4 {
+        line-height: initial;
+        margin-top: 0;
+      }
+      h3 {
+        color: $sky;
+        display: block;
+        font-size: 14px;
+        font-weight: 500;
+        margin: 0;
+        width: 100%;
+      }
+      p {
+        display: block;
+        line-height: 18px;
+        text-align: left;
+        width: 100%;
+      }
+      &.show {
+        display: block;
+      }
+    }
+  }
+  &:after {
+    content: '';
+    display: inline-block;
+    width: 100%;
+  }
+  h5 {
+    margin: 5px;
+    margin-right: 0;
+    font-size: 9.16px;
+  }
+}
+
+.nav-button.flights {
+  .popover {
+    background: #ffffff;
+    left: -170px;
+    padding: 10px;
+    width: 410px;
+  }
+  .origin {
+    display: inline-block;
+  }
+  .destination {
+    display: inline-block;
+  }
+  .flight-card-arrow-sm {
+    display: inline-block;
+    margin: 0 15px;
+  }
+  .booked-flight-number {
+    margin-right: 10px;
+    vertical-align: top;
+  }
+  .booked-flight-details {
+    h2 {
+      margin: 0;
+      line-height: 0;
+      font-weight: 700;
+    }
+    h4 {
+      color: $sky;
+      display: block;
+      font-weight: 500;
+      line-height: 0;
+      &+br {
+        display: none;
+      }
+    }
+  }
+}
+
+.nav-breadcrumb {
+  background: url(../img/flight-card-arrow-lg.png);
+  background-repeat: no-repeat;
+  background-size: auto 80px;
+  background-position: right;
+  border-left: 0;
+  cursor: pointer;
+  color: $sky;
+  display: inline-block;
+  height: 100%;
+  line-height: 80px;
+  padding: 0 20px;
+  padding-right: 35px;
+  position: relative;
+  text-align: center;
+  width: initial;
+  a {
+    color: $sky;
+  }
+  &.hide {
+    display: none;
+  }
+  .plane-green {
+    display: none;
+    margin-right: 15px;
+  }
+  span {
+    vertical-align: top;
+  }
+  h4 {
+    margin: 0;
+  }
+  &.active {
+    a {
+      color: $runway;
+    }
+    .plane-green {
+      display: inline-block;
+    }
+    color: $runway;
+  }
+}

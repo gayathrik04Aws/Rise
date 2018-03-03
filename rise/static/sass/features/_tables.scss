@@ -1,0 +1,612 @@
+.flight-table {
+  border: 2px solid transparent;
+  color: $sky;
+  cursor: pointer;
+  font-size: 0;
+  max-width: 1040px;
+  margin: auto;
+  @include transition(none);
+  h1 {
+    font-size: 20px;
+  }
+  h5 {
+    margin: 0;
+  }
+  &.selected {
+    border: 2px solid $land;
+  }
+  &.table-labels {
+    border-top: 0;
+    padding: 0 20px;
+    div {
+      font-size: 10px;
+    }
+    .flight-number {
+      &:after {
+        content: 'No.';
+      }
+    }
+    .arrow {
+      background: none;
+    }
+  }
+  &.full {
+    background-image: url(../img/pattern-green.png);
+    background-size: 5px 5px;
+    pointer-events: none;
+    .duration {
+      span {
+        background-image: url(../img/pattern-green.png);
+        background-size: 5px 5px;
+      }
+    }
+    .actions{
+        pointer-events:initial;
+    }
+  }
+  &.unavailable {
+    .origin, .duration, .destination, .flight-number {
+      opacity: 0.15;
+    }
+    .arrow {
+      background-image: url(../img/flight-arrow-right-grey.png);
+    }
+  }
+  div {
+    display: inline-block;
+    font-size: 15px;
+    vertical-align: middle;
+  }
+  figure {
+    background-size: 20px 20px;
+    height: 20px;
+    margin-right: 9px;
+    vertical-align: middle;
+    width: 20px;
+  }
+  .actions {
+    z-index:999;
+    position:relative;
+    figure {
+      background-size: 20px 20px;
+      cursor: pointer;
+      display: none;
+      height: 20px;
+      width: 20px;
+    }
+    .popover {
+      top:-22px;
+      left:-250px;
+    }
+  }
+  .airport {
+    color: $runway;
+    vertical-align: middle;
+  }
+  .origin {
+    width: (95px / 280px) * 100%;
+  }
+  .arrow {
+    background-image: url(../img/flight-arrow-right-green.png);
+    background-size: 8px 14px;
+    background-repeat: no-repeat;
+    background-position: left center;
+    content: '';
+    width: (30px / 280px) * 100%;
+  }
+  .destination {
+    width: (93px / 280px) * 100%;
+  }
+  .flight-number {
+    text-align: right;
+    width: (60px / 280px) * 100%;
+  }
+  &.disabled {
+    .airport {
+      color: $sky;
+    }
+    .arrow {
+      background-image: url(../img/flight-arrow-right-grey.png);
+    }
+  }
+  .city-name {
+    display: none;
+  }
+  .duration {
+    display: none;
+  }
+  .badge-right .badge-wrap {
+    display: none;
+  }
+}
+
+.membership-table {
+  font-size: 0;
+  div {
+    display: inline-block;
+    vertical-align: bottom;
+  }
+  h3 {
+    color: $sky;
+    margin: 0;
+  }
+  .membership-level {
+    @extend p;
+    width: (176px / 280px) * 100%;
+    span {
+      color: $runway;
+    }
+  }
+  .membership-price {
+    @extend p;
+    color: $land;
+    font-weight: 700;
+    width: (82px / 280px) * 100%;
+  }
+  .checkbox {
+    text-align: right;
+    width: (22px / 280px) * 100%;
+    input {
+      display: inline-block;
+      margin: 0;
+    }
+  }
+  .row:first-child {
+      border-top: 0;
+  }
+}
+
+.profile-stats {
+  height: 50px;
+  margin: auto;
+  max-width: 1040px;
+  padding: 0;
+  text-align: center;
+  width: 100%;
+  .avatar {
+    position: relative;
+    top: -110px;
+    z-index: 500;
+  }
+  .left-side {
+    display: inline-block;
+    height: 100%;
+    vertical-align: top;
+    .stat {
+      border-left: 1px solid $grey4;
+      padding-left: 30px;
+      text-align: left;
+    }
+  }
+  .right-side {
+    display: inline-block;
+    height: 100%;
+    vertical-align: top;
+    .stat {
+      border-right: 1px solid $grey4;
+      padding-right: 30px;
+      text-align: right;
+    }
+  }
+  .stat {
+    display: none;
+    // height: 100%;
+    vertical-align: top;
+    width: 32%;
+  }
+  .stat-number {
+    color: $land;
+    display: block;
+    font-family: tablet-gothic-condensed;
+    font-size: 30px;
+    font-weight: 300;
+  }
+  .stat-name {
+    color: $sky;
+    display: block;
+    font-family: 'Gotham Ssm A', 'Gotham Ssm B';
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    line-height: 12px;
+    text-transform: uppercase;
+  }
+}
+
+table.notification-table {
+  @include gotham-family;
+  width: 100%;
+  font-size: 14px;
+  text-align: left;
+  margin: 0 0 30px 0;
+  th {
+    @extend label;
+    display: none;
+  }
+  tr {
+    border-bottom: 1px solid $grey2;
+    td {
+      padding: 20px 0;
+      font-size: 14px;
+      line-height: 19px;
+      &.stacked {
+        display: block;
+        padding: 3px 0;
+        text-align: right;
+        line-height: 14px;
+        input {
+          margin: 5px 0;
+        }
+        &.align {
+          margin-top: 15px;
+        }
+        label {
+          margin: 0;
+          width: 50px;
+        }
+        * {
+          display: inline-block;
+          vertical-align: middle;
+        }
+      }
+    }
+  }
+}
+
+.member-reservations-mobile {
+  text-align: left;
+  width: 100%;
+  .member-photo {
+    width: (60px / 288px) * 100%;
+    display: inline-block;
+  }
+  .member-details  {
+    width: (222px / 288px) * 100%;
+  }
+  .member-wrap {
+    display: inline-block;
+    vertical-align: middle;
+  }
+  .circle.medium {
+    margin: 5px;
+  }
+  .member-row {
+    @include clearfix;
+    padding: 20px 0;
+    border-bottom: 1px solid $grey2;
+    position: relative;
+
+    img {
+      float: left;
+      margin-right: 10px;
+    }
+    .message-layer{
+
+        .valign{
+            width:100%;
+            position: absolute;
+        }
+    }
+  }
+  .member-name-cell {
+    display: block;
+    font-weight: 700;
+  }
+  .secondary {
+    width: 30%;
+    display: inline-block;
+  }
+}
+
+.member-reservations-desktop {
+  display: none;
+}
+
+.member-reservations {
+  .t-gothic {
+    @include tablet-gothic-family;
+    letter-spacing: 1px;
+  }
+  .sky {
+    color: $sky;
+  }
+  .no-mobile {
+    display: none;
+  }
+}
+
+.reservation-row{
+  &.cancelled{
+    opacity:0.4;
+  }
+  &.merge-row-cells {
+    border-bottom:0!important;
+  }
+}
+
+.reservation-passenger-row {
+  td {
+    padding-top:0!important;
+  }
+  .passengers.format-simple {
+    margin-top:0;
+  }
+  .passenger-label {
+    margin-top:0;
+  }
+}
+
+.row-overlay{
+    position: absolute;
+    width: 100%;
+
+    td{
+        position: absolute;
+        width: 100%;
+        min-height: 109px;
+    }
+
+    .message-layer{
+
+        .valign{
+            width:100%;
+            position: absolute;
+        }
+    }
+}
+
+fieldset {
+  @include appearance(none);
+  border: 0;
+  padding: 0;
+  margin: 0;
+}
+
+
+////\\\\ Tablet breakpoint **************
+
+@media screen and (min-width: 768px) {
+  .app-content-wrap .block.flight-table {
+      padding: 20px;
+  }
+  .flight-table {
+    .origin, .destination {
+      .badge-right {
+        .badge-wrap {
+          top: 25%;
+        }
+      }
+      .airport {
+        background-repeat: no-repeat;
+        background-size: 100%;
+        background-position: center;
+        border-radius: 100%;
+        color: #ffffff;
+        display: inline-block;
+        font-family: 'din';
+        font-size: 20px;
+        font-weight: 300;
+        height: 60px;
+        letter-spacing: 1px;
+        line-height: 60px;
+        margin-right: 20px;
+        overflow: hidden;
+        text-align: center;
+        vertical-align: middle;
+        width: 60px;
+        &.austin {
+          background-image: url(../img/circle-thumbs/gradient/thumb-austin.png)
+        }
+        &.telluride {
+          background-image: url(../img/circle-thumbs/gradient/thumb-telluride.png)
+        }
+        &.dallas {
+          background-image: url(../img/circle-thumbs/gradient/thumb-dallas.png)
+        }
+        &.houston {
+          background-image: url(../img/circle-thumbs/gradient/thumb-houston.png)
+        }
+        &.midland {
+          background-image: url(../img/circle-thumbs/gradient/thumb-midland.png)
+        }
+        &.vail {
+          background-image: url(../img/circle-thumbs/gradient/thumb-vail.png)
+        }
+        &.vegas {
+          background-image: url(../img/circle-thumbs/gradient/thumb-vegas.png)
+        }
+        &.corpuschristi {
+            background-image: url(../img/circle-thumbs/gradient/thumb-corpuschristi.png); }
+        &.neworleans {
+            background-image: url(../img/circle-thumbs/gradient/thumb-neworleans.png); }
+        &.oklahomacity {
+            background-image: url(../img/circle-thumbs/gradient/thumb-oklahomacity.png); }
+        &.sanantonio{
+            background-image: url(../img/circle-thumbs/gradient/thumb-sanantonio.png); }
+        &.santafe {
+            background-image: url(../img/circle-thumbs/gradient/thumb-santafe.png); }
+        &.shreveport {
+            background-image: url(../img/circle-thumbs/gradient/thumb-shreveport.png); }
+        &.spring {
+            background-image: url(../img/circle-thumbs/gradient/thumb-spring.png); }
+        &.tulsa {
+            background-image: url(../img/circle-thumbs/gradient/thumb-tulsa.png); }
+        &.lubbock {
+            background-image: url(../img/circle-thumbs/gradient/thumb-lubbock.png); }
+        &.aspen {
+            background-image: url(../img/circle-thumbs/gradient/thumb-aspen.png); }
+        &.steamboat {
+            background-image: url(../img/circle-thumbs/gradient/thumb-steamboat.png); }
+      }
+    }
+    &.full, &.unavailable {
+      .actions {
+        figure {
+          cursor: pointer;
+          display: table-cell;
+          position: relative;
+        }
+      }
+    }
+    .origin {
+      width: (282px / 1038px) * 100%;
+    }
+    .city-name {
+      display: block;
+      margin: 0;
+      text-transform: none;
+    }
+    .destination {
+      width: (335px / 1038px) * 100%;
+    }
+    .duration {
+      display: inline-block;
+      width: (232px / 1038px) * 100%;
+      position: relative;
+      padding-right: 40px;
+      text-align: center;
+      z-index: 0;
+      span {
+        background-color: #ffffff;
+        color: $runway;
+        font-family: 'Gotham Ssm A', 'Gotham Ssm B';
+        font-weight: 500;
+        padding: 0 10px;
+      }
+      &:after {
+        background: $grey2;
+        bottom: 10px;
+        content: '';
+        display: block;
+        height: 1px;
+        position: relative;
+        z-index: -1;
+      }
+    }
+    .flight-number {
+      text-align: left;
+      width: (66px / 1038px) * 100%;
+      figure {
+        display: none;
+      }
+    }
+    .actions {
+      display: inline-table;
+      width: (107px / 1038px) * 100%;
+
+    }
+    .arrow {
+      display: none;
+    }
+    &.table-labels {
+      border-top: 0;
+      .duration{
+        &:after {
+          display: none;
+        }
+      }
+      .flight-number {
+        width: (172px / 1038px) * 100%;
+        &:after {
+          content: 'Flight No.';
+        }
+      }
+      .actions {
+        display: none;
+      }
+    }
+    figure {
+      background-size: 30px 30px;
+      height: 30px;
+      width: 30px;
+    }
+    .badge-right .badge-wrap {
+      display: block;
+      right: 0;
+    }
+  }
+
+  .profile-stats {
+    height: 90px;
+    margin: auto;
+    .stat {
+      display: inline-block;
+    }
+    .avatar {
+      display: inline-block;
+      top: -100px;
+    }
+    .left-side, .right-side {
+      @include calc(width, '50% - 110px');
+    }
+  }
+  table.notification-table {
+    margin: 30px 0;
+    tr {
+      td.stacked {
+        display: table-cell;
+        padding: 0;
+        text-align: left;
+        label {
+          display: none;
+        }
+      }
+    }
+    tr.table-definitions {
+      border-bottom: 0;
+      th {
+        display: table-cell;
+      }
+    }
+  }
+  .member-reservations-mobile {
+    display: none;
+  }
+  .member-reservations-desktop {
+    width: 100%;
+    display: table;
+    text-align: left;
+    th {
+      font-size: 10px;
+      font-weight: 700;
+      color: $sky;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    tbody tr {
+      border-bottom: $base-border;
+      font-size: 19px;
+    }
+    td {
+      padding: 20px 0;
+    }
+    .spacer {
+      margin: 0 20px;
+      @include transform(translateY(5px));
+    }
+    .circle.medium {
+      height: 50px;
+      width: 50px;
+    }
+    .details-cell {
+      width: 57px;
+    }
+    .member-name-cell {
+      min-width: 40%;
+      text-overflow: ellipsis;
+    }
+  }
+}
+
+tr{
+    &.fadeIn{
+        display:table-row;
+    }
+}
+
+@include breakpoint(small) {
+    .flight-table {
+        &.full {
+            pointer-events: auto;
+        }
+    }
+}

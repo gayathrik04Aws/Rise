@@ -1,0 +1,183 @@
+{% extends 'anywhere/base.html' %}
+
+{% load staticfiles %}
+
+{% load flight_tags %}
+
+{% block title %}Anywhere Flight Info - Rise{% endblock title %}
+
+{% block meta_description %}Rise Anywhere Flight Info{% endblock meta_description %}
+
+{% block css %}
+{% with marketing=False%}
+{{ block.super }}
+{% endwith %}
+{% endblock css %}
+
+{% block body_class %}anywhere anywhere-flight-info{% endblock %}
+
+
+{% block simple_content_header %}
+<div class="anywhere-header"></div>
+{% endblock %}
+{% block simple_content %}
+        <div class="circle med big anywhere">
+            <div class="progress-circle">
+
+              <div class="progress-text">
+                <span class="number">{{ object.percent_full }}%</span>
+                <span class="confirmed">Full</span>
+              </div>
+
+              <svg viewBox="0 0 32 32">
+                <circle r="16" cx="16" cy="16" stroke-dasharray="{{ object.percent_full|floatformat:'0' }} 100" class="progress"></circle>
+              </svg>
+            </div>
+        </div>
+        <div class="form white-bg invitations">
+
+            <div class="top-text">
+                {% if object.empty_seats >= 1 %}
+                    <h1>SPOTS ARE AVAILABLE ON THIS FLIGHT</h1>
+                {% else %}
+                    <h1>THIS FLIGHT IS FULL</h1>
+                {% endif %}
+
+                {% if not is_logged_in %}
+                    <h2>You've been invited to join {{ object.flight_creator_user.get_full_name }}'s flight</h2>
+                {% endif %}
+
+                <p>A {% if object.is_oneway %}ONE-WAY{% else %}ROUND-TRIP{% endif %} flight between {{ object.origin.name }} and {{ object.destination.name }} on this aircraft typically costs <b>${{ object.full_flight_cost|floatformat:0 }}</b>. <br>Based on the
+                    flight creator's request to fill {{ object.seats_required }} spots, the cost per passenger is <b>${{ object.per_seat_cost|floatformat:0 }}</b>.  You will be
+                    notified once the flight is at capacity or if the flight does not meet the flight creator's requirements.</p>
+
+            </div>
+
+
+            <div class="invite-section">
+                {% if invite_ok and object.empty_seats > 0 %}
+                    <h2>Invite others to join your flight!</h2>
+                {% endif %}
+                <div class="card">
+                    <div class="leg-1">
+                        <div class="top-row">
+                            <div class="departing-info">
+                                    <span><strong>Flight # {{ object.leg1.flight_number }}</strong>{{  object.leg1.local_departure.date }}</span>
+                            </div>
+                        </div>
+
+                        <div class="origin">
+
+                            <div class="caption">
+                                <h5>Origin</h5>{{  object.leg1.departure.date }}
+                                <h1>{{ object.leg1.origin.name }}</h1>
+                                <h4 class="grey">{{ object.leg1.local_departure|time:"h:i A"}} {{ object.leg1.origin.get_timezone_display }}</h4>
+                            </div>
+                        </div>
+
+                        <div class="duration arrow">
+                          <h2>{{ object.leg1.duration|human_duration }}</h2>
+                        </div>
+
+                        <div class="destination">
+
+                            <div class="caption">
+                                <h5>Destination</h5>
+                                <h1>{{ object.leg1.destination.name }}</h1>
+
+                               <h4 class="grey">{{ object.leg1.local_arrival|time:"h:i A" }} {{ object.leg1.destination.get_timezone_display }}</h4>
+                            </div>
+                        </div>
+                    </div>
+                     {% if not object.is_oneway %}
+                    <div class="leg-2">
+                        <div class="top-row">
+                            <div class="departing-info">
+                                    <span><strong>Flight # {{ object.leg2.flight_number }}</strong><span class="divider"></span>{{  object.leg2.local_departure.date }}</span>
+                            </div>
+                        </div>
+
+                        <div class="origin">
+
+                            <div class="caption">
+                                <h5>Origin</h5>{{  object.leg2.local_departure.date }}
+                                <h1>{{ object.leg2.origin.name }}</h1>
+                                <h4 class="grey">{{ object.leg2.local_departure|time:"h:i A" }} {{ object.leg2.origin.get_timezone_display }}</h4>
+                            </div>
+                        </div>
+
+                        <div class="duration arrow">
+                          <h2>{{ object.leg2.duration|human_duration }}</h2>
+                        </div>
+
+                        <div class="destination">
+
+                            <div class="caption">
+                                <h5>Destination</h5>
+                                <h1>{{ object.leg2.destination.name }}</h1>
+
+                               <h4 class="grey">{{ object.leg2.local_arrival|time:"h:i A" }} {{ object.leg2.destination.get_timezone_display }}</h4>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <p class="booking-info">RISE ANYWHERE Booking Policy<br>
+
+                Spots on the flight may only be booked by RISE members.  Limit one spot per RISE member.
+                </p>
+
+                {% if book_ok %}
+
+                <div class="cost-container rise-stacker rise-stack-sm rise-stacker-remove-margins">
+                    <div class="cost-unit">
+                        <div class="caption">
+                            <h5>Spots</h5>
+                            <!--
+                            <label id="lblCost">${{ object.per_seat_cost|floatformat:0 }}</label>
+                            <label id="lblTax">+ ${{ object.per_seat_tax|floatformat:0 }}</label> -->
+                            <label id="lblSeats">1</label>
+                        </div>
+                    </div>
+                    <div class="cost-unit">
+                        <div class="caption">
+                            <h5>Your Cost</h5>
+                            <!--
+                            <label id="lblCost">${{ object.per_seat_cost|floatformat:0 }}</label>
+                            <label id="lblTax">+ ${{ object.per_seat_tax|floatformat:0 }}</label> -->
+                            <label id="lblTotal">${{ object.per_seat_with_tax|floatformat:0 }}</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="block row full-width-link">
+                    <a href="{{ redirect_link }}"><input type="button" class="button anywhere-blue" value="Join this Flight" /></a>
+                </div>
+                {% endif %}
+                {% if invite_ok %}
+                     <div class="block row full-width-link">
+                    <a href="{{ invitation_link }}"><input type="button" class="button anywhere-blue" value="Share Flight" /></a>
+                </div>
+   <br>
+                    <span>Plans change.  We're here to help.  Call <a href="tel:+18447668313">844-766-8313</a> to speak to a RISE representative.</span>
+
+                {% endif %}
+
+
+            </div>
+
+        </div>
+<br>
+        <div class="block center">
+              {% if not is_logged_in %}
+                <a href="{{ WP_URL }}" class="return"> &#9664; Return to Home</a>
+                {% else %}
+               <a href="{% url 'dashboard' %}" class="return"> &#9664; Return to Dashboard</a>
+            {% endif %}
+        </div>
+
+{% endblock %}
+
+
+{% block footer %}
+{% endblock footer %}

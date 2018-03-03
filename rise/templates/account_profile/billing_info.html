@@ -1,0 +1,201 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% load tz %}
+{% load account_tags %}
+
+{% load staticfiles %}
+
+{% block title %}Billing - {{ block.super }}{% endblock title %}
+
+{% block meta_description %}Billing - Manage Account{% endblock meta_description %}
+
+{% block css %}
+{% with marketing=False%}
+{{ block.super }}
+{% endwith %}
+{% endblock css %}
+
+{% block body_class %}{% endblock %}
+{% block body %}
+{% include 'account_profile/dashboard_nav.html' %}
+<div class="section profile-body">
+    {% include 'account_profile/profile-sidenav-mobile.html' with billing_info=True %}
+    <div class="content-wrap app-content-wrap no-mt-mobile group">
+    {% include 'account_profile/profile-sidenav.html' with billing=True %}
+        <div class="profile-content-wrap">
+            <div class="detail group">
+                <h1>Billing Info</h1>
+
+             {% if user.account.status != 'A' %}
+                <br>
+            <h3>Your account is not currently active. </h3><h3>Contact a RISE Representative at <a href="tel:+18447668313">844-766-8313</a> for more information.</h3>
+            {% endif %}
+                {% if user.account.is_corporate %}
+                <div class="account-profile-header">
+                    <div class="h-left">
+                        <span class="title">Team Membership</span>
+                        <span class="secondary">${{ user.account.corporate_amount|floatformat:0|intcomma }} per month</span>
+                    </div>
+                    <div class="h-right">
+                        {% comment %}
+                        <a href="#">
+                            <figure class="print icon"></figure><span>Print Statement</span>
+                        </a>
+                        {% endcomment %}
+                    </div>
+                </div>
+                <ul class="profile-items group border-bottom">
+                    <li class="half fee">
+                        <span class="item-title">Monthly Fee</span>
+                        <span class="item-value">${{ user.account.corporate_amount|floatformat:0|intcomma }}</span>
+                    </li>
+                    {% with subscription=user.account.get_subscription %}
+                    {% if subscription %}
+                    <li class="half">
+                        <span class="item-title">Next Auto-Pay Date</span>
+                        <span class="item-value">{{ subscription.next_bill_date|date:"m d Y" }}</span>
+                    </li>
+                    {% endif %}
+                    {% endwith %}
+                </ul>
+                {% else %}
+                <div class="account-profile-header">
+                    <div class="h-left">
+                        <span class="title">{{ user.account.plan.name }}</span>
+                        <span class="secondary break"> ${{ user.account|active_plan_pricing|floatformat:0|intcomma }} per month</span>
+                {% if user.account|has_discounted_plan %}
+                   <span><br><i>Your subscription predates the current pricing for your plan.</i></span>
+                    {% endif %}
+                    </div>
+                    <div class="h-right">
+                        {% comment %}
+                        <a href="#">
+                            <figure class="print icon"></figure><span>Print Statement</span>
+                        </a>
+                        {% endcomment %}
+                    </div>
+
+                </div>
+
+                <ul class="profile-items group border-bottom">
+                    <li class="half fee">
+                        <span class="item-title">Monthly Fee</span>
+                        <span class="item-value">${{ user.account|active_plan_pricing|floatformat:0|intcomma }} </span>
+                    </li>
+                    {% with subscription=user.account.get_subscription %}
+                    {% if subscription %}
+                    <li class="half">
+                        <span class="item-title">Next Auto-Pay Date</span>
+                        <span class="item-value">{{ subscription.next_bill_date|date:"m d Y" }}</span>
+                    </li>
+                    {% endif %}
+                    {% endwith %}
+                </ul>
+                {% endif %}
+
+                {% if recent_charges %}
+                <span class="section-label">Recent History</span>
+                <ul class="recent-history">
+                    <li class="mobile no-bb">
+                        <div class="change-info">
+                            <span class="label one">Item</span>
+                            <span class="label two">Purchase Date</span>
+                        </div>
+                        <div>
+                            <span class="label three">Value</span>
+                        </div>
+                    </li>
+                    {% for charge in recent_charges %}
+                    <li>
+                        <div class="change-info">
+                            <span class="">{{ charge.description }}</span>
+                            <span class="move">{# <figure class="icon-repeat"></figure> #}{% localtime on %}{{ charge.created|date:"m d Y" }}{% endlocaltime %}</span>
+                        </div>
+                        <div>
+                          <span class="price">${{ charge.amount|floatformat:2|intcomma }}</span>
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+                <div class="page-controls">
+                    <a href="{% url 'profile_billing_history' %}" class="button black profile">Payment History</a>
+                </div>
+                {% endif %}
+
+                <span class="section-label">Payment Methods</span>
+                {% with cards=user.account.get_all_credit_cards bank_accounts=user.account.get_all_bank_account %}
+                {% if cards %}
+                {% for card in cards %}
+                <div class="credit-cards">
+                    <div class="full-credit-card">
+                        <div class="credit-card-information">
+                            <span class="credit-card-head">{{ card.brand }} ••••••••••••{{ card.last4 }}</span><br/>
+                            Expires {{ card.exp_month }}/{{ card.exp_year }}<br/>
+                            {% if card.billing_payment_method.nickname  %}
+                                {{ card.billing_payment_method.nickname }}<br/>
+                            {% endif %}
+                            {% if card.is_default %}Default Payment Method
+                            {% else %}
+                            <a href="{% url 'profile_payment_method' card.billing_payment_method_id %}">Make default payment method</a>
+                            {% endif %}
+                        </div>
+                        <div class="credit-card-controls">
+                            <a href="{% url 'profile_billing_delete_card' card.id %}">
+                                <figure class="icon-trashcan"></figure>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                {% endfor %}
+                {% endif %}
+
+                {% if bank_accounts %}
+                {% for bank_account in bank_accounts %}
+                <div class="credit-cards">
+                    <div class="full-credit-card">
+                        <div class="credit-card-information">
+                            <span class="credit-card-head">{{ bank_account.bank_name }}</span><br>
+                            ••••••••••••{{ bank_account.last4 }}
+                            {% if bank_account.billing_payment_method.nickname  %}
+                                {{ bank_account.billing_payment_method.nickname }}<br/>
+                            {% endif %}
+                            {% if not bank_account.verified %}
+                            <br>
+                            <a href="{% url 'profile_billing_bank_account_verify' %}" class="button green">VERIFY BANK ACCOUNT</a>
+                            {% endif %}
+                            <br>
+                            {% if bank_account.is_default %}Default Payment Method
+                            {% elif bank_account.verified %}
+                            <a href="{% url 'profile_payment_method' bank_account.billing_payment_method_id %}">Make default payment method</a>
+                            {% endif %}
+                        </div>
+                        <div class="credit-card-controls">
+                            <a href="{% url 'profile_billing_bank_account_delete' bank_account.id %}">
+                                <figure class="icon-trashcan"></figure>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                {% endfor %}
+                {% endif %}
+                {% endwith %}
+
+                <div class="page-controls">
+                    <a href="{% url 'profile_billing_bank_account' %}" class="button dark-grey profile">Add a New Bank Account</a>
+                    <a href="{% url 'profile_billing_card' %}" class="button dark-grey profile fr">Add a New Card</a>
+                </div>
+
+            </div> <!-- /.detail.group -->
+        </div> <!-- /.profile-content-wrap -->
+    </div> <!-- /.content-wrap -->
+</div> <!-- /.profile-body -->
+{% endblock body %}
+
+{% block javascript %}
+{{ block.super }}
+<script src="{% static 'js/binaryajax.min.js' %}"></script>
+<script src="{% static 'js/exif.min.js' %}"></script>
+<script src="{% static 'js/profile.js' %}"></script>
+{% endblock javascript %}

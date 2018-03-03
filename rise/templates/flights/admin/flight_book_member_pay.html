@@ -1,0 +1,157 @@
+{% extends 'base_admin.html' %}
+{% load flight_tags %}
+{% load humanize %}
+{% load staticfiles %}
+
+{% block title %}Dashboard - Payment Required{% endblock title %}
+
+{% block meta_description %}Dashboard - Payment Required{% endblock meta_description %}
+
+{% block css %}
+{% with marketing=False%}
+{{ block.super }}
+{% endwith %}
+{% endblock css %}
+
+{% block body_class %}{% endblock %}
+{% block body %}
+{% include 'admin_header_fragment.html' with nav_waitlist=True %}
+
+<div class="admin-content-wrap admin-form-page">
+    <div class="block center header-block">
+        <h1>Additional Payment</h1>
+    </div>
+    {% if reservation.requires_payment %}
+    <form action="." method="POST" autocomplete="on" class="alert-form">
+        {% csrf_token %}
+        <div class="alert">
+            <div class="badge"><figure class="alert-icon"></figure></div>
+            <p>Oops! {{ flight_reservation.primary_passenger.userprofile.get_full_name }}'s account is out of
+                {% if reservation.total_buy_companion_pass_count > 0 and reservation.total_buy_pass_count > 0 %}
+                Available Legs and Companion Passes.
+                {% elif reservation.total_buy_companion_pass_count > 0 %}
+                Companion Passes.
+                {% elif reservation.total_buy_pass_count > 0 %}
+                Available Legs.
+                {% endif %}
+                Additional fees totaling ${{ reservation.subtotal_amount|floatformat:2|intcomma }} +
+                ${{ reservation.subtotal_amount_fet_tax|floatformat:2|intcomma }} FET tax
+                will be charged to the selected card below</p>
+                <div class="cf narrow-block">
+                     <p>Override Charge?</p>
+                     <div class="group">
+                     {% if form.override_charge.errors %}
+                     <br/>
+                     <div class="error-message">
+                         {{ form.override_charge.errors }}
+                     </div>
+                     {% endif %}
+                    </div>
+                    <div class="yes-no-grid">
+                     {% for checkbox in form.override_charge %}
+                         <label class="check-radio-block">
+                            <input id="override-charge-{{ forloop.counter }}" name="{{ checkbox.name }}" type="radio" value="{{ checkbox.choice_value }}" {% if checkbox.is_checked %}checked{% endif %}>
+                            <span>{{ checkbox.choice_label }}</span>
+                         </label>
+                     {% endfor %}
+                    </div>
+                    <div class="interstitial">
+                        <span class="lined">Or</span>
+                    </div>
+                </div>
+                <label for="{{ form.payment_method.auto_id }}" class="center">--WITH THIS PAYMENT METHOD--</label>
+                {{ form.payment_method.errors }}
+                <div class="select arrow">
+                    <span class="value">{{ form.payment_method.value|default:"Select" }}</span>
+                    <ul>
+                        {% for payment in paylist %}
+                        <li value="{{ payment.id }}" >{% if payment.nickname %}{{ payment.nickname }}&nbsp;&nbsp;{% endif %}{{ payment.text }}&nbsp;&nbsp;&nbsp;{% if payment.is_default %}Default{% endif %}</li>
+                        {% endfor %}
+                    </ul>
+                    <select id="id_payment_method" name="payment_method" >
+                        {% for payment in paylist %}
+                        <option value="{{ payment.id }}" {% if payment.is_default %} selected {% endif %} >{% if payment.nickname %}{{ payment.nickname }}&nbsp;&nbsp;{% endif %}{{ payment.text }}&nbsp;&nbsp;&nbsp;{% if payment.is_default %}Default{% endif %}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            <a href="{% url 'admin_account_credit_card' pk=flight_reservation.reservation.account.pk %}" class="button grey">Update Payment Method</a>
+            </div>
+            {% comment %}
+            <div class="block">
+                {% with flight=flight_reservation.flight %}
+                <div class="card">
+                    {% if flight.flight_type != 'R' %}
+                    <div class="badge"><figure class="{% if flight.flight_type == 'F' %}funflight-solid{% elif flight.flight_type == 'P' %}promo-solid{% endif %}"></figure></div>
+                    {% endif %}
+                    <div class="origin-and-destination">
+                        <h5>Origin &amp; Destination</h5>
+                        <div class="flight-details">
+                            <span class="airport">{{ flight.origin.code }}</span> {{ flight.departure.date|date:'d M'}} / {{ flight.departure|time:"h:i A" }}<br />
+                            <span class="airport">{{ flight.destination.code }}</span> {{ flight.arrival.date|date:'d M'}} / {{ flight.arrival|time:"h:i A" }}
+                        </div>
+                    </div>
+                    <div class="origin">
+                        <div class="badge-wrap badge-right">
+                            <div class="circle x-large gradient {{ flight.origin.city|remove_spaces_lower_case }}">
+                                {{ flight.origin.code }}
+                                {% if flight.flight_type != 'R' %}
+                                <div class="badge-wrap">
+                                    <figure class="{% if flight.flight_type == 'F' %}funflight-solid{% elif flight.flight_type == 'P' %}promo-solid{% endif %}"></figure>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="caption">
+                            <h5>Origin</h5>
+                            <h1>{{ flight.origin.city }}, {{ flight.origin.state }}</h1>
+                            <h4 class="grey">{{ flight.departure.date|date:'d M'}} / {{ flight.departure|time:"h:i A" }}</h4>
+                        </div>
+                    </div>
+                    <div class="destination">
+                        <div class="circle x-large gradient {{ flight.destination.city|remove_spaces_lower_case }}">
+                            {{ flight.destination.code }}
+                        </div>
+                        <div class="caption">
+                            <h5>Destination</h5>
+                            <h1>{{ flight.destination.city }}, {{ flight.destination.state }}</h1>
+                            <h4 class="grey">{{ flight.arrival.date|date:'d M'}} / {{ flight.arrival|time:"h:i A" }}</h4>
+                        </div>
+                    </div>
+                    <div class="passengers">
+                        <h5>Passengers</h5>
+                        <div class="circle small">
+                            <img src="{{ flight_reservation.primary_passenger.user.avatar_url }}" alt="{{ flight_reservation.primary_passenger.user.get_full_name }}">
+                        </div>
+
+                        {% with flight_companions=flight_reservation.get_companions %}
+                        {% if flight_companions %}
+                        <figure class="plus-grey-lg"></figure>
+                        {% for companion_passenger in flight_companions %}
+                        <div class="circle small {% if forloop.first %}with-additional{% else %}additional{% endif %}">
+                            <img src="{{ companion_passenger.user.avatar_url }}" alt="{{ companion_passenger.user.get_full_name }}">
+                        </div>
+                        {% endfor %}
+                        {% endif %}
+                        {% endwith %}
+
+                    </div>
+                </div>
+                {% endwith %}
+            </div>
+            {% endcomment %}
+            <div class="block center rise-stacker rise-stack-sm">
+                <button type="submit" class="green">Confirm Flight</button>
+                <div class="interstitial">
+                    <span class="lined">Or</span>
+                </div>
+                <a href="{% url 'admin_flight_book_member_cancel' pk=flight_reservation.pk %}" class="button dark-grey">Cancel</a>
+            </div>
+
+        </form>
+        {% endif %}
+    </div>
+    {% endblock body %}
+
+    {% block javascript %}
+    {{ block.super }}
+    {% endblock javascript %}

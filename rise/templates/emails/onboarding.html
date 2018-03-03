@@ -1,0 +1,29 @@
+{% extends 'emails/base.html' %}
+
+{% block body %}
+<table border="0" cellpadding="20" cellspacing="0" width="100%">
+    <tr>
+        <td align="center" valign="top" class="bodyContent">
+            <div>
+                <h1>Congratulations, {{ user.first_name }}!</h1>
+                <div>
+                    We are so glad you are a Rise Founding Member. Click to complete your Rise profile registration to begin booking flights and flying with Rise.
+                </div>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td align="center" valign="top" style="padding-top:0;">
+            <table border="0" cellpadding="0" cellspacing="0" class="button">
+                <tr>
+                    <td valign="middle" width="250px">
+                        <div>
+                            <a href="{{ protocol }}://{{ site.domain }}{{ user.generate_register_login_url }}">Complete Profile</a>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+{% endblock body %}

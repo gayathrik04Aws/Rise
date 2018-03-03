@@ -1,0 +1,9 @@
+{% extends 'emails/base.txt' %}
+
+{% block content %}Welcome to Rise, {{ user.first_name }}!
+
+You are now a member of the Rise staff. Click to complete your Rise profile registration.
+
+
+{{ protocol }}://{{ site.domain }}{% url 'register_member' uidb64=uid token=token %}
+{% endblock content %}

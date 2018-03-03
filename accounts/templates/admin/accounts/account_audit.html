@@ -1,0 +1,58 @@
+{% extends 'base_admin.html' %}
+
+{% load tz %}
+{% load humanize %}
+
+{% block title %}{{ block.super }} - Accounts{% endblock %}
+
+{% block body %}
+{% include 'admin_header_fragment.html' with accounts=True %}
+<div class="admin-detail-view">
+    <div class="avatar fl">
+      <div class="badge-wrap badge-right">
+        <div class="circle large no-m" style="background:url({{ account.primary_user.avatar_url }}) 0 0 no-repeat;background-size:100% 100%" id="avatar-image">
+            <!--<img src="{{ user.avatar_url }}">-->
+        </div>
+      </div>
+    </div>
+    <div class="admin-details-wrap">
+        <div class="admin-page-header">
+            <div class="fl">
+                <h1><a href="{% url 'admin_account' account.id %}">{{ account.account_name }}</a></h1>
+            </div>
+        </div>
+
+
+        <div class="detail-section last">
+            <h2>Audit Logs</h2>
+
+            <table class="admin-table no-border no-hover">
+                <thead>
+                    <tr>
+                        <th>Timestamp</th>
+                        <th>Actor</th>
+                        <th>Changes</th>
+                    </tr>
+                </thead>
+                <tbody class="billing">
+                    {% localtime on %}
+                    {% for log in logs %}
+                    <tr>
+                        <td>{{ log.timestamp|date:"m/d/y h:i A" }}</td>
+                        <td>{{ log.actor.get_full_name }}</td>
+                        <td>
+                            {% for field, values in log.changes_dict.iteritems %}
+                            {{ field }}: {{ values.0 }} → {{ values.1 }}<br>
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    {% endlocaltime %}
+                </tbody>
+            </table>
+
+        </div>
+    </div><!-- /.account-details-wrap -->
+</div>
+
+{% endblock %}

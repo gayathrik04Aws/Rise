@@ -1,0 +1,47 @@
+{% extends 'emails/base_anywhere.html' %}
+
+{% block title %}{{ title }}{% endblock title %}
+
+
+{% block body %}
+<table border="0" cellpadding="40" cellspacing="0" width="100%" class="anywhere-email">
+    <tr>
+        <td>
+            <table border="0" cellpadding="20" cellspacing="0" width="100%">
+                <tr>
+                    <td align="center" valign="top" class="bodyContent">
+                        <div>
+                            <h1>New Rise Anywhere Member:{{ account.account_name }}</h1>
+                            <p style="margin-bottom: 20px;">Hello, this email is to let you know there is a new RISE Anywhere member who needs to complete a background check before their membership is processed.</p>
+                            <p>Thanks for everything you do!</p>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+
+
+            
+            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                <tr>
+                    <td align="center" valign="top" style="padding-top: 40px; padding-bottom: 40px;">
+                        <table border="0" cellpadding="0" cellspacing="0" class="button">
+                            <tr>
+                                <td valign="middle" width="250px">
+                                    <div>
+                                        <a href="{{ protocol }}://{{ site.domain }}{% url 'admin_account' account.pk %}">Account Detail</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        <img src="http://cl.ly/100Q0H2k1E3j/footer-logo.png" width="119px" height="27px">
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+{% endblock body %}

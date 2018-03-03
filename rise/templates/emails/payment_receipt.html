@@ -1,0 +1,78 @@
+{% extends 'emails/base.html' %}
+{% load safe_settings %}
+
+{% block body %}
+<table border="0" cellpadding="20" cellspacing="0" width="100%">
+    <tr>
+        <td align="center" valign="top" class="bodyContent">
+            <div>
+                <h1>Payment Received</h1>
+                <p>
+                    We have received your payment of ${{ charge.amount|floatformat:2 }} on {{ charge.created|date:"M d, Y" }}.
+                </p>
+            </div>
+        </td>
+    </tr>
+    <tr class="rule">
+        <td align="center" valign="top" class="payment_table">
+            <table border="0" cellpadding="5" cellspacing="0" align="center" width="400px" >
+                {% if subtotal and tax %}
+                    <tr>
+                        <td valign="middle">
+                            {{ charge.description }}
+                        </td>
+                        <td class="right">
+                            ${{ subtotal|floatformat:2 }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="middle">
+                            {{ tax_percentage }} Sales Tax
+                        </td>
+                        <td class="right">
+                            ${{ tax|floatformat:2 }}
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td valign="middle">
+                            {{ charge.description }}
+                        </td>
+                        <td class="right">
+                            ${{ charge.amount|floatformat:2 }}
+                        </td>
+                    </tr>
+                {% endif %}
+                <tr class="total">
+                    <td valign="middle">
+                        Total
+                    </td>
+                    <td class="right">
+                        ${{ charge.amount|floatformat:2 }}
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td align="center" valign="top">
+            <table border="0" cellpadding="0" cellspacing="0" class="button">
+                <tr>
+                    <td valign="middle" width="250px">
+                        <div>
+                            <a href="{{ protocol }}://{{ site.domain }}{% url 'profile_billing' %}">View Your Account</a>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td align="center" valign="top" class="bodyContent">
+            <div>
+                <a href="{{ protocol }}://{{ site.domain }}{% url 'profile_notifications' %}">Manage Alerts</a>
+            </div>
+        </td>
+    </tr>
+
+{% endblock body %}

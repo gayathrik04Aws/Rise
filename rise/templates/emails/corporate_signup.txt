@@ -1,0 +1,11 @@
+{% autoescape off %}Price Calculator Inquiry
+
+Submission Information
+-------------------
+    Company: {{ company }}
+    Name: {{ first_name }} {{ last_name }}
+    Email: {{ email }}
+    Phone: {{ phone_number }}
+    Number of Members: {{ num_members }}
+    Number of Seats: {{ num_seats }}
+{% endautoescape %}

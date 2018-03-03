@@ -1,0 +1,204 @@
+{% extends 'base_admin.html' %}
+
+{% load staticfiles %}
+{% load humanize %}
+{% load flight_tags %}
+
+{% block title %}Print Flight Manifest{% endblock title %}
+
+{% block meta_description %}Print Flight Manifest{% endblock meta_description %}
+
+{% block body_class %}{% endblock %}
+{% block body %}
+{% include 'admin_header_fragment.html' with flights=True %}
+<div class="admin-content-wrap admin-form-page detail-page print-preview" id="flight-details">
+    <div class="cf">
+        <h1 class="fl">Flight {{ object.flight_number }}</h1>
+        {% if object.plane %}
+            <h3 class="section-label admin">Tail Number: {{ object.plane.registration }}</h3>
+        {% endif %}
+    </div>
+
+
+    <div class="flight-status-announcement cf">
+        Status: {{ object.get_status_display }}
+        <figure class="flight-alert-{% if flight.is_cancelled %}cancel{% elif flight.is_delayed %}delayed{% elif flight.is_complete %}complete{% else %}on-time{% endif %}"></figure>
+        <span class="fr icon-with-label hide-print" id="print-page">
+            <figure class="print"></figure><span>Print Manifest</span>
+        </span>
+    </div>
+    <div class="detail-section">
+        <div class="distribute equal-width">
+        <div>
+            <ul>
+                <label>Departs</label>
+                <li><b>{{ object.origin.code }}</b></li>
+                <li>{{ flight.origin.name }}</li>
+                <li>{{ flight.origin.city}}, {{ flight.origin.state }}</li>
+                <label>Scheduled</label>
+                <li>{{ flight.local_departure|date:"m/d/Y"}}</li>
+                <li>{{ flight.local_departure|date:"h:i A e"}}</li>
+                {% if flight.actual_departure %}
+                <label>Actual</label>
+                <li>{{ flight.local_actual_departure|date:"m/d/Y"}}</li>
+                <li>{{ flight.local_actual_departure|date:"h:i A e" }}
+                {% endif %}
+            </ul>
+        </div>
+        <div>
+            <ul>
+                <label>Arrives</label>
+                <li><b>{{ flight.destination.code }}</b></li>
+                <li>{{ flight.destination.name }}</li>
+                <li>{{ flight.destination.city}}, {{ flight.destination.state }}</li>
+                <label>Scheduled</label>
+                <li>{{ flight.local_arrival|date:"m/d/Y"}}</li>
+                <li>{{ flight.local_arrival|date:"h:i A e"}}</li>
+                {% if flight.actual_arrival %}
+                <label>Actual</label>
+                <li>{{ flight.local_actual_arrival|date:"m/d/Y" }}
+                <li>{{ flight.local_actual_arrival|date:"h:i A e" }}
+                {% endif %}
+            </ul>
+        </div>
+        <div>
+            <ul>
+                <label>Duration</label>
+                <li>{{ flight.duration|simple_duration }}</li>
+            </ul>
+            {% if flight.plane %}
+            <ul>
+                <label>Plane</label>
+                <li>{{ flight.plane.registration}}</li>
+            </ul>
+            {% endif %}
+        </div>
+        </div>
+    </div>
+    <ul class="flight-manifest">
+        <span class="cf">
+            <span class="manifest-label">Rise Staff Onboard</span>
+        </span>
+        {% if object.pilot %}
+            <li>
+                <span class="name">{{ object.pilot.get_full_name }}</span>
+                <span class="group">Pilot</span>
+            </li>
+        {% endif %}
+        {% if object.copilot %}
+            <li>
+                <span class="name">{{ object.copilot.get_full_name }} </span>
+                <span class="group">Co-Pilot</span>
+            </li>
+        {% endif %}
+    </ul>
+    <hr>
+    <div class="flight-manifest">
+        <span class="cf">
+            <span class="manifest-label">Passengers</span>
+        </span>
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Date of Birth</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>Weight Range</th>
+                    <th>Background Check</th>
+                    <th>Checked In</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for passenger in flight.get_passengers %}
+                <tr>
+                    <td>
+                        <div class="circle small no-m" id="avatar-image">
+                            <img src="{{ passenger.userprofile.avatar_url }}" class="circle">
+                        </div>
+                        {{ passenger.userprofile.get_full_name }}
+                        </td>
+                    <td>{{ passenger.date_of_birth|date:"d F, Y" }}</td>
+                    <td>
+                    {% if passenger.userprofile.phone %}
+                        {{ passenger.userprofile.phone }}
+                    {% elif passenger.userprofile.mobile_phone %}
+                        {{ passenger.userprofile.mobile_phone }}
+                    {% endif %}
+                    </td>
+                    <td>{{passenger.userprofile.email}}</td>
+                    <td>{{ passenger.userprofile.get_weight_display }}</td>
+                    <td>{{ passenger.get_background_status_display }}</td>
+                    <td><input type="checkbox" name="check_in" value="1" {% if passenger.checked_in %}checked{%endif %}></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% with waitlist=flight.get_waitlist %}
+    {% if waitlist %}
+        <div class="flight-manifest">
+            <span class="cf">
+                <span class="manifest-label">Waitlist</span>
+            </span>
+            <label>Waitlist</label>
+            <ol class="waitlist">
+                {% for waiting in waitlist %}
+                <li>
+                    <span>{{ waiting.userprofile.first_name }} {{ waiting.userprofile.last_name }}</span>
+                    <span class="fr hide-print"><a href="{% url 'admin_book_from_waitlist' waiting.pk %}">Add to Flight</a></span>
+                </li>
+                {% endfor %}
+            </ol>
+        </div>
+        {% endif %}
+        {% endwith %}
+    <hr>
+    <div class="flight-manifest manifest-member-notes">
+        <span class="cf">
+            <span class="manifest-label">Member Notes</span>
+        </span>
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Note</th>
+                    <th>Created By</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for passenger in flight.get_passengers %}
+                    {% if passenger.userprofile.note_userprofile.all %}
+                    <tr>
+                        <td>
+                            <div class="circle small no-m" id="avatar-image">
+                                <img src="{{ passenger.userprofile.avatar_url }}" class="circle">
+                            </div>
+                            {{ passenger.userprofile.get_full_name }}
+                            </td>
+                        <td>{{ passenger.userprofile.note_userprofile.all.0.body }}</td>
+                        <td>{{ passenger.userprofile.note_userprofile.all.0.created_by }}</td>
+                    </tr>
+                    {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% if perms.accounts.can_view_flights %}
+    <div class="center hide-print">
+        <a href="{% url 'admin_flight_detail' flight.pk %}" class="return-to-profile">&#9664; Return to Flight Detail</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock body %}
+
+{% block javascript %}
+<script type="text/javascript">
+$('#id_status').on('change', function () {
+    $('#id_status_form').submit();
+});
+$(document).ready(function(){
+    window.print();
+});
+</script>
+{% endblock javascript %}

@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block title %}500 - {{ block.super }}{% endblock title %}
+
+{% block meta_description %}500{% endblock meta_description %}
+
+{% block css %}
+{% with marketing=False%}
+{{ block.super }}
+{% endwith %}
+{% endblock css %}
+
+{% block body_class %}site-error{% endblock %}
+{% block body %}
+{% include 'basic_header_fragment.html' %}
+<div class="section main-body error-page last">
+    <div class="content-wrap">
+    		<div class="alert">
+			<div class="badge"><figure class="alert-icon"></figure></div>
+    			<h1>500 - Server Error</h1>
+    			<p>Oops! There was a server error! We have been notified of the issue and will look into it.</p>
+    			<br/>
+	        	<div class="block center">
+	            		<a href="{{ WP_URL }}" class="return"> &#9664; Return to Home</a>
+	        	</div>
+	        	<br/>
+    		</div>
+    </div>
+</div>
+{% endblock body %}

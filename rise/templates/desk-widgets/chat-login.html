@@ -1,0 +1,18 @@
+<div class="chat-widget--login">
+    <img class="chat-widget--login__logo" src="https://cfa084d658b491813884-326c6674e44e477b9197a3210586152e.ssl.cf1.rackcdn.com/img/chat/rise-chat_logo-color.png" alt="Rise">
+    <h1 class="chat-widget--login__title">Rise Live Chat Support</h1>
+    {% if current_user == nil or current_user.is_guest %}
+        <div class="chat-widget--login__label">{{system.snippets.your_name}}</div>
+        <div class="chat-widget--login__input--text">{{ interaction_name }}</div>
+
+        <div class="chat-widget--login__label">{{system.snippets.your_email}}</div>
+        <div class="chat-widget--login__input--text">{{ interaction_email }}</div>
+    {% endif %}
+
+    <div class="chat-widget--login__label">{{system.snippets.question}}</div>
+    <div class="chat-widget--login__input--text">{{ chat_subject }}</div>
+
+    {{hidden_parameters }}
+    <div class="online chat-widget--login__input--submit">{{ submit_button }}</div>
+    {{ interaction_info }}
+</div>

@@ -1,0 +1,8 @@
+{% autoescape off %}
+
+Account: {{ account_name }}
+--------------------------------------
+
+{{ name }} changed the status of this account from {{ old_status }} to {{ new_status }}
+
+{% endautoescape %}

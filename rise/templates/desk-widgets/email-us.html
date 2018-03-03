@@ -1,0 +1,19 @@
+<div class="email-widget">
+    <img class="email-widget__logo" src="https://cfa084d658b491813884-326c6674e44e477b9197a3210586152e.ssl.cf1.rackcdn.com/img/chat/rise-chat_logo-color@2x.png" alt="Rise">
+    <h1 class="email-widget__title">Rise Live Chat Support is Offline</h1>
+    <p class="email-widget__note">Email your question to our support team</p>
+    {% if current_user == nil or current_user.is_guest %}
+        <div class="email-widget__label">{{system.snippets.your_name}}</div>
+        <div class="email-widget__input--text">{{ interaction_name }}</div>
+
+        <div class="email-widget__label">{{system.snippets.your_email}}</div>
+        <div class="email-widget__input--text">{{ interaction_email }}</div>
+    {% endif %}
+
+    <div class="email-widget__label">{{system.snippets.message}}</div>
+    <div class="email-widget__input--text">{{ email_body }}</div>
+
+    {{hidden_parameters }}
+    <div class="email-widget__input--submit">{{ submit_button }}</div>
+    {{ interaction_info }}
+</div>

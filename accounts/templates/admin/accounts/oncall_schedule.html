@@ -1,0 +1,41 @@
+{% extends 'base_admin.html' %}
+{% load account_tags %}
+{% block body %}
+    {% include 'admin_header_fragment.html' with staff=True %}
+    <div class="admin-content-wrap admin-form-page">
+         <div class="block admin">
+            <div class="fl">
+                <h1>OnCall Schedule</h1>
+            </div>
+            <div class="fr">
+                <a href="{% url 'admin_oncall_schedule_create' %}" class="admin-add-link">+ Add OnCall Schedule</a>
+            </div>
+        </div>
+        <form action="/riseadmin/staff/oncallschedule" method="POST">
+            {% csrf_token %}
+            <table class="admin-table form-table">
+                <thead>
+                    <tr><th>Member</th><th>Schedule</th><th>Assigned Flights</th><th></th></tr>
+                </thead>
+                <tbody>
+                    {% for member in sorted_list %}
+                    <tr>
+                        <td>{{ member.user.first_name }} {{ member.user.last_name }}</td>
+                        <td>{{ member.local_time_start_date|date:"m/d/Y h:i A" }} - {{ member.local_time_end_date|date:"m/d/Y h:i A" }} </td>
+                        <td>
+                      {% with flights=member.get_flights %}
+                            {% for flight in member.get_flights %}
+                              {{ flight.flight_number}} : {{ flight.origin.city }}-{{flight.destination.city}} at {{flight.local_departure_display }}<br/>
+                            {% endfor %}
+                    {% endwith %}
+                    </td>
+                        <td><a href="{% url 'admin_oncall_schedule_delete' member.pk %}" >Remove</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </form>
+
+
+    </div>
+{% endblock %}

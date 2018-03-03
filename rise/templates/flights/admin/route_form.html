@@ -1,0 +1,96 @@
+{% extends 'base_admin.html' %}
+
+{% load staticfiles %}
+{% load flight_tags %}
+
+{% block title %}Dashboard - {% if route %}Update{% else %}Create{% endif %} Route{% endblock title %}
+
+{% block meta_description %}Dashboard - {% if route %}Update{% else %}Create{% endif %} Route{% endblock meta_description %}
+
+{% block body_class %}{% endblock %}
+{% block body %}
+
+    {% include 'admin_header_fragment.html' with nav_routes=True %}
+
+    <div class="admin-content-wrap admin-form-page">
+        <h1>{% if route %}Update{% else %}Add New{% endif %} Route</h1>
+
+
+        {% if form.errors %}
+            <div class="error-message">
+            {% for field, errors in form.errors.items %}
+            {% for error in errors %}
+              {{ error }}<br/>
+            {% endfor %}
+            {% endfor %}
+            </div>
+        {% endif %}
+
+        <form method="POST" action=".">
+            {% csrf_token %}
+
+            <input type="text" placeholder="Route Name" name="{{ form.name.html_name }}" value="{{ form.name.value|default:"" }}">
+
+            <div class="distribute equal-width">
+                <div class="select arrow">
+                  <span class="value">Origin Airport</span>
+                  {% if not route or not anywherepath %}
+                  <ul>
+                      {% for value, text in form.origin.field.choices %}
+                      <li value="{{ value }}">{{ text }}</li>
+                      {% endfor %}
+                  </ul>
+                  {% endif %}
+                  {{ form.origin }}
+                </div>
+                <div class="select arrow">
+                  <span class="value">Destination Airport</span>
+                  {% if not route or not anywherepath %}
+                  <ul>
+                      {% for value, text in form.destination.field.choices %}
+                      <li value="{{ value }}">{{ text }}</li>
+                      {% endfor %}
+                  </ul>
+                  {% endif %}
+                  {{ form.destination }}
+                </div>
+            </div>
+
+            {% if not anywherepath %}
+                <div class="select arrow">
+                    <span class="value">Select Plane</span>
+                    <ul>
+                          {% for value, text in form.plane.field.choices %}
+                          <li value="{{ value }}">{{ text }}</li>
+                          {% endfor %}
+                      </ul>
+                    {{ form.plane }}
+                </div>
+            {% endif %}
+
+            <label for="route_duration">Route Duration</label>
+            <input type="text" id="{{ form.duration.auto_id }}" placeholder="00:00" name="{{ form.duration.html_name }}" value="{{ form.duration.value|simple_duration|default:"" }}">
+
+            {% if anywherepath %}
+                <label>Cost</label>
+                <input type="text" id="{{ form.cost.auto_id }}" placeholder=""  name="{{ form.cost.html_name }}" value="{{ form.cost.value|default:"" }}">
+            {% endif %}
+            <br/>
+            <br/>
+
+            <hr>
+
+            <div class="center">
+                <button type="submit" class="green">{% if route %}Update{% else %}Create{% endif %} Route</button>
+            </div>
+        </form>
+        <div class="center">
+            {% if anywherepath %}
+                <a href="{% url 'anywhere_admin_list_routes' %}" class="return-to-profile">&#9664; Return To Routes</a>
+            {% else %}
+                <a href="{% url 'admin_list_routes' %}" class="return-to-profile">&#9664; Return To Routes</a>
+            {% endif %}
+        </div>
+    </div>
+
+{% endblock body %}

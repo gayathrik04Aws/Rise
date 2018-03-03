@@ -1,0 +1,157 @@
+{% extends 'base_admin.html' %}
+
+{% load staticfiles %}
+
+{% block title %}Waitlist - List Flights{% endblock title %}
+
+{% block meta_description %}Waitlist - List Flights{% endblock meta_description %}
+
+{% block body_class %}{% endblock %}
+{% block body %}
+{% include 'admin_header_fragment.html' with nav_waitlist=True %}
+<div class="admin-content-wrap">
+    <div class="block admin no-pb">
+        <div class="admin-page-header no-bb">
+            <div class="fl">
+                <h1>Waitlist {% if search_term %}Search for "{{ search_term }}"{% endif %}</h1>
+            </div>
+            <div class="fr">
+                <form action="." method="GET">
+                    <input type="search" placeholder="Search" class="dark page-search admin-reveal fl" name="s">
+                </form>
+            </div>
+        </div>
+    </div>
+    <ul class="flights-waitlist">
+        {% regroup object_list by flight as waitlist_by_flight_list %}
+        {% for flight_waitlist_list in waitlist_by_flight_list %}
+        <li class="waitlist-item fadeIn" data-flight="{{ flight_waitlist_list.grouper.pk }}">
+            {% with flight=flight_waitlist_list.grouper %}
+            <div class="admin-table-align">
+                <h2>
+                    <a href="{% url 'admin_flight_detail' flight.pk %}">
+                        Flight {{ flight.flight_number }} ({{ flight.local_departure|date:"m/d/Y"}} at {{ flight.local_departure|date:"h:i A e"}})
+                    </a>
+                </h2>
+            </div>
+            {% endwith %}
+            <table class="admin-table no-hover">
+                <thead>
+                    <tr>
+                        <th>Position</th>
+                        <th>Member Name</th>
+                        <th>Member Level</th>
+                        <th>Company</th>
+                        <th>Founder</th>
+                        <th> </th>
+                        <th> </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for flight_waitlist in flight_waitlist_list.list %}
+                        <tr>
+                            <td class="position-cell"><b>{{ forloop.counter }}</b></td>
+                            <td><a href="{% url 'admin_account_user' flight_waitlist.user.account.pk flight_waitlist.userprofile.pk %}"><b>{{ flight_waitlist.user.last_name }}, {{ flight_waitlist.user.first_name }}</b></a></td>
+                            <td>{% if flight_waitlist.user.account.is_corporate %}Executive{% else %}{{ flight_waitlist.user.account.plan.name }}{% endif %}</td>
+                            <td><a href="{% url 'admin_account' flight_waitlist.user.account.pk %}">{{ flight_waitlist.user.account }}</a></td>
+                            <td class="founder-cell">
+                                {% if flight_waitlist.user.account.founder %}
+                                    <figure class="check-green-sm"></figure>
+                                {% endif %}
+                            </td>
+                            <td class="add-to-waitlist"><a href="{% url 'admin_book_from_waitlist' flight_waitlist.pk %}" class="small green">ADD TO FLIGHT&nbsp;</a></td>
+                            <td class="remove-from-waitlist"><a href="{% url 'admin_waitlist_delete' flight_waitlist.pk %}" class="small green">&nbsp;REMOVE</a></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </li>
+        {% empty %}
+        <div class="block admin">
+            <li><div class="admin-table-align"><h2>There are currently no passengers on a waitlist</h2></div></li>
+        </div>
+        {% endfor %}
+    </ul>
+
+    {% comment %}
+    <!-- hard coded values to make UI tweaking easier when there is no data -->
+    <ul class="flights-waitlist">
+        <li>
+            <div class="admin-table-align"><h2>Flight Number</h2></div>
+            <table class="admin-table no-hover">
+                <thead>
+                    <tr>
+                        <th>Position</th>
+                        <th>Member Name</th>
+                        <th>Member Level</th>
+                        <th>Company</th>
+                        <th>Founder</th>
+                        <th> </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="position-cell"><b>1</b></td>
+                        <td><b>Stark, Tony</b></td>
+                        <td>Express</td>
+                        <td>Stark Industries</td>
+                        <td class="founder-cell">
+                            <figure class="check-green-sm"></figure>
+                        </td>
+                        <td class="add-to-waitlist"><a href="#" class="small green">ADD</a></td>
+                    </tr>
+                    <tr>
+                        <td class="position-cell"><b>1</b></td>
+                        <td><b>Stark, Tony</b></td>
+                        <td>Express</td>
+                        <td>Stark Industries</td>
+                        <td class="founder-cell">
+                            <figure class="check-green-sm"></figure>
+                        </td>
+                        <td class="add-to-waitlist"><a href="#" class="small green">ADD</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </li>
+        <li>
+            <div class="admin-table-align"><h2>Flight Number</h2></div>
+            <table class="admin-table no-hover">
+                <thead>
+                    <tr>
+                        <th>Position</th>
+                        <th>Member Name</th>
+                        <th>Member Level</th>
+                        <th>Company</th>
+                        <th>Founder</th>
+                        <th> </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="position-cell"><b>1</b></td>
+                        <td><b>Stark, Tony</b></td>
+                        <td>Express</td>
+                        <td>Stark Industries</td>
+                        <td class="founder-cell">
+                            <figure class="check-green-sm"></figure>
+                        </td>
+                        <td class="add-to-waitlist"><a href="#" class="small green">ADD</a></td>
+                    </tr>
+                    <tr>
+                        <td class="position-cell"><b>1</b></td>
+                        <td><b>Stark, Tony</b></td>
+                        <td>Express</td>
+                        <td>Stark Industries</td>
+                        <td class="founder-cell">
+                            <figure class="check-green-sm"></figure>
+                        </td>
+                        <td class="add-to-waitlist"><a href="#" class="small green">ADD</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </li>
+    </ul>
+    {% endcomment %}
+</div>
+
+{% endblock body %}

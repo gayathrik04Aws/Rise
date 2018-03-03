@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% load account_tags %}
+{% load staticfiles %}
+{% load safe_settings %}
+
+{% block title %}Change Plan - {{ block.super }}{% endblock title %}
+
+{% block meta_description %}Plan Options - Manage Account{% endblock meta_description %}
+
+{% block css %}
+{% with marketing=False%}
+{{ block.super }}
+{% endwith %}
+{% endblock css %}
+
+{% block body_class %}{% endblock %}
+{% block body %}
+{% include 'account_profile/dashboard_nav.html' %}
+<div class="section profile-body">
+    {% include 'account_profile/profile-sidenav-mobile.html' with plan_options=True %}
+    <div class="content-wrap app-content-wrap no-mt-mobile group">
+    {% include 'account_profile/profile-sidenav.html' with plan=True %}
+        <div class="profile-content-wrap">
+            <div class="detail group">
+            <h1>Change Plan</h1>
+            <form action="." method="POST" id="change_plan_form">
+                {% csrf_token %}
+                {% if not user|anywhere_only %}
+                    {% for choice in form.member_plan.field.choices %}
+                    {% with plan=choice.2 %}
+                    <label class="check-radio-block">
+                        <input type="radio" name="{{ form.member_plan.name }}" value="{{ choice.0 }}" {% if form.member_plan.value|safe == choice.0|safe %}checked="checked"{% endif %} id="{{ plan.name }}">
+                        <span>
+                        {% if plan.name|requires_contract %}
+                            {{ plan.name }}
+                        {% else %}
+                            {{ plan.name }} - ${{ plan.amount|floatformat:0|intcomma }}
+                        {% endif %}
+                            <p>{{ plan.description }}</p>
+                            {% if form.member_plan.value|safe == choice.0|safe and user.account|has_discounted_plan %}
+                            <i>You are currently paying less than this amount (${{ user.account|get_subscription|floatformat:0 }}) because you signed up for this plan before prices increased.  This discounted price will no longer be available to you if you switch plans; all plan changes are priced at the current plan price.</i>
+                            {% endif %}
+                            </span>
+                    </label>
+
+                    {% endwith %}
+                    {% endfor %}
+
+                    <div id="divContract" class="rise-input-group-wrap {% if not form.member_plan.value|planid_requires_contract %} hidden {% endif %}">
+
+                        <div class="rise-input-group-notices">
+                            <h2>This plan requires a contract:</h2>
+                        </div>
+                        
+                        <div class="rise-input-group-description">
+                            <h5>Contract Length</h5>
+                        </div>
+                        
+                        <div class="rise-input-group">
+                        {% for contract in form.contract.field.choices %}
+                            <div class="rise-input-wrap">
+                                {% with contractlen=contract.2 %}
+                                <label class="check-radio-block">
+                                    <input type="radio" name="{{ form.contract.name }}" value="{{ contract.0 }}" {% if form.contract.value|safe == contract.0|safe %}checked="checked"{% endif %} id="months{{ contract.0}}">
+                                    <span class="rise-input-label layout-two-children">
+                                        <span>{{ contractlen.contract_length }} months</span><span>${{ contractlen.amount }}</span>
+                                    </span>
+                                </label>
+                                {% endwith %}
+                            </div>
+                        {% endfor %}
+                        </div>
+                    </div>
+
+                    <button type="submit" class="green" id="change_plan">Change Plan</button>
+                {% else %}
+                    We embrace change.<br><br>
+                    Please call a RISE Consultant at <a href="tel:+18447668313">844-766-8313</a> to discuss changes to your membership.
+                {% endif %}
+            </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock body %}
+
+{% block javascript %}
+{{ block.super }}
+<script src="{% static 'js/binaryajax.min.js' %}"></script>
+<script src="{% static 'js/exif.min.js' %}"></script>
+<script src="{% static 'js/profile.js' %}"></script>
+{% if user.account.is_trial and not user.account.is_corporate %}
+<script charset="utf-8">
+    $('#change_plan').on(clickAction, function(e) {
+        e.preventDefault();
+        plan = $('input[name="member_plan"]:checked')
+        if (plan){
+            plan_name = plan.attr('id');
+            if (plan_name != 'Trial'){
+                message = 'A ${% settings_value "DEPOSIT_COST" %} deposit fee (+ {% settings_value "DEPOSIT_TAX_PERCENT" %} sales tax) will be charged for selecting the ' + plan_name + ' Membership Level.';
+                var $message = $('<div class="modal-wrapper" style="display: block; z-index: 10000; opacity: 1;"><div class="modal center"><figure class="x-grey-lg"></figure><figure class="alert-icon"></figure><p class="thick">'+message+'</p><div class="action-wrapper"><a href="" class="dismiss grey condensed"><figure class="arrow-left-grey"></figure> Cancel</a> | <a href="" class="grey condensed" id="confirm_plan">Confirm <figure class="arrow-right-grey"></figure></a></div></div>');
+                $('body').prepend($message);
+                $("#confirm_plan").on(clickAction, function(e){
+                    e.preventDefault();
+                    $message.hide();
+                    $('#change_plan_form').submit();
+                });
+                $('.x-grey-lg').on(clickAction, function(e) {
+                    e.preventDefault();
+                    $message.remove();
+                });
+                return false;
+            }
+            else{
+                $('#change_plan_form').submit();
+            }
+        }
+    });
+</script>
+    {% else %}
+    <script type="text/javascript">
+    function typeChange(){
+                    var planid = this.value;
+                    $.ajax({
+                            "type"     : "GET",
+                            "url"      : "{% url 'plan_contract_choices_separated'%}?plan="+planid,
+                            "dataType" : "json",
+                            "cache"    : false,
+                            "success"  : function(json) {
+                                $('#divContract .rise-input-group')[0].innerHTML='';
+                                var html = '';
+                                for(var j = 0; j < json.length; j++){
+                                    if(j == json.length-1) {
+                                        html += '<div class="rise-input-wrap"><label class="check-radio-block"><input type="radio" name="contract" value="'+ json[j][0] + '"  id="months' + json[j][0] + '" checked="checked"><span class="rise-input-label layout-two-children"><span>' + json[j][1] + ' months</span><span>$' + json[j][2] + '</span></span></label></div>';
+                                    }else{
+                                        html += '<div class="rise-input-wrap"><label class="check-radio-block"><input type="radio" name="contract" value="'+ json[j][0] + '"  id="months' + json[j][0] + '"><span class="rise-input-label layout-two-children"><span>' + json[j][1] + ' months</span><span>$' + json[j][2] + '</span></span></label></div>';
+                                    }
+
+                                }
+                                $('#divContract .rise-input-group')[0].innerHTML = html;
+                                
+                                if(json.length == 0 || json == '[]'){
+                                    $('#divContract').addClass('hide-notices');
+                                    $('#divContract').addClass('hidden');
+                                }else{
+                                    $('#divContract').removeClass('hide-notices');
+                                    $('#divContract').removeClass('hidden');
+                                }
+                            }
+                    });
+                };
+     $(document).ready(function() {
+         $('input[type=radio][name=member_plan]').change(typeChange);
+        });
+
+    </script>
+{% endif %}
+{% endblock javascript %}

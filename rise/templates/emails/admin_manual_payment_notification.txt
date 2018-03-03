@@ -1,0 +1,27 @@
+{% extends 'emails/base.txt' %}
+
+{% block content %}{{ user.get_full_name }} has joined a Rise Anywhere flight with a Manual payment method
+
+Please make arrangements for this manual payment.
+
+{% for flight_reservation in flight_reservations  %}
+Flight {{ flight_reservation.flight.flight_number }} / {{ flight_reservation.flight.local_departure|date:"d M Y" }}
+
+Origin
+{{ flight_reservation.flight.origin.name }}, {{ flight_reservation.flight.origin.state }}
+{{ flight_reservation.flight.local_departure_time_display}} {{ flight_reservation.flight.origin.get_timezone_display }}
+
+Destination
+{{ flight_reservation.flight.destination.name }}, {{ flight_reservation.flight.destination.state }}
+{{ flight_reservation.flight.local_arrival_time_display}} {{ flight_reservation.flight.destination.get_timezone_display }}
+
+{% endfor %}
+
+Subtotal:  ${{ subtotal|floatformat:2 }}
+Tax:  ${{ tax_total|floatformat:2 }}
+Total: ${{ total_cost|floatformat:2 }}
+
+
+{{ protocol }}://{{ site.domain }}{% url 'admin_account' account.pk %}
+
+{% endblock content %}

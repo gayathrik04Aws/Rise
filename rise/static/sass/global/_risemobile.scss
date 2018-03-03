@@ -1,0 +1,26 @@
+@include breakpoint(small) {
+
+
+}
+@include breakpoint(medium) {
+
+    .two-column{
+        display:block;
+        float:none;
+        width:100%;
+
+        &:nth-child(odd){
+            padding-right:0;
+        }
+        &:nth-child(even){
+            padding-left:0;
+        }
+    }
+
+    .three-column{
+        float: none;
+        width: 100%;
+        padding: 0;
+
+    }
+}

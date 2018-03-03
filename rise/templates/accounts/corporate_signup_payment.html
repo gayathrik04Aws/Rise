@@ -1,0 +1,154 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+{% load humanize %}
+
+{% block title %}Sign Up Payment - {{ block.super }}{% endblock title %}
+
+{% block meta_description %}Rise has a limited number of fly all you want memberships available and even fewer Founding Memberships, but it's easy and risk-free to reserve your spot. Sign up today to join a community of frequent Texas travelers that choose to Travel Better.{% endblock meta_description %}
+
+{% block body_class %}registration{% endblock %}
+{% block body %}
+<div class="section form-page">
+  <div class="content-wrap">
+    <div class="center">
+      <a href="/" style="display: inline-block;"><figure class="logo-form"></figure></a>
+    </div>
+    <div class="form">
+        <h1>Corporate Sign Up</h1>
+          <p class="registration-text">
+              <strong>A one-time, risk-free charge of ${{ account.get_onboarding_fee_total|floatformat:2|intcomma }}</strong> covers your initiation fee and secures your spot as a Corporate Member.
+          </p>
+
+      <form action="." method="POST" id="signup-payment-form" autocomplete="on">
+          {% if messages %}
+          <div class="error-message">
+          {% for message in messages %}
+              {{ message }}
+          {% endfor %}
+          </div>
+          {% endif %}
+
+          {% if form.errors %}
+          <div class="error-message">
+          {% for field, errors in form.errors.items %}
+          {% for error in errors %}
+            {{ error }}<br/>
+          {% endfor %}
+          {% endfor %}
+          </div>
+          {% endif %}
+          {% csrf_token %}
+
+
+
+          <div id="payment-info-section" class="registration-section">
+              <label>Payment Information</label>
+              {% for radio in form.payment_method %}
+              <label class="check-radio-block" for="{{ radio.id_for_label }}">
+                  {{ radio.tag }}
+                  <span>{{ radio.choice_label }}</span>
+              </label>
+
+              {% if radio.choice_label == 'Bank Account' %}
+              <fieldset id="bank-account" class="no-labels" {% if not radio.is_checked %}style="display: none"{% endif %}>
+                  <input type="hidden" data-stripe="country" value="US">
+                  <input type="hidden" data-stripe="account_holder_name" value="{{ account_holder_name }}">
+                  <input type="hidden" data-stripe="account_holder_type" value="{{ account_holder_type }}">
+                  <label for="routing-number">Routing Number</label>
+                  <input {% if form.errors %}class="error"{% endif %} type="text" id="routing-number" placeholder="Routing Number" data-stripe="routingNumber" value="{{ routing_number|default:"" }}" />
+
+                  <label for="account-number">Account Number</label>
+                  <input {% if form.errors %}class="error"{% endif %} type="text" id="account-number" placeholder="Account Number" data-stripe="accountNumber" />
+                  <label for="{{ form.nickname.auto_id }}">Nickname</label>
+                    {{ form.nickname.errors }}
+                    {{ form.nickname }}
+              </fieldset>
+              {% elif radio.choice_label == 'Credit Card' %}
+              <fieldset id="credit-card" class="no-labels" {% if not radio.is_checked %}style="display: none"{% endif %}>
+                <label for="cc-number">Credit Card Number</label>
+                <input {% if form.errors %}class="error"{% endif %} type="text" id="cc-number" placeholder="Credit Card Number" data-stripe="number" data-braintree-name="number" />
+
+                <div class="distribute equal-width three-wide">
+                  <label for="cc-month">Month</label><input {% if form.errors %}class="error"{% endif %} type="text" id="cc-month" placeholder="MM" maxlength="2" pattern="\d*" data-stripe="exp-month" data-braintree-name="expiration_month" />
+
+                  <label for="cc-year">Year</label><input {% if form.errors %}class="error"{% endif %} type="text" id="cc-year" placeholder="YYYY" maxlength="4" pattern="\d*" data-stripe="exp-year" data-braintree-name="expiration_year" />
+
+                  <label for="cc-ccv">CVC</label><input {% if form.errors %}class="error"{% endif %} type="text" id="ccv" placeholder="CVC" autocomplete="off" pattern="\d*" data-stripe="cvc" data-braintree-name="cvv" />
+                </div>
+                  <label for="{{ form.nickname.auto_id }}">Nickname</label>
+                    {{ form.nickname.errors }}
+                    {{ form.nickname }}
+              </fieldset>
+              {% elif radio.choice_value == 'Manual' %}
+              <div id="manual-account" class="error-message center" {% if not radio.is_checked %}style="display: none"{% endif %}>
+                  <p style="line-height: 21px;">Please contact 844-359-7473 or <a href="mailto:support@iflyrise.com">support@iflyrise.com</a> to arrange to pay by another method with Rise.</p>
+              </div>
+              {% endif %}
+              {% endfor %}
+
+        </div>
+
+        <div class="registration-section">
+            <label>Identity Verification</label>
+            <label class="check-radio-block background-check" id="{{ form.approve_membership_agreement.auto_id }}">
+                {{ form.approve_membership_agreement }}
+                <span>Accept <a target="_blank" href="{{ WP_URL }}/membership/">Membership Agreement</a></span>
+            </label>
+            <label class="check-radio-block">
+              {{ form.terms }}
+              <span>I agree to the site's <a href="{{ WP_URL }}/terms/" target="_blank">terms and conditions</a></span>
+            </label>
+
+        </div>
+
+        <br/>
+        <div class="center">
+          <button type="submit" class="green">Confirm Payment</button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+        <br/>
+        <div class="block center">
+            <a href="{{ WP_URL }}" class="return"> &#9664; Return to Home</a>
+        </div>
+        <br/>
+</div>
+
+
+<div id="credit_card_payment_modal" class="modal-wrapper" style="z-index: 10000; opacity: 1;">
+    <div class="modal center">
+        <figure class="x-grey-lg"></figure>
+        <figure class="alert-icon"></figure>
+        <p class="thick">Your credit card will now be charged ${{ account.get_onboarding_fee_total|floatformat:2|intcomma }}. Continue with payment?</p>
+        <a id="confirm_credit_card_payment" href="" class="action-block grey condensed">Confirm Payment<figure class="arrow-right-grey"></figure></a>
+    </div>
+</div>
+
+<div id="ach_payment_modal" class="modal-wrapper" style="z-index: 10000; opacity: 1;">
+    <div class="modal center">
+        <figure class="x-grey-lg"></figure>
+        <figure class="alert-icon"></figure>
+        <p class="thick">Thank you for confirming your payment. Your ${{ account.get_onboarding_fee_total|floatformat:2|intcomma }} deposit will be charged immediately after you verify your bank account.</p>
+        <a id="confirm_ach_payment" href="" class="action-block grey condensed">Confirm Payment<figure class="arrow-right-grey"></figure></a>
+    </div>
+</div>
+
+{% endblock body %}
+
+
+{% block javascript %}
+{{ block.super }}
+<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+<script charset="utf-8">
+Stripe.setPublishableKey('{{ STRIPE_PUBLISHABLE_KEY }}');
+</script>
+<script src="https://js.braintreegateway.com/v2/braintree.js"></script>
+<script charset="utf-8">
+var BRAINTREE_CLIENT_TOKEN = '{{ client_token }}';
+</script>
+<script type="text/javascript" src="{% static 'js/jquery.payment.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/payment.js' %}"></script>
+{% endblock javascript %}

@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block css %}
+{% with marketing=True%}
+{{ block.super }}
+{% endwith %}
+{% endblock css %}
+
+{% block title %}Thank You for the Referral - {{ block.super }}{% endblock title %}
+
+{% block meta_description %}Take an interest in Rise and take flight with the southwest’s first fly all you want membership.{% endblock meta_description %}
+
+{% block body_class %}refer-thanks{% endblock body_class %}
+{% block body %}
+<div class="section">
+    <div class="content-wrap">
+        <div class="center">
+          <a href="{{ WP_URL }}" style="display: inline-block;"><figure class="logo-form"></figure></a>
+        </div>
+        <div class="thanks center">
+            <h1>Success!</h1>
+            <p>Thanks for submiting your referrals. We will let you know if a friend becomes a member of Rise.
+            </p>
+
+            <h3 class="small">Tell Your Friends</h3>
+            <div class="refer-share">
+                <a href="mailto:?subject=Refer%20friends%2E%20Earn%20Free%20flights%2E&body=https://{{ site.domain }}{% url 'refer_form' %}"><img src="{% static 'img/share/email.png' %}" alt="Email"></a>
+                <a href="https://www.facebook.com/sharer/sharer.php?u=https://{{ site.domain }}{% url 'refer_form' %}" target="_blank">
+                    <img src="{% static 'img/share/facebook.png' %}" alt="Facebook">
+                </a>
+                <a href="https://twitter.com/share?url=https://{{ site.domain }}{% url 'refer_form' %}&amp;text=Know%20someone%20who%20flies%20between%20DAL%2C%20HOU%20and%20AUS%3F%20Refer%20them%20to%20Rise%20for%20Free%20Flights!" target="_blank">
+                    <img src="{% static 'img/share/twitter.png' %}" alt="Twitter">
+                </a>
+                <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://{{ site.domain }}{% url 'refer_form' %}&title=Rise&summary=Not%20everyone%20flies%20between%20DAL%2C%20HOU%20and%20AUS%2C%20but%20almost%20everyone%20knows%20someone%20who%20does.%20Refer%20them%20to%20Rise%20and%20earn%20Free%20Flights!"  target="_blank">
+                    <img src="{% static 'img/share/linkedin.png' %}" alt="LinkedIn">
+                </a>
+            </div>
+        </div>
+        <br/>
+        <div class="block center">
+            <a href="{{ WP_URL }}" class="return"> &#9664; Return to Home</a>
+        </div>
+        <br/>
+    </div>
+</div>
+{% endblock body %}
+
+{% block footer %}
+{{ block.super }}
+<img src="https://secure-track.admaxim.com/adtracker/track/track/converted?cpnIds=50314&conversionType=register" width="0" height="0" />
+{% endblock footer %}
+
+{% block javascript %}
+{{ block.super }}
+<script type="text/javascript">
+/* <![CDATA[ */
+var google_conversion_id = 943383099;
+var google_conversion_language = "en";
+var google_conversion_format = "3";
+var google_conversion_color = "ffffff";
+var google_conversion_label = "qKCHCODUqGAQu8TrwQM";
+var google_remarketing_only = false;
+/* ]]> */
+</script>
+<script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js">
+</script>
+<noscript>
+<div style="display:inline;">
+<img height="1" width="1" style="border-style:none;" alt="" src="//www.googleadservices.com/pagead/conversion/943383099/?label=qKCHCODUqGAQu8TrwQM&amp;guid=ON&amp;script=0"/>
+</div>
+</noscript>
+{% endblock javascript %}

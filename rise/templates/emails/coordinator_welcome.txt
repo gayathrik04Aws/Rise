@@ -1,0 +1,10 @@
+{% extends 'emails/base.txt' %}
+
+{% block content %}Congratulations, {{ user.first_name }}!
+
+We are excited that you are a Rise Founding member under the corporate membership, {{ user.account.company_name }}. Click to complete your Rise profile registration, and check out the booking tool.
+
+The initial Rise Flight Schedule is attached.
+
+{{ protocol }}://{{ site.domain }}{% url 'register_member' uidb64=uid token=token %}
+{% endblock content %}

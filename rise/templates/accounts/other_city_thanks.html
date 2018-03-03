@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block title %}Congratulations - {{ block.super }}{% endblock title %}
+
+{% block meta_description %}Take an interest in Rise and take flight with the southwest’s first fly all you want membership.{% endblock meta_description %}
+
+{% block body_class %}registration{% endblock body_class %}
+{% block body %}
+<div class="section form-page">
+    <div class="content-wrap">
+        <div class="center">
+          <a href="{{ WP_URL }}" style="display: inline-block;"><figure class="logo-form"></figure></a>
+        </div>
+        <div class="form center">
+      <h1>Thank You</h1>
+      <p>
+          Thank you for your interest in becoming a Rise member. You’ve selected an Origin City that we aren’t serving
+          yet, but plan to soon. Be sure to keep an eye on your inbox-you’ll be the first to know when we start flying
+          to your selected city.
+      </p>
+  </div>
+  <br/>
+  <div class="block center">
+      <a href="{{ WP_URL }}/faq" class="return"> &#9664; Learn More About Rise</a>
+  </div>
+  <br/>
+</div>
+</div>
+{% endblock body %}

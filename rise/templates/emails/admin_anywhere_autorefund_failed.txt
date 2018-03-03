@@ -1,0 +1,14 @@
+{% extends 'emails/base.txt' %}
+
+{% block content %}{{ title }}
+{% if flightset.is_round_trip %}
+Flights {{ flightset.leg1.flight_number }} and {{ flightset.leg2.flight_number }}
+{% else %}
+Flight {{ flightset.leg1.flight_number }}
+{% endif %}
+are now full, however not all refunds were able to be processed.
+
+Visit the Reservations View of the Flight detail screen to see details and attempt to process these refunds again.
+
+{{ protocol }}://{{ site.domain }}{% url 'admin_anywhere_flight_reservations' flightset.leg1_id %}
+{% endblock content %}

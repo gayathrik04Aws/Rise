@@ -1,0 +1,75 @@
+{% extends 'base_admin.html' %}
+
+{% load staticfiles %}
+
+{% block title %}Dashboard - Create Anywhere Flight{% endblock title %}
+
+{% block meta_description %}Dashboard - Create Anywhere Flight{% endblock meta_description %}
+
+{% block css %}
+{% with marketing=False%}
+{{ block.super }}
+{% endwith %}
+{% endblock css %}
+
+{% block body_class %}{% endblock %}
+{% block body %}
+{% include 'admin_header_fragment.html' with flights=True %}
+
+<div class="admin-content-wrap admin-form-page">
+
+ <form action="" method="post" class="create-wizard-form">{% csrf_token %}
+
+<table>
+{{ wizard.management_form }}
+<h1>Approve Anywhere Flight Request</h1>
+
+
+{% if wizard.form.forms %}
+    <div class="distribute equal-width wizard-steps">
+     {% if wizard.steps.index == 0 %}
+        <button name="wizard_goto_step" type="submit" value="{{ wizard.steps.prev }}" class="departing button active">Departing Flight</button>
+        <button class="button inactive disabled">Returning Flight</button>
+        {% else %}
+        <button class="departing button inactive disabled">Departing Flight</button>
+        <button class="button returning active">Returning Flight</button>
+    {% endif %}
+     </div>
+    {{ wizard.form.management_form }}
+    {% for form in wizard.form.forms %}
+        {% block form_if %}{% endblock %}
+    {% endfor %}
+{% else %}
+    <div class="distribute equal-width wizard-steps">
+        {% if total_legs == 1 %}
+            <button class="inactive one-way">One-Way</button>
+        {% elif wizard.steps.index == 0 %}
+             <button name="wizard_goto_step" type="submit" value="{{ wizard.steps.prev }}" class="departing button active">Departing Flight</button>
+             <button class="button inactive disabled">Returning Flight</button>
+        {% else %}
+                <button class="departing button inactive disabled">Departing Flight</button>
+                <button class="button returning active">Returning Flight</button>
+        {% endif %}
+    </div>
+    {% with form=wizard.form %}
+            {% block form_else %}{% endblock %}
+
+        {% if wizard.steps.step1 == total_legs %}
+            <input type="submit" value="Create Flight(s)" class="button anywhere-blue centered" />
+        {% else %}
+            <input type="submit" value="Return Flight >" class="button anywhere-blue centered" />
+        {% endif %}
+    {% endwith %}
+{% endif %}
+</table>
+
+
+</form>
+</div>
+{% endblock body %}
+
+{% block javascript %}
+{{ block.super }}
+<script src="{% static 'js/jquery.formset.js' %}"></script>
+    <script src="{% static 'js/anywhere_flights.js' %}"></script>
+{% endblock javascript %}

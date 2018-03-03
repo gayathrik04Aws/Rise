@@ -1,0 +1,33 @@
+{% extends 'base_admin.html' %}
+
+{% load humanize %}
+
+{% block title %}{{ block.super }} - Accounts{% endblock %}
+
+{% block body %}
+{% include 'admin_header_fragment.html' with nav_waitlist=True %}
+
+<div class="admin-content-wrap">
+    <div class="block admin no-pb">
+        <div class="admin-page-header no-bb">
+            <div class="fl">
+                <h1>Flight {{ object.flight.flight_number }}</h1>
+                <p>
+                    <ul>
+                    <li>departs {{ object.flight.local_departure|date:"m/d/Y h:i A" }}</li>
+                    <li>arrives {{ object.flight.local_arrival|date:"m/d/Y h:i A" }}</li>
+                    <li>passenger: {{ object.userprofile }}</li>
+                    </ul>
+                </p>
+
+                <form method="post" action="">
+                    {% csrf_token %}
+                    <button type="submit">Add to flight</button>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock body %}

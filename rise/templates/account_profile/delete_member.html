@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block body %}
+<form action="{% url 'profile_members_delete' %}" method="POST" class="bare group" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    {% if form.errors %}
+        <div class="error-message">
+        {% for field, errors in form.errors.items %}
+        {% for error in errors %}
+          {{ error }}<br/>
+        {% endfor %}
+        {% endfor %}
+        </div>
+    {% endif %}
+
+    <div class="no-labels">
+        <label for="id_member_id">Member ID</label>
+        <input {% if form.member_id.errors %}class="error"{% endif %} type="text" name="{{ form.member_id.html_name }}" value="{{ form.member_id.value|default:"" }}" placeholder="Member ID" id="member-id"></input>
+    </div>
+    <input type="submit">
+</form>
+{% endblock body %}
+
+{% block javascript %}
+    {{ block.super }}
+    <script src="{% static 'js/binaryajax.min.js' %}"></script>
+    <script src="{% static 'js/exif.min.js' %}"></script>
+    <script src="{% static 'js/profile.js' %}"></script>
+{% endblock javascript %}

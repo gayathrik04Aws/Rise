@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block body %}{% include 'account_profile/dashboard_nav.html' %}
+<div class="section profile-body">
+    {% include 'account_profile/profile-sidenav-mobile.html' with team_members=True %}
+    <div class="content-wrap app-content-wrap no-mt-mobile edit group">
+        {% include 'account_profile/profile-sidenav.html' with companion=True %}
+        <div class="profile-content-wrap">
+            <div class="detail group">
+                <form action="." method="POST">
+                    {% csrf_token %}
+
+                    <p>
+                        Are you sure you want to delete your team member {{ member.get_full_name }}?
+                    </p>
+
+                    <div class='two-page-controls'>
+                        <button class="black" type="submit">Delete Member</button>
+                        <a class="button dark-grey fr" href="{% url 'profile_members' %}">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock body %}
+
+{% block javascript %}
+{{ block.super }}
+<script src="{% static 'js/binaryajax.min.js' %}"></script>
+<script src="{% static 'js/exif.min.js' %}"></script>
+<script src="{% static 'js/profile.js' %}"></script>
+{% endblock javascript %}

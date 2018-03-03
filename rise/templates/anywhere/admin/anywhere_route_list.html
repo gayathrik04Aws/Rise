@@ -1,0 +1,53 @@
+{% extends 'anywhere/admin/base_list.html' %}
+
+{% load staticfiles %}
+
+{% block title %}Dashboard - List Routes{% endblock title %}
+
+{% block meta_description %}Dashboard - List Routes{% endblock meta_description %}
+
+{% block body_class %}{% endblock %}
+{% block body %}
+{% include 'admin_header_fragment.html' with nav_routes=True %}
+<div class="admin-content-wrap">
+        <div class="block admin">
+            <div class="fl">
+                <h1>Anywhere Routes</h1>
+            </div>
+            <div class="fr">
+                <a href="{% url 'anywhere_admin_add_route' %}" class="admin-add-link">+ Add new Route</a>
+            </div>
+        </div>
+    <form action="." method="POST" class="full-width">
+        {% csrf_token %}
+
+        {% if form.errors %}
+            <div class="error-message">
+            {% for field, errors in form.errors.items %}
+            {% for error in errors %}
+              {{ error }}<br/>
+            {% endfor %}
+            {% endfor %}
+            </div>
+        {% endif %}
+
+        <table class="admin-table form-table">
+            <thead>
+                <tr><th>Name</th><th>Origin</th><th>Destination</th><th>Length</th><th>Cost</th><th></th></tr>
+            </thead>
+            <tbody>
+                {% for route in route_list %}
+                <tr>
+                    <td><a href="{% url 'anywhere_admin_route_detail' route.pk %}">{{ route.name }}</a></td>
+                    <td>{{ route.origin }}</td>
+                    <td>{{ route.destination }}</td>
+                    <td>{{ route.duration_as_timedelta }}</td>
+                    <td>${{ route.cost }}</td>
+                    <td><a href="{% url 'anywhere_admin_delete_route' route.pk %}" >Remove</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </form>
+</div>
+{% endblock body %}

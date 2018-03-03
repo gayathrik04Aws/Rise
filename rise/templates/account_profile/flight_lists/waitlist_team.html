@@ -1,0 +1,57 @@
+
+<!-- fre is short for 'flight reservation entry' -->
+<!-- reservation_entry is passed in as a variable in the include declaration -->
+{% if reservation_entry %}
+    <div class="member-row link-row reservation-row mobile fadeIn fre-mobile fre-team">
+
+        <div class="member-wrap member-photo">
+            <div class="badge-wrap badge-left">
+                <div class="circle medium no-m" style="background:url({{ reservation_entry.primary_passenger.user.avatar_url }}) 0 0 no-repeat;background-size:100% 100%" id="avatar-image"></div>
+                {% if reservation_entry.flight.is_fun_flight %}
+                <div class="badge-wrap">
+                    <figure class="funflight-solid"></figure>
+                </div>
+                {% elif reservation_entry.flight.is_promotional_flight %}
+                <div class="badge-wrap">
+                    <figure class="promo-solid"></figure>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="member-wrap member-details">
+            <span class="member-name-cell">
+                <span class="fre-detail">{{ reservation_entry.userprofile.get_full_name }}</span>
+            </span>
+            <span class="orig-dest-cell t-gothic secondary">
+                <div class="caption">
+                    <h5>Origin</h5>
+                    <h1>{{ reservation_entry.flight.origin.code}}</h1>
+                </div>
+                <div class="oneway-or-rt">
+                    <figure class="flight-arrow-right-green spacer"></figure>
+                </div>
+                <div class="caption">
+                    <h5>Destination</h5>
+                    <h1>{{ reservation_entry.flight.destination.code }}</h1>
+                </div>
+
+
+                <!--b>{{ reservation_entry.flight.origin.code}}</b>
+                <figure class="flight-arrow-right-green spacer"></figure>
+                <b>{{ reservation_entry.flight.destination.code }}</b-->
+            </span>
+            <span class="flight-no-cell t-gothic sky secondary">
+                <span class="fre-descriptor">Flight Number</span>: <span class="fre-detail">{{ reservation_entry.flight.flight_number }}</span>
+            </span>
+            <span class="date-time-cell t-gothic sky upper secondary">
+                <span class="fre-descriptor">Date / Time</span>: <span class="fre-detail">{{ reservation_entry.flight.local_departure|date:"M d, h:i A" }}</span>
+            </span>
+            <span class="flight-detail-cell">
+                <a href="{% url 'cancel_waitlist' reservation_entry.pk %}" class="button anywhere-green sm">CANCEL</a>
+            </span>
+        </div>
+
+
+    </div>
+{% endif %}

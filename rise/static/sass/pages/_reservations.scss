@@ -1,0 +1,229 @@
+body.reservations {
+  background-color: $grey2; /* currently phasing out grey backgrounds */
+  background-color: white;
+
+  .alert {
+    background: white;
+  }
+}
+
+
+.dashboard-reservations {
+  background: $grey2; /* currently phasing out grey backgrounds */
+  background: white;
+  padding: 10px 0 50px 0;
+  .content-wrap {
+    margin-top: 80px;
+  }
+  &.corporate {
+    background: white;
+  }
+  .alert {
+    background: white;
+  }
+}
+
+.reservation-page-controls {
+    position: relative;
+    z-index: 20;
+    margin-bottom: 20px;
+    input {
+      margin: 2px 0;
+    }
+    input[type=search].dark {
+      max-width: 100%;
+      background-position: right 20px center;
+      background-color: $input-bg-dark;
+      border: none;
+      height: 50px;
+      line-height: 50px;
+    }
+    .select {
+      width: 100%;
+      max-width: 100%;
+      height: 50px;
+      line-height: 50px;
+    }
+    h1 {
+      margin-bottom: 10px;
+    }
+  }
+
+.reservation-page-controls * {
+  vertical-align: middle;
+}
+
+.flight-reservation-route {
+  @include tablet-gothic-family;
+  font-size: 50px;
+  font-weight: 100;
+  letter-spacing: 1.5px;
+  text-rendering: optimizeLegibility;
+  * {
+    display: inline-block;
+    vertical-align: middle;
+  }
+  figure {
+    margin: 0 10px;
+    margin-top: -10px;
+    &.figure-desktop {
+      display: none;
+    }
+  }
+}
+
+.flight-reservation-number {
+  @extend .section-label;
+  font-size: 20px;
+  padding: 0;
+  margin: 15px 0;
+}
+
+.flight-reservation-status {
+  p {
+    margin: 3px 0 15px;
+  }
+}
+
+.flight-reservation-members {
+  text-align: left;
+  border-top: 1px solid rgba(255,255,255,0.3);
+  padding: 20px 0;
+  .member {
+    padding: 10px 15px;
+  }
+  .caption {
+    margin-left: 10px;
+    p {
+      margin: 0;
+    }
+    h4 {
+      color: $sky;
+      margin: 0;
+      line-height: 10px;
+    }
+  }
+  .pilot {
+    border-top: 1px solid rgba(255,255,255,0.3);
+    margin-top: 20px;
+    padding-top: 30px;
+  }
+}
+
+button.lets-fly-booking {
+  @include gotham-family;
+  padding: 0;
+  height: initial;
+  background-color: transparent;
+  color: $sky;
+  font-weight: 500;
+  font-size: 12px;
+}
+
+.select.corporate-team-member {
+    width: 80%;
+    height: 60px;
+    line-height: 60px;
+    margin: 10px auto;
+  &.modal {
+    width: 250px;
+    height: 40px;
+    line-height: 40px;
+    margin: 5px auto;
+  }
+  span.value {
+    color: $runway;
+  }
+}
+
+
+//////\\\\ Desktop Breakpoint
+@media screen and (min-width: 768px) {
+  .dashboard-reservations {
+    padding: 0 0 50px 0;
+  }
+  .reservation-page-controls {
+    @include clearfix;
+    vertical-align: middle;
+    padding: 20px 0;
+    margin-bottom: 0;
+    input {
+      margin: 10px 0;
+    }
+    h1 {
+      margin: 13px 0 0 0;
+      font-size: 30px;
+    }
+    input[type=search].dark {
+      max-width: 210px;
+      height: 40px;
+      line-height: 40px;
+      border: 0;
+      background-color: transparent;
+      //background-position: right 30px center;
+      border-right: 1px solid $grey4;
+      margin-right: 30px;
+      &:focus {
+        outline: 0;
+      }
+    }
+    .select {
+      width: 190px;
+      height: 40px;
+      line-height: 40px;
+    }
+  }
+  .flight-reservation-route {
+    font-size: 120px;
+    figure.arrow-reservation-route {
+      background-size: 45px 91px;
+      height: 91px;
+      width: 45px;
+      margin-top: -25px;
+    }
+  }
+  .flight-reservation-status {
+    span {
+      display: block;
+      padding: 5px 0;
+      p, label {
+        margin: 0;
+      }
+      * {
+        display: inline-block;
+        vertical-align: middle;
+      }
+    }
+  }
+  .flight-reservation-members-wrap {
+    text-align: center;
+    width: 100%;
+    max-width: 920px;
+    margin: 0 auto;
+    @include clearfix;
+  }
+  .flight-reservation-members {
+    @include clearfix;
+    border-top: 0;
+    text-align: center;
+    .member {
+      text-align: center;
+      display: inline-block;
+      margin: 0 8px;
+      .circle {
+        margin-bottom: 8px;
+      }
+      .caption {
+        margin: 0;
+        display: initial;
+        text-align: center;
+      }
+      &.pilot {
+        border-left: 1px solid rgba(255,255,255,0.3);
+        border-top: 0;
+        padding-left: 35px;
+        padding-top: 0;
+      }
+    }
+  }
+}

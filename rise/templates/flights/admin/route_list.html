@@ -1,0 +1,81 @@
+{% extends 'base_admin.html' %}
+
+{% load staticfiles %}
+{% load flight_tags %}
+
+{% block title %}Dashboard - List Routes{% endblock title %}
+
+{% block meta_description %}Dashboard - List Routes{% endblock meta_description %}
+
+{% block body_class %}{% endblock %}
+{% block body %}
+{% include 'admin_header_fragment.html' with nav_routes=True %}
+<div class="admin-content-wrap">
+    <div class="right-side">
+     <a href="{% url 'anywhere_admin_list_routes'%}" class="admin-button no-ml">Click for Anywhere Routes</a>
+    </div>
+        <div class="block admin">
+            <div class="fl">
+                <h1>Routes</h1>
+            </div>
+            <div class="fr">
+                <a href="{% url 'admin_add_route' %}" class="admin-add-link">+ Add new Route</a>
+            </div>
+        </div>
+    <form action="." method="POST" class="full-width">
+        {% csrf_token %}
+
+        {% if form.errors %}
+            <div class="error-message">
+            {% for field, errors in form.errors.items %}
+            {% for error in errors %}
+              {{ error }}<br/>
+            {% endfor %}
+            {% endfor %}
+            </div>
+        {% endif %}
+
+        <table class="admin-table form-table">
+            <thead>
+                <tr><th></th><th>Name</th><th>Plane/Tail Number</th><th>Origin</th><th>Destination</th><th>Length</th><th></th></tr>
+            </thead>
+            <tbody>
+           {% for route, widget in form.route_list|instances_and_widgets %}
+           <tr>
+
+               <td>{{ widget }}</td>
+                <td><a href="{% url 'admin_route_detail' route.pk %}">{{ route.name }}</a></td>
+                <td>{{ route.plane.registration }}</td>
+            <td>{{ route.origin }}</td>
+                    <td>{{ route.destination }}</td>
+                    <td>{{ route.duration_as_timedelta }}</td>
+                    <td><a href="{% url 'admin_delete_route' route.pk %}">Remove</a></td>
+           </tr>
+           {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="block admin">
+
+        <div class="section-label admin">Generate Flights from Routes</div>
+
+        <div class="route-generator">
+            <span>
+                <label for="start_date">Start Date</label>
+                <input type="text" placeholder="MM / DD / YEAR" name="{{ form.start_date.html_name }}" value="{{ form.start_date.value|default:"" }}">
+            </span>
+
+            <span>
+                <label for="end_date">End Date</label>
+                <input type="text" placeholder="MM / DD / YEAR" name="{{form.end_date.html_name}}" value="{{ form.end_date.value|default:"" }}">
+            </span>
+
+            <span>
+                <button type="submit" class="green">Preview Flights</button>
+            </span>
+        </div>
+
+        </div>
+    </form>
+</div>
+{% endblock body %}

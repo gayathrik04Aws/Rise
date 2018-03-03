@@ -1,0 +1,67 @@
+{% extends 'base_admin.html' %}
+
+{% load humanize %}
+
+{% block title %}{{ account.account_name }} Invitations{% endblock %}
+
+{% block body %}
+{% include 'admin_header_fragment.html' with accounts=True %}
+<div class="admin-content-wrap admin-form-page">
+    <h1>{{ account.account_name }} Invitations</h1>
+
+    {% if form.errors %}
+    <div class="error-message">
+        {% for field, errors in form.errors.items %}
+        {% for error in errors %}
+        {{ error }}<br/>
+        {% endfor %}
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="detail-section">
+        <form action="." method="POST">
+            {% csrf_token %}
+            <label for="{{ form.invites.auto_id }}">Invites Remaining</label>
+            {{ form.invites }}
+            <label for="{{ form.code.auto_id }}">Physical Code Prefix</label>
+            {{ form.code }}
+            <div class="center">
+                <button class="admin-button" type="submit">Submit</button>
+            </div>
+
+        </form>
+    </div>
+
+    <div class="detail-section">
+        {% with invites=account.invite_set.all %}
+
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>Type</th>
+                    <th>Created</th>
+                    <th>Invitee Name</th>
+                    <th>Invitee Email</th>
+                    <th>Redeemed</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for invite in invites %}
+                <tr>
+                    <td>{{ invite.code|upper }}</td>
+                    <td>{% if invite.is_physical %}Card{% else %}Email{% endif %}</td>
+                    <td>{{ invite.created_by.get_full_name }} on {{ invite.created_on|date:"m/d/y g:i A" }}</td>
+                    <td>{{ invite.first_name|default:"" }} {{ invite.last_name|default:"" }}</td>
+                    <td>{{ invite.email|default:"" }}</td>
+                    <td>{% if invite.redeemed_by %}{{ invite.redeemed_by.get_full_name }} on {{ invite.redeemed_on|date:"m/d/y g:i A" }}{% endif %}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endwith %}
+    </div>
+
+</div>
+{% endblock body %}

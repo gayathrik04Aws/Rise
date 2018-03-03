@@ -1,0 +1,116 @@
+* {  
+  -webkit-transition: all 0s !important;
+  -moz-transition: all 0s !important;
+  -ms-transition: all 0s !important;
+  -o-transition: all 0s !important;
+  transition: all 0s !important;
+}
+
+ul.invitation-instructions { 
+  padding: 0 0 0 20px;
+  margin: 10px 0 20px 0;
+  li {
+    padding: 5px 0;
+    font-size: 14px;
+    line-height: 19px;
+  }
+  li:before {
+    content: '\2022';
+    display: block;
+    position: relative;
+    max-width: 0;
+    max-height: 0;
+    left: -20px;
+    top: 0;
+    color: $grey4;
+    font-size: 18px;
+    line-height: 16px;
+  }
+}
+
+ul.invitations-list {
+  border-bottom: 1px solid $grey2;
+  padding-bottom: 15px;
+  margin-top: 5px;
+  li {
+    @include clearfix;
+    padding: 5px 0;
+    &:first-child {
+      padding-top: 0;
+    }
+  }
+  figure {
+    width: 35px;
+    background-position: left center;
+    float: left;
+    margin-top: 5px;
+  }
+  .recipient, .sent {
+    @include calc(width, '100% - 40px');
+    display: inline-block;
+    font-weight: 700;
+    font-size: 14px;
+  }
+  .recipient {
+    color: $runway;
+  }
+  .sent {
+    color: $sky;
+  }
+}
+a.cs_import span {
+  display: none;
+}
+a.cs_import.loading {
+  font-size: 0;
+}
+a.cs_import.loading span {
+  background-image: url("../img/anywhere/rolling.gif");
+  background-position: center left;
+  background-size: 10px 10px;
+  background-repeat: no-repeat;
+  width: 10px;
+  height: 10px;
+  display: inline-block;
+  width: 180px;
+  font-size: 14px;
+letter-spacing: 0px;
+  font-weight: 100;
+  padding-left: 14px;
+  color: #000;
+  cursor: default;
+  opacity: .3;
+}
+
+////\\\\ Tablet breakpoint
+@media screen and (min-width: 768px) {
+  ul.invitation-instructions {
+    margin: 35px 0;
+  }
+  ul.invitations-list {
+    border-bottom: 0;
+    padding-bottom: 0;
+    li {
+      border-bottom: 1px solid $grey2;
+      padding: 30px 0;
+      &:first-child {
+        padding: 15px 0 30px 0;
+      }
+    }
+    figure {
+      margin: 0;
+    }
+    .recipient, .sent {
+      width: 225px;
+      float: left;
+      display: block;
+      margin-top: 4px;
+      figure {
+        width: 30px;
+      }
+    }
+    &.pending {
+      margin-bottom: 30px;
+    }
+  }
+}

@@ -1,0 +1,39 @@
+{% extends 'base_admin.html' %}
+
+{% load staticfiles %}
+{% load humanize %}
+{% load flight_tags %}
+
+{% block title %}Dashboard - Plane Detail{% endblock title %}
+
+{% block meta_description %}Dashboard - Plane Detail{% endblock meta_description %}
+
+{% block body_class %}{% endblock %}
+{% block body %}
+{% include 'admin_header_fragment.html' with nav_planes=True %}
+<div class="admin-content-wrap admin-detail-view">
+    <div class="avatar fl">
+      <div class="badge-wrap badge-right">
+        <div class="circle large no-m" style="background:url({% static 'img/plane-photo.png' %}) 0 0 no-repeat;background-size:100% 100%" id="avatar-image">
+        </div>
+      </div>
+    </div>
+    <div class="admin-details-wrap">
+        <div class="admin-page-header">
+            <h1>{{ plane.model }}, {{ plane.registration }}</h1>
+        </div>
+        <div class="detail-section">
+            <div class="admin-detail-row">
+                <span class="title">Capacity</span>
+                <span class="value"><b>{{ plane.seats }}</b></span>
+            </div>
+            <a href="{% url 'admin_edit_plane' plane.pk %}" class="admin-button">Edit Info</a>
+        </div>
+        <div class="detail-section">
+            <label>Notes</label>
+            {{ plane.details }}
+        </div>
+        <a href="{% url 'admin_delete_plane' plane.pk %}" class="button green">Remove Plane</a>
+    </div>
+</div>
+{% endblock %}

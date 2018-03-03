@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block title %}Welcome to Rise - {{ block.super }}{% endblock title %}
+
+{% block css %}
+{% with marketing=False%}
+{{ block.super }}
+{% endwith %}
+{% endblock css %}
+
+{% block body_class %}registration reset-password{% endblock %}
+
+{% block body %}
+<div class="section">
+    <div class="content-wrap group">
+        <div class="center">
+            <a href="/"><figure class="logo-form"></figure></a>
+        </div>
+        <div class="form white-bg">
+            <form action="." method="POST" class="group" class="">
+                {% csrf_token %}
+                <h1>Welcome to Rise, {{ member.first_name }}!</h1>
+
+                <p>
+                    Set your password for your Rise account below and then complete your profile.
+                </p>
+
+                {% if form.errors %}
+                <div class="error-message">
+                    {% for field, errors in form.errors.items %}
+                    {% for error in errors %}
+                    <div class="error-message">{{ error }}</div>
+                    {% endfor %}
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                {% if messages %}
+                {% for message in messages %}
+                <div class="error-message">{{ message }}</div>
+                {% endfor %}
+                {% endif %}
+
+                <div class="no-labels">
+                    <label for="id_new_password1">Password</label>
+                    {{ form.new_password1 }}
+
+                    <label for="id_new_password2">Confirm Password</label>
+                    {{ form.new_password2 }}
+
+                    <label for="id_new_password2">Date of Birth</label>
+                    {{ form.date_of_birth }}
+                </div>
+                <br/>
+                <hr/>
+
+                <div>
+                    <label class="check-radio-block background-check" id="{{ form.approve_membership_agreement.auto_id }}">{{ form.approve_membership_agreement }}<span>Accept <a target="_blank" href="{{ WP_URL }}/membership/">Membership Agreement</a></span></label>
+                </div>
+                <div>
+                    <label class="check-radio-block background-check" id="{{ form.approve_background_check.auto_id }}">{{ form.approve_background_check }}<span>Accept <a target="_blank" href="{{ WP_URL }}/terms/">Terms and Conditions</a></span></label>
+                </div>
+                <div>
+                    <label class="check-radio-block background-check" id="{{ form.approve_carriage_contract.auto_id }}">{{ form.approve_carriage_contract }}<span>Accept <a target="_blank" href="http://monarchair.com/section/contract-carriage">Contract of Carriage</a></span></label>
+                </div>
+
+                <div class="center">
+                    <button type="submit" class="button green">Complete Profile</button>
+                </div>
+
+            </form>
+        </div>
+        <br/><br/>
+        <div class="block center">
+            <a href="{{ WP_URL }}" class="return"> &#9664; Return to Home</a>
+        </div>
+    </div>
+</div>
+{% endblock body %}
+
+{% block footer %}{% endblock footer %}

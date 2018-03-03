@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block title %}Reservations - {{ block.super }}{% endblock title %}
+
+{% block meta_description %}Reservations - Manage Account{% endblock meta_description %}
+
+{% block css %}
+
+{{ block.super }}
+
+{% endblock css %}
+
+{% block body_class %}corporate{% endblock %}
+{% block body %}
+
+{% include 'account_profile/dashboard_nav.html' with reservations=True %}
+
+<div class="dashboard-reservations corporate">
+    <div class="content-wrap app-content-wrap">
+        <div class="reservation-page-controls">
+            <h1 class="fl">{{ member.get_full_name }} Reservations</h1>
+            <div class="fr">
+                {% comment %}
+                <div class="profile-page-control">
+                <input type="search" placeholder="Search" class="dark reveal">
+                <div class="select dark sort-page-control">
+                <span class="value">Select</span>
+                <ul>
+                <li value="1">Option 1</li>
+                <li value="2">Option 2</li>
+                <li value="3">Option 3</li>
+            </ul>
+            <select>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+        </select>
+    </div>
+</div>
+{% endcomment %}
+</div>
+</div>
+
+
+<div class="block white">
+
+    <!-- Mobile member reservations -->
+    <div class="member-reservations-mobile member-reservations">
+        {% for flight_reservation in flight_reservations %}
+        <div class="member">
+            <div class="member-wrap member-photo">
+                <div class="circle medium no-m" style="background:url({{ flight_reservation.primary_passenger.user.avatar_url }}) 0 0 no-repeat;background-size:100% 100%" id="avatar-image"></div>
+            </div>
+            <div class="member-wrap member-details">
+                <span class="member-name-cell">
+                    {{ flight_reservation.primary_passenger.userprofile.get_full_name }}
+                </span>
+                <span class="flight-no-cell t-gothic sky">
+                    No. {{ flight_reservation.flight.flight_number }}
+                </span>
+                <span class="orig-dest-cell t-gothic">
+                    <b>{{ flight_reservation.flight.origin.code}}</b>
+                    <figure class="flight-arrow-right-green spacer"></figure>
+                    <b>{{ flight_reservation.flight.destination.code }}</b>
+                </span>
+                <span class="date-time-cell t-gothic sky">
+                    {{ flight_reservation.flight.local_departure|date:"d M" }}
+                </span>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Desktop member reservations -->
+    <table class="member-reservations-desktop member-reservations">
+        <thead>
+            <tr>
+                <th>Member</th>
+                <th>Flight No.</th>
+                <th>Origin / Destination</th>
+                <th>Date / Time</th>
+                <th>Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for flight_reservation in flight_reservations %}
+            <tr>
+                <td>
+                    <div class="badge-wrap badge-left">
+                        <div class="circle medium no-m" style="background:url({{ flight_reservation.primary_passenger.user.avatar_url }}) 0 0 no-repeat;background-size:100% 100%" id="avatar-image"></div>
+                        {% if flight_reservation.flight.is_fun_flight %}
+                        <div class="badge-wrap">
+                            <figure class="funflight-solid"></figure>
+                        </div>
+                        {% elif flight_reservation.flight.is_promotional_flight %}
+                        <div class="badge-wrap">
+                            <figure class="promo-solid"></figure>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <b>{{ flight_reservation.primary_passenger.user.get_full_name }}</b>
+                </td>
+                <td class="t-gothic sky">{{ flight_reservation.flight.flight_number }}</td>
+                <td class="t-gothic">
+                    {{ flight_reservation.flight.origin.code}}
+                    <figure class="flight-arrow-right-green spacer"></figure>
+                    {{ flight_reservation.flight.destination.code }}
+                </td>
+                <td class="t-gothic sky">{{ flight_reservation.flight.local_departure|date:"d M / h:i A" }}</td>
+                <td class="details-cell center"><figure class="icon-info"></figure></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+
+
+<div class="center">
+    {% if perms.accounts.can_book_team %}
+    <a href="#" id="team_member_picker" class="button green mt20">Book A New Flight</a>
+    {% else %}
+    <a href="{% url 'book_from' %}" class="button green mt20">Book A New Flight</a>
+    {% endif %}
+    <a href="{% url 'dashboard' %}" class="return-to-profile">
+        &#9664; Return To Dashboard
+    </a>
+</div>
+</div>
+</div>
+
+{% include 'account_profile/team_member_picker_modal.html' with selected_user=member %}
+
+{% endblock body %}
+
+{% block javascript %}
+{{ block.super }}
+<script src="{% static 'js/binaryajax.min.js' %}"></script>
+<script src="{% static 'js/exif.min.js' %}"></script>
+<script src="{% static 'js/profile.js' %}"></script>
+<script src="{% static 'js/reservations.js' %}"></script>
+{% endblock javascript %}

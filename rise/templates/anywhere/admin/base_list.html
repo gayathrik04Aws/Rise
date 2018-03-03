@@ -1,0 +1,22 @@
+{% extends 'base_admin.html' %}
+
+{% block title %}Dashboard - Anywhere{% endblock title %}
+{% block meta_description %}Dashboard - Anywhere{% endblock meta_description %}
+
+{# how annoying #}
+{% block css %}
+    {% with marketing=False%}
+        {{ block.super }}
+    {% endwith %}
+{% endblock css %}
+
+{% block body_class %}anywhere{% endblock %}
+{% block body %}
+    {% include 'admin_header_fragment.html' with anywhere=True %}
+    <div class="admin-content-wrap">
+        <div class="block admin">
+            {% block admin_body %}
+            {% endblock %}
+        </div>
+    </div>
+{% endblock body %}

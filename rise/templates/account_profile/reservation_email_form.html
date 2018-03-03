@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+{% load humanize %}
+
+{% block title %}Send Invitation - {{ block.super }}{% endblock title %}
+
+{% block meta_description %}Send Invitations{% endblock meta_description %}
+
+{% block css %}
+{% with marketing=False%}
+{{ block.super }}
+{% endwith %}
+{% endblock css %}
+
+{% block body_class %}{% endblock %}
+{% block body %}
+{% include 'account_profile/dashboard_nav.html' %}
+<div class="section profile-body">
+
+    <div class="content-wrap app-content-wrap no-mt-mobile edit group">
+
+        <div class="profile-content-wrap">
+            <div class="detail group">
+                <form action="." method="POST" class="bare group">
+                    {% csrf_token %}
+
+                    <h1>Send Email Itinerary</h1>
+
+                    {% if form.errors %}
+                    <div class="error-message">
+                        {% for field, errors in form.errors.items %}
+                        {% for error in errors %}
+                        {{ error }}<br/>
+                        {% endfor %}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    <div class="no-labels">
+                        <label for="id_emails">Emails</label>
+                        <input {% if form.emails.errors %}class="error"{% endif %} type="text" name="{{ form.emails.html_name }}" value="{{ form.emails.value|default:"" }}" placeholder="email@email.com, another@email.com" id="id_emails"></input>
+                    </div>
+
+                    <button type="submit" class="button green">Send Itinerary</button>
+
+                </form>
+            </div> <!-- /.detail.group -->
+        </div> <!-- /.profile-content-wrap -->
+    </div> <!-- /.content-wrap -->
+</div>  <!-- /.profile-body   -->
+{% endblock body %}
+
+{% block javascript %}
+{{ block.super }}
+<script src="{% static 'js/binaryajax.min.js' %}"></script>
+<script src="{% static 'js/exif.min.js' %}"></script>
+<script src="{% static 'js/profile.js' %}"></script>
+{% endblock javascript %}

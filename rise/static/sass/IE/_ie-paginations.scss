@@ -1,0 +1,11 @@
+.pagination {
+  display: inline-block;
+  margin: 0;
+  margin-left: 40px;
+  position: relative;
+  top: 50%;
+  li {
+    display: block;
+    margin: 10px 0;
+  }
+}

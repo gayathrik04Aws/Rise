@@ -1,0 +1,165 @@
+.dashboard {
+  nav.profile {
+    @include transform(translateY(-100%));
+    &.show {
+      @include transform(translateY(0));
+    }
+  }
+}
+
+.dashboard-banner {
+  height: 295px;
+  position: relative;
+  z-index: 500;
+  // margin-bottom: 60px;
+  &.block.pattern {
+    background-size: cover;
+    background-position: center;
+  }
+  .button {
+    margin: 0;
+  }
+  .mobile {
+    display: none;
+  }
+  .desktop {
+    display: block;
+  }
+}
+
+.dashboard-banner-top {
+  margin-bottom: 20px;
+  max-width: 1040px;
+  margin: 0 auto;
+  text-align: left;
+  .right-side {
+    float: right;
+  }
+}
+
+.logout {
+  color: $runway-translucent;
+  display: inline-block;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  margin: 0 15px;
+  text-transform: uppercase;
+}
+
+.member-name {
+  h1 {
+    line-height: 24px;
+  }
+}
+
+.member-name-info {
+  color: rgba(255,255,255,0.5);
+  display: block;
+  font-family: 'din';
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 1px;
+  line-height: 20px;
+  text-transform: uppercase;
+}
+
+.member-since {
+  display: block;
+  font-size: 10px;
+  font-weight: 300;
+  letter-spacing: 1.5px;
+  line-height: 12px;
+  text-transform: uppercase;
+}
+
+.dashboard .member-location {
+  bottom: 20px;
+  color: rgba(255,255,255,0.5);
+  display: block;
+  font-family: 'din';
+  font-weight: 700;
+  font-size: 15px;
+  // left: 50%;
+  left: 0;
+  letter-spacing: 1px;
+  line-height: 20px;
+  max-width: 1040px;
+  position: absolute;
+  text-align: right;
+  text-transform: uppercase;
+  width: 100%;
+  // @include transform(translateX(-50%));
+  figure {
+    margin-right: 10px;
+    position: relative;
+    .popover {
+      right: 40px;
+    }
+    .popover ul {
+      padding: 0;
+    }
+    .popover li {
+      cursor: pointer;
+    }
+  }
+}
+
+.lets-fly-button {
+  display: inline-block;
+  position: relative;
+  width: 160px;
+  height: 50px;
+  vertical-align: middle;
+  .button {
+    left: 0;
+    position: absolute;
+    top: 0;
+    z-index: 500;
+  }
+}
+
+.lets-fly-dropdown {
+  background: $runway;
+  border-radius: 3px;
+  display: none;
+  left: 50%;
+  margin-top: 12px;
+  overflow: hidden;
+  padding: 30px;
+  padding-top: 35px;
+  padding-bottom: 0;
+  text-align: left;
+  @include transform(translateX(-10px));
+  width: 180px;
+  z-index: 400;
+  &.show {
+    display: block;
+  }
+  li {
+    color: #ffffff;
+    cursor: pointer;
+    font-family: 'din';
+    font-size: 20px;
+    font-weight: 300;
+    letter-spacing: 1px;
+    line-height: 30px;
+    text-transform: uppercase;
+    &:before {
+      background-color: #979797;
+      border-radius: 100%;
+      content: '';
+      display: inline-block;
+      height: 10px;
+      margin-right: 15px;
+      margin-bottom: 4px;
+      vertical-align: middle;
+      width: 10px;
+    }
+    &.active {
+      &:before {
+        background-color: $land;
+      }
+    }
+  }
+}

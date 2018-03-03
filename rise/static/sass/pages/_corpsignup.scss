@@ -1,0 +1,62 @@
+.corp-signup-calc {
+    border-top: 4px solid $grey2;
+    border-bottom: 4px solid $grey2;
+    margin-top: 15px;
+    padding-top: 10px;
+    @media screen and (min-width: 768px) {
+        @include display(flex);
+        div {
+            @include flex(1);
+            &.calc-green {
+                @include flex(0.3);
+                line-height: 120px;
+            }
+        }
+    }
+}
+
+.calc-green {
+    color: $land;
+    text-align: center;
+    margin: 10px 0;
+    @media screen and (min-width: 768px) {
+        margin: 0;
+    }
+}
+
+.calc-totals {
+    text-align: center;
+    margin: 20px 0;
+    label {
+        text-align: center;
+        margin: 5px 0;
+        @media screen and (min-width: 768px) {
+            margin: -11px 0 28px 0;
+            text-align: left;
+        }
+    }
+    span + label {
+        margin-top: 20px;
+    }
+    @media screen and (min-width: 768px) {
+        text-align: left;
+    }
+}
+
+.one-time-deposit {
+    font-size: 14px;
+    margin: 10px 0 30px 0;
+    text-align: center;
+    label {
+        display: inline-block;
+        font-size: 14px;
+    }
+    span {
+        color: $land;
+        font-weight: 500;
+        margin-left: 10px;
+    }
+    @media screen and (min-width: 768px) {
+        text-align: left;
+    }
+}

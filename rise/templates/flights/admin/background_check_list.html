@@ -1,0 +1,139 @@
+{% extends 'base_admin.html' %}
+
+{% load staticfiles %}
+{% load flight_tags %}
+{% load tz %}
+
+{% block title %}Dashboard - List Background Check Statuses for Flights{% endblock title %}
+
+{% block meta_description %}Dashboard - List Background Check Statuses for Flights{% endblock meta_description %}
+
+{% block css %}
+{% with marketing=False%}
+{{ block.super }}
+{% endwith %}
+{% endblock css %}
+
+{% block body_class %}{% endblock %}
+{% block body %}
+{% include 'admin_header_fragment.html' with flights=True %}
+<div class="admin-content-wrap">
+    <div class="block admin no-pb">
+        <form id="flight_filter_form" method="get" action="" class="full-width">
+
+            <div class="admin-page-header no-bb">
+                <div class="fl">
+                    <h1>Passengers {% if is_today %}(Today){% else %}{{ flight_date|date:"d F, Y" }}{% endif %}</h1>
+                </div>
+                <div class="fr">
+                    <div class="select admin-page-sort dark">
+                      <!-- <span class="value">Showing All Flights</span> -->
+                      <span class="value">Showing {{ form.type.value|default:"All Flights" }}</span>
+
+                      <ul id="flight-sort-filter">
+                          {% for value, text in form.type.field.choices %}
+                          <li value="{{ value }}" {% if form.type.value == value %}class="active"{% endif %}>{{ text }}</li>
+                          {% endfor %}
+                      </ul>
+                      {{ form.type }}
+                    </div>
+                </div>
+                <div class="fr">
+                    <input type="search" placeholder="Search" class="dark page-search admin-reveal" name="s" id="s">
+                </div>
+            </div>
+            <div class="control-row">
+                <div class="flights-date">
+                  <input type="text" readonly="true" id="flight-datepicker" name="date" class="datepicker-input" value="{{ form.date.value|default:"Filter flights by day" }}">
+                </div>
+            </div>
+        </form>
+    </div>
+    {% for flight in object_list %}
+        {% if flight.get_passengers %}
+        <hr>
+        <h3 class="cf">
+            <span class="fl">Flight: <b>{{ flight.flight_number }}</b></span>
+            <span class="fr">Departs/Arrives: <b>{{ flight.origin.code|upper }}</b> {{ flight.local_departure|date:"H:i e"}} &nbsp;<figure class="flight-arrow-right-green spacer"></figure> &nbsp;<b>{{ flight.destination.code|upper }}</b> {{ flight.local_arrival|date:"H:i e"}}</span>
+        </h3>
+        <div class="cf">
+            <span class="fr icon-with-label hide-print">
+                <a href="{% url 'admin_flight_print_manifest' flight.pk %}">
+                    <figure class="print"></figure><span>Print Manifest</span>
+                </a>
+            </span>
+        </div>
+        <b class="cf">Passengers</b>
+
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Date of Birth</th>
+                    <th>Background Check Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for passenger in flight.get_passengers %}
+                <tr>
+                    <td>{{ passenger.userprofile.get_full_name }}</td>
+                    <td>{{ passenger.date_of_birth|date:"d F, Y" }}</td>
+                    <td>
+                        <div class='check-background-check'>
+                            <form action="{% url 'admin_background_check_update' flight_pk=flight.pk passenger_pk=passenger.pk %}" method="POST" class="update-background-check">
+                                {% csrf_token %}
+                                <label class="check-radio-block">
+                                    <input class="change-background-check-status" type="radio" name="background_status" value="{{ passenger.BACKGROUND_NOT_STARTED }}" {% if passenger.background_status == passenger.BACKGROUND_NOT_STARTED %}checked="checked"{%endif%}>
+                                    <span>Not Started</span>
+                                </label>
+                                <label class="check-radio-block">
+                                    <input class="change-background-check-status" type="radio" name="background_status" value="{{ passenger.BACKGROUND_PASSED }}" {% if passenger.background_status == passenger.BACKGROUND_PASSED %}checked="checked"{%endif%}>
+                                    <span>Passed</span>
+                                </label>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+    {% endfor %}
+
+</div>
+
+{% endblock body %}
+
+{% block javascript %}
+<script type="text/javascript">
+$('#id_type').on('change', function () {
+    $('#flight_filter_form').submit();
+});
+$('#flight-datepicker').on('change', function () {
+    $('#flight_filter_form').submit();
+});
+$('#flight-datepicker').datepicker({
+      showOtherMonths: true,
+      selectOtherMonths: true,
+      dayNamesMin: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
+      dateFormat: 'yy-mm-dd'
+});
+$('#s').on('blur', function(){
+    if ($('#s').val()){
+        $('#id_type').val('');
+        $('#flight-datepicker').val('');
+    }
+    $('#flight_filter_form').submit();
+});
+$('#s').on('keyup', function(e) {
+    if (e.which == 13) {
+        e.preventDefault();
+        if ($('#s').val()){
+            $('#id_type').val('');
+            $('#flight-datepicker').val('');
+        }
+        $('#flight_filter_form').submit();
+    }
+});
+</script>
+{% endblock javascript %}

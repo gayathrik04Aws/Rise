@@ -1,0 +1,9 @@
+{% extends 'emails/base.txt' %}
+
+{% block content %}{{ account.account_name }} -- Add Member Payment Failed
+
+{{ error_message }}
+
+{{ protocol }}://{{ site.domain }}{% url 'admin_account' account.pk %}
+
+{% endblock content %}

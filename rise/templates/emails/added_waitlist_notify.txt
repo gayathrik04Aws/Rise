@@ -1,0 +1,21 @@
+{% extends 'emails/base.txt' %}
+
+{% block content %}Member {{ member.get_full_name }} been added to the wishlist
+
+Flight {{ flight.flight_number }}
+
+Member {{ member.get_full_name }} been added to the wishlist for Flight {{ flight.flight_number }} from {{ flight.origin.name }}, {{ flight.origin.state }} to {{ flight.destination.name }}, {{ flight.destination.state }} on {{ flight.departure|date:"d F Y" }}.
+
+Origin
+------
+{{ flight.origin.name }}, {{ flight.origin.state }}
+{{ flight.local_departure_time_display}} {{ flight.origin.get_timezone_display }}
+
+Destination
+-----------
+{{ flight.destination.name }}, {{ flight.destination.state }}
+{{ flight.local_arrival_time_display}} {{ flight.destination.get_timezone_display }}
+
+
+{{ protocol }}://{{ site.domain }}{% url 'profile' %}
+{% endblock content %}

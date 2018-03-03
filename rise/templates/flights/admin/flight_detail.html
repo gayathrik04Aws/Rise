@@ -1,0 +1,390 @@
+{% extends 'base_admin.html' %}
+
+{% load staticfiles %}
+{% load humanize %}
+{% load flight_tags %}
+
+{% block title %}Dashboard - Flight {{ object.flight_number }}{% endblock title %}
+
+{% block meta_description %}Dashboard - Flight {{ object.flight_number }}{% endblock meta_description %}
+
+{% block body_class %}{% endblock %}
+{% block body %}
+{% include 'admin_header_fragment.html' with flights=True %}
+<div class="admin-detail-view admin-form-page detail-page" id="flight-details">
+    <div class="cf">
+    <h1 class="fl">Flight {{ object.flight_number }}</h1>
+    {% if object.plane %}
+        <h3 class="section-label admin show-print">Tail Number: {{ object.plane.registration }}</h3>
+    {% endif %}
+    {% if flight.can_change_status %}
+    {% if perms.accounts.can_edit_flights or perms.accounts.can_update_flights or perms.accounts.can_edit_flights_limited %}
+    <form id="id_status_form" method="POST" action="">
+        {% csrf_token %}
+
+        <div class="select dark">
+            <span class="value">{{ form.status.label }}</span>
+            <ul>
+                {% for value, text in form.status.field.choices %}
+                <li value="{{ value }}">{{ text }}</li>
+                {% endfor %}
+            </ul>
+            {{ form.status }}
+        </div>
+    </form>
+    {% endif %}
+    {% endif %}
+    </div>
+
+    {% if flight.flight_type == "A" %}
+    *Rise Anywhere
+    {% endif %}
+
+
+<div class="flight-status-announcement cf">
+    Status: {{ object.get_status_display }}
+    <figure class="flight-alert-{% if flight.is_cancelled %}cancel{% elif flight.is_delayed %}delayed{% elif flight.is_complete %}complete{% else %}on-time{% endif %}"></figure>
+    {% if object.is_cancelled %}
+        {% if perms.accounts.can_edit_flights or perms.accounts.can_update_flights %}
+            <a href="{% url 'admin_flight_delete' pk=object.pk %}" class="fr admin-button red">Delete</a>
+        {% endif %}
+    {% endif %}
+</div>
+<div class="detail-section">
+    <div class="distribute equal-width">
+    <div>
+        <ul>
+            <label>Departs</label>
+            <li><b>{{ object.origin.code }}</b></li>
+            <li>{{ flight.origin.name }}</li>
+            <li>{{ flight.origin.city}}, {{ flight.origin.state }}</li>
+            <label>Scheduled</label>
+            <li>{{ flight.local_departure|date:"m/d/Y"}}</li>
+            <li>{{ flight.local_departure|date:"h:i A e"}}</li>
+            {% if flight.actual_departure %}
+            <label>Actual</label>
+            <li>{{ flight.local_actual_departure|date:"m/d/Y"}}</li>
+            <li>{{ flight.local_actual_departure|date:"h:i A e" }}
+            {% endif %}
+        </ul>
+    </div>
+    <div>
+        <ul>
+            <label>Arrives</label>
+            <li><b>{{ flight.destination.code }}</b></li>
+            <li>{{ flight.destination.name }}</li>
+            <li>{{ flight.destination.city}}, {{ flight.destination.state }}</li>
+            <label>Scheduled</label>
+            <li>{{ flight.local_arrival|date:"m/d/Y"}}</li>
+            <li>{{ flight.local_arrival|date:"h:i A e"}}</li>
+            {% if flight.actual_arrival %}
+            <label>Actual</label>
+            <li>{{ flight.local_actual_arrival|date:"m/d/Y" }}
+            <li>{{ flight.local_actual_arrival|date:"h:i A e" }}
+            {% endif %}
+        </ul>
+    </div>
+    <div>
+        <ul>
+            <label>Duration</label>
+            <li>{{ flight.duration|simple_duration }}</li>
+        </ul>
+        {% if flight.plane %}
+        <ul>
+            <label>Plane</label>
+            <li>{{ flight.plane.registration}}</li>
+        </ul>
+        {% elif flight.route_time and flight.route_time.plane %}
+            <ul>
+                <label>Plane</label>
+                <li>{{ flight.route_time.plane.registration}}</li>
+            </ul>
+        {% elif flight.route_time.route and flight.route_time.route.plane %}
+            <ul>
+                <label>Plane</label>
+                <li>{{ flight.route_time.route.plane.registration}}</li>
+            </ul>
+        {% endif %}
+        <ul>
+            <label>Seats Filled</label>
+            <li>{{ flight.seats_available|sub_seats:flight.seats_total }}/{{ flight.seats_total}}</li>
+        </ul>
+        <ul>
+            <label>Companion Seats</label>
+            <li>{{ flight.seats_companion}}</li>
+        </ul>
+        {% if flight.surcharge > 0 %}
+        <ul>
+            <label>Surcharge</label>
+            <li>${{ flight.surcharge|floatformat:2 }}</li>
+        </ul>
+        {% endif %}
+    </div>
+    </div>
+    {% if perms.accounts.can_edit_flights %}
+        {% if flight.flight_type == 'A' %}
+            <a href="{% url 'admin_edit_anywhere_flight' object.pk %}" class="admin-button hide-print">Edit Details</a>
+             <a href="" class="admin-button hide-print" id="bookAnywhereFlight">Book Flight</a>
+
+            {% else %}
+            <a href="{% url 'admin_edit_flight' object.pk %}" class="admin-button hide-print">Edit Details</a>
+             <a href="{% url 'book_flight' object.pk %}" class="admin-button hide-print" target="_blank">Book Flight</a>
+
+        {% endif %}
+    {% endif %}
+    {% if flight.is_fun_flight or flight.is_promotional_flight %}<a class="admin-button hide-print" href="{% url 'admin_flight_marketing' flight.pk %}">Send Promotional Email</a>{% endif %}
+</div>
+<ul class="detail-section flight-manifest">
+    <span class="cf">
+        <label class="fl manifest-label hide-print">Rise Staff Onboard</label>
+        <span class="manifest-label show-print">Rise Staff Onboard</span>
+        <span class="fr icon-with-label hide-print">
+            <a href="{% url 'admin_flight_print_manifest' flight.pk %}">
+                <figure class="print"></figure><span>Print Manifest</span>
+            </a>
+        </span>
+    </span>
+    {% if object.pilot %}
+        <li>
+            <span class="name">{{ object.pilot.get_full_name }}</span>
+            <span class="group">Pilot</span>
+        </li>
+    {% endif %}
+    {% if object.copilot %}
+        <li>
+            <span class="name">{{ object.copilot.get_full_name }} </span>
+            <span class="group">Co-Pilot</span>
+        </li>
+    {% endif %}
+    <br><br>
+    <hr>
+    <br>
+    {% if flight.get_passengers %}
+        <label class="cf manifest-label hide-print">Passengers</label>
+        <span class="cf manifest-label show-print">Passengers</span>
+    {% endif %}
+    {% for passenger in flight.get_passengers %}
+    <li>
+        <a href="{% url 'admin_account_user' passenger.userprofile.account.pk passenger.userprofile.pk %}">
+            <span class="name">
+                <div class="circle small no-m" style="background:url({{ passenger.userprofile.avatar_url }}) 0 0 no-repeat;background-size:100% 100%" id="avatar-image"></div>
+                {{ passenger.first_name }} {{ passenger.last_name }}
+            </span>
+        </a>
+        <span class="group">{{ passenger.userprofile.account }}</span>
+        <form action="{% url 'admin_passenger_checkin' pk=passenger.pk %}" method="POST">
+            {% csrf_token %}
+            <input type="checkbox" name="check_in" class="check_in_passenger" value="1" {% if passenger.checked_in %}checked{%endif %} {% if flight.is_complete %}disabled{% endif %}> Check In
+        </form>
+{#        {% if passenger == passenger.flight_reservation.primary_passenger %}#}
+        <span class="cancel-reservation">
+            {% if flight.flight_type == "A" %}
+                {% if passenger == passenger.flight_reservation.primary_passenger %}
+                    {% if passenger.flight_reservation.passenger_count > 1 %}
+                <a href="javascript:cancelResMsg('{% url 'admin_flight_book_member_passenger_cancel' pk=passenger.flight_reservation.pk passenger_id=passenger.userprofile.pk%}','{{ flight.flight_type }}',true);" title="Cancel Reservation">
+                <figure class="icon-trashcan"></figure></a>
+                        {% else %}
+                         <a href="javascript:cancelResMsg('{% url 'admin_flight_book_member_passenger_cancel' pk=passenger.flight_reservation.pk passenger_id=passenger.userprofile.pk%}','{{ flight.flight_type }}',false);" title="Cancel Reservation">
+                <figure class="icon-trashcan"></figure></a>
+
+                        {% endif %}
+                {% else %}
+                  <a href="javascript:cancelResMsg('{% url 'admin_flight_anywhere_passenger_cancel' pk=passenger.flight_reservation.pk passenger_id=passenger.userprofile.pk%}','{{ flight.flight_type }}',true);" title="Cancel Reservation">
+                <figure class="icon-trashcan"></figure></a>
+
+                {% endif %}
+            {% else %}
+             <a href="javascript:cancelResMsg('{% url 'admin_flight_book_member_passenger_cancel' pk=passenger.flight_reservation.pk passenger_id=passenger.userprofile.pk%}','{{ flight.flight_type }},false');" title="Cancel Reservation">
+
+                <figure class="icon-trashcan"></figure>
+            </a>
+            {% endif %}
+        </span>
+{% comment %}          {% elif flight.flight_type == 'A' %}
+             <span class="cancel-reservation">
+            <a href="javascript:cancelAnywhereResMsg('{% url 'admin_flight_anywhere_passenger_cancel' pk=passenger.flight_reservation.pk passenger_id=passenger.pk %}');"> <figure class="icon-trashcan"></figure></a>
+            </span>
+        {% endif %}{% endcomment %}
+    </li>
+    {% endfor %}
+    {% for reservation in flight.get_pending_reservations %}
+        {% if reservation.primary_passenger and reservation.primary_passenger.userprofile and reservation.primary_passenger.userprofile.account and reservation.primary_passenger.userprofile.account.pk %}
+
+    <li class="pending">
+        <a href="{% url 'admin_account_user' reservation.primary_passenger.userprofile.account.pk reservation.primary_passenger.userprofile.pk %}">
+            <span class="name">
+                <div class="circle small no-m" style="background:url({{ reservation.primary_passenger.user.avatar_url }}) 0 0 no-repeat;background-size:100% 100%" id="avatar-image"></div>
+                {{ reservation.primary_passenger.first_name }} {{ reservation.primary_passenger.last_name }}
+            </span>
+        </a>
+        <span class="group">{{ reservation.primary_passenger.userprofile.account }}</span>
+        <span class="info">
+            Pending {% if reservation.get_other_passenger_count %}+ {{ reservation.get_other_passenger_count }}{% endif %}
+        </span>
+
+    </li>
+             {% else %}
+             <p>There is a pending reservation that seems to have no user attached to it.  Last time this happened, it resolved itself
+             after a few minutes.  The reservation id is {{ reservation.id }}.</p>
+          {% endif %}
+    {% endfor %}
+    {% if perms.accounts.can_background_check %}
+        <a href="{% url 'admin_flight_background_check' pk=flight.pk %}" class="admin-button no-ml">Background Check</a>
+    {% endif %}
+    {% if perms.accounts.can_book_members %}
+        {% if object.no_seats and needs_creator_reservation_names == False %}
+            <a href="#" class="admin-button disabled">Flight Full</a>
+        {% elif flight.flight_type == "A" %}
+                {% if object.no_seats %}
+                    <a href="{% url 'admin_anywhere_flight_book_member' pk=flight.pk %}?full=True" class="admin-button">Add Passenger</a>
+                    {% else %}
+                        <a href="{% url 'admin_anywhere_flight_book_member' pk=flight.pk %}?full=False" class="admin-button">Add Passenger</a>
+                {% endif %}
+        {% else %}
+            <a href="{% url 'admin_flight_book_member' pk=flight.pk %}" class="admin-button">Add Passenger</a>
+        {% endif %}
+    {% endif %}
+    {% if flightset.empty_seats > 0 and flight.flight_type == "A" %}
+        <a href="{% url 'invite_anywhere' flightset.public_key %} " class="admin-button" target='_blank'>Invitations</a>
+    {% endif %}
+    {% if flight.flight_type == "A" %}
+        <a href="{% url 'admin_anywhere_flight_reservations' pk=flight.pk %}" class="admin-button">Reservation View</a>
+    {% endif %}
+    {% if flight.get_pending_flight_reservations %}
+        <br>
+        <hr>
+        <br>
+        <label class="cf manifest-label hide-print">Pending Reservations</label>
+        <span class="cf manifest-label show-print">Pending Reservations</span>
+    {% endif %}
+    {% for flight_reservation in flight.get_pending_flight_reservations %}
+    <li>
+        <a href="{% url 'admin_account_user' flight_reservation.primary_passenger.userprofile.account.pk flight_reservation.primary_passenger.userprofile.pk %}">
+            <span class="name">
+                <div class="circle small no-m" style="background:url({{ flight_reservation.primary_passenger.user.avatar_url }}) 0 0 no-repeat;background-size:100% 100%" id="avatar-image"></div>
+                {{ flight_reservation.primary_passenger.first_name }} {{ flight_reservation.primary_passenger.last_name }}
+            </span>
+        </a>
+        <span class="group">{{ flight_reservation.primary_passenger.userprofile.account }}</span>
+        <span class="cancel-reservation">
+            <a href="javascript:cancelResMsg('{% url 'admin_flight_book_member_cancel' pk=flight_reservation.pk %}','{{ flight.flight_type }}',false);" title="Cancel Reservation">
+            <figure class="icon-trashcan"></figure></a>
+        </span>
+    </li>
+    {% endfor %}
+</ul>
+{% with waitlist=flight.get_waitlist %}
+{% if waitlist %}
+    <hr>
+    <div class="detail-section flight-manifest">
+        <span class="cf">
+            <label class="manifest-label">Waitlist</label>
+        </span>
+        <ol class="waitlist">
+            {% for waiting in waitlist %}
+            <li>
+                <span>{{ waiting.userprofile.first_name }} {{ waiting.userprofile.last_name }}</span>
+                <span class="fr"><a href="{% url 'admin_book_from_waitlist' waiting.pk %}">Add to Flight</a></span>
+            </li>
+            {% endfor %}
+        </ol>
+    </div>
+{% endif %}
+{% endwith %}
+<div class="detail-section">
+    <h3>Flight Messages</h3>
+    {% with messages=flight.flight_flight_messages.all %}
+    {% if messages %}
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Message</th>
+                    <th>Created by</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for message in messages %}
+                <tr class="">
+                    <td class="body">{{ message.message }}</td>
+                    <td class="created-by"><b>{{ message.created_by.get_full_name }}</b></td>
+                    <td class="created">{{ message.created|date:"m/d/Y" }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+    {% endwith %}
+    <div class="cf">
+        <a href="{% url 'admin_flight_message' pk=flight.pk %}" class="admin-button no-ml">Add Message</a>
+    </div>
+</div>
+</div>
+<a href="{% url 'admin_list_flights' %}" class="return-to-profile">&#9664; Return to Flights</a>
+<div id="anywhere_book_modal" class="modal-wrapper" style="z-index: 10000; opacity: 1;">
+    <div class="modal center">
+        <figure class="x-grey-lg"></figure>
+        <figure class="alert-icon"></figure>
+        <p class="thick">This is a Rise Anywhere flight;  if it is part of a round trip, you must book both legs together.</p>
+        <a id="confirm_book_anywhere"  href="{% url 'book_anywhere_flight' object.pk %}" class="action-block grey condensed">Continue?<figure class="arrow-right-grey"></figure></a>
+    </div>
+</div>
+    <form id="id_status_form123" method="POST" action="/riseadmin/flights/book/cancel/">
+    {% csrf_token %}
+<div id="cancel_res_modal" class="modal-wrapper" style="z-index: 10000; opacity: 1;">
+    <div class="modal center">
+        <figure class="x-grey-lg"></figure>
+        <figure class="alert-icon"></figure>
+        <p class="thick" id ="id_cancellation_msg"></p>
+         <label for="id_cancellation_reason">Cancellation Reason</label>
+         <input id="cancellation_reason" type="text" name="cancellation_reason" value="Cancellation requested by member"/>
+
+       <p class="thick" id="pkeep_spots"><input id="keep_spots" name="keep_spots" type="checkbox" checked="checked" /> <label for="keep_spots">Keep spots on reservation?</label></p>
+        <a id="confirm_cancel_flight"  href="" class="action-block grey condensed">Continue?<figure class="arrow-right-grey"></figure></a>
+    </div>
+</div>
+</form>
+{% endblock body %}
+
+{% block javascript %}
+<script type="text/javascript">
+$('#id_status').on('change', function () {
+    $('#id_status_form').submit();
+});
+
+ $('#bookAnywhereFlight').on(clickAction, function(event) {
+        if ($('#anywhere_book_modal').length > 0) {
+            event.preventDefault();
+            $('#anywhere_book_modal').show();
+            return false;
+        }
+  });
+
+ $('#confirm_cancel_flight').on(clickAction, function(event) {
+        var link_url = $('#confirm_cancel_flight').attr('href');
+        $('#id_status_form123').attr('action', link_url);
+        $('#id_status_form123').submit();
+        return false;
+  });
+
+function cancelResMsg(url,flight_type,fc){
+    if ($('#cancel_res_modal').length > 0) {
+        $('a#confirm_cancel_flight').attr("href",url);
+        if( flight_type == 'A') {
+            if(fc==true) {
+                $('#pkeep_spots').show();
+            }else{
+                $('#pkeep_spots').hide();
+            }
+            $('#id_cancellation_msg').html('This is a Rise Anywhere flight;  if it is part of a round trip, both legs will be cancelled.');
+        }else{
+             $('#pkeep_spots').hide();
+            $('#id_cancellation_msg').html();
+        }
+        $('#cancel_res_modal').show();
+        return false;
+    }
+}
+
+</script>
+{% endblock javascript %}

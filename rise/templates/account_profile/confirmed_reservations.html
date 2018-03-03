@@ -1,0 +1,120 @@
+{% load flight_tags %}
+
+{% if upcoming_flight_reservations %}
+  {% for flight_reservation in upcoming_flight_reservations %}
+    <div class="card card-confirmed-reservations">
+      {% if flight_reservation.flight.flight_type == 'A' %}
+        <div class="riseanywhere-logo"></div>
+      {% endif %}
+      <div class="departing-flight">
+        {% if flight_reservation.flight.flight_type != 'R' %}
+          <div class="badge">
+              {% if flight_reservation.flight.is_fun_flight %}
+                  <figure class="funflight-solid"></figure>
+              {% elif flight_reservation.flight.is_promotional_flight %}
+                  <figure class="promo-solid"></figure>
+              {% endif %}
+          </div>
+        {% endif %}
+        <div class="top-row">
+            <div class="departing-info">
+              <strong>Departing</strong>{{ flight_reservation.flight.local_departure|date:"M d, Y" }} - Flight {{ flight_reservation.flight.flight_number }}
+            </div>
+        </div>
+        <a href="{% url 'reservation_detail' flight_reservation.pk %}"><figure class="pencil-green"></figure></a> <!-- Pencil edit icon-->
+        <div class="origin">
+
+          <div class="circle med gradient {{ flight_reservation.flight.origin.city|remove_spaces_lower_case }}">
+            <span class="city-code">{{ flight_reservation.flight.origin.code }}</span>
+            <div class="badge-wrap">
+                {% if flight_reservation.flight.is_fun_flight %}
+                  <figure class="funflight-solid"></figure>
+                {% elif flight_reservation.flight.is_promotional_flight %}
+                  <figure class="promo-solid"></figure>
+                {% endif %}
+            </div>
+
+          </div>
+
+          <div class="caption">
+            <h5>Origin</h5>
+            <h1>{{ flight_reservation.flight.origin.name }}, {{ flight_reservation.flight.origin.state }}</h1>
+            <h4 class="grey">{{ flight_reservation.flight.local_departure|date:"M d / h:i A" }}</h4>
+          </div>
+        </div>
+        <div class="oneway-or-rt">&rarr;</div>
+        <div class="destination">
+          <div class="circle med gradient {{ flight_reservation.flight.destination.city|remove_spaces_lower_case }}">
+            <span class="city-code">{{ flight_reservation.flight.destination.code }}</span>
+          </div>
+          <div class="caption">
+            <h5>Destination</h5>
+            <h1>{{ flight_reservation.flight.destination.name }}, {{ flight_reservation.flight.destination.state }}</h1>
+            <h4 class="grey">{{ flight_reservation.flight.local_arrival|date:"M d / h:i A" }}</h4>
+          </div>
+        </div>
+      </div>
+
+  {% comment %}  <div class="return-flight">
+      {% if flight_reservation.flight.flight_type != 'R' %}
+        <div class="badge">
+            {% if flight_reservation.flight.is_fun_flight %}
+                <figure class="funflight-solid"></figure>
+            {% elif flight_reservation.flight.is_promotional_flight %}
+                <figure class="promo-solid"></figure>
+            {% endif %}
+        </div>
+      {% endif %}
+      <div class="top-row">
+          <div class="departing-info">
+            <strong>Returning</strong>{{ flight_reservation.flight.local_departure|date:"M d Y" }} - Flight {{ flight_reservation.flight.flight_number }}
+          </div>
+      </div>
+      <a href="{% url 'reservation_detail' flight_reservation.pk %}"><figure class="pencil-green"></figure></a> <!-- Pencil edit icon-->
+
+      <div class="flight-route-info">
+        <div class="origin">
+
+          <div class="circle med gradient {{ flight_reservation.flight.origin.city|remove_spaces_lower_case }}">
+            <span class="city-code">{{ flight_reservation.flight.origin.code }}</span>
+            <div class="badge-wrap">
+                {% if flight_reservation.flight.is_fun_flight %}
+                  <figure class="funflight-solid"></figure>
+                {% elif flight_reservation.flight.is_promotional_flight %}
+                  <figure class="promo-solid"></figure>
+                {% endif %}
+            </div>
+          </div>
+
+          <div class="caption">
+            <h5>Origin</h5>
+            <h1>{{ flight_reservation.flight.origin.name }}, {{ flight_reservation.flight.origin.state }}</h1>
+            <h4 class="grey">{{ flight_reservation.flight.local_departure|date:"d M / h:i A" }}</h4>
+          </div>
+        </div>
+        <div class="oneway-or-rt">&rarr;</div>
+        <div class="destination">
+          <div class="circle med gradient {{ flight_reservation.flight.destination.city|remove_spaces_lower_case }}">
+            <span class="city-code">{{ flight_reservation.flight.destination.code }}</span>
+          </div>
+          <div class="caption">
+            <h5>Destination</h5>
+            <h1>{{ flight_reservation.flight.destination.name }}, {{ flight_reservation.flight.destination.state }}</h1>
+            <h4 class="grey">{{ flight_reservation.flight.local_arrival|date:"d M / h:i A" }}</h4>
+          </div>
+        </div>
+      </div>
+    </div>
+
+      {% if flightset.is_round_trip %}
+          <span>&larr;</span>
+          <span>&rarr;</span>
+          {% else %}
+          &rarr;
+      {% endif %}{% endcomment %}
+
+    </div>
+  {% endfor %}
+{% endif %}
+
+

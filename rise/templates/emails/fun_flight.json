@@ -1,0 +1,16 @@
+{
+    "flight": {
+        "id": 1,
+        "flight_number": "1234",
+        "origin": {
+            "name": "Dallas LOVE",
+            "state": "TX",
+            "code": "DAL"
+        },
+        "destination": {
+            "name": "Houston HOBBY",
+            "state": "TX",
+            "code": "HOU"
+        }
+    }
+}

@@ -1,0 +1,227 @@
+{% extends 'base_admin.html' %}
+
+{% load staticfiles %}
+{% load humanize %}
+{% load flight_tags %}
+{% load reservation_tags %}
+
+{% block title %}Dashboard - Flight {{ flight.flight_number }}{% endblock title %}
+
+{% block meta_description %}Dashboard - Flight {{ flight.flight_number }}{% endblock meta_description %}
+
+{% block body_class %}{% endblock %}
+{% block body %}
+{% include 'admin_header_fragment.html' with flights=True %}
+<div class="admin-detail-view admin-form-page detail-page" id="flight-details">
+    <div class="cf">
+    <h1 class="fl">Flight {{ flight.flight_number }}</h1>
+    </div>
+    *Rise Anywhere
+
+<div class="detail-section">
+    <div class="distribute equal-width">
+    <div>
+        <ul>
+            <label>Departs</label>
+            <li><b>{{ flight.origin.code }}</b></li>
+            <li>{{ flight.origin.name }}</li>
+            <li>{{ flight.origin.city}}, {{ flight.origin.state }}</li>
+            <label>Scheduled</label>
+            <li>{{ flight.local_departure|date:"m/d/Y"}}</li>
+            <li>{{ flight.local_departure|date:"h:i A e"}}</li>
+            {% if flight.actual_departure %}
+            <label>Actual</label>
+            <li>{{ flight.local_actual_departure|date:"m/d/Y"}}</li>
+            <li>{{ flight.local_actual_departure|date:"h:i A e" }}
+            {% endif %}
+        </ul>
+    </div>
+    <div>
+        <ul>
+            <label>Arrives</label>
+            <li><b>{{ flight.destination.code }}</b></li>
+            <li>{{ flight.destination.name }}</li>
+            <li>{{ flight.destination.city}}, {{ flight.destination.state }}</li>
+            <label>Scheduled</label>
+            <li>{{ flight.local_arrival|date:"m/d/Y"}}</li>
+            <li>{{ flight.local_arrival|date:"h:i A e"}}</li>
+            {% if flight.actual_arrival %}
+            <label>Actual</label>
+            <li>{{ flight.local_actual_arrival|date:"m/d/Y" }}
+            <li>{{ flight.local_actual_arrival|date:"h:i A e" }}
+            {% endif %}
+        </ul>
+    </div>
+    <div>
+        <ul>
+            <label>Duration</label>
+            <li>{{ flight.duration|simple_duration }}</li>
+        </ul>
+        {% if flight.plane %}
+        <ul>
+            <label>Plane</label>
+            <li>{{ flight.plane.registration}}</li>
+        </ul>
+        {% endif %}
+        <ul>
+            <label>Seats Available</label>
+            <li>{{ flight.seats_available}}/{{ flight.seats_total}}</li>
+        </ul>
+        <ul>
+            <label>Companion Seats</label>
+            <li>{{ flight.seats_companion}}</li>
+        </ul>
+        {% if flight.surcharge > 0 %}
+        <ul>
+            <label>Surcharge</label>
+            <li>${{ flight.surcharge|floatformat:2 }}</li>
+        </ul>
+        {% endif %}
+    </div>
+    </div>
+
+</div>
+<ul class="detail-section flight-manifest">
+    <span class="cf">
+        <label class="fl manifest-label hide-print">Rise Staff Onboard</label>
+        <span class="manifest-label show-print">Rise Staff Onboard</span>
+        <span class="fr icon-with-label hide-print">
+            <a href="{% url 'admin_flight_print_manifest' flight.pk %}">
+                <figure class="print"></figure><span>Print Manifest</span>
+            </a>
+        </span>
+    </span>
+    <br><br>
+    <hr>
+    <br>
+    {% if flight.get_passengers %}
+        <label class="cf manifest-label hide-print">Passengers</label>
+        <span class="cf manifest-label show-print">Passengers</span>
+    {% endif %}
+    {% for reservation in flight.get_anywhere_reservations %}
+    <li>
+         <a href="{% url 'admin_account_user' reservation.primary_passenger.userprofile.account.pk reservation.primary_passenger.userprofile.pk %}">
+            <span class="name">
+                <div class="circle small no-m" style="background:url({{ reservation.primary_passenger.user.avatar_url }}) 0 0 no-repeat;background-size:100% 100%" id="avatar-image"></div>
+                {{ reservation.primary_passenger.userprofile.first_name }} {{ reservation.primary_passenger.userprofile.last_name }}
+            </span>
+        </a>
+        <span class="group">{{ reservation.primary_passenger.userprofile.account }}</span>
+
+        <span class="status">
+            {% if reservation.status == 'A' %}PENDING
+            {% elif reservation.status == 'R' %}RESERVED
+            {% elif reservation.status == 'L' %}COMPLETED
+            {% elif reservation.status == 'I' %}CHECKED IN{% endif %}
+        </span>
+        <span class="info">
+        <span class="seats">{% if reservation.passenger_count == 1 %}1 seat{% else %}{{ reservation.passenger_count }} seats{% endif %}</span>
+<br>
+            {% if reservation.status == 'A' or reservation.reservation.charge == None %}
+                <strong>UNPAID</strong><br>
+                {% if flightset.is_round_trip %}
+                    Amount Due (this leg): {{ reservation.anywhere_total_cost }}<br>
+                    Amount Due (total):{{ reservation.reservation.calculate_anywhere_totalcost }}
+                {% else %}
+                    Amount Due (this leg): {{ reservation.anywhere_total_cost }}
+                {% endif %}
+            {% elif reservation.reservation.charge %}
+                <strong>PAID</strong><br>
+                {% if flightset.is_round_trip %}
+                    Amount Paid (this leg): {{ reservation.anywhere_total_cost }}<br>
+                    Amount Paid (total): {{ reservation.reservation.calculate_anywhere_totalcost }}  (Charge ID: {{ reservation.reservation.charge.id }})
+                    <br>
+                    {% if reservation.anywhere_refund_due > 0 %}
+                        {% if reservation.anywhere_refund_paid %}
+                            Amount Refunded (this leg):  {{ reservation.anywhere_refund_due }} (Refund ID:{{ reservation.reservation.charge.id|get_refund_id }})<br>
+                            Total Refunded: {{ reservation.reservation.charge.amount_refunded }}
+                        {% else %}
+                             Refund Due (this leg):  {{ reservation.anywhere_refund_due }}<br>
+                            Refund Due (total):  {{ reservation.reservation.calculate_anywhere_refund }}
+                        {% endif %}
+                    {% endif %}
+                {% else %}
+                    Amount Paid (this leg): {{ reservation.anywhere_total_cost }} (Charge ID: {{ reservation.reservation.charge.id }})
+                    <br>
+                    {% if reservation.anywhere_refund_due > 0 %}
+                        {% if reservation.anywhere_refund_paid %}
+                            Amount Refunded:  {{ reservation.reservation.charge.amount_refunded }} (Refund ID:{{ reservation.reservation.charge.id|get_refund_id }})
+                        {% else %}
+                             Refund Due:  {{ reservation.anywhere_refund_due }}
+                        {% endif %}
+                    {% endif %}
+                {% endif %}
+            {% endif %}
+
+        </span>
+    </li>
+    {% endfor %}
+</ul>
+
+        <div id="flight_buttons" class="block center">
+        <form action="{% url 'admin_confirm_anywhere_reservations' pk=flightset.pk %}" method="POST" class="fullscreen">
+            {% csrf_token %}
+          <button name="confirm-book" class="button anywhere-blue {% if num_uncharged_reservations == 0 %}disabled{% endif %}" type="submit" >Charge Unpaid</button>
+        </form>
+         <form action="{% url 'admin_process_anywhere_refunds' pk=flightset.pk %}" method="POST" class="fullscreen">
+            {% csrf_token %}
+              <button name="confirm-book" class="button anywhere-blue {% if num_unrefunded_reservations == 0 %}disabled{% endif %}" type="submit">Process Refunds</button>
+        </form>
+        </div>
+
+
+</div>
+
+    {% if flightset.is_round_trip %}
+        <div class="comment">Note:  Charging reservations &amp; processing refunds will apply to BOTH legs of a Rise Anywhere round-trip<a href="{% url 'admin_flight_detail' flight.pk %}" class="return-to-profile">&#9664; Return to Flight Detail</a></div>
+    {% else %}
+        <div class="comment"><a href="{% url 'admin_flight_detail' flight.pk %}" class="return-to-profile">&#9664; Return to Flight Detail</a></div>
+    {% endif %}
+
+
+{% endblock body %}
+
+{% block javascript %}
+<script type="text/javascript">
+function confirmReservations(url){
+    $.post(url,
+        {
+        }, function (data) {
+            if(data.success == true){
+
+                $("#msgBox").html('Reservations confirmed!');
+                $("#msgBox").removeClass("error-message");
+                $("#msgBox").removeClass("hidden");
+            }else{
+                if ($("#msgBox").hasClass("hidden")) {
+                   $("#msgBox").removeClass("hidden");
+                }
+                 $("#msgBox").html(data.errors);
+                $("#msgBox").addClass("error-message");
+                return false;
+            }
+        },"json");
+
+}
+function processRefunds(url){
+    $.post(url,
+        {
+        }, function (data) {
+            if(data.success == true){
+
+                $("#msgBox").html('Refunds processed!');
+                $("#msgBox").removeClass("error-message");
+                $("#msgBox").removeClass("hidden");
+            }else{
+                if ($("#msgBox").hasClass("hidden")) {
+                   $("#msgBox").removeClass("hidden");
+                }
+                 $("#msgBox").html(data.errors);
+                $("#msgBox").addClass("error-message");
+                return false;
+            }
+        },"json");
+
+}
+</script>
+{% endblock javascript %}

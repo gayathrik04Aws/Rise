@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block title %}Flight Feedback - {{ block.super }}{% endblock title %}
+
+{% block meta_description %}Flight Feedback{% endblock meta_description %}
+
+{% block body_class %}{% endblock %}
+{% block body %}
+<div class="section profile-nav">
+    <div class="logo-wrapper">
+        <a href="/"><img src="{% static 'img/logolg_darkbg_alt.png' %}" alt="I Fly Rise Logo" id="profile-nav-logo"></a>
+    </div>
+    <div class="book">
+        <a href="{% url 'book_from' %}">Book Now</a>
+    </div>
+    <div class="profile-home">
+        <a href="{% url 'profile' %}" class="round">
+            {% if user.avatar_url %}
+                <img src="{{user.avatar_url}}" alt="profile image" class="round">
+            {% endif %}
+        </a>
+    </div>
+</div>
+<div class="section profile-body">
+    <div class="content-wrap group">
+        <h1>Flight Feedback</h1>
+        <form action="" method="POST" class="bare group">
+            {% csrf_token %}
+
+            {% if form.errors %}
+            <div class="error-message">
+            {% for field, errors in form.errors.items %}
+            {% for error in errors %}
+              {{ error }}<br/>
+            {% endfor %}
+            {% endfor %}
+            </div>
+            {% endif %}
+
+            {% if messages %}
+            {% for message in messages %}
+                <div class="error-message">{{ message }}</div>
+            {% endfor %}
+            {% endif %}
+
+            <div class="no-labels">
+                <label for="id_rating">Rating</label>
+                <input {% if form.rating.errors %}class="error"{% endif %} type="text" name="{{ form.rating.html_name }}" value="{{ form.rating.value|default:"" }}" placeholder="Rating" id="rating"></input>
+                <h3 class="small">Comments (optional)</h3>
+                <textarea {% if form.comment.errors %}class="error"{% endif %} type="text" name="{{ form.comment.html_name }}" id="comment" placeholder="Enter any additional comments">{{ form.comment.value|default:"" }}</textarea>
+                <input type="submit" class="btn btn-dark" value="Submit">
+            </div>
+        </form
+    </div>
+</div>
+{% endblock body %}
+
+{% block javascript %}
+    <script src="{% static 'js/jquery-1.11.1.min.js' %}"></script>
+    <script src="{% static 'js/csrf.js' %}"></script>
+    <script src="{% static 'js/binaryajax.min.js' %}"></script>
+    <script src="{% static 'js/exif.min.js' %}"></script>
+    <script src="{% static 'js/profile.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+{% endblock javascript %}

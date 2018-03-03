@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+{% load flight_tags %}
+{% load humanize %}
+{% load staticfiles %}
+
+{% block title %}Booking - {{ block.super }}{% endblock title %}
+
+{% block meta_description %}Booking - Flights Confirmed{% endblock meta_description %}
+
+{% block css %}
+{% with marketing=False%}
+{{ block.super }}
+{% endwith %}
+{% endblock css %}
+
+{% block body_class %}booking flight-confirmed{% endblock %}
+{% block body %}
+
+{% include 'reservations/book/booking_nav.html' with flights=True hide_booking_breadcrumbs=True %}
+<div class="content-wrap app-content-wrap">
+
+  <div class="block center header-block">
+    <h1>Flights Confirmed!</h1>
+  </div>
+
+  <div class="block center reservation-actions">
+    {# <a href=""><figure class="passbook"></figure><h4>Add to Passbook</h4></a>#}
+    <a href="{% url 'reservation_ical' reservation.pk %}" target="_blank"><figure class="calendar-icon"></figure><h4>Add to Calendar</h4></a>
+    <a href="{% url 'reservation_email' reservation.pk %}" target="_blank"><figure class="email"></figure><h4>Email</h4></a>
+    {# <a href=""><figure class="print"></figure><h4>Print Invoice</h4></a>#}
+  </div>
+
+  <div class="block">
+
+    {% with flight_reservations=reservation.flightreservation_set.all %}
+    {% for flight_reservation in flight_reservations %}
+    {% with flight=flight_reservation.flight %}
+    <div class="card card-circle-display">
+      {% if flight.flight_type != 'R' %}
+      <div class="badge"><figure class="{% if flight.flight_type == 'F' %}funflight-solid{% elif flight.flight_type == 'P' %}promo-solid{% endif %}"></figure></div>
+      {% endif %}
+      {% if flight_reservation.has_companions %}
+      <a href="{% url 'book_companions' flight_reservation.pk %}"><figure class="pencil-green"></figure></a>
+      {% endif %}
+      <div class="origin-and-destination">
+        <h5>Origin &amp; Destination</h5>
+        <div class="flight-details">
+          <span class="airport">{{ flight.origin.code }}</span> {{ flight.local_departure.date|date:'d M'}} / {{ flight.local_departure|time:"h:i A" }}<br />
+          <span class="airport">{{ flight.destination.code }}</span> {{ flight.local_arrival.date|date:'d M'}} / {{ flight.local_arrival|time:"h:i A" }}
+        </div>
+      </div>
+      <div class="origin">
+        <div class="badge-wrap badge-right">
+          <div class="circle x-large gradient {{ flight.origin.city|remove_spaces_lower_case }}">
+            {{ flight.origin.code }}
+            {% if flight.flight_type != 'R' %}
+            <div class="badge-wrap">
+              <figure class="{% if flight.flight_type == 'F' %}funflight-solid{% elif flight.flight_type == 'P' %}promo-solid{% endif %}"></figure>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+        <div class="caption">
+          <h5>Origin</h5>
+          <h1>{{ flight.origin.city }}, {{ flight.origin.state }}</h1>
+          <h4 class="grey">{{ flight.local_departure.date|date:'d M'}} / {{ flight.local_departure|time:"h:i A" }}</h4>
+        </div>
+      </div>
+      <div class="destination">
+        <div class="circle x-large gradient {{ flight.destination.city|remove_spaces_lower_case }}">
+          {{ flight.destination.code }}
+        </div>
+        <div class="caption">
+          <h5>Destination</h5>
+          <h1>{{ flight.destination.city }}, {{ flight.destination.state }}</h1>
+          <h4 class="grey">{{ flight.local_arrival.date|date:'d M'}} / {{ flight.local_arrival|time:"h:i A" }}</h4>
+        </div>
+      </div>
+
+      <div class="passengers">
+          <p class="rise-content-subheader"><span>PASSENGERS</span></p>
+          <div class="avatar-grid">
+              <ul>
+                  {% if flight_reservation.primary_passenger and not flight_reservation.primary_passenger.companion%}
+                  <li class="companion">
+                      <div class="badge-wrap">
+                          <div class="circle medium">
+                              <img src="{{ flight_reservation.primary_passenger.userprofile.avatar_url }}" alt="{{ flight_reservation.primary_passenger.userprofile.get_full_name }}" />
+                          </div>
+                      </div>
+                      <p class="thick">{{ flight_reservation.primary_passenger.userprofile.first_name }}<span>{{ flight_reservation.primary_passenger.userprofile.last_name }}</span></p>
+                  </li>
+                  {% endif %}
+
+                          {% with flight_companions=flight_reservation.get_companions %}
+                      {% if flight_companions %}
+                  {% for companion_passenger in flight_companions %}
+                  <li class="companion">
+                      <div class="badge-wrap">
+                          <div class="circle medium">
+                              <img src="{{ companion_passenger.userprofile.avatar_url }}" alt="{{ companion_passenger.userprofile.get_full_name }}" />
+                          </div>
+                      </div>
+                      <p class="thick">{{ companion_passenger.userprofile.first_name }}<span>{{ companion_passenger.userprofile.last_name }}</span></p>
+                  </li>
+                  {% endfor %}
+                      {% endif %}
+                          {% endwith %}
+              </ul>
+          </div>
+      </div>
+
+    </div>
+    {% endwith %}
+    {% endfor %}
+    {% endwith %}
+  </div>
+
+  <div class="block center rise-stacker rise-stack-sm">
+    <a class="button green" href="{% url 'book_from' %}">Book another</a>
+    <div class="interstitial">
+      <span class="lined">Or</span>
+    </div>
+    <a class="button dark-grey" href="{% url 'dashboard' %}">Go to member profile</a>
+  </div>
+</div>
+{% endblock body %}

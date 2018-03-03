@@ -1,0 +1,51 @@
+{% extends 'base_admin.html' %}
+
+{% block title %}Send Message - Anywhere{% endblock title %}
+{% block meta_description %}Send Message - Anywhere{% endblock meta_description %}
+
+{% block css %}
+    {% with marketing=False%}
+        {{ block.super }}
+    {% endwith %}
+{% endblock css %}
+
+{% block body_class %}anywhere{% endblock %}
+{% block body %}
+    {% include 'admin_header_fragment.html' with anywhere=True %}
+    <div class="admin-content-wrap admin-form-page">
+    <form method="post">
+        {% csrf_token %}
+{#        {{ form }}#}
+         <div class="select arrow">
+              <span class="value">Recipients</span>
+              <ul>
+                  {% for value, text in form.recipients.field.choices %}
+                  <li value="{{ value }}">{{ text }}</li>
+                  {% endfor %}
+              </ul>
+              {{ form.recipients }}
+         </div>
+    <div>
+         <div>
+            <label>Title</label>
+        </div>
+        <div >
+            {{ form.title }}
+
+        </div>
+    </div>
+    <div>
+         <div>
+            <label>Message</label>
+        </div>
+        <div >
+            {{ form.message }}
+        </div>
+    </div>
+        {% for hidden in form.hidden_fields %}
+            {{ hidden }}
+        {% endfor %}
+        <button type="submit" class="button anywhere-blue centered">Send Message</button>
+    </form>
+    </div>
+{% endblock body %}

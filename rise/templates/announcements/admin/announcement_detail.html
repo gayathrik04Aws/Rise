@@ -1,0 +1,59 @@
+{% extends 'base_admin.html' %}
+
+{% load staticfiles %}
+
+{% block title %}Dashboard - {% if form.instance.id %}Update{% else %}Create{% endif %} Announcement{% endblock title %}
+
+{% block meta_description %}Dashboard - {% if form.instance.id %}Update{% else %}Create{% endif %} Announcement{% endblock meta_description %}
+
+{% block css %}
+{% with marketing=False%}
+{{ block.super }}
+{% endwith %}
+{% endblock css %}
+
+{% block body_class %}{% endblock %}
+{% block body %}
+{% include 'admin_header_fragment.html' with announcements=True %}
+<div class="admin-detail-view admin-form-page detail-page" id="announcement-details">
+    <h1 class="">Announcement {{ announcement.title }}</h1>
+
+    <div>
+        <ul>
+            <label>Message</label>
+            <li>{{ announcement.message }}</li>
+        </ul>
+    </div>
+    <div>
+        <ul>
+            <label>Link Name</label>
+            <li>{{ announcement.link_name }}</li>
+        </ul>
+    </div>
+    <div>
+        <ul>
+            <label>Link URL</label>
+            <li><a href="{{ announcement.link }}" target="_blank">{{ announcement.link }}</a></li>
+        </ul>
+    </div>
+    <div>
+        <ul>
+            <label>Created By</label>
+            <li>{{ announcement.created_by }}</li>
+        </ul>
+    </div>
+
+    <br>
+    <br>
+    <hr>
+    <br>
+    <br>
+
+    <div>
+        <a href="{% url 'admin_announcements_update' announcement.pk %}" class="admin-button no-ml">Edit</a>
+        <a href="{% url 'admin_announcements_delete' announcement.pk %}" class="admin-button no-ml">Delete</a>
+    </div>
+
+</div>
+<a href="{% url 'admin_announcements_list' %}" class="return-to-profile">&#9664; Return to Announcements</a>
+{% endblock body %}

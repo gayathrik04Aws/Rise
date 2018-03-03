@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block title %}Congratulations - {{ block.super }}{% endblock title %}
+
+{% block meta_description %}Take an interest in Rise and take flight with the southwest’s first fly all you want membership.{% endblock meta_description %}
+
+{% block body_class %}registration{% endblock body_class %}
+{% block body %}
+<div class="section form-page">
+  <div class="content-wrap">
+    <div class="center">
+      <a href="{{ WP_URL }}" style="display: inline-block;"><figure class="logo-form"></figure></a>
+    </div>
+    <div class="form center">
+
+      <h1>{% if account.founder %}Congratulations - You're a Rise Founding Member{% else %}Congratulations!{% endif %}</h1>
+
+      <p>Once we've reviewed your application, we will send out an onboarding email for you to complete your profile and
+          start flying. We’re delighted you’ve joined the Rise community and we look forward to making your travel better.
+      </p>
+
+    {% if account.founder %}
+      <p>
+          We appreciate your excitement and willingness to help us get Rise off the ground by becoming a Founding Member.
+          We can't wait to fly with you.
+      </p>
+    {% else %}
+      <p>We appreciate your excitement and willingness to help us get Rise off the ground.</p>
+      <p>Get ready to <b>Travel Better</b>.</p>
+    {% endif %}
+
+    </div>
+    <br/>
+    <div class="block center">
+        <a href="{{ WP_URL }}" class="return"> &#9664; Return to Home</a>
+    </div>
+    <br/>
+  </div>
+</div>
+{% endblock body %}
+
+{% block footer %}
+{{ block.super }}
+<img src="https://secure-track.admaxim.com/adtracker/track/track/converted?cpnIds=50314&conversionType=register" width="0" height="0" />
+{% endblock footer %}
+
+{% block javascript %}
+{{ block.super }}
+<script type="text/javascript">
+/* <![CDATA[ */
+var google_conversion_id = 943383099;
+var google_conversion_language = "en";
+var google_conversion_format = "3";
+var google_conversion_color = "ffffff";
+var google_conversion_label = "qKCHCODUqGAQu8TrwQM";
+var google_remarketing_only = false;
+/* ]]> */
+</script>
+<script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js">
+</script>
+<noscript>
+<div style="display:inline;">
+<img height="1" width="1" style="border-style:none;" alt="" src="//www.googleadservices.com/pagead/conversion/943383099/?label=qKCHCODUqGAQu8TrwQM&amp;guid=ON&amp;script=0"/>
+</div>
+</noscript>
+{% endblock javascript %}

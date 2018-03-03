@@ -1,0 +1,205 @@
+{% load flight_tags %}
+{% if waitlist %}
+    {% for req in waitlist %}
+        <div class="card card-pending-reservations no-passenger fadeIn">
+        <div class="top-row">
+                <div class="seats">
+                    <div class="progress-text">
+                        <span class="number">WISHLISTED</span>
+                    </div>
+
+                </div>
+
+                <div class="departing-info">
+                  <strong>Departing</strong>{{ req.flight.local_departure|date:"M d, Y" }} - Flight {{ req.flight.flight_number }}
+                </div>
+           </div>
+           <div class="bottom-row">
+        <div class="origin">
+
+          <div class="circle med gradient {{ req.flight.origin.city|remove_spaces_lower_case }}">
+            <span class="city-code">{{ req.flight.origin.code }}</span>
+            <div class="badge-wrap">
+                {% if req.flight.is_fun_flight %}
+                  <figure class="funflight-solid"></figure>
+                {% elif req.flight.is_promotional_flight %}
+                  <figure class="promo-solid"></figure>
+                {% endif %}
+            </div>
+
+          </div>
+
+          <div class="caption">
+            <h5>Origin</h5>
+            <h1>{{ req.flight.origin.name }}, {{ req.flight.origin.state }}</h1>
+            <h4 class="grey">{{ req.flight.local_departure|date:"M d / h:i A" }}</h4>
+          </div>
+        </div>
+        <div class="oneway-or-rt">&rarr;</div>
+        <div class="destination">
+          <div class="circle med gradient {{ req.flight.destination.city|remove_spaces_lower_case }}">
+            <span class="city-code">{{ req.flight.destination.code }}</span>
+          </div>
+          <div class="caption">
+            <h5>Destination</h5>
+            <h1>{{ req.flight.destination.name }}, {{ req.flight.destination.state }}</h1>
+            <h4 class="grey">{{ req.flight.local_arrival|date:"M d / h:i A" }}</h4>
+          </div>
+        </div>
+      </div>
+         <div class="card-buttons">
+                   <a href="{% url 'cancel_waitlist' req.pk %}" class="button anywhere-blue sm">CANCEL</a>
+
+                </div>
+
+
+        </div>
+        {% endfor %}
+
+    {% endif %}
+{% if pending_reservations %}
+    {% for flightset in pending_reservations %}
+        <div class="card card-pending-reservations no-passenger fadeIn">
+            <div class="top-row">
+                <div class="departing-info">
+                    {% if flightset.is_round_trip %}
+
+                        <strong>ROUND TRIP</strong>{{ flightset.depart_date|date:"M d" }} - {{ flightset.return_date|date:"d, Y" }}
+                    {% else %}
+                        <strong>ONE WAY</strong>{{ flightset.depart_date|date:"M d, Y" }}
+
+                    {% endif %}
+                </div>
+                <div class="seats">
+                    <div class="progress-text">
+                        <span class="number">{{ flightset.percent_full|floatformat:'0' }}% FULL</span>
+                    </div>
+                    <div class="progress-description">
+                        {{ flightset.empty_seats }}{% if flight.empty_seats == 1 %} spot left{% else %} spots left{% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="bottom-row">
+                <div class="circle med anywhere">
+                    <div class="progress-circle">
+                        <div class="progress-text">
+                            <span class="number">{{ flightset.percent_full|floatformat:'0' }}%</span>
+                            <span class="confirmed">FULL</span>
+
+                        </div>
+                        <svg viewBox="0 0 32 32">
+                            <circle r="16" cx="16" cy="16" stroke-dasharray="{{ flightset.percent_full|floatformat:'0' }} 100" class="progress"></circle>
+                        </svg>
+                    </div>
+                    <figure class="promo-anywhere"></figure>
+                </div>
+
+                <div class="airports">
+                    <div class="origin">
+                        <div class="caption">
+                            <h5>Origin</h5>
+                            <h1>{{ flightset.origin.name }}, {{ flightset.origin.state }}</h1>
+                            <h4 class="grey">{{ flightset.depart_date|date:"h:i A" }}</h4>
+                        </div>
+                    </div>
+                    <div class="oneway-or-rt">
+                        {% if flightset.is_round_trip %}
+                        <span>&larr;</span>
+                        <span>&rarr;</span>
+                        {% else %}
+                        &rarr;
+                        {% endif %}
+                    </div>
+                    <div class="destination">
+                        <div class="caption">
+                            <h5>Destination</h5>
+                            <h1>{{ flightset.destination.name }}, {{ flightset.destination.state }}</h1>
+                            {% if flightset.is_round_trip %}
+                            <h4 class="grey">{{ flightset.return_date|date:"h:i A" }}</h4>
+                            {% else %}
+                            <h4 class="grey">ONE WAY</h4>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+            {% if flightset.empty_seats > 0 %}
+
+                <div class="card-buttons">
+                    <a href="{% url 'invite_anywhere' flightset.public_key %}" class="button anywhere-blue sm">Invite</a>
+                </div>
+                {% endif %}
+            </div>
+
+
+        {% endfor %}
+        {% endif %}
+
+{% if unapproved_requests %}
+    {% for req in unapproved_requests %}
+        <div class="card no-passenger fadeIn">
+            <div class="not_yet_confirmed">NOT CONFIRMED</div>
+             <div class="top-row">
+                <div class="departing-info">
+                    {% if req.is_round_trip %}
+                        <strong>ROUND TRIP</strong> | {{ req.depart_date|date:"M d" }}-{{ req.return_date|date:"d Y" }}
+                    {% else %}
+                        <strong>ONE WAY</strong> | {{ req.depart_date|date:"M d Y" }}
+
+                    {% endif %}
+                </div>
+                <div class="seats">
+                    <div class="progress-text">
+                        <span class="number">Waiting for Approval</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bottom-row">
+                <div class="circle med anywhere waiting">
+                    <div class="progress-circle">
+                        <div class="progress-text">
+                            <span class="confirmed not">Pending<br>Approval</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="airports no-invite">
+                    <div class="origin">
+                        <div class="caption">
+                            <h5>Origin</h5>
+                            <h1>{{ req.origin_city.name }}, {{ req.origin_city.state }}</h1>
+                            <h4 class="grey">{{ req.depart_when }}</h4>
+                        </div>
+                    </div>
+
+                    <div class="oneway-or-rt">
+                      {% if flightset.is_round_trip %}
+                      <span>&larr;</span>
+                      <span>&rarr;</span>
+                      {% else %}
+                      &rarr;
+                      {% endif %}
+                    </div>
+
+                    <div class="destination">
+                        <div class="caption">
+                            <h5>Destination</h5>
+                            <h1>{{ req.destination_city.name }}, {{ req.destination_city.state }}</h1>
+                            {% if req.is_round_trip %}
+                            <h4 class="grey">{{ req.return_when }}</h4>
+                            {% else %}
+                            <h4 class="grey">ONE WAY</h4>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        {% endfor %}
+
+    {% endif %}
+
+

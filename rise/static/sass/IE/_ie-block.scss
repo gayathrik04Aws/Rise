@@ -1,0 +1,69 @@
+.block {
+  &.fullscreen {
+    display: table-cell;
+    height: 100%;
+    *.hide {
+      display: none;
+    }
+  }
+}
+
+.block.pattern {
+  &.background-austin {
+    background-image: url(../img/background_images/desktop/image-bg-austin.jpg);
+    background-size: auto 100%;
+  }
+  &.background-telluride {
+    background-image: url(../img/background_images/desktop/image-bg-telluride.jpg);
+    background-size: auto 100%;
+  }
+  &.background-dallas {
+    background-image: url(../img/background_images/desktop/image-bg-dallas.jpg);
+    background-size: auto 100%;
+  }
+  &.background-houston {
+    background-image: url(../img/background_images/desktop/image-bg-houston.jpg);
+    background-size: auto 100%;
+  }
+  &.background-vail {
+    background-image: url(../img/background_images/desktop/image-bg-vail.jpg);
+    background-size: auto 100%;
+    }
+  &.background-corpuschristi {
+    background-image: url(../img/background_images/desktop/image-bg-corpuschristi.jpg);
+    background-size: auto 100%; }
+  &.background-neworleans {
+    background-image: url(../img/background_images/desktop/image-bg-neworleans.jpg);
+    background-size: auto 100%; }
+  &.background-oklahomacity {
+    background-image: url(../img/background_images/desktop/image-bg-oklahomacity.jpg);
+    background-size: auto 100%; }
+  &.background-sanantonio {
+    background-image: url(../img/background_images/desktop/image-bg-sanantonio.jpg);
+    background-size: auto 100%; }
+  &.background-santafe {
+    background-image: url(../img/background_images/desktop/image-bg-santafe.jpg);
+    background-size: auto 100%; }
+  &.background-shreveport {
+    background-image: url(../img/background_images/desktop/image-bg-shreveport.jpg);
+    background-size: auto 100%; }
+  &.background-spring {
+    background-image: url(../img/background_images/desktop/image-bg-spring.jpg);
+    background-size: auto 100%; }
+  &.background-tulsa {
+    background-image: url(../img/background_images/desktop/image-bg-tulsa.jpg);
+    background-size: auto 100%;
+  }
+  &.background-lubbock {
+    background-image: url(../img/background_images/desktop/image-bg-lubbock.jpg);
+    background-size: auto 100%;
+  }
+  &.background-aspen {
+    background-image: url(../img/background_images/desktop/image-bg-aspen.jpg);
+    background-size: auto 100%;
+  }
+  &.background-steamboat {
+    background-image: url(../img/background_images/desktop/image-bg-steamboat.jpg);
+    background-size: auto 100%;
+  }
+}

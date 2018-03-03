@@ -1,0 +1,52 @@
+{% extends 'emails/base.html' %}
+
+{% block title %}{{ title }}{% endblock title %}
+
+
+{% block body %}
+<table border="0" cellpadding="20" cellspacing="0" width="100%">
+    <tr>
+        <td align="center" valign="top" class="bodyContent">
+            <div>
+                <h1>{{ title }}</h1>
+                <p>{{ account.account_name }}</p>
+                {% if message %}
+                <p>
+                    {{ message }}
+                </p>
+                {% endif %}
+            </div>
+        </td>
+    </tr>
+
+    {% for flight_reservation in flight_reservations  %}
+    <tr>
+        <table border="0" cellpadding="0" cellspacing="0" width="100%" class="flightContent first">
+            <tr>
+                <td colspan="4"><h3>Flight {{ flight_reservation.flight.flight_number }} / {{ flight_reservation.flight.local_departure|date:"M d, Y" }}</h3></td>
+            </tr>
+            <tr>
+                <td class="center middle" style="max-width:70px;padding-right:5px;">
+                    <img src="https://cfa084d658b491813884-326c6674e44e477b9197a3210586152e.ssl.cf1.rackcdn.com/emails/cities/{{ flight_reservation.flight.origin.code|lower }}.png" width="70" height="70"  style="max-width:70px;width:100%;height:auto;" alt="{{ flight_reservation.flight.origin.name }}" />
+                </td>
+                <td>
+                    <span class="label">Origin</span><br>
+                    <span class="location">{{ flight_reservation.flight.origin.name }}, {{ flight_reservation.flight.origin.state }}</span><br>
+                    <span class="time">{{ flight_reservation.flight.local_departure_time_display}} {{ flight_reservation.flight.origin.get_timezone_display }}</span>
+                </td>
+
+                <td class="center middle" style="max-width:70px;padding-right:5px;">
+                    <img src="https://cfa084d658b491813884-326c6674e44e477b9197a3210586152e.ssl.cf1.rackcdn.com/emails/cities/{{ flight_reservation.flight.destination.code|lower }}.png" width="70" height="70" style="max-width:70px;width:100%;height:auto;" alt="{{ flight_reservation.flight.destination.name }}" />
+                </td>
+                <td>
+                    <span class="label">Destination</span><br>
+                    <span class="location">{{ flight_reservation.flight.destination.name }}, {{ flight_reservation.flight.destination.state }}</span><br>
+                    <span class="time">{{ flight_reservation.flight.local_arrival_time_display}} {{ flight_reservation.flight.destination.get_timezone_display }}</span>
+                </td>
+            </tr>
+        </table>
+    </tr>
+    {% endfor %}
+
+</table>
+{% endblock body %}

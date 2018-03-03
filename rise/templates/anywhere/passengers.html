@@ -1,0 +1,172 @@
+{% extends 'anywhere/base.html' %}
+{% load humanize %}
+
+{% load staticfiles %}
+
+{% block simple_content_header %}
+
+<div class="anywhere-header"></div>
+{% endblock %}
+{% block simple_content %}
+    <div class="circle big med anywhere circle-left">
+        <div class="progress-circle">
+
+          <div class="progress-text">
+            <span class="number">{{ object.percent_full }}%</span>
+            <span class="confirmed">FULL</span>
+          </div>
+
+          <svg viewBox="0 0 32 32">
+            <circle r="16" cx="16" cy="16" stroke-dasharray="{{ object.percent_full }} 100" class="progress"></circle>
+          </svg>
+        </div>
+    </div>
+
+    <div class="top-text top-text-right">
+        <h1>You requested {{ form.instance.seats }} spot{{ form.instance.seats|pluralize }}
+        <div class="blue">There are {{ form.instance.empty_seats }} spot{{ form.instance.empty_seats|pluralize }} remaining.</div></h1>
+        <p>A {% if form.instance.is_round_trip %}ROUND TRIP{% else %}ONE-WAY{% endif %} flight between {{ form.instance.origin_city }} and {{ form.instance.destination_city }} typically costs <strong>${{ estimated_cost|floatformat:2|intcomma }}</strong>.</p>
+    </div>
+    <div class="top-text sub">
+        {% if eight_seat_price > 0 %}
+            <p>Flight costs are split evenly among the passengers. The more people that book, the less each spot costs.</p>
+            <p>If additional passengers join, your costs will be lower.</p>
+            <p>Choose how much you are willing to spend from the list below.  Actual costs will be provided once the flight has been approved.</p>
+        {% else %}
+            <p>The table below shows estimated costs based on how many spots are filled. Please select the number of spots you require to be filled in order to meet your price requirements. The flight will not be confirmed before these spots are filled.</p>
+        {% endif %}
+    </div>
+    <form method="POST" action="" class="fill-flight" id="anywhere_form">
+        {% csrf_token %}
+
+        <div id="seat-options">
+            <div class="radio-btn{% if object.seats > 1 %} disabled{% endif %}">
+                <input type="radio" name="{{ form.seats_required.html_name }}" value="1" {% if object.seats_required == 1 %}checked{% endif %}{% if object.seats > 1 %}disabled{% endif %}>
+                <label>
+                    <h3 class="selection-header">${{ estimated_cost | floatformat:0 }} <span>per passenger</span></h3>
+                    <p class="seats-number">1 spot</p>
+                </label>
+            </div>
+
+            <div class="radio-btn{% if object.seats > 2 %} disabled{% endif %}">
+                <input type="radio" name="{{ form.seats_required.html_name }}" value="2" {% if object.seats_required == 2 %}checked{% endif %}{% if object.seats > 2 %}disabled{% endif %}>
+                <label>
+                    <h3 class="selection-header">${{ two_seat_price | floatformat:0}} <span>per passenger</span></h3>
+                    <p class="seats-number">2  spots</p>
+                </label>
+            </div>
+
+            <div class="radio-btn{% if object.seats > 3 %} disabled{% endif %}">
+                <input type="radio" name="{{ form.seats_required.html_name }}" value="3" {% if object.seats_required == 3 %}checked{% endif %}{% if object.seats > 3 %}disabled{% endif %}>
+                <label>
+                    <h3 class="selection-header">${{ three_seat_price | floatformat:0}} <span>per passenger</span></h3>
+                    <p class="seats-number">3  spots</p>
+                </label>
+            </div>
+
+            <div class="radio-btn{% if object.seats > 4 %} disabled{% endif %}">
+                <input type="radio" name="{{ form.seats_required.html_name }}" value="4" {% if object.seats_required == 4 %}checked{% endif %}{% if object.seats > 4 %}disabled{% endif %}>
+                <label>
+                    <h3 class="selection-header">${{ four_seat_price | floatformat:0}} <span>per passenger</span></h3>
+                    <p class="seats-number">4  spots</p>
+                </label>
+            </div>
+
+            <div class="radio-btn{% if object.seats > 5 %} disabled{% endif %}">
+                <input type="radio" name="{{ form.seats_required.html_name }}" value="5" {% if object.seats_required == 5 %}checked{% endif %}{% if object.seats > 5 %}disabled{% endif %}>
+                <label>
+                    <h3 class="selection-header">${{ five_seat_price | floatformat:0}} <span>per passenger</span></h3>
+                    <p class="seats-number">5  spots</p>
+                </label>
+            </div>
+
+            <div class="radio-btn{% if object.seats > 6 %} disabled{% endif %}">
+                <input type="radio" name="{{ form.seats_required.html_name }}" value="6" {% if object.seats_required == 6 %}checked{% endif %}{% if object.seats > 6 %}disabled{% endif %}>
+                <label>
+                    <h3 class="selection-header">${{ six_seat_price | floatformat:0}} <span>per passenger</span></h3>
+                    <p class="seats-number">6  spots</p>
+                </label>
+            </div>
+
+            <div class="radio-btn{% if object.seats > 7 %} disabled{% endif %}">
+                <input type="radio" name="{{ form.seats_required.html_name }}" value="7" {% if object.seats_required == 7 %}checked{% endif %}{% if object.seats > 7 %}disabled{% endif %}>
+                <label>
+                    <h3 class="selection-header">${{ seven_seat_price | floatformat:0}} <span>per passenger</span></h3>
+                    <p class="seats-number">7  spots</p>
+                </label>
+            </div>
+
+            <div class="radio-btn">
+                <input type="radio" name="{{ form.seats_required.html_name }}" value="8" {% if object.seats_required == 8 %}checked{% endif %}>
+                <label>
+                    <h3 class="selection-header">${{ eight_seat_price | floatformat:0}} <span>per passenger</span></h3>
+                    <p class="seats-number">8  spots</p>
+                </label>
+            </div>
+        </div>
+
+        <div class="privacy-options">
+            <div class="radio-btn has-tool-top">
+                <div class="more-info one">
+                    <div class="icon">i</div>
+                    <div class="text">
+                        <p>This flight is open to all RISE members traveling to your destination. You can also invite your contacts.  You will be notified once the flight is at capacity or if the flight does not meet your requirements.</p>
+                    </div>
+                </div>
+                <input type="radio" name="{{ form.sharing.html_name }}"value="{{ const.flights.SHARING_OPTION_PUBLIC }}" {% if object.sharing == const.flights.SHARING_OPTION_PUBLIC %}checked{% endif %} />
+                <label>
+                    <h3 class="selection-header">SHARE MY FLIGHT <br>WITH OTHER RISE MEMBERS<span>Rise Member Flight</span></h3>
+                </label>
+            </div>
+            <div class="radio-btn has-tool-top">
+                <div class="more-info one">
+                    <div class="icon">i</div>
+                    <div class="text">
+                        <p>This flight is private to you and can only be shared and accessed by a unique link provided to you after booking.  You will be notified once the flight is at capacity or if the flight does not meet your requirements.</p>
+                    </div>
+                </div>
+                <input
+                type="radio"
+                name="{{ form.sharing.html_name }}"
+                value="{{ const.flights.SHARING_OPTION_INVITE }}"
+                {% if object.sharing == const.flights.SHARING_OPTION_INVITE %}checked{% endif %}
+                />
+                <label><h3 class="selection-header">I'LL INVITE PEOPLE I KNOW<br> TO JOIN MY FLIGHT
+                    <span>By Invite Only</span></h3></label>
+            </div>
+        </div>
+        <hr>
+
+        <div class="radio-btn private has-tool-top">
+                <div class="more-info one">
+                    <div class="icon">i</div>
+                    <div class="text">
+                        <p>This flight is private to you and not accessible to any other RISE members. You are responsible for the cost of the flight.</p>
+                    </div>
+                </div>
+            <input
+            type="radio"
+            name="{{ form.sharing.html_name }}"
+            value="{{ const.flights.SHARING_OPTION_PRIVATE }}"
+            {% if object.sharing == const.flights.SHARING_OPTION_PRIVATE %}checked{% endif %}
+            />
+            <label><h3 class="selection-header">BOOK ENTIRE FLIGHT
+                <span>Private Flight</span></h3></label>
+        </div>
+<div id="cancel_policy_modal" class="modal-wrapper" style="z-index: 10000; opacity: 1;">
+    <div class="modal center">
+        <a href="javascript:closeCancellationModal();"><figure class="x-grey-lg"></figure></a>
+        <figure class="alert-icon"></figure>
+         <h2>Cancellation Notification</h2>
+
+       <p class="thick">Please note that cancellations made within 72 hours of departure cannot be refunded.</p>
+        <a id="confirm_policy"  href="javascript:submitForm();" class="action-block grey condensed">Continue?<figure class="arrow-right-grey"></figure></a>
+    </div>
+</div>
+        <button type="submit" class="button anywhere-blue lg extra-margin-bottom">Submit Request</button>
+    </form>
+{% endblock %}
+{% block javascript %}
+{{ block.super }}
+    <script type="text/javascript" src="{% static 'js/cancellation_popup.js' %}"></script>
+{% endblock %}

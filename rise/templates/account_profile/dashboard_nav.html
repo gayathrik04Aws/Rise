@@ -1,0 +1,46 @@
+{% load account_tags %}
+<div class="expand-wrap">
+<nav class="profile {% if light %}light{% endif %}">
+  <div class="left-side">
+    <a href="{% url 'dashboard' %}">
+        <div class="nav-button"><figure class="logo"></figure></div>
+    </a>
+  </div>
+  <div class="right-side">
+    {% if user|anywhere_only %}
+        <a class="nav-button" href="{% url 'anywhere_index' %}"><h5>Book Now</h5></a>
+    {% else %}
+        <a class="nav-button" href="{% url 'book_from' %}"><h5>Book Now</h5></a>
+    {% endif %}
+    <div class="nav-button avatar toggle-expandable popover-button popover-control">
+      <div class="badge-wrap badge-left popover-control toggle-expandable">
+        <div class="circle">
+          <img src="{{ user.avatar_url }}">
+          <div class="badge-wrap">
+            <figure class="arrow-down-green"></figure>
+          </div>
+        </div>
+      </div>
+      <div class="popover">
+        <ul>
+          <li class="grey">Hi, {{ user.first_name }}</li>
+          <a href="{% url 'dashboard' %}"><li {% if dashboard %}class="active"{% endif %}>Dashboard</li></a>
+          <a href="{% url 'profile' %}"><li {% if profile %}class="active"{% endif %}>Manage Account</li></a>
+          <a href="{% url 'reservations' 'upcoming' %}"><li {% if reservations %}class="active"{% endif %}>Reservations</li></a>
+          <a href="{{ WP_URL }}"><li>Rise Homepage</li></a>
+          <a href="{% url 'logout' %}"><li class="row"><h5 class="green">Sign Out</h5></li></a>
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav>
+<div class="mobile-nav-dropdown expandable-height">
+  <ul>
+    <a href="{% url 'dashboard' %}"><li {% if dashboard %}class="active"{% endif %}>Profile</li></a>
+    <a href="{% url 'profile' %}"><li {% if profile %}class="active"{% endif %}>Manage Account</li></a>
+    <a href="{% url 'reservations' 'upcoming' %}"><li {% if reservations %}class="active"{% endif %}>Reservations</li></a>
+    <a href="{{ WP_URL }}"><li>Rise Homepage</li></a>
+    <a href="{% url 'logout' %}" class="green"><li class="row">Sign Out</li></a>
+  </ul>
+</div>
+</div>

@@ -1,0 +1,165 @@
+{% extends 'base_admin.html' %}
+
+{% load staticfiles %}
+{% load humanize %}
+{% load safe_settings %}
+{% load account_tags %}
+
+{% block title %}Register - {{ block.super }}{% endblock title %}
+
+{% block meta_description %}Register - Register{% endblock meta_description %}
+
+{% block css %}
+{% with marketing=False%}
+{{ block.super }}
+{% endwith %}
+{% endblock css %}
+
+{% block body_class %}register-account{% endblock %}
+{% block body %}
+
+<div class="content-wrap app-content-wrap">
+    <div class="block center">
+        <a href="/"><figure class="logo-form"></figure></a>
+    </div>
+</div>
+
+<div class="form block white">
+
+    {% if form.errors %}
+    <div class="error-message">
+    {% for field, errors in form.errors.items %}
+    {% for error in errors %}
+      {{ error }}<br/>
+    {% endfor %}
+    {% endfor %}
+    </div>
+    {% endif %}
+
+    <form id="register-payment-form" action="." method="POST">
+        <h1 class="caps center">Confirm Payment Method</h1>
+        {% csrf_token %}
+
+        {% if not user.account.onboarding_fee_paid and total_deposit > 0 %}
+        {% if user.account.is_corporate %}
+        <div class="deposit-charge-alert error-message center">
+            <p style="line-height: 21px;">Your account has been set up with {{ user.account.member_count }} team member{{ user.account.member_count|pluralize:"s" }} requiring a deposit fee of ${{ total_deposit|intcomma }} (${{ unit_deposit }}/member) + {% settings_value "DEPOSIT_TAX_PERCENT" %} sales tax. If you have any questions, please contact us at <a href="mailto:support@iflyrise.com">support@iflyrise.com</a>.</p>
+        </div>
+        {% else %}
+            {% if not user|anywhere_only %}
+        <div class="deposit-charge-alert error-message center">
+            <p style="line-height: 21px;">Your account requires an initiation fee of ${{ unit_deposit }} + {% settings_value "DEPOSIT_TAX_PERCENT" %} sales tax. If you have any questions, please contact us at <a href="mailto:support@iflyrise.com">support@iflyrise.com</a>.</p>
+        </div>
+                {% endif %}
+        {% endif %}
+        {% endif %}
+
+        <div class="payment-choice">
+        {% for radio in form.payment_choice %}
+        <label class="check-radio-block {{ radio.choice_value }}" for="{{ radio.id_for_label }}">
+            <input id="payment-choice-{{ radio.choice_value }}" name="{{ radio.name }}" type="radio" value="{{ radio.choice_value }}" {% if radio.is_checked %}checked{% endif %}>
+            <span class="card-selection">{{ radio.choice_label }}</span>
+            {% if radio.choice_value == 'existing_card' %}
+            <span class="card-number">{{ card.brand }} ••••••••{{ card.last4 }}</span>
+            <span class="card-information">
+                  Exp {{ card.exp_month }}/{{ card.exp_year }}
+            </span>
+            {% endif %}
+            {% if radio.choice_value == 'existing_ach' %}
+            <span class="card-number">{{ bank_account.bank_name }} </span>
+            <span class="card-information">
+                ••••••••{{ bank_account.last4 }}
+            </span>
+            {% endif %}
+            {% if radio.choice_value == 'manual' %}
+                <div class="manual-alert error-message center">
+                    <p style="line-height: 21px;">Please contact 844-359-7473 or <a href="mailto:support@iflyrise.com">support@iflyrise.com</a> to arrange to pay by another method with Rise.</p>
+                </div>
+            {% endif %}
+        </label>
+
+        {% if radio.choice_value == 'existing_card' %}
+
+        {% elif radio.choice_value == 'existing_ach' %}
+
+        {% elif radio.choice_value == 'new' %}
+            <div id="new_payment_form" style="display: none;">
+                <label for="cc-number">Credit Card Number</label>
+                <input type="text" id="cc-number" placeholder="Credit Card Number" data-stripe="number" data-braintree-name="number" />
+
+                <div class="distribute">
+                    <input type="text" id="cc-month" placeholder="MM" maxlength="2" pattern="\d*" data-stripe="exp-month" data-braintree-name="expiration_month" />
+                    <input type="text" id="cc-year" placeholder="YYYY" maxlength="4" pattern="\d*" data-stripe="exp-year" data-braintree-name="expiration_year" />
+                    <input type="text" id="ccv" placeholder="CVC" autocomplete="off" pattern="\d*" data-stripe="cvc" data-braintree-name="cvv" />
+                </div>
+                <label for="{{ form.nickname.auto_id }}">Nickname</label>
+                    {{ form.nickname.errors }}
+                    {{ form.nickname }}
+            </div>
+            {% elif radio.choice_value == 'ach' %}
+            <div id="ach_payment_form" style="display: none;">
+                <input type="hidden" data-stripe="country" value="US">
+                <input type="hidden" data-stripe="account_holder_name" value="{{ account_holder_name }}">
+                <input type="hidden" data-stripe="account_holder_type" value="{{ account_holder_type }}">
+                <label for="routing-number">Routing Number</label>
+                <input {% if form.errors %}class="error"{% endif %} type="text" id="routing-number" placeholder="Routing Number" data-stripe="routingNumber" value="{{ routing_number|default:"" }}" />
+
+                <label for="account-number">Account Number</label>
+                <input {% if form.errors %}class="error"{% endif %} type="text" id="account-number" placeholder="Account Number" data-stripe="accountNumber" />
+                <label for="{{ form.nickname.auto_id }}">Nickname</label>
+                    {{ form.nickname.errors }}
+                    {{ form.nickname }}
+            </div>
+            {% endif %}
+
+        {% endfor %}
+        </div> <!-- /.payment-choice -->
+
+
+        <div id="billing_address" style="display: none;">
+            <label for="{{ form.bill_street_1.auto_id }}">Billing Address</label>
+            {{ form.bill_street_1 }}
+
+            {{ form.bill_street_2 }}
+
+            <div class="distribute">
+                {{ form.bill_city }}
+                <div class="select arrow">
+                    <span class="value"></span>
+                    <ul>
+                        {% for value, state in form.bill_state.field.choices %}
+                            <li value="{{ value }}">{{ state }}</li>
+                        {% endfor %}
+                    </ul>
+                    {{ form.bill_state }}
+                </div>
+            </div>
+
+            {{ form.bill_postal_code }}
+        </div>
+
+        <div class="center">
+            <button class="green" type="submit">Submit</button>
+        </div>
+    </form>
+</div>
+<br/>
+<div class="block center">
+    <a class="action-block grey" href="{{ WP_URL }}"><figure class="arrow-back"></figure><span>Return to Home</span></a>
+</div>
+<br/>
+{% endblock body %}
+
+
+{% block javascript %}
+<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+<script charset="utf-8">
+Stripe.setPublishableKey('{{ STRIPE_PUBLISHABLE_KEY }}');
+</script>
+<script src="https://js.braintreegateway.com/v2/braintree.js"></script>
+<script charset="utf-8">
+var BRAINTREE_CLIENT_TOKEN = '{{ client_token }}';
+</script>
+<script type="text/javascript" src="{% static 'js/jquery.payment.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/payment.js' %}"></script>
+{% endblock javascript %}

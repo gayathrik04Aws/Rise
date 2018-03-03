@@ -1,0 +1,160 @@
+/* Rise styles and branded elements */
+
+
+hr{
+    border:none;
+    background-color:$grey1;
+    clear:both;
+    display:block;
+    height:1px;
+}
+.fluid{
+    display:block;
+    height:auto;
+    width:100%;
+}
+.round{
+    @include border-radius(50%);
+}
+.profile-wrapper{
+    display:inline-block;
+    width:50px;
+    vertical-align:middle;
+
+    .small{
+        width:50px;
+    }
+}
+.error{
+    border:1px solid $alert;
+}
+.btn{
+    @include border-radius(3px);
+    border:0;
+    cursor:pointer;
+    display:inline-block;
+    font-size:16px;
+    padding:20px 100px;
+    text-align:center;
+    transition: opacity 0.2s;
+
+    &:hover{
+        opacity:0.7;
+    }
+
+    &.btn-full{
+        padding-left:0;
+        padding-right:0;
+        width:100%;
+
+    }
+
+    &.btn-default{
+        background:$land;
+        color:#fff;
+    }
+    &.btn-edit{
+        background:$slate;
+        color:#fff;
+    }
+    &.btn-dark{
+        background:#000;
+        color:#fff;
+    }
+}
+
+.two-column{
+    display:inline-block;
+    float:left;
+    width:50%;
+
+    &:nth-child(odd){
+        padding-right:10px;
+    }
+    &:nth-child(even){
+        padding-left:10px;
+    }
+}
+.three-column{
+    float: left;
+    width: 33%;
+    padding: 10px 0;
+
+}
+
+.chat-support {
+    background: $land;
+    border: none;
+
+    .content-wrap {
+        margin: 0 auto;
+    }
+
+    a {
+        display: block;
+        text-align: center;
+
+        h2, p {
+            color: #fff;
+        }
+
+        p {
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            line-height: 15px;
+            font-size: 12px;
+        }
+    }
+
+}
+
+// ALERTS
+.alert {
+	background: $runway;
+	height: 70px;
+	width: 100%;
+	text-align: center;
+	display: table;
+    opacity:0.9;
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 2000;
+
+	.alert-message {
+		display: table-cell;
+		text-align: center;
+		vertical-align: middle;
+
+		.small {
+			color: #fff;
+		}
+        @media #{$small} {
+            .small {
+                padding-left:1em;
+                padding-right:73px;
+                text-align:left;
+            }
+        }
+	}
+
+	.dismiss {
+		display: block;
+		width: 70px;
+		height: 70px;
+		position: absolute;
+		top: 0;
+		right: 0;
+		cursor: pointer;
+		background-image: url('../img/close-white.png');
+		background-repeat: no-repeat;
+		background-position: center center;
+		background-size: 16px 16px;
+		opacity: 0.4;
+
+		&:hover {
+			opacity: 1;
+		}
+	}
+
+}

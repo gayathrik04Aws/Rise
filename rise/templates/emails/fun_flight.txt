@@ -1,0 +1,9 @@
+{% extends 'emails/base.txt' %}
+
+{% block content %}Upcoming Fun Flight!
+
+On {{ flight.local_departure|date:"M d, Y" }} at {{ flight.local_departure_time_display }} {{ flight.origin.get_timezone_display }}, Rise will be offering a special fun flight from {{ flight.origin.name }} to {{ flight.destination.name }}.
+
+Book Fun Flight: {{ protocol }}://{{ site.domain }}{% url 'book_flight' flight.id %}
+
+{% endblock content %}

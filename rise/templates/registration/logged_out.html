@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block title %}Logged Out - {{ block.super }}{% endblock title %}
+
+{% block meta_description %}Login - {% endblock meta_description %}
+
+{% block css %}
+{% with marketing=True%}
+{{ block.super }}
+{% endwith %}
+{% endblock css %}
+
+{% block body_class %}{% endblock %}
+{% block body %}
+{% include 'basic_header_fragment.html' %}
+<div class="section profile-body">
+    <div class="content-wrap group">
+        <h1>You have logged out.</h1>
+    </div>
+</div>
+{% endblock body %}
+
+{% block javascript %}
+    <script src="{% static 'js/jquery-1.11.1.min.js' %}"></script>
+    <script src="{% static 'js/jquery-ui.min.js' %}"></script>
+    <script src="{% static 'js/csrf.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+{% endblock javascript %}

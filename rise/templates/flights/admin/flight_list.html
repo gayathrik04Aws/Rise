@@ -1,0 +1,151 @@
+{% extends 'base_admin.html' %}
+
+{% load staticfiles %}
+{% load flight_tags %}
+{% load tz %}
+
+{% block title %}Dashboard - List Flights{% endblock title %}
+
+{% block meta_description %}Dashboard - List Flights{% endblock meta_description %}
+
+{% block css %}
+{% with marketing=False%}
+{{ block.super }}
+{% endwith %}
+{% endblock css %}
+
+{% block body_class %}{% endblock %}
+{% block body %}
+{% include 'admin_header_fragment.html' with flights=True %}
+<div class="admin-content-wrap">
+    <div class="block admin no-pb">
+        <form id="flight_filter_form" method="get" action="" class="full-width">
+
+            <div class="admin-page-header no-bb">
+                <div class="fl">
+                    <h1>{% if is_today %}Today's {% endif %} Flights
+                    {% if flight_date %} for {{ flight_date|date:"d F, Y" }}{% endif %}
+                    </h1>
+                </div>
+                <div class="fr">
+                    {% comment %}
+                    <input type="search" placeholder="@TODO: Search" class="dark page-search admin-reveal">
+                    {% endcomment %}
+                    <div class="select admin-page-sort dark">
+                      <span class="value">Showing {{ form.type.value|default:"All Flights" }}</span>
+
+                      <ul id="flight-sort-filter">
+                          {% for value, text in form.type.field.choices %}
+                          <li value="{{ value }}" {% if form.type.value == value %}class="active"{% endif %}>{{ text }}</li>
+                          {% endfor %}
+                      </ul>
+                      {{ form.type }}
+                    </div>
+                </div>
+                <div class="fr">
+                    <input type="search" placeholder="Search" class="dark page-search admin-reveal fl" name="s" id="s">
+                </div>
+            </div>
+            <div class="control-row">
+                    <div class="flights-date">
+                      <input type="text" readonly="true" id="flight-datepicker" name="date" class="datepicker-input" value="{{ form.date.value|default:"Filter flights by day" }}">
+                    </div>
+                    {% if perms.accounts.can_edit_flights %}
+                    <div class="add-page-item">
+                        <a href="{% url 'admin_add_flight' %}" class="add-page-item">+ Add New Flight</a>
+                    </div>
+                    {% endif %}
+
+                    <div class="add-page-item">
+                        <a href="{% url 'admin_list_flights_month' now.year now.month %}">Month View&nbsp;&nbsp;&nbsp;</a>
+                    </div>
+                    <div class="add-page-item">
+                        <a href="{% url 'admin_list_flights_week' now.year now.isocalendar.1 %}">Week View&nbsp;&nbsp;&nbsp;</a>
+                    </div>
+
+            </div>
+        </form>
+    </div>
+
+{# TODO: This table is duplicated, except for the final column, on the dashboard view.  Could this table be a reusable template fragment? #}
+    <table class="admin-table">
+        <thead>
+             <tr>
+                <th>Flight</th>
+                <th>Departs / Arrives</th>
+                <th>Length</th>
+                <th>Repeats</th>
+                <th>Plane</th>
+                <th>Seats filled</th>
+                <th>Load Factor</th>
+                <th>Waitlist</th>
+                <th>Alerts</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for flight in object_list %}
+        <tr class="link-row" href="{% url 'admin_flight_detail' flight.pk %}">
+            <td><b>{{ flight.flight_number }}</b></td>
+
+            <td class="depart-arrive-cell">
+                <div class="time-cell">
+                    <b>{{ flight.origin.code|upper }}</b> {{ flight.local_departure|date:"H:i e"}}<br />{{ flight.local_departure|date:"m/d/y"}}
+                </div>
+                <figure class="flight-arrow-right-green spacer"></figure>
+                <div class="time-cell">
+                    <b>{{ flight.destination.code|upper }}</b> {{ flight.local_arrival|date:"H:i e"}}<br />{{ flight.local_arrival|date:"m/d/y"}}
+                </div>
+            <td>{{ flight.duration|simple_duration }}</td>
+
+            <td class="repeats-cell">{% if flight.route_time %}<figure class="icon-repeat"></figure>&nbsp;&nbsp;&nbsp;{{ flight.route_time|route_time_days }}{% endif %}</td>
+            <td>{{ flight.plane }}</td>
+            <td class="seats-cell">{{ flight.seats_available|sub_seats:flight.seats_total }}/{{ flight.seats_total}}</td>
+            <td class="seats-cell">{{ flight.seats_available|load_factor:flight.seats_total }}%</td>
+            <td class="seats-cell">{{ waitlist|get_value:flight.id }}</td>
+            <td class="center alert-cell">{% if flight.is_cancelled %}cancelled{% elif flight.is_delayed %}delayed{% elif flight.is_complete %}complete{% elif flight.is_inflight %}in-flight{% else %}on-time{% endif %}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% if perms.accounts.can_edit_flights %}
+    <div class="block admin">
+      <a href="{% url 'admin_add_flight' %}" class="admin-add-link">Add new Flight</a>
+    </div>
+    {% endif %}
+</div>
+
+{% endblock body %}
+
+{% block javascript %}
+<script type="text/javascript">
+$('#id_type').on('change', function () {
+    $('#flight_filter_form').submit();
+});
+$('#flight-datepicker').on('change', function () {
+    $('#flight_filter_form').submit();
+});
+$('#flight-datepicker').datepicker({
+      showOtherMonths: true,
+      selectOtherMonths: true,
+      dayNamesMin: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
+      dateFormat: 'yy-mm-dd'
+});
+$('#s').on('blur', function(){
+    if ($('#s').val()){
+        $('#id_type').val('');
+        $('#flight-datepicker').val('');
+    }
+    $('#flight_filter_form').submit();
+});
+$('#s').on('keyup', function(e) {
+    if (e.which == 13) {
+        e.preventDefault();
+        if ($('#s').val()){
+            $('#id_type').val('');
+            $('#flight-datepicker').val('');
+        }
+        $('#flight_filter_form').submit();
+    }
+});
+</script>
+{% endblock javascript %}

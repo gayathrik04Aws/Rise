@@ -1,0 +1,173 @@
+{% extends 'base_admin.html' %}
+{% load flight_tags %}
+{% load humanize %}
+{% load staticfiles %}
+
+{% block title %}Booking - {{ block.super }}{% endblock title %}
+
+{% block meta_description %}Booking - Flights{% endblock meta_description %}
+
+{% block css %}
+{% with marketing=False%}
+{{ block.super }}
+{% endwith %}
+{% endblock css %}
+
+{% block body_class %}booking flight-confirm{% endblock %}
+{% block body %}
+{% include 'admin_header_fragment.html' with nav_waitlist=True %}
+
+<div class="content-wrap app-content-wrap">
+    <div class="block center header-block">
+        <h1>{{ booking_userprofile.get_full_name }}'s Flights</h1>
+    </div>
+
+    <form action="." method="POST" id="flight-payment-form" autocomplete="on" class="alert-form">
+        {% csrf_token %}
+        {% for hidden in form.hidden_fields %}
+            {{ hidden }}
+        {% endfor %}
+        {% if reservation.requires_payment %}
+        <div class="alert">
+            <div class="badge"><figure class="alert-icon"></figure></div>
+            <p>Oops! {{ booking_userprofile.get_full_name }} is out of
+                {% if reservation.total_buy_companion_pass_count > 0 and reservation.total_buy_pass_count > 0 %}
+                Available Legs and Companion Passes.
+                {% elif reservation.total_buy_companion_pass_count > 0 %}
+                Companion Passes.
+                {% elif reservation.total_buy_pass_count > 0 %}
+                Available Legs.
+                {% endif %}
+                Charge additional fees totaling ${{ reservation.subtotal_amount|floatformat:2|intcomma }} +
+                ${{ reservation.subtotal_amount_fet_tax|floatformat:2|intcomma }} FET tax to the selected card below</p>
+                <label for="{{ form.payment_method.auto_id }}" cass="center">--WITH THIS PAYMENT METHOD--</label>
+                {{ form.payment_method.errors }}
+                <div class="select arrow">
+                    <span class="value">{{ form.payment_method.value|default:"Select" }}</span>
+                    <ul>
+                        {% for payment in paylist %}
+                        <li value="{{ payment.id }}" >{% if payment.nickname %}{{ payment.nickname }}&nbsp;&nbsp;{% endif %}{{ payment.text }}&nbsp;&nbsp;&nbsp;{% if payment.is_default %}Default{% endif %}</li>
+                        {% endfor %}
+                    </ul>
+                    <select id="id_payment_method" name="payment_method" >
+                    {% for payment in paylist %}
+                    <option value="{{ payment.id }}" {% if payment.is_default %} selected {% endif %} >{% if payment.nickname %}{{ payment.nickname }}&nbsp;&nbsp;{% endif %}{{ payment.text }}&nbsp;&nbsp;&nbsp;{% if payment.is_default %}Default{% endif %}</option>
+                    {% endfor %}
+                </select>
+                </div>
+                <a id="use_another_card" class="button green confirm">Add a new card</a>
+                <div id="payment_information_form" style="display: none;">
+                    <label>Payment Information</label>
+                    <input type="text" placeholder="Credit Card Number" id="cc-number" data-stripe="number" />
+                    <div class="distribute">
+                        <input type="text" placeholder="MM" id="cc-month" maxlength="2" pattern="\d*" data-stripe="exp-month" data-braintree-name="expiration_month" />
+                        <input type="text" placeholder="YYYY" id="cc-year" maxlength="4" pattern="\d*" data-stripe="exp-year" data-braintree-name="expiration_year" />
+                        <input type="text" placeholder="CCV" id="ccv" autocomplete="off" pattern="\d*" data-stripe="cvc" data-braintree-name="cvv" />
+                    </div>
+                    <label for="{{ form.nickname.auto_id }}">Nickname</label>
+                    {{ form.nickname.errors }}
+                    {{ form.nickname }}
+                </div>
+        </div>
+        {% endif %}
+        <div class="block">
+            {% with flight_reservations=reservation.flightreservation_set.all %}
+            {% for flight_reservation in flight_reservations %}
+            {% with flight=flight_reservation.flight %}
+            <div class="card">
+                {% if flight.flight_type != 'R' %}
+                <div class="badge"><figure class="{% if flight.flight_type == 'F' %}funflight-solid{% elif flight.flight_type == 'P' %}promo-solid{% endif %}"></figure></div>
+                {% endif %}
+                {% if flight_reservation.has_companions %}
+                <a href="{% url 'book_companions' flight_reservation.pk %}"><figure class="pencil-green"></figure></a>
+                {% endif %}
+                <div class="origin-and-destination">
+                    <h5>Origin &amp; Destination</h5>
+                    <div class="flight-details">
+                        <span class="airport">{{ flight.origin.code }}</span> {{ flight.departure.date|date:'d M'}} / {{ flight.departure|time:"h:i A" }}<br />
+                        <span class="airport">{{ flight.destination.code }}</span> {{ flight.arrival.date|date:'d M'}} / {{ flight.arrival|time:"h:i A" }}
+                    </div>
+                </div>
+                <div class="origin">
+                    <div class="badge-wrap badge-right">
+                        <div class="circle x-large gradient {{ flight.origin.city|remove_spaces_lower_case }}">
+                            {{ flight.origin.code }}
+                            {% if flight.flight_type != 'R' %}
+                            <div class="badge-wrap">
+                                <figure class="{% if flight.flight_type == 'F' %}funflight-solid{% elif flight.flight_type == 'P' %}promo-solid{% endif %}"></figure>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="caption">
+                        <h5>Origin</h5>
+                        <h1>{{ flight.origin.city }}, {{ flight.origin.state }}</h1>
+                        <h4 class="grey">{{ flight.departure.date|date:'d M'}} / {{ flight.departure|time:"h:i A" }}</h4>
+                    </div>
+                </div>
+                <div class="destination">
+                    <div class="circle x-large gradient {{ flight.destination.city|remove_spaces_lower_case }}">
+                        {{ flight.destination.code }}
+                    </div>
+                    <div class="caption">
+                        <h5>Destination</h5>
+                        <h1>{{ flight.destination.city }}, {{ flight.destination.state }}</h1>
+                        <h4 class="grey">{{ flight.arrival.date|date:'d M'}} / {{ flight.arrival|time:"h:i A" }}</h4>
+                    </div>
+                </div>
+                <div class="passengers">
+                    <h5>Passengers</h5>
+                    <div class="circle small">
+                        <img src="{{ flight_reservation.primary_passenger.userprofile.avatar_url }}" alt="{{ flight_reservation.primary_passenger.userprofile.get_full_name }}">
+
+                    </div>
+                    <p> {{ flight_reservation.primary_passenger.userprofile.get_full_name }}</p>
+                    {% with flight_companions=flight_reservation.get_companions %}
+                    {% if flight_companions %}
+                    <figure class="plus-grey-lg"></figure>
+                    {% for companion_passenger in flight_companions %}
+                    <div class="circle small {% if forloop.first %}with-additional{% else %}additional{% endif %}">
+                        <img src="{{ companion_passenger.userprofile.avatar_url }}" alt="{{ companion_passenger.userprofile.get_full_name }}">
+                    </div>
+                        <p>{{ companion_passenger.userprofile.get_full_name }}</p>
+                    {% endfor %}
+                    {% endif %}
+                    {% endwith %}
+
+                </div>
+            </div>
+            {% endwith %}
+            {% endfor %}
+            {% endwith %}
+        </div>
+        <div class="block center rise-stacker rise-stack-sm">
+            {% if reservation.requires_payment %}
+            <button type="submit" class="button green">Confirm Flight</button>
+            <div class="interstitial">
+                <span class="lined">Or</span>
+            </div>
+            <a href="{% url 'admin_book_reserve' %}?force_booking=1" class="button green">Confirm Without Payment</a>
+            {% else %}
+            <a href="{% url 'admin_book_reserve' %}" class="button green">Confirm Flight</a>
+            {% endif %}
+            <div class="interstitial">
+                <span class="lined">Or</span>
+            </div>
+            <a href="{% url 'admin_book_cancel' %}" class="button dark-grey">Cancel</a>
+        </div>
+    </form>
+    </div>
+    {% endblock body %}
+
+    {% block javascript %}
+    {{ block.super }}
+    <script src="{% static 'js/jquery.payment.js' %}"></script>
+    {# not sure if reservations.js is of any use here #}
+    <script src="https://js.braintreegateway.com/v2/braintree.js"></script>
+    <script charset="utf-8">
+         var BRAINTREE_CLIENT_TOKEN = '{{ client_token }}';
+
+    </script>
+    <script src="{% static 'js/reservations.js' %}"></script>
+    <script src="{% static 'js/payment.js' %}"></script>
+    {% endblock javascript %}

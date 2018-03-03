@@ -1,0 +1,184 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+{% load safe_settings %}
+
+{% block title %}Sign up - {{ block.super }}{% endblock title %}
+
+{% block meta_description %}Sign up for Rise’s fly all you want membership between for flights between Dallas, Houston, and Austin. Tailored for frequent Texas travelers, Rise memberships begin at $1,650 per month for unlimited flights.{% endblock meta_description %}
+
+{% block body_class %}registration signup{% endblock %}
+{% block body %}
+<div class="section">
+    <div class="content-wrap">
+        <div class="center">
+            <a href="/" style="display: inline-block;"><figure class="logo-form"></figure></a>
+        </div>
+        <div class="form white-bg">
+            <div class="section sign-up-section">
+            <h1>Reserve Your Spot to<br /> Become A Member</h1>
+
+            <p class="registration-text">Rise is an air travel membership community with a limited number of
+                available memberships in each city based on our number of planes, flights and routes.</p>
+
+            <p class="strong-grey mb">Introduce yourself to get started.</p>
+
+            <form action="." method="POST" id="sign-up" class="white-bg">
+                {% csrf_token %}
+
+                {% if form.errors %}
+                <div class="error-message">
+                Please see fields below.
+                </div>
+                {% endif %}
+
+                {% if messages %}
+                {% for message in messages %}
+                    <div class="error-message">{{ message }}</div>
+                {% endfor %}
+                {% endif %}
+                <div class="registration section no-labels">
+                    <label for="id_first_name">First Name</label>
+                    <input {% if form.first_name.errors %}class="error"{% endif %} type="text" name="{{ form.first_name.html_name }}" value="{{ form.first_name.value|default:"" }}" placeholder="First Name" id="first-name"></input>
+                    <label for="id_last_name">Last Name</label>
+                    <input {% if form.last_name.errors %}class="error"{% endif %} type="text" name="{{ form.last_name.html_name }}" value="{{ form.last_name.value|default:"" }}" placeholder="Last Name" id="last-name"></input>
+                    <label for="id_email">Email Address</label>
+                    <input {% if form.email.errors %}class="error"{% endif %} type="text" name="{{ form.email.html_name }}" value="{{ form.email.value|default:"" }}" placeholder="Email Address" id="email-address"></input>
+                    <label for="id_phone">Phone Number</label>
+                    <input {% if form.phone.errors %}class="error"{% endif %} type="text" name="{{ form.phone.html_name }}" value="{{ form.phone.value|default:"" }}" placeholder="Phone Number" id="phone-number"></input>
+                    <label for="id_code">Invitation Code (optional)</label>
+                    <input {% if form.code.errors %}class="error"{% endif %} type="text" name="{{ form.code.html_name }}" value="{{ form.code.value|default:"" }}" placeholder="Invitation Code (optional)" id="invitation-code"></input>
+                </div>
+                <div class="registration-section">
+                    <label>Choose your origin city</label>
+                    <div class="check-cities-block">
+                    {% for radio in form.origin_city %}
+                    <label class="check-radio-block">
+                        <input id="origin-city-{{ forloop.counter }}" name="{{ radio.name }}" type="radio" value="{{ radio.choice_value }}" {% if radio.is_checked %}checked{% endif %}>
+                        <span>{{ radio.choice_label }}</span>
+                    </label>
+                    {% endfor %}
+                    </div>
+                </div>
+                <div class="fine-print">
+                    <p>Don't see your city listed? Let us know where you'd like to fly from &mdash; we'll add new cities to our plans based on demand.</p>
+                </div>
+
+                <div class="other-city">
+                    <label class="check-radio-block select-city">
+                      <input type="radio" id="other-city" name="{{ form.other_city_checkbox.html_name }}" {% if form.write_in_city.value %}checked="checked"{% endif %} />
+                    </label>
+                    <input {% if form.write_in_city.errors %}class="error"{% endif %} type="text" name="{{ form.write_in_city.html_name }}" value="{{ form.write_in_city.value|default:"" }}" placeholder="Other City" id="write-in-city" disabled="disabled"></input>
+                </div>
+                <br/>
+                <div class="fine-print">
+                  <p>* We will be adding this origin city to our regular flight schedule soon. Sign up now to secure your spot.</p>
+                </div>
+
+
+                <div class="center">
+                    <button type="submit" class="button green registration-button">Submit</button>
+                </div>
+                <p class="legal">By submitting this form you agree Rise is permitted to contact you regarding your membership and general updates. Rise will never sell or rent your information to a third party.</p>
+            </form>
+
+        </div>
+        </div>
+        <br/>
+        <br/>
+        <div class="block center">
+            <a href="{{ WP_URL }}" class="return"> &#9664; Return to Home</a>
+        </div>
+        <br/>
+        <br/>
+    </div>
+
+</div>
+
+{% endblock body %}
+
+{% block analytics %}
+{{ block.super }}
+
+<script type="text/javascript">llfrmid=27325</script>
+<script type="text/javascript" src="https://formalyzer.com/formalyze_init.js"></script>
+<script type="text/javascript" src="https://formalyzer.com/formalyze_call_secure.js"></script>
+<script src="{% static 'js/desk.js' %}" type="text/javascript"></script>
+<script>
+new DESK.Widget({
+        version: 1,
+        // site: 'support.iflyrise.com',
+        site: 'iflyrise.desk.com',
+        port: '80',
+        type: 'chat',
+        displayMode: 0,  //0 for popup, 1 for lightbox
+        features: {
+            offerAlways: true,
+            offerAgentsOnline: false,
+            offerRoutingAgentsAvailable: false,
+            offerEmailIfChatUnavailable: false
+        },
+        fields: {
+                ticket: {
+                        // desc: '',
+                        // labels_new: '',
+                        // priority: '',
+                        // subject: '',
+                        // custom_category: '',
+                        // custom_to_sf: ''
+                },
+                interaction: {
+                        // email: '',
+                        // name: ''
+                },
+                chat: {
+                        // subject: ''
+                },
+                customer: {
+                        // company: '',
+                        // desc: '',
+                        // first_name: '',
+                        // last_name: '',
+                        // locale_code: '',
+                        // title: ''
+                }
+        }
+}).render();
+
+
+function setupSupportWidget() {
+    $('.assistly-widget').remove();
+
+    var baseUrl = 'https://iflyrise.desk.com';
+    window.options = {
+        agentsOnline: 0,
+        supportType: 'chat',
+        popupUrl: ''
+    };
+
+    // Desk status checking
+    $.getJSON(baseUrl + '/customer/agent_online_check?callback=?', function(data) {
+        if (data.online_agents === 0) {
+            options.agentsOnline = 0;
+            options.supportType = 'email';
+            options.popupUrl = baseUrl + '/customer/widget/emails/new';
+        } else if (data.online_agents > 0) {
+            options.agentsOnline = data.online_agents;
+            options.supportType = 'chat';
+            options.popupUrl = baseUrl + '/customer/widget/chats/new';
+        }
+    });
+
+    // Click events
+    $('.chat-support a').on('click', function(e) {
+        e.preventDefault();
+
+        window.open(options.popupUrl, 'assistly_' + options.supportType,'resizable=0, status=1, toolbar=0,width=640,height=800');
+    });
+}
+
+$(function() {
+    setupSupportWidget();
+});
+</script>
+{% endblock analytics %}

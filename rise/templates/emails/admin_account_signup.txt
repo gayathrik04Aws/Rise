@@ -1,0 +1,7 @@
+{% extends 'emails/base.txt' %}
+
+{% block content %}{{ account.account_name }} Sign Up
+
+{{ protocol }}://{{ site.domain }}{% url 'admin_account' account.pk %}
+
+{% endblock content %}

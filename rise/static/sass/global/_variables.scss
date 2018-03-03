@@ -1,0 +1,86 @@
+/* Colors*/
+$land: #01AF70;
+$land-hover: #189e68;
+$runway: #142323;
+$sea: #0f5a50;
+$sky: #a1b2b2;
+$sky-translucent: rgba(161,178,178,0.8);
+$runway-translucent: rgba(20, 35, 35, 0.9);
+$runway-translucent2: rgba(20, 35, 35, 0.4);
+$translucent-nav: rgba(216, 216, 216, 0.15);
+$modal-grey: #fcfcfc;
+$modal-dark-bg: rgba(234, 232, 232, .95);
+$grey1: #f8f8f8;
+$grey1-hover: #e0dede;
+$grey2: #eae8e8;
+$grey3: #e4e2e2;
+$grey4: #d8d8d8;
+$grey5: #526666;
+$grey6: #f1f1f1;
+$grey7: #CBD1D1;
+$grey: #526666;
+$copy-light: #a1b2b2;
+$copy-dark: #768888;
+$red: #e35740;
+$shadow: rgba(18, 35, 35, 0.04);
+$shadow2: rgba(18, 35, 35, 0.08);
+$translucent-white: rgba(234, 232, 232, .2);
+$form-box-shadow: #DFDEDE;
+$section-darker-bg: #101E1E;
+$salmon: #e97967;
+
+$copy-grey: #768888;
+
+$slate: #a1b2b2;
+$seafoam: rgb(68,91,101);
+$bottomofthedeepgreensea: rgb(47,73,84);
+$alert: #e35740;
+
+/* Input Colors */
+$input-bg: rgba(234, 232, 232, .15);
+$input-bg-dark: rgba(0,0,0,0.019);
+$input-border: rgb(215,227,227);
+$input-border-focus: rgba(1,175,112,.5);
+$input-border-focus-anywhere-blue: rgba(9, 154, 188, .5);
+
+/*Footer*/
+$footertext: #526666;
+$footerlink: #a1b2b2;
+$footerp: #647979;
+
+
+/*Marketing Colors*/
+$copy-grey-marketing: #cbccca;
+$h3-small-marketing: #9ea9a9;
+
+/* more colors */
+$anywhere-blue: #099abc;
+
+
+
+/* Sizes and breakpoints */
+$largeContentWidth:         960px;
+$mediumContentWidth:        672px;
+$smallContentWidth:         100%;
+
+$breakpointLarge:           1400px;
+$breakpointMedium:          1023px;
+$breakpointMediumMinimum:   768px;
+$breakpointSmall:           767px;
+
+$breakpointShort:           480px;
+
+$large:       "screen and (max-width: #{$breakpointLarge})";
+$medium:      "screen and (max-width: #{$breakpointMedium})";
+$mediumOnly:  "screen and (min-width: #{$breakpointMediumMinimum}) and (max-width: #{$breakpointMedium})";
+$small:       "screen and (max-width: #{$breakpointSmall})";
+
+$retina:      "(-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi)";
+$notretina:   "(-webkit-max-device-pixel-ratio: 1.5)";
+
+$short:       "screen and (max-height: #{$breakpointShort})";
+
+
+/* Base sizes */
+$base-border-radius: 3px;
+$base-border: 1px solid $grey2;

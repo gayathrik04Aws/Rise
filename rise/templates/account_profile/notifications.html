@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block title %}Notifications - {{ block.super }}{% endblock title %}
+
+{% block meta_description %}Notifications{% endblock meta_description %}
+
+{% block css %}
+{% with marketing=False%}
+{{ block.super }}
+{% endwith %}
+{% endblock css %}
+
+{% block body_class %}{% endblock %}
+{% block body %}
+{% include 'account_profile/dashboard_nav.html' %}
+<div class="section profile-body">
+  {% include 'account_profile/profile-sidenav-mobile.html' with notifications=True %}
+  <div class="content-wrap app-content-wrap no-mt-mobile group">
+  {% include 'account_profile/profile-sidenav.html' with notification=True %}
+    <div class="profile-content-wrap">
+      <h1>Notifications</h1>
+      <div class="detail group">
+        <div class="account-profile-header">
+          <label>contact info</label>
+          <div class="h-left">
+            <span class="title offset">Email</span> <span class="secondary">{{ user.email }}</span><br/>
+            <span class="title offset">Cell</span> <span class="secondary">{{ user.userprofile.mobile_phone|default:"" }}</span>
+          </div>
+          <div class="h-right align">
+            <a href="{% url 'profile_edit' %}"><figure class="pencil-grey"></figure></a>
+          </div>
+        </div>
+
+
+
+        <form action="." method="POST">
+          {% csrf_token %}
+
+        <table class="notification-table">
+          <tr class="table-definitions">
+            <th>Type of Alert</th>
+            <th>Email</th>
+            <th>Text</th>
+          </tr>
+          <tr class="align">
+            <div>
+            <td>
+              <b>Flight Alerts</b><br/>
+              Cancelations and delays<br/>
+              Potential bad weather<br/>
+              Itinerary Changes<br/>
+              Waitlist Status<br/>
+            </td>
+            </div>
+            <div>
+            <td class="stacked align">
+            <label>EMAIL</label> {{ form.alert_flight_email }}
+            </td>
+            <td class="stacked">
+            <label>TEXT</label> {{ form.alert_flight_sms }}
+            </td>
+            </div>
+          </tr>
+          <tr>
+            <td>
+              <b>Promotion Alerts</b><br/>
+              Upcoming Promo Flight<br/>
+              Upcoming Fun Flight<br/>
+            </td>
+            <td class="stacked align">
+              <label>EMAIL</label> {{ form.alert_promo_email }}
+            </td>
+            <td class="stacked">
+              <label>TEXT</label>  {{ form.alert_promo_sms }}
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <b>Billing Alerts</b><br/>
+              Monthly bill available<br/>
+              Payment received<br/>
+              Problem with payment<br/>
+            </td>
+            <td class="stacked align">
+              <label>EMAIL</label>  {{ form.alert_billing_email }}
+            </td>
+            <td class="stacked">
+              <label>TEXT</label>  {{ form.alert_billing_sms }}
+            </td>
+          </tr>
+        </table>
+
+        <button type="submit" class="button black">Update Notifications</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock body %}
+
+{% block javascript %}
+    {{ block.super }}
+    <script src="{% static 'js/binaryajax.min.js' %}"></script>
+    <script src="{% static 'js/exif.min.js' %}"></script>
+    <script src="{% static 'js/profile.js' %}"></script>
+{% endblock javascript %}

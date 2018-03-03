@@ -1,0 +1,60 @@
+{% extends 'emails/base.html' %}
+
+{% block body %}
+<table border="0" cellpadding="20" cellspacing="0" width="100%">
+    <tr>
+        <td align="center" valign="top" class="bodyContent">
+            <div>
+                <h1>Welcome to Rise!</h1>
+                <div>
+                    We are excited to have you flying with us, and look forward to serving you soon.
+                </div>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td align="center" valign="top" class="bodyContent">
+            <div>
+                <h1>RISE FLIGHT SCHEDULE</h1>
+                <div>
+                    Click ​<a href="{{ WP_URL }}/schedule/">here</a>,​ to view the Rise schedule that has been
+                    designed with you, our member, in mind.  If you don't see the flight you need, let us
+                    <a href="mailto:support@Iflyrise.com">know</a>. We'll be continuing to add more flights as we
+                    continue to sign up new members.  <a href="https://{{ site.domain }}{% url 'refer_form' %}">Refer</a> others that you
+                    would like to have fly with you, and we will add companion passes to your Rise profile!
+                </div>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td align="center" valign="top" class="bodyContent">
+            <div>
+                <h1>IFLYRISE.COM IS READY FOR YOUR PROFILE INPUT</h1>
+                <div>
+                    To reach a Rise Consultant at any time, call <a href="tel:844-359-7473">(844) 359-7473</a> or email
+                    <a href="mailto:members@iflyrise.com">members@iflyrise.com</a><br><br>
+
+                    Click Complete Profile, to personalize your Rise account, and to start booking flights right away.<br><br>
+
+                    Travel Better,<br><br>
+
+                    The Rise Team
+                </div>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td align="center" valign="top" style="padding-top:0;">
+            <table border="0" cellpadding="0" cellspacing="0" class="button">
+                <tr>
+                    <td valign="middle" width="250px">
+                        <div>
+                            <a href="{{ protocol }}://{{ site.domain }}{{ user.generate_register_login_url }}">Complete Profile</a>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+{% endblock body %}

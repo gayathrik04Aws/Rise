@@ -1,0 +1,103 @@
+.calendar {
+  @include display(flex);
+  @include flex-wrap(wrap);
+  @include justify-content(space-between);
+  @include align-content(flex-start);
+  text-align: left;
+  a {
+    color: $runway;
+  }
+  li {
+    border: 2px solid transparent;
+    cursor: pointer;
+    display: inline-block;
+    line-height: 46px;
+    margin-bottom: 5px;
+    text-align: center;
+    height: 50px;
+    vertical-align: top;
+    width: (35.71px / 280px) * 100%;
+    @include transition(none);
+    &.selected {
+      border: 2px solid $land;
+    }
+    &.unavailable {
+      opacity: 0.3;
+    }
+    &.full {
+      background-image: url(../img/pattern-green.png);
+      background-size: 5px 5px;
+    }
+    &.out-of-month {
+      pointer-events: none;
+      opacity: 0.1;
+    }
+    &.cal-label {
+      span {
+          font-family: 'Gotham Ssm A', 'Gotham Ssm B';
+          font-weight: 700;
+          font-size: 10px;
+          color: #a1b2b2;
+      }
+      h5 {
+        display: none;
+      }
+      height: auto;
+    }
+  }
+}
+
+.calendar-nav { // This could be renamed, I'm not exactly sure what to call this kind of element.
+  margin-bottom: -40px;
+  text-align: center;
+  @include transform(translateY(-100%));
+  .container {
+    background: white;
+    display: inline-block;
+    padding: 8px;
+  }
+  .arrow-back {
+    background-image: url(../img/arrow-left-green.png);
+    background-size: 7px 12px;
+    background-repeat: no-repeat;
+    cursor: pointer;
+    display: inline-block;
+    height: 12px;
+    width: 7px;
+  }
+  .arrow-forward {
+    background-image: url(../img/arrow-right-green.png);
+    background-size: 7px 12px;
+    background-repeat: no-repeat;
+    cursor: pointer;
+    display: inline-block;
+    height: 12px;
+    width: 7px;
+  }
+  .cal-month {
+    color: $sky;
+    display: inline-block;
+    margin: 0 15px;
+    position: relative;
+    width: 90px;
+  }
+}
+
+////\\\\ Desktop Breakpoint *************************
+
+@media screen and (min-width: 1024px) {
+  .calendar {
+    li {
+      height: 100px;
+      line-height: 100px;
+      &.cal-label {
+          span {
+              display: none;
+          }
+        h5 {
+            display: inline-block;
+        }
+      }
+    }
+  }
+}

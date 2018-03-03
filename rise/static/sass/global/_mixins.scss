@@ -1,0 +1,211 @@
+@mixin experimental($property, $value, $moz: true, $webkit: true, $o: true, $ms: true, $khtml: false, $official: true) {
+  @if $webkit {
+    -webkit-#{$property}: $value;
+  }
+  @if $khtml {
+    -khtml-#{$property}: $value;
+  }
+  @if $moz  {
+    -moz-#{$property}: $value;
+  }
+  @if $ms {
+    -ms-#{$property}: $value;
+  }
+  @if $o {
+    -o-#{$property}: $value;
+  }
+  @if $official {
+    #{$property}: $value;
+  }
+}
+
+@mixin calc($property, $expression) {
+  #{$property}: -webkit-calc(#{$expression});
+  #{$property}: calc(#{$expression});
+}
+
+
+@mixin radial-gradient-background($colors...) {
+  background: -webkit-radial-gradient($colors);
+  background: -moz-radial-gradient($colors);
+  background: -ms-radial-gradient($colors);
+  background: -o-radial-gradient($colors);
+  background: radial-gradient($colors);
+}
+
+@mixin transition($values...) {
+  -webkit-transition: $values;
+  -moz-transition: $values;
+  -ms-transition: $values;
+  -o-transition: $values;
+  transition: $values;
+}
+
+@mixin prefixed-transition($property, $duration:"", $timing-function:"", $delay:"") {
+  -webkit-transition: -webkit-+$property #{$duration} #{$timing-function} #{$delay};
+  -moz-transition: -moz-+$property #{$duration} #{$timing-function} #{$delay};
+  -ms-transition: -ms-+$property #{$duration} #{$timing-function} #{$delay};
+  -o-transition: -o-+$property #{$duration} #{$timing-function} #{$delay};
+  transition: -webkit-+$property #{$duration} #{$timing-function} #{$delay};
+}
+
+@mixin transform($values...) {
+  -webkit-transform: $values;
+  -moz-transform: $values;
+  -ms-transform: $values;
+  -o-transform: $values;
+  transform: $values;
+}
+
+@mixin reset-appearance {
+  -webkit-appearance: none;
+  //-moz-appearance: none; At this point, it looks like Firefox does not have an easy way to custom-style checkboxes.
+  -ms-appearance: none;
+  -o-appearance: none;
+  appearance: none;
+}
+
+@mixin mobelux-placeholder($color) {
+  &::-webkit-input-placeholder {
+    color: $color;
+  }
+  &:-moz-placeholder {
+    color: $color;
+  }
+  &::-moz-placeholder {
+    color: $color;
+  }
+  &:-ms-placeholder {
+    color: $color;
+  }
+}
+
+@mixin vertical-align {
+  position: relative;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+
+@mixin gotham-family {
+  font-family: 'Gotham SSm A', 'Gotham SSm B', sans-serif;
+}
+
+@mixin tablet-gothic-family {
+  font-family: 'tablet-gothic-condensed', sans-serif;
+}
+
+@mixin border-radius($radius) {
+    @include experimental(border-radius, $radius, -moz, -webkit, -o, -ms, not -khtml, official);
+}
+
+@mixin breakpoint($point) {
+    @if $point == large {
+        @media #{$large} { @content; }
+    }
+    @else if $point == medium {
+        @media #{$medium} { @content; }
+    }
+    @else if $point == mediumOnly {
+        @media #{$mediumOnly} { @content; }
+    }
+    @else if $point == small {
+        @media #{$small}  { @content; }
+    }
+    @else if $point == short {
+        @media #{$short}  { @content; }
+    }
+}
+
+$prefix:'-moz-', '-webkit-', '-o-', '-ms-', '';
+// ********************
+// fadeIn
+// ********************
+@mixin keyframe-fadeIn {
+  0%   { opacity:0; }
+  100% { opacity:1; }
+}
+@-moz-keyframes fadeIn {
+  @include keyframe-fadeIn;
+}
+@-webkit-keyframes fadeIn {
+  @include keyframe-fadeIn;
+}
+@-o-keyframes fadeIn {
+  @include keyframe-fadeIn;
+}
+@-ms-keyframes fadeIn {
+  @include keyframe-fadeIn;
+}
+@keyframes fadeIn {
+  @include keyframe-fadeIn;
+}
+@mixin fadeIn( $arg ) {
+  $keyframe-name:fadeIn;
+  $duration:$arg;
+  @each $p in $prefix {
+    #{$p}animation:$keyframe-name $duration;
+  }
+}
+
+$prefix:'-moz-', '-webkit-', '-o-', '-ms-', '';
+// ********************
+// fadeOut
+// ********************
+@mixin keyframe-fadeOut {
+  0%   { opacity:1; }
+  100% { opacity:0; }
+}
+@-moz-keyframes fadeOut {
+  @include keyframe-fadeOut;
+}
+@-webkit-keyframes fadeOut {
+  @include keyframe-fadeOut;
+}
+@-o-keyframes fadeOut {
+  @include keyframe-fadeOut;
+}
+@-ms-keyframes fadeOut {
+  @include keyframe-fadeOut;
+}
+@keyframes fadeOut {
+  @include keyframe-fadeOut;
+}
+@mixin fadeOut( $arg ) {
+  $keyframe-name:fadeOut;
+  $duration:$arg;
+  @each $p in $prefix {
+    #{$p}animation:$keyframe-name $duration;
+  }
+}
+
+
+@mixin center($axis: "all"){
+  position:absolute;
+  @if $axis == "height"{
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -moz-transform:    translateY(-50%);
+    -ms-transform:     translateY(-50%);
+    -o-transform:      translateY(-50%);
+    transform:         translateY(-50%);
+  }
+  @if $axis == "width"{
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    -moz-transform:    translateX(-50%);
+    -ms-transform:     translateX(-50%);
+    -o-transform:      translateX(-50%);
+    transform:         translateX(-50%);
+  }
+  @if $axis == "all"{
+    top:50%;
+    left:50%;
+    -webkit-transform: translate(-50%,-50%);
+    -moz-transform:    translate(-50%,-50%);
+    -ms-transform:     translate(-50%,-50%);
+    -o-transform:      translate(-50%,-50%);
+    transform:         translate(-50%,-50%);
+  }
+}

@@ -1,0 +1,103 @@
+{% extends 'base_admin.html' %}
+
+{% load staticfiles %}
+
+{% block title %}Members - {{ block.super }}{% endblock title %}
+
+{% block meta_description %}Members - Dashboard{% endblock meta_description %}
+
+{% block css %}
+{% with marketing=False%}
+{{ block.super }}
+{% endwith %}
+{% endblock css %}
+
+{% block body_class %}{% endblock %}
+{% block body %}
+{% include 'admin_header_fragment.html' with accounts=True %}
+<div class="admin-content-wrap">
+    <div class="block admin">
+        <div class="admin-page-header no-bb">
+            <div class="fl">
+                <h1>Accounts</h1>
+            </div>
+            <div class="fr">
+                {% comment %}
+                <input type="search" placeholder="@TODO: Search" class="dark page-search admin-reveal">
+                <div class="select admin-page-sort dark">
+                    <span class="value">Showing All Accounts</span>
+                    <ul>
+                        <li value="1">All Accounts</li>
+                        <li value="2">Sort</li>
+                        <li value="3">Sort</li>
+                        <li value="4">Sort</li>
+                        <li value="5">Sort</li>
+                    </ul>
+                    <select>
+                        <option value="1">All Accounts</option>
+                        <option value="2">Sort</option>
+                        <option value="3">Sort</option>
+                        <option value="4">Sort</option>
+                        <option value="5">Sort</option>
+                    </select>
+                </div>
+                {% endcomment %}
+                <div class="add-page-item">
+                    <a href="{% url 'admin_accounts_add' %}" class="add-page-item">+ Add New Account</a>
+                </div>
+            </div>
+            <div class="fr">
+                <form action="." method="GET">
+                    <input type="search" placeholder="Search" class="dark page-search admin-reveal fl" name="s">
+                </form>
+            </div>
+        </div>
+        <div class="control-row">
+            {% comment %}
+            <div class="filters">
+                <span class="filter">A-C</span>
+                <span class="filter">D-F</span>
+                <span class="filter">G-I</span>
+                <span class="filter">J-L</span>
+                <span class="filter">M-O</span>
+                <span class="filter">P-R</span>
+                <span class="filter">S-U</span>
+                <span class="filter">V-X</span>
+                <span class="filter">Y-Z</span>
+                <span>|</span>
+                <span class="filter">ALL</span>
+            </div>
+            {% endcomment %}
+
+        </div>
+    </div>
+
+    <table class="admin-table">
+        <thead>
+            <tr>
+                <th>Account Name</th>
+                <th>Account Level</th>
+                <th>Primary Contact</th>
+                <th>Primary #</th>
+                <th>Email</th>
+                <th>Founder</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for account in sorted_accounts %}
+            {% with primary_user=account.primary_user %}
+            <tr class="link-row" href="{% url 'admin_account' account.pk %}">
+                <td class="account-name-cell"><b>{{ account.account_name }}</b></td>
+                <td>{% if account.is_corporate %}Corporate ({{ account.member_count }}/{{ account.pass_count }}){% else %}{{ account.plan.name }}{% endif %}</td>
+                <td>{{ primary_user.get_full_name }}</td>
+                <td class="contact">{{ primary_user.user_profile.phone }}</td>
+                <td class="email-cell contact"><a href="mailto:{{ primary_user.email }}" class="underline-link">{{ primary_user.email }}</a></td>
+                <td class="founder-cell">{% if account.founder %}<figure class="check-green-sm"></figure>{% endif %}</td>
+            </tr>
+            {% endwith %}
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+{% endblock body %}

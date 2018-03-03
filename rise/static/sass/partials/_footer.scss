@@ -1,0 +1,243 @@
+//**FOOTER**//
+
+.footer {
+  @include gotham-family;
+  clear: both;
+  background: $runway;
+  border-bottom: 0px;
+  color: $footertext;
+  min-height: 275px;
+  padding: 50px 0px;
+  text-align: center;
+  .content-wrap {
+    margin: 0px auto;
+    width: 80%;
+  }
+
+  a {
+    color: $footerlink;
+  }
+
+  p {
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: $footerp;
+    &.legal {
+      color: rgba(119, 136, 136, 0.4);
+      font-size: 11px;
+      font-weight: 300;
+      margin: 30px auto 0;
+      letter-spacing: 0;
+      line-height: 16px;
+      padding: 0 20px;
+      text-transform: none;
+      width: 100%;
+    }
+  }
+
+  ul li p {
+    line-height: 10px;
+  }
+
+  ul {
+    margin: 0;
+  }
+
+  ul.footer-info {
+    padding: 0px;
+    @include clearfix;
+    li {
+      padding: 0px;
+      position: relative;
+      text-align: center;
+      margin: 0 auto 20px auto;
+      a {
+        color: $footerlink;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        &:hover p {
+          opacity: .6;
+        }
+        p {
+          font-weight: 700;
+          color: $footerlink;
+        }
+      }
+    }
+  }
+
+  ul.rise-footer-nav {
+    margin: 0 auto;
+    display: none;
+    li {
+      width: 33.3333%;
+      display: inline;
+    }
+    #footer-logo {
+      margin-top: 50px;
+    }
+    span.travel-better {
+      color: white;
+      font-size: 12px;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+    @media screen and (min-width: 768px) {
+        display: block;
+    }
+  }
+
+  #footer-logo {
+    margin-top: 10px;
+    width: 100px;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  form {
+    margin: 0px auto 80px;
+    max-width: 600px;
+    text-align: center;
+    p {
+      color: white;
+      letter-spacing: 1px;
+      font-size: 16px;
+      font-weight: 300;
+      margin-bottom: 50px;
+      text-align: center;
+      text-transform: none;
+      width: 100%;
+    }
+  }
+
+  input[type="email"] {
+    @include mobelux-placeholder($footertext);
+    background: rgba(0,0,0,0.14);
+    border: 0px;
+    color: $footerlink;
+    display: inline-block;
+    max-width: 465px;
+  }
+
+  button {
+    display: inline-block;
+    margin: 15px 0;
+    width: 100%;
+  }
+
+  .button {
+    &:hover {
+      background: #106444;
+    }
+  }
+
+  .button h3 {
+    font-size: 12px;
+    margin: 0px auto 0px !important;
+    width: initial !important;
+  }
+
+  .error-message {
+    background: url(../img/pattern-lines-white.png);
+    background-size: 24px 24px;
+    display: none;
+    font-weight: 300;
+    //display: none;
+  }
+
+  .form-success {
+    @extend .error-message;
+    background: url(../img/pattern-lines-green.png);
+    background-size: 24px 24px;
+    color: $land;
+  }
+  .mobile-break {
+    display: block;
+  }
+
+}
+
+.desktop-comma {
+  display: none;
+}
+
+////////\\\\ Desktop Breakpoint
+@media screen and (min-width: 769px) {
+  .footer {
+    text-align: initial;
+    form {
+      width: 80%;
+    }
+    ul.footer-info {
+      @include clearfix;
+      width: 55%;
+      float: left;
+      border-right: 1px solid $footerlink;
+      li {
+        display: inline-block;
+        text-align: left;
+        float: left;
+        margin-bottom: 0;
+        white-space: nowrap;
+        &:first-child {
+          width: 40%;
+        }
+        &:last-child {
+          width: 60%;
+        }
+      }
+    }
+    ul.rise-footer-nav {
+      width: 45%;
+      float: right;
+      li {
+        padding-right: 0;
+        float: left;
+        white-space: nowrap;
+        &:first-child,
+        &:nth-child(2) {
+          width: 20%;
+        }
+        &:nth-child(3) {
+          @include calc('width', '100% - 40%');
+        }
+        &:first-child {
+          padding-left: 25px;
+        }
+      }
+      #footer-logo {
+        margin-top: 12px;
+      }
+      p a {
+        font-weight: 500;
+      }
+    }
+    p.legal {
+      margin: 30px 0 0 0;
+      padding: initial;
+      width: 57%;
+    }
+    p.phone{
+        margin-top: 2px;
+    }
+    button {
+        border-radius: 0;
+        height: 60px;
+        width: 130px;
+    }
+    br {
+        display: none;
+    }
+    form {
+        margin-bottom: 20px;
+    }
+    .mobile-break {
+      display: none;
+    }
+  }
+  .desktop-comma { display: initial; }
+}

@@ -1,0 +1,19 @@
+{% extends 'emails/base.txt' %}
+
+{% block content %}Welcome to Rise!
+We are excited to have you flying with us, and look forward to serving you soon.
+
+RISE FLIGHT SCHEDULE
+Click http://{{ WP_URL }}/schedule/, to view the Rise schedule that has been designed with you, our member, in mind.  If you don't see the flight you need, let us know (support@iflyrise.com). We'll be continuing to add more flights as we continue to sign up new members.  Refer (https://www.iflyrise.com/refer/) others that you would like to have fly with you, and we will add companion passes to your Rise profile!
+
+IFLYRISE.COM IS READY FOR YOUR PROFILE INPUT
+To reach a Rise Consultant at any time, call (844) 359-7473 or email members@iflyrise.com
+
+Click the link below to personalize your Rise account, and to start booking flights right away.
+
+Travel Better,
+
+The Rise Team
+
+{{ protocol }}://{{ site.domain }}{{ user.generate_register_login_url }}
+{% endblock content %}

@@ -1,0 +1,70 @@
+{% extends 'base_admin.html' %}
+
+{% load staticfiles %}
+
+{% block title %}Dashboard - List Routes{% endblock title %}
+
+{% block meta_description %}Dashboard - List Routes{% endblock meta_description %}
+
+{% block body_class %}{% endblock %}
+{% block body %}
+{% include 'admin_header_fragment.html' with nav_routes=True %}
+<div class="admin-content-wrap admin-form-page">
+    <div style="display: inline-block">
+        <h1>Routes<h1>
+    </div>
+
+    <form action="{% url 'admin_routes_select_flights' %}" method="POST">
+        {% csrf_token %}
+
+        {% if form.errors %}
+            <div class="error-message">
+            {% for field, errors in form.errors.items %}
+            {% for error in errors %}
+              {{ error }}<br/>
+            {% endfor %}
+            {% endfor %}
+            </div>
+        {% endif %}
+
+        {% for day in day_range %}
+            <div class="control-row">
+                <div class="section-label admin">{{ day|date:"l, d F, Y" }}</div>
+            </div>
+            {% if day.day_route_times %}
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Flight Number</th>
+                            <th>Origin</th>
+                            <th></th>
+                            <th>Destination</th>
+                            <th>Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for proposed_flight in day.day_route_times %}
+                    <tr>
+                        <td><input type="checkbox" name="selected_flights" value="{{ proposed_flight.id }}|{{ day.year }}|{{ day.month }}|{{ day.day }}" checked></td>
+                        <td>{{ proposed_flight.flight_number }}</td>
+                        <td>{{ proposed_flight.route.origin }}</td>
+                        <td><figure class="flight-arrow-right-green spacer"></figure></td>
+                        <td>{{ proposed_flight.route.destination }}</td>
+                        <td>{{ proposed_flight.departure|time:"h:i A" }}</td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <h5>No Route Times for {{ day|date:"l" }}</h5>
+            {% endif %}
+            <hr>
+        {% endfor %}
+        <div class="center">
+            <button type="submit" class="green">Generate Selected Flights</button>
+        </div>
+    </form>
+</div>
+
+{% endblock body %}

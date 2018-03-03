@@ -1,0 +1,34 @@
+ul.companions {
+  .block.companion {
+    label {
+      margin-top: 0;
+    }
+  }
+  .expandable-height.expanded {
+    margin: 10px 0 0 0;
+  }
+}
+
+form.member-add-delete {
+    margin-left: 5px;
+}
+
+.caption.member {
+    p {
+        color: $sky;
+        line-height: 19px;
+        strong {
+            color: $runway;
+        }
+    }
+}
+
+
+ul.members {
+    li.block.row:first-child {
+        border-top: 0;
+    }
+    .actionable-row .left-side {
+        max-width: 225px;
+    }
+}

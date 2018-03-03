@@ -1,0 +1,56 @@
+{% extends 'base_admin.html' %}
+
+{% load humanize %}
+
+{% block title %}{{ block.super }} - Flight Reservations{% endblock %}
+
+{% block body %}
+    {% include 'admin_header_fragment.html' with accounts=True %}
+    <div class="admin-content-wrap">
+
+        <div class="block admin no-pb">
+            <div class="admin-page-header no-bb">
+                <div class="fl">
+                    <h1>{{ account.account_name }} Flight Reservations</h1>
+                </div>
+            </div>
+            {% comment %}
+            TODO: ADMIN ADD FLIGHT RESERVATION FOR ACCOUNT
+            <div class="control-row">
+                <div class="add-page-item">
+                    <a href="{% url 'admin_account_charges_add' account.pk %}" class="add-page-item">+ Add New Flight Reservation</a>
+                </div>
+            </div>
+            {% endcomment %}
+        </div>
+
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Flight</th>
+                    <th>Origin</th>
+                    <th>Destination</th>
+                    <th>Passengers</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for flight_reservation in flightreservation_list %}
+                <tr class="link_row" href="{% url 'admin_flight_reservation' flight_reservation.id %}">
+                    <td><a href="{% url 'admin_flight_reservation' flight_reservation.id %}">{{ flight_reservation.flight.flight_number }}</a></td>
+                    <td>{{ flight_reservation.flight.origin.code|upper }} {{ flight_reservation.flight.local_departure|date:"m/d/Y H:i A" }}</td>
+                    <td>{{ flight_reservation.flight.destination.code|upper }} {{ flight_reservation.flight.local_arrival|date:"m/d/Y H:i A" }}</td>
+                    <td>
+                        {% for passenger in flight_reservation.all_passengers %}
+                            {{ passenger.userprofile.last_name }}, {{ passenger.userprofile.first_name|slice:":1" }}{% if not forloop.last %}; {% endif %}
+                        {% endfor %}
+                    </td>
+                    <td>{{ flight_reservation.get_status_display }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+
+{% endblock body %}

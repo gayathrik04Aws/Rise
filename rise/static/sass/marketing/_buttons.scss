@@ -1,0 +1,12 @@
+button, .button {
+    &.grey {
+        background-color: $grey2;
+        color: $runway;
+        font-size: 10px;
+        font-weight:  500;
+        letter-spacing: 2px;
+        &:hover {
+            color: initial;
+        }
+    }
+}

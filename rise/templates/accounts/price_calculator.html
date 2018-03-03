@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% load staticfiles %}
+{% load safe_settings %}
+
+{% block title %}Pricing Calculator - {{ block.super }}{% endblock title %}
+
+{% block css %}
+{% with marketing=False%}
+{{ block.super }}
+{% endwith %}
+{% endblock css %}
+
+{% block body_class %}{% endblock %}
+{% block body %}
+{% include 'account_profile/dashboard_nav.html' %}
+<div class="section price-calculator">
+  <div class="content-wrap">
+    <form action="." method="POST" id="sign-up" style="padding:0;text-align:center;">
+        {% csrf_token %}
+
+        {% if form.errors %}
+        <div class="error-message">
+        {% for field, errors in form.errors.items %}
+        {% for error in errors %}
+          {{ error }}<br/>
+        {% endfor %}
+        {% endfor %}
+        </div>
+        {% endif %}
+
+        <h1>Price Calculator</h1>
+        <p class="tagline">The Rise Corporate Membership program price depends on the number of employees you want to have Rise membership privileges and the total number of reservations your company will need at any one time. The sliders below allow you to select the number of members and reservations you need to configure the program that’s best for your company.
+        </p>
+        <h2 class="info-header">Number of Members</h2>
+        <div class="range-wrap">
+            <output class="output"></output>
+            <span class="min">0</span>
+            <input type="range" min="2" max="51" step="1" value="2" name="{{ form.num_members.html_name }}" id="num-members">
+            <span class="max">50</span>
+        </div>
+        <h2 class="info-header">Number of Available Reservations</h2>
+        <div class='range-wrap'>
+            <output class="output"></output>
+            <span class="min">0</span>
+            <input type="range" min="4" max="50" step="2" value="2" name="{{ form.num_seats.html_name }}" id="num-seats">
+            <span class="max">50</span>
+        </div>
+
+        <h2 id="calculator-results" class="info-header">$<span>3,700</span></h2>
+        <h3>Per Month</h3>
+        <p id="calculator-deposit">One-time deposit amount: $<span class="deposit-amount">1,500</span> +
+            <span class="deposit-tax">{% settings_value "DEPOSIT_TAX_PERCENT" %}</span> sales tax</p>
+        <button class="button green">Great, Sign Me Up!</button>&nbsp; &nbsp; &nbsp;<a id="learn_more_button" class="button grey" href="#">Learn More</a>
+    </form>
+
+<a href="{{ WP_URL }}" class="">
+    <h3 class="small">&#9664; Return To Home</h3>
+</a>
+  </div>
+</div>
+
+<div id="learn_more_modal" class="modal-wrapper" style="display: none; z-index: 10000; opacity: 1;">
+    <div class="modal center">
+        <figure class="x-grey-lg"></figure>
+        <h1>Contact Us</h1>
+        <p>Call <a href="tel:844-359-7473">844 359 7473</a></p>
+        <p>Email <a href="mailto:info@iflyrise.com" target="_blank">info@iflyrise.com</a></p>
+        <a href="" class="dismiss action-block grey condensed">Okay, got it<figure class="arrow-right-grey"></figure></a>
+    </div>
+</div>
+
+{% endblock body %}
+{% block javascript %}
+    {{ block.super }}
+    <script src="{% static 'js/rangeslider.min.js' %}"></script>
+{% endblock javascript %}

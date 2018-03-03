@@ -1,0 +1,5 @@
+{% autoescape off %}http://ifllyrise.com: Invitation Request
+
+{{ name }} has requested more invites for joining Rise.
+
+{% endautoescape %}

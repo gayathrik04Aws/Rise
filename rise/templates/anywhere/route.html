@@ -1,0 +1,103 @@
+{% extends 'anywhere/base.html' %}
+{% load rise_utils %}
+{% load account_tags %}
+{% load staticfiles %}
+
+{% block javascript %}
+    {{ block.super }}
+<script src="{% static 'js/anywhere_flights.js' %}"></script>
+{% endblock %}
+{% block booking-nav %}
+    {% include 'reservations/book/anywhere_booking_nav.html' %}
+{% endblock %}
+
+    {% block simple_content %}
+        {% if not user|anywhere_basic and go_anywhere_link %}
+        <div class="route-page">
+             {% if object == None %}
+                <div class="top-text booking">
+                    <h1>CREATE A FLIGHT</h1>
+                    <p>The power is yours. </p>
+                    <p>Create a flight that meets your needs and <br>then keep it to yourself or share it with others<br> to lower the cost.</p>
+                </div>
+            {% endif %}
+
+
+
+            <form method="POST" action="" class="create-anywhere">
+                {% csrf_token %}
+
+                {% if form.errors %}
+                    <span class="error-inline">
+                        {% for field, errors in form.errors.items %}
+                            {% for error in errors %}
+                                {% if field == '__all__' %}
+                                    {{ error }}<br/><br/>
+                                {% endif %}
+                            {% endfor %}
+                        {% endfor %}
+                    </span>
+                {% endif %}
+
+                <div class="fields is-rt">
+                    {{ form.is_round_trip.label_tag }}
+                     {% if form.is_round_trip.errors %}
+                         <span class="error-inline">
+                         {{ form.is_round_trip.errors }}</span>
+                     {% endif %}
+
+                    {{ form.is_round_trip }}
+                </div>
+
+
+                <div class="fields seats">
+                    <label for="id_seats">Spots you need?</label>
+                    {{ form.seats.errors }}
+                    {{ form.seats }}
+                </div>
+
+
+                <div class="fields origin-city">
+                    {{ form.origin_city.label_tag }}
+                     {% if form.origin_city.errors %}
+                         <span class="error-inline-city">
+                         {{ form.origin_city.errors }}</span>
+                     {% endif %}
+                    {{ form.origin_city }}
+                </div>
+
+                <div class="fields destination-city">
+                    {{ form.destination_city.label_tag }}
+                    {% if form.destination_city.errors %}
+                         <span class="error-inline-city">
+                         {{ form.destination_city.errors }}</span>
+                     {% endif %}
+                    {{ form.destination_city }}
+                </div>
+
+
+
+
+                <button class="button anywhere-blue med" type="submit">Choose Your Dates</button>
+            </form>
+            <hr>
+            {% elif user|anywhere_basic and not user|anywhere_plus%} {# They may have upgraded but pending ACH  #}
+              {% include 'anywhere/upgrade_anywhere.html' %}
+        {% endif %}
+            <div class="top-text bottom">
+                <h1>JOIN A FLIGHT</h1>
+                <p>Jump on-board an available RISE ANYWHERE flight.</p>
+{#                <a href="{% url 'learn_anywhere' %}">LEARN MORE</a>#}
+            </div>
+
+            <div class="block row route-page-flights" id="available-flights">
+                <div class="interstitial header">
+                    <span class="white">Available Flights</span>
+                </div>
+                <div class="flights-list" id="flightset_table"><!--DO NOT REMOVE THE ID - NEEDED FOR JAVASCRIPT PAGER //-->
+                    {% include "anywhere/available_flights.html" %}
+                </div>
+            </div>
+
+         </div>
+    {% endblock %}

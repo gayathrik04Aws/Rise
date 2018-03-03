@@ -1,0 +1,77 @@
+.avatar-grid {
+  text-align: center;
+  max-width: 1040px;
+  margin: auto;
+  .circle {
+    cursor: pointer;
+    margin: 0;
+  }
+  ul {
+    font-size: 0;
+  }
+  li {
+    display: inline-block;
+    margin: 15px 0;
+    text-align: center;
+    vertical-align: top;
+    width: 100%;
+  }
+  h4 {
+    margin: 0;
+  }
+  p {
+    margin: 0;
+  }
+}
+
+@media screen and (min-width: 300px) {
+  .avatar-grid {
+    li {
+      width: 50%;
+    }
+  }
+  .surname, .company {
+    display: none;
+  }
+}
+@media screen and (min-width: 480px) {
+  .avatar-grid {
+    li {
+      width: 33%;
+    }
+  }
+}
+
+
+@media screen and (min-width: 768px) {
+  .avatar-grid {
+    .surname, .company {
+      display: initial;
+    }
+    .badge-wrap {
+      margin-bottom: 10px;
+    }
+    .badge-wrap .badge-wrap {
+      height: 30px;
+    }
+    .badge-wrap .circle {
+      margin: 0;
+    }
+    .remove-companion {
+      display: none
+    }
+    .companion .badge-wrap:hover {
+      .remove-companion {
+        display: block;
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .avatar-grid {
+    li {
+      width: 20%;
+    }
+  }
+}

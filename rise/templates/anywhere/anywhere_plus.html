@@ -1,0 +1,26 @@
+{% extends 'anywhere/base.html' %}
+
+
+{% block simple_content_header %}
+<div class="anywhere-header">Upgrade your RISE ANYWHERE Membership</div>
+{% endblock %}
+
+{% block simple_content %}
+    <div class="top-text">
+        <h1>Upgrade your RISE ANYWHERE Membership</h1>
+        <p>For only $79 per month, you can request flights to anywhere RISE flies, when you want to go, and share them with others to lower the per-spot cost.</p>
+        <p><i>Your spot and other spots on the flights you request will be billed to your payment method when the flight is confirmed.</i></p>
+    </div>
+
+     <form action="." method="POST" id="upgrade-anywhere-plus-form" class="fullscreen">
+        {% csrf_token %}
+
+          <label class="check-radio-block">
+              {{ form.cancellation }}<span>I understand that my payment method will be billed $79 now and on this day of every month until I cancel.  I understand that if I cancel, that cancellation will take effect on the next billing cycle.</span>
+
+            </label>
+         <div id="upgrade_buttons" class="block center">
+          <button  type="submit">Upgrade Now!</button>
+        </div>
+    </form>
+{% endblock %}

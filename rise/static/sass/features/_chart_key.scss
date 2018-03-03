@@ -1,0 +1,44 @@
+.mobile-chart-key, .mobile-actions {
+  background-color: #ffffff;
+  display: none;
+  height: 100%;
+  left: 0;
+  opacity: 0;
+  overflow: scroll;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 10000;
+  &.show {
+    opacity: 1;
+  }
+}
+
+.chart-key-desktop {
+  display: none;
+  .key-item {
+    border-left: 1px solid $grey2;
+    display: inline-block;
+    padding: 15px 45px;
+    &:first-child {
+      border: 0;
+    }
+  }
+  .question {
+    cursor: pointer;
+    display: inline-block;
+    margin: 0 15px;
+    position: relative;
+    vertical-align: middle;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .chart-key-desktop {
+    display: block;
+  }
+
+  button.inline.toggle-chart-key, .toggle-chart-key {
+    display: none;
+  }
+}

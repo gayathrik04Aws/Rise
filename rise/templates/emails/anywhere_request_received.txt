@@ -1,0 +1,34 @@
+{% extends 'emails/base.txt' %}
+
+{% block content %}RISE ANYWHERE Flight Request Received
+
+We have received your RISE ANYWHERE flight request and are working to fulfill it.
+
+{{creator_name}} and {{ passengers }} passengers
+{% if sharing == 'PRIVATE' %}
+You have chosen to book the entire aircraft for your flight.
+{% elif sharing == 'PUBLIC' %}
+Once approved, we'll notify you and post it to the RISE ANYWHERE portal so other members can view and book it.  You can also share the flight with your contacts.  Please let those you invite know whether or not you wish for them to share the link with others.
+{% else %}
+Once approved, we'll notify you and send you a link so you can invite others to join.  The flight will only be viewable by you and those who receive the link. Please let those you invite know whether or not you wish for them to share the link with others.
+{% endif %}
+
+Flight Details
+
+Departing | {{depart_date|date:"M d, Y"}}
+
+{{ origin.name }}, {{ origin.state }} to {{ destination.name }}, {{ destination.state }}
+{{ depart_when}}
+
+{% if is_roundtrip %}
+Returning | {{return_date|date:"M d, Y"}}
+{{ destination.name }}, {{ destination.state }} to {{ origin.name }}, {{ origin.state }}
+{{ return_when}}
+
+{% endif %}
+
+Estimated Cost:
+${{ your_estimated_total|floatformat:0 }}
+
+{{ protocol }}://{{ site.domain }}{% url 'anywhere_index' %}
+{% endblock content %}

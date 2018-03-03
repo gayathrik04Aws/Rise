@@ -1,0 +1,146 @@
+{% extends 'base_admin.html' %}
+
+{% load staticfiles %}
+{% load flight_tags %}
+
+{% block title %}Dashboard - {% if routetime %}Update{% else %}Create{% endif %} Route Time{% endblock title %}
+
+{% block meta_description %}Dashboard - {% if routetime %}Update{% else %}Create{% endif %} Route Time{% endblock meta_description %}
+
+{% block body_class %}{% endblock %}
+{% block body %}
+{% include 'admin_header_fragment.html' with nav_routes=True %}
+<div class="admin-content-wrap admin-form-page">
+    <div class="block admin no-pb">
+        <div class="admin-page-header no-bb">
+            <h1>{% if routetime %}Update{% else %}Add New{% endif %} Route Time</h1>
+        </div>
+        {% if routetime %}
+        <div class="control-row">
+            <div class="add-page-item">
+                <a href="{% url 'admin_delete_routetime' routetime.route_id routetime.id %}">Delete Route Time</a>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    {% if form.errors %}
+    <div class="error-message">
+    {% for field, errors in form.errors.items %}
+    {% for error in errors %}
+      {{ error }}<br/>
+    {% endfor %}
+    {% endfor %}
+    </div>
+    {% endif %}
+
+    <form method="POST" action=".">
+        {% csrf_token %}
+
+        <label for="{{ form.flight_number.auto_id }}">Flight Number</label>
+        <input {% if form.flight_number.errors %}class="error"{% endif %} type="text" name="{{ form.flight_number.html_name }}" value="{{ form.flight_number.value|default:"" }}" placeholder="Flight Number">
+
+        <label for="id_departure">Departure</label>
+        <input class="time-formatter {% if form.departure.errors %}error{% endif %}" type="text" name="{{ form.departure.html_name }}" value="{{ form.departure.value|simple_duration|default:"" }}" placeholder="00:00">
+
+        <div class="select arrow">
+            <span class="value">Select Plane</span>
+            <ul>
+                  {% for value, text in form.plane.field.choices %}
+                  <li value="{{ value }}">{{ text }}</li>
+                  {% endfor %}
+              </ul>
+            {{ form.plane }}
+        </div>
+        <p><label>Select Days of the Week</label></p>
+
+        <label class="check-radio-block" for="id_sunday">
+            <input {% if form.sunday.errors %}class="error"{% endif %} id="id_sunday" name="{{ form.sunday.html_name}}" type="checkbox" {% if form.sunday.value %}checked="checked"{% endif %}>
+            <span>Sunday</span>
+        </label>
+        <label class="check-radio-block" for="id_monday">
+            <input {% if form.monday.errors %}class="error"{% endif %} id="id_monday" name="{{ form.monday.html_name}}" type="checkbox" {% if form.monday.value %}checked="checked"{% endif %}>
+            <span>Monday</span>
+        </label>
+        <label class="check-radio-block" for="id_tuesday">
+            <input {% if form.tuesday.errors %}class="error"{% endif %} id="id_tuesday" name="{{ form.tuesday.html_name}}" type="checkbox" {% if form.tuesday.value %}checked="checked"{% endif %}>
+            <span>Tuesday</span>
+        </label>
+        <label class="check-radio-block" for="id_wednesday">
+            <input {% if form.wednesday.errors %}class="error"{% endif %} id="id_wednesday" name="{{ form.wednesday.html_name}}" type="checkbox" {% if form.wednesday.value %}checked="checked"{% endif %}>
+            <span>Wednesday</span>
+        </label>
+        <label class="check-radio-block" for="id_thursday">
+            <input {% if form.thursday.errors %}class="error"{% endif %} id="id_thursday" name="{{ form.thursday.html_name}}" type="checkbox" {% if form.thursday.value %}checked="checked"{% endif %}>
+            <span>Thursday</span>
+        </label>
+        <label class="check-radio-block" for="id_friday">
+            <input {% if form.friday.errors %}class="error"{% endif %} id="id_friday" name="{{ form.friday.html_name}}" type="checkbox" {% if form.friday.value %}checked="checked"{% endif %}>
+            <span>Friday</span>
+        </label>
+        <label class="check-radio-block" for="id_saturday">
+            <input {% if form.saturday.errors %}class="error"{% endif %} id="id_saturday" name="{{ form.saturday.html_name}}" type="checkbox" {% if form.saturday.value %}checked="checked"{% endif %}>
+            <span>Saturday</span>
+        </label>
+
+        <ul class="maximum-inputs">
+            {# TODO loop through routetimeplanseatrestrictions_set #}
+            <li class="control-row">
+                <span class="">Maximum number<br/> of corporate members<br/> per flight (optional)</span>
+                <input class="fr {% if form.max_seats_corporate.errors %}error{% endif %}" type="text" name="{{ form.max_seats_corporate.html_name }}" value="{{ form.max_seats_corporate.value|default:"" }}" placeholder="Max Corporate Seats">
+            </li>
+            <li class="control-row">
+                <span class="">Maximum number<br/> of companion members<br/> per flight (optional)</span>
+                <input class="fr {% if form.max_seats_companion.errors %}error{% endif %}" type="text" name="{{ form.max_seats_companion.html_name }}" value="{{ form.max_seats_companion.value|default:"" }}" placeholder="Max Companion Seats">
+            </li>
+        </ul>
+
+        <!-- <label for="{{ form.max_seats_corporate.auto_id }}">Max Corporate Seats</label>
+        <input {% if form.max_seats_corporate.errors %}class="error"{% endif %} type="text" name="{{ form.max_seats_corporate.html_name }}" value="{{ form.max_seats_corporate.value|default:"" }}" placeholder="Max Corporate Seats">
+
+        <label for="{{ form.max_seats_companion.auto_id }}">Max Companion Seats</label>
+        <input {% if form.max_seats_companion.errors %}class="error"{% endif %} type="text" name="{{ form.max_seats_companion.html_name }}" value="{{ form.max_seats_companion.value|default:"" }}" placeholder="Max Companion Seats"> -->
+
+        <p><label for="id_account_restriction">Allowed Corporations</label> </p>
+
+        {{ form.account_restriction }}
+        <br>
+
+        {% for plan, plan_check, plan_days in form.plan_fields %}
+        <div class="routetime-plan-restrictions">
+            <div class="revealable">
+                <label class="check-radio-block" for="{{ plan_check.auto_id }}">
+                    <input class="reveal-checkbox {% if plan_check.errors %}error{% endif %}" id="{{ plan_check.auto_id }}" name="{{ plan_check.html_name}}" type="checkbox" {% if plan_check.value %}checked="checked"{% endif %}>
+                    <span>{{ plan.name }}</span>
+                </label>
+                <div class="revealable-block">
+                    <label for="{{ plan_days.auto_id }}">{{ plan.name }} restriction days</label>
+                    <input id="{{ plan_days.auto_id }}" min="0" name="{{ plan_days.html_name }}" value="{{ plan_days.value }}" placeholder="Beginning (i.e. 21 days before, 14 days before, etc.)." type="number">
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+        {% if routetime %}
+            <hr>
+            {{ form.update_flights_start_date.errors }}
+            <span>
+                <label for="update_flights_start_date">Update Flights Start Date</label>
+                <input type="text" placeholder="MM / DD / YEAR" name="{{ form.update_flights_start_date.html_name }}" value="{{ form.update_flights_start_date.value|default:"" }}">
+            </span>
+            <br>
+            <br>
+        {% endif %}
+
+        <hr>
+        <div class="center">
+            <button type="submit" class="green">{% if routetime %}Update{% else %}Create{% endif %} Route Time</button>
+        </div>
+    </form>
+
+    <div class="center">
+        <a href="{% url 'admin_dashboard' %}" class="return-to-profile">◀ Return To Dashboard</a>
+    </div>
+
+</div>
+    {% endblock body %}

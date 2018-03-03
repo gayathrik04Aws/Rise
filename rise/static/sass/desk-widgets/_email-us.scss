@@ -1,0 +1,46 @@
+%submit-button {
+    display: block;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    line-height: 12px;
+    font-size: 10.4px;
+    width: 326px;
+    background: $label_color;
+    border-radius: 3px;
+    margin: 42px auto 0;
+    padding: 22px 15px;
+
+    &:hover {
+        background: darken($label_color, 2%)
+    }
+}
+
+body {
+    background: $light_bg;
+}
+
+.email-widget {
+    &__title {
+        margin-bottom: 21px;
+    }
+
+    &__input--text input.default, &__input--text textarea  {
+        background: $white;
+    }
+
+    &.confirmation {
+        .email-widget__note {
+            line-height: 1.618;
+            width: 360px;
+            margin: 0 auto 42px;
+        }
+
+        .email-widget__input--submit {
+            @extend %submit-button;
+            cursor: pointer;
+            color: $white;
+            text-align: center;
+            margin: 0 auto;
+        }
+    }
+}

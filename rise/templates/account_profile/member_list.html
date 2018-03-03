@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% load staticfiles %}
+
+{% block title %}Members - {{ block.super }}{% endblock title %}
+
+{% block meta_description %}Members - Manage{% endblock meta_description %}
+
+{% block css %}
+{% with marketing=False%}
+{{ block.super }}
+{% endwith %}
+{% endblock css %}
+
+{% block body_class %}{% endblock %}
+{% block body %}
+{% include 'account_profile/dashboard_nav.html' %}
+<div class="section profile-body">
+    {% include 'account_profile/profile-sidenav-mobile.html' with team_members=True %}
+    <div class="content-wrap app-content-wrap no-mt-mobile group">
+    {% include 'account_profile/profile-sidenav.html' with companion=True %}
+    <div class="profile-content-wrap">
+        <div class="detail group">
+            <h1>Team Members</h1>
+            <div class="account-profile-header no-mobile">
+                <p><b>You have {{ user.account.total_flying_members_count }} of {{ user.account.member_count }} paid members signed up.</b> </p><p> All flying members are subject to a one-time fee.</p>
+                {% if not user.account.is_full %}<a href="{% url 'profile_members_add' %}" class="small">Want to add a user?</a>{% endif %}
+            </div>
+            {% comment %}
+            <div class="profile-page-control">
+                <input type="search" placeholder="Search" class="dark reveal">
+                <div class="select dark sort-page-control">
+                    <span class="value">Select</span>
+                    <ul>
+                        <li value="1">Option 1</li>
+                        <li value="2">Option 2</li>
+                        <li value="3">Option 3</li>
+                    </ul>
+                    <select>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                    </select>
+                </div>
+            </div>
+            {% endcomment %}
+            <ul class="members">
+                {% for member in user_list %}
+                    <li class="member group block row">
+                        <div class="actionable-row">
+                            <div class="left-side">
+                                <input type="hidden" value="{{ member.id }}" name="member_id">
+                                <div class="circle mr5">
+                                    <img src="{{ member.avatar_url }}">
+                                </div>
+                                <div class="caption member">
+                                    <p>
+                                        <strong>{{ member.get_full_name }}</strong><br/>
+                                        {% if member.can_fly %}Authorized Member{% endif %}
+                                    </p>
+                                </div>
+                            </div>
+                           <div class="actions">
+                                <figure class="icon-info toggle-expandable"></figure>
+                                 {% comment %}{% if member != user %}<a class="action" href="{% url 'profile_members_delete' member.pk %}"><figure class="icon-trashcan"></figure></a>{% endif %}{% endcomment %}
+                            </div>
+                        </div>
+                        <div class="expandable-height">
+                              <div class="expandable-form">
+                                  <label>Email</label>
+                                  <p>{{ member.email }}</p>
+
+                                  {% if member.userprofile.phone %}
+                                  <label>Phone</label>
+                                  <p>{{ member.userprofile.phone }}</p>
+                                  {% endif %}
+
+                                  {% if member.userprofile.mobile_phone %}
+                                  <label>Mobile Phone</label>
+                                  <p>{{ member.userprofile.mobile_phone }}</p>
+                                  {% endif %}
+
+                                  <label>DOB</label>
+                                  <p>{{ member.userprofile.date_of_birth|date:"m d Y" }}</p>
+
+                                  {% if member.userprofile.billing_address %}
+                                  <label>Address</label>
+                                  <p>
+                                      {{ member.userprofile.billing_address.street_1 }}<br>
+                                      {% if member.userprofile.billing_address.street_2 %}{{ member.userprofile.billing_address.street_2 }}<br/>{% endif %}
+                                      {{ member.userprofile.billing_address.city }}, {{ member.userprofile.billing_address.state }} {{ member.userprofile.billing_address.postal_code }}
+                                  </p>
+                                  {% endif %}
+
+                                  {% if member.userprofile.shipping_address %}
+                                  <label>Address</label>
+                                  <p>
+                                      {{ member.userprofile.shipping_address.street_1 }}<br>
+                                      {% if member.userprofile.shipping_address.street_2 %}{{ member.userprofile.shipping_address.street_2 }}<br/>{% endif %}
+                                      {{ member.userprofile.shipping_address.city }}, {{ member.userprofile.shipping_address.state }} {{ member.userprofile.shipping_address.postal_code }}
+                                  </p>
+                                  {% endif %}
+
+                                    <hr>
+
+                                    <div class="permissions-quick-edit cf">
+                                        <form class="" action="{% url 'profile_members_update_permissions' pk=member.pk %}" method="POST">
+                                            {% csrf_token %}
+                                            <label for="can_fly" class="check-radio-block permission-change">
+                                               {% comment %} <input type="checkbox" disabled="disabled" name="can_fly" value="1" {% if member.can_fly %}checked{% endif %}> {% endcomment %}
+                                                <span>Can fly: {% if member.can_fly %}Yes{% else %}No{% endif %}</span>
+                                            </label>
+                                            <label for="can_create_itineraries" class="check-radio-block permission-change">
+                                                <input type="checkbox" name="can_create_itineraries" value="1" {% if member.can_create_itineraries %}checked{% endif %}> <span>Can create itineraries that cost money</span>
+                                            </label>
+                                            <label for="can_book_promo_flights" class="check-radio-block permission-change">
+                                                <input type="checkbox" name="can_book_promo_flights" value="1" {% if member.can_book_promo_flights %}checked{% endif %}> <span>Can book Fun Flights</span>
+                                            </label>
+                                            <label for="can_manage_companions" class="check-radio-block permission-change">
+                                                <input type="checkbox" name="can_manage_companions" value="1" {% if member.can_manage_companions %}checked{% endif %}> <span>Can Manage Companions</span>
+                                            </label>
+                                        </form>
+                                    </div>
+
+                                  <div class="">
+                                      <a href="{% url 'profile_members_edit' pk=member.id %}" class="button dark-grey inline">Edit Details</a>
+                                      <a href="{% url 'profile_members_reservations' pk=member.userprofile.id %}" class="button black inline">View Flights</a>
+                                  </div>
+                              </div>
+
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% if user.account.is_full %}
+            <p><b>Your account is full</b>, meaning all the one-time fees you have previously paid have been used by current or past flying members.</p><p>  If you add additional flying members, they will be subject to a one-time fee in addition to any changes to the monthly subscription that may result.</p>
+        {% endif %}
+ <a class="button green" href="{% url 'profile_members_add' %}">Add Team Member</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock body %}
+
+{% block javascript %}
+{{ block.super }}
+<script src="{% static 'js/binaryajax.min.js' %}"></script>
+<script src="{% static 'js/exif.min.js' %}"></script>
+<script src="{% static 'js/profile.js' %}"></script>
+{% endblock javascript %}

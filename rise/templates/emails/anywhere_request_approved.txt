@@ -1,0 +1,52 @@
+{% extends 'emails/base.txt' %}
+
+{% block content %}RISE ANYWHERE Flight Request Approved
+
+Congratulations! Your RISE ANYWHERE flight request to {{ leg1.destination.name }} on {{leg1.departure|date:"d M Y"}} has been approved and is now available for booking.
+
+Click here to view your flight details and share with your network: {{ protocol }}://{{ site.domain }}{% url 'anywhere_flight_info' public_key %}
+
+Departing | {{leg1.departure|date:"d M Y"}}
+
+Origin
+{{ leg1.origin.name }}, {{ leg1.origin.state }}
+{{ leg1.local_departure_time_display}} {{ leg1.origin.get_timezone_display }}
+
+{{ leg1.duration}} MIN
+
+Destination
+{{ leg1.destination.name }}, {{ leg1.destination.state }}
+{{ leg1.local_arrival_time_display}} {{ leg1.destination.get_timezone_display }}
+
+{% if leg2 != None %}
+Returning | {{leg2.departure|date:"d M Y"}}
+
+Origin
+{{ leg2.origin.name }}, {{ leg2.origin.state }}
+{{ leg2.local_departure_time_display}} {{ leg2.origin.get_timezone_display }}
+
+{{ leg2.duration}} MIN
+
+Destination
+{{ leg2.destination.name }}, {{ leg2.destination.state }}
+{{ leg2.local_arrival_time_display}} {{ leg2.destination.get_timezone_display }}
+
+{% endif %}
+
+Spots: {{ seats }}
+Full flight cost ${{ total_cost|floatformat:0 }}
+Your cost (for {{seats}} passenger{{seats|pluralize}}) ${{ your_cost|floatformat:0 }}
+Tax $ {{ your_tax|floatformat:0 }}
+Your total ${{ your_total|floatformat:0 }}
+
+A hold may be placed on your account for the amount of your cost.  You will not be charged until the flight is confirmed.
+
+{{ seats_required }} spots must be filled for the flight to confirm at a price of {{ cost_per_seat }} per spot.
+
+{% if seats_required < total_seats %}
+If more spots sell, the price per spot will go down.
+{% endif %}
+
+Plans change.  We're here to help.  Call 844-766-8313 to speak to a RISE representative.
+{{ protocol }}://{{ site.domain }}{% url 'anywhere_flight_info' public_key %}
+{% endblock content %}

@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block title %}Personal Info - {{ block.super }}{% endblock title %}
+
+{% block css %}
+{% with marketing=False%}
+{{ block.super }}
+{% endwith %}
+{% endblock css %}
+
+{% block meta_description %}Personal Info - Manage Account{% endblock meta_description %}
+
+{% block body_class %}{% endblock %}
+{% block body %}
+{% include 'account_profile/dashboard_nav.html' %}
+<div class="section profile-body">
+        {% include 'account_profile/profile-sidenav-mobile.html' %}
+    <div class="content-wrap app-content-wrap no-mt-mobile edit group">
+        {% include 'account_profile/profile-sidenav.html' with personal=True %}
+    <div class="profile-content-wrap">
+      <div class="detail group">
+        <h1>Personal Info</h1>
+        <h2><span class="name">{{ user.get_full_name }}</span> / {{ user.user_profile.title }}</h2>
+        *** Is this view necessary? **
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock body %}
+
+{% block javascript %}
+    {{ block.super }}
+    <script src="{% static 'js/binaryajax.min.js' %}"></script>
+    <script src="{% static 'js/exif.min.js' %}"></script>
+    <script src="{% static 'js/profile.js' %}"></script>
+{% endblock javascript %}

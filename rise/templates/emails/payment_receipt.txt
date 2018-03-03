@@ -1,0 +1,13 @@
+{% extends 'emails/base.txt' %}
+
+{% block content %}Payment Received
+
+We have received your payment of ${{ charge.amount|floatformat:2 }} on {{ charge.created|date:"M d, Y" }}.
+
+
+
+{{ charge.description }} - ${{ charge.amount|floatformat:2 }}
+
+TOTAL: ${{ charge.amount|floatformat:2 }}
+
+{% endblock content %}

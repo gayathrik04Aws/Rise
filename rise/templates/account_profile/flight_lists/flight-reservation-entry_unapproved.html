@@ -1,0 +1,47 @@
+    
+
+<!-- fre is short for 'flight reservation entry' -->
+<!-- unapproved_reservation_entry is passed in as a variable in the include declaration -->
+{% if unapproved_reservation_entry %}
+    <div class="member-row link-row reservation-row mobile fadeIn fre-mobile fre-unapproved" data-member="{{ unapproved_reservation_entry.created_by.pk}}">
+        <div class="member-wrap member-details">
+            <span class="member-name-cell">
+                <span class="fre-detail">{{ unapproved_reservation_entry.created_by.get_full_name }}</span>
+            </span>
+
+            <div class="member-details-row riseapp-row">
+                <div class="col-xs-4">
+                    <span class="orig-dest-cell t-gothic">
+                        <div class="caption">
+                            <h5>Origin</h5>
+                            <h1>{{ unapproved_reservation_entry.origin_city.code}}</h1>
+                        </div>
+                        <div class="oneway-or-rt">
+                            <figure class="flight-arrow-right-green spacer"></figure>
+                        </div>
+                        <div class="caption">
+                            <h5>Destination</h5>
+                            <h1>{{ unapproved_reservation_entry.destination_city.code }}</h1>
+                        </div>
+                    </span>
+                </div>
+                <div class="col-xs-4">
+                    <span class="flight-no-cell t-gothic sky">
+                        <span class="fre-detail">Spots I Need</span>: <span class="fre-descriptor">{{ unapproved_reservation_entry.seats }}</span><br>
+                        <span class="fre-detail">Spots To Confirm</span>: <span class="fre-descriptor">{{ unapproved_reservation_entry.seats_required }}</span>
+                    </span>
+                </div>
+                <div class="col-xs-4">
+                    <span class="date-time-cell t-gothic sky upper">
+                        {% if unapproved_reservation_entry.is_round_trip %}
+                          {{ unapproved_reservation_entry.depart_date|date:"M d" }} {{ unapproved_reservation_entry.depart_when }}  - {{ unapproved_reservation_entry.return_date|date:"M d, Y" }} {{ unapproved_reservation_entry.return_when }} (ROUND TRIP)
+                        {%  else %}
+                            {{ unapproved_reservation_entry.depart_date|date:"M d, Y" }} {{ unapproved_reservation_entry.depart_when }} (ONE WAY)
+                        {% endif %}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}
+

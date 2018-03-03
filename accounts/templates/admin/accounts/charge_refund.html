@@ -1,0 +1,26 @@
+{% extends 'base_admin.html' %}
+
+{% block title %}{{ block.super }} - Add Manual Charge{% endblock %}
+
+{% block body %}
+{% include 'admin_header_fragment.html' with accounts=True %}
+
+<div class="admin-content-wrap admin-form-page">
+    <h1>Refund Charge</h1>
+
+    <form action="." method="POST">
+        {% csrf_token %}
+
+        <label for="{{ form.amount.auto_id }}">Amount</label>
+        {{ form.amount.errors }}
+        {{ form.amount }}
+
+        <label for="{{ form.description.auto_id }}">Description</label>
+        {{ form.description.errors }}
+        {{ form.description }}
+
+        <button type="submit">Refund Charge</button>
+
+    </form>
+</div>
+{% endblock %}

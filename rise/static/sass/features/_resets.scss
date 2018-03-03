@@ -1,0 +1,16 @@
+* {
+  box-sizing: border-box;
+  @include transition(all 0.3s ease-in-out);
+}
+
+ul {
+  padding: 0;
+}
+
+li {
+  list-style: none;
+}
+
+input, select, textarea, button {
+  outline: 0;
+}

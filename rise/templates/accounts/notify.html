@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block title %}Sign Up for Updates - {{ block.super }}{% endblock title %}
+
+{% block meta_description %}Sign up to receive updates related to Rise flight schedules, new flight destinations, membership promotions, and special events.{% endblock meta_description %}
+
+{% block body_class %}registration signup{% endblock body_class %}{% block body %}
+<div class="section">
+    <div class="content-wrap">
+        <div class="center">
+            <a href="/" style="display: inline-block;"><figure class="logo-form"></figure></a>
+        </div>
+        <div class="form white-bg">
+            <div class="section sign-up-section">
+                {% block intro %}
+                <h2>Notify Me of Rise Updates</h2>
+                <p>Sign up to receive updates related to flight schedules, new destinations, promotions and special events. Optionally, you can let us know if you’d like to be notified as soon as we fly to any of the specific cities listed below.</p>
+                {% endblock intro %}
+                <form action="." method="POST" id="updates">
+                    {% csrf_token %}
+
+                    {% if messages %}
+                        {% for message in messages %}
+                        {% if message.level == 20 %}
+                        <div class="form-success">
+                        {% else %}
+                        <div class="error-message">
+                        {% endif %}
+                        {{ message }}
+                        </div>
+                        {% endfor %}
+                    {% endif %}
+
+                    {% if form.errors %}
+                        <div class="error-message">
+                        {% for field, errors in form.errors.items %}
+                        {% for error in errors %}
+                          {{ error }}<br/>
+                        {% endfor %}
+                        {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <fieldset>
+                        <input {% if form.first_name.errors %}class="error"{% endif %} type="text" name="{{ form.first_name.html_name }}" value="{{ form.first_name.value|default:"" }}" placeholder="First Name" id="first-name"></input>
+                        <input {% if form.last_name.errors %}class="error"{% endif %} type="text" name="{{ form.last_name.html_name }}" value="{{ form.last_name.value|default:"" }}" placeholder="Last Name" id="last-name"></input>
+                        <input {% if form.email.errors %}class="error"{% endif %} type="email" name="{{ form.email.html_name }}" value="{{ form.email.value|default:"" }}" placeholder="Email Address" />
+
+                        <h3 class="small">Tell Me When You Fly to These Cities</h3>
+                        <ul class="destinations-form">
+                            {% for city in form.preferred_cities %}<li class="col-3"><span>{{ city }}</span></li>{% endfor %}
+                        </ul>
+                    </fieldset>
+
+                    <div class="center">
+                        <button type="submit" class="button green registration-button">Notify Me</button>
+                    </div>
+                    <p class="legal">By submitting this form you agree Rise is permitted to contact you regarding your membership and general updates. Rise will never sell or rent your information to a third party.</p>
+                </form>
+        </div>
+        </div>
+        <br/>
+        <br/>
+        <div class="block center">
+            <a href="{{ WP_URL }}" class="return"> &#9664; Return to Home</a>
+        </div>
+        <br/>
+        <br/>
+    </div>
+</div>
+{% endblock body %}
+
+{% block analytics %}
+{{ block.super }}
+
+<script type="text/javascript">llfrmid=27325</script>
+<script type="text/javascript" src="https://formalyzer.com/formalyze_init.js"></script>
+<script type="text/javascript" src="https://formalyzer.com/formalyze_call_secure.js"></script>
+
+{% endblock analytics %}

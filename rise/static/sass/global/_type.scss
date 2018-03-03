@@ -1,0 +1,241 @@
+
+$land: #01af70;
+$runway: #132323;
+$grey: #526666;
+$copy-light: #a1b2b2;
+$copy-dark: #768888;
+
+em {
+	
+	font-style: normal;
+}
+/* Gotham A */
+
+h1 {
+	font-family: 'Gotham Ssm A', 'Gotham Ssm B';
+	font-size: 20px;
+	font-weight: 300;
+	line-height: 24px;
+	
+	&.white {
+		
+	}
+	&.caps {
+		text-transform: uppercase;
+		letter-spacing: 2px;
+	}
+	&.condensed {
+		font-family: 'din';
+		&.caps {
+			letter-spacing: 1px;
+		}
+	}
+}
+
+h2 {
+	font-family: 'Gotham Ssm B';
+	font-size: 15px;
+	font-weight: 300;
+	line-height: 18px;
+	
+}
+
+h3 {
+	font-family: 'din';
+	font-size: 15px;
+	font-weight: 700;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	&.grey {
+		
+	}
+}
+
+h4 {
+	font-family: 'din';
+	font-size: 12px;
+	font-weight: 700;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	&.grey {
+		
+	}
+}
+
+h5 {
+	
+	font-family: 'Gotham Ssm A', 'Gotham Ssm B';
+	font-size: 10px;
+	font-weight: 500;
+	line-height: 12px;
+	letter-spacing: 1.5px;
+	text-transform: uppercase;
+	&.green {
+		
+	}
+	&.no-margin {
+		margin: 0;
+	}
+}
+
+p {
+	
+	font-family: 'Gotham Ssm A', 'Gotham Ssm B';
+	font-size: 14px;
+	font-weight: 300;
+	line-height: 17px;
+	&.thick {
+		font-weight: 500;
+	}
+	&.white {
+		
+	}
+	&.grey {
+		
+	}
+}
+
+.nav-counter {
+	font-family: 'Gotham Ssm A', 'Gotham Ssm B';
+	font-size: 20px;
+	font-weight: 300;
+	line-height: 16px;
+	
+}
+
+.small-caps {
+	font-family: 'Gotham Ssm A', 'Gotham Ssm B';
+	font-size: 10px;
+	font-weight: 300;
+	line-height: 16px;
+	letter-spacing: 1.5px;
+	text-transform: uppercase;
+}
+
+.small-caps-m {
+	font-family: 'Gotham Ssm A', 'Gotham Ssm B';
+	font-size: 12px;
+	font-weight: 300;
+	line-height: 16px;
+	letter-spacing: 2.5px;
+	text-transform: uppercase;
+}
+
+.calendar li {
+	font-family: 'Gotham Ssm A', 'Gotham Ssm B';
+	font-size: 21px;
+	font-weight: 300;
+	
+}
+
+.legal {
+	font-family: 'Gotham Ssm A', 'Gotham Ssm B';
+	font-size: 10px;
+	font-weight: 300;
+	line-height: 15px;
+	
+}
+
+/* Tablet Gothic */
+
+.calendar-nav {
+	font-family: 'din';
+	font-size: 20px;
+	font-weight: 700;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	
+}
+
+.small-caps-condensed {
+	font-family: 'din';
+	font-size: 12px;
+	font-weight: 700;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+}
+
+.small-caps-condensed-m {
+	font-family: 'din';
+	font-size: 15px;
+	font-weight: 700;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+}
+
+.small-caps-condensed-l {
+	font-family: 'din';
+	font-size: 17px;
+	font-weight: 700;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+}
+
+.small-caps-condensed-xl {
+	font-family: 'din';
+	font-size: 20px;
+	font-weight: 700;
+	letter-spacing: 1px;
+	line-height: 27px;
+	text-transform: uppercase;
+}
+
+.departure-selected {
+	font-family: 'din';
+	font-size: 50px;
+	font-weight: 700;
+	letter-spacing: 3px;
+	text-transform: uppercase;
+	
+}
+
+.departure-select {
+	font-family: 'din';
+	font-size: 35px;
+	font-weight: 700;
+	letter-spacing: 3px;
+	text-transform: uppercase;
+	line-height: 47px;
+	
+}
+
+.p-modal-error {
+	font-family: 'din';
+	font-size: 20px;
+	font-weight: 100;
+	line-height: 27px;
+}
+
+.alert p, .bubble p{
+	font-family: 'din';
+	font-size: 20px;
+	font-weight: 100;
+	line-height: 27px;
+}
+
+.flight-table {
+	font-family: 'din';
+	font-size: 15px;
+	font-weight: 700;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+}
+
+.table-labels {
+	
+	font-family: 'Gotham Ssm A', 'Gotham Ssm B';
+	font-size: 10px;
+	font-weight: 300;
+	line-height: 16px;
+	letter-spacing: 1.5px;
+}
+
+
+////\\\\ Desktop Breakpoint *************************
+
+@media screen and (min-width: 1024px) {
+	.calendar li {
+		font-size: 42px;
+		font-weight: 300;
+	}
+}

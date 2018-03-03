@@ -1,0 +1,110 @@
+{% extends 'emails/base_anywhere.html' %}
+
+{% block title %}{{ title }}{% endblock title %}
+
+
+{% block body %}
+<table border="0" cellpadding="40" cellspacing="0" width="100%" class="anywhere-email">
+    <tr>
+        <td>
+            <table border="0" cellpadding="20" cellspacing="0" width="100%">
+                <tr>
+                    <td align="center" valign="top" class="bodyContent">
+                        <div>
+                            <p style="margin-bottom: 20px;">{{ user.get_full_name }} has joined a Rise Anywhere flight with a Manual payment method</p>
+                            <p>Please make arrangements for this manual payment.</p>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+
+            <table border="0" cellpadding="4" cellspacing="0" width="100%">
+                <tr>
+                    <td>
+                        <hr />
+                    </td>
+                    <td width="120">
+                        <h3 class="section-header" style="margin: 0;">Flight Details</h3>
+                    </td>
+                    <td>
+                        <hr />
+                    </td>
+                </tr>
+            </table>
+            <table border="0" cellpadding="20" cellspacing="0" width="100%">
+                <tr>
+                    <td>
+                        <h2>Flight {{ flight_reservation.flight.flight_number }} / {{ flight_reservation.flight.local_departure|date:"M d, Y" }}</h2>
+                    </td>
+                </tr>
+            </table>
+
+            <table border="0" cellpadding="20" cellspacing="0" width="100%" class="flightDetails">
+                <tr>
+                    {% for flight_reservation in flight_reservations  %}
+                        <td valign="middle">
+                            <img src="https://cfa084d658b491813884-326c6674e44e477b9197a3210586152e.ssl.cf1.rackcdn.com/emails/cities/{{ flight_reservation.flight.origin.code|lower }}.png" width="70" height="70"  style="max-width:70px;width:100%;height:auto;" alt="{{ flight_reservation.flight.origin.name }}" class="city-code" />
+
+                            <h3 class="all-caps-header">Origin</h3>
+
+                            <h2 class="time">{{ flight_reservation.flight.local_departure_time_display}} {{ flight_reservation.flight.origin.get_timezone_display }}</h2>
+                            <p class="location">{{ flight_reservation.flight.origin.name }}, {{ flight_reservation.flight.origin.state }}</p>
+                        </td>
+                        <td valign="middle">
+                            <div class="vertical-line centered" style="height: 70px;"></div>
+                        </td>
+                        <td valign="middle">
+                            <img src="https://cfa084d658b491813884-326c6674e44e477b9197a3210586152e.ssl.cf1.rackcdn.com/emails/cities/{{ flight_reservation.flight.destination.code|lower }}.png" width="70" height="70" style="max-width:70px;width:100%;height:auto;" alt="{{ flight_reservation.flight.destination.name }}" class="city-code" />
+
+                            <h3 class="all-caps-header">Destination</h3>
+
+                            <h2 class="time">{{ flight_reservation.flight.local_arrival_time_display}} {{ flight_reservation.flight.destination.get_timezone_display }}</h2>
+                            <p class="location">{{ flight_reservation.flight.destination.name }}, {{ flight_reservation.flight.destination.state }}</p>
+
+
+                        </td>
+                    {% endfor %}
+                </tr>
+            </table>
+
+            <table border="0" cellpadding="20" cellspacing="0" width="100%" class="price-table">
+                <tr>
+                    <td>
+                        <span class="price-subheader">Subtotal:</span>
+                        <p class="price-bottom">${{ subtotal|floatformat:2 }}</p>
+                    </td>
+                    <td>
+                        <span class="price-subheader">Tax:</span>
+                        <p class="price-bottom">${{ tax_total|floatformat:2 }}</p>
+                    </td>
+                    <td>
+                        <span class="price-subheader">Total:</span>
+                        <p class="price-bottom">${{ total_cost|floatformat:2 }}</p>
+                    </td>
+                </tr>
+            </table>
+
+            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                <tr>
+                    <td align="center" valign="top" style="padding-top: 40px; padding-bottom: 40px;">
+                        <table border="0" cellpadding="0" cellspacing="0" class="button">
+                            <tr>
+                                <td valign="middle" width="250px">
+                                    <div>
+                                        <a href="{{ protocol }}://{{ site.domain }}{% url 'admin_account' account.pk %}">Account Detail</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        <img src="http://cl.ly/100Q0H2k1E3j/footer-logo.png" width="119px" height="27px">
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+{% endblock body %}

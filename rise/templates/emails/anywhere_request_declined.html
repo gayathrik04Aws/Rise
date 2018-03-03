@@ -1,0 +1,117 @@
+{% extends 'emails/base_anywhere.html' %}
+
+{% block title %}{{ title }}{% endblock title %}
+
+
+{% block body %}
+<table border="0" cellpadding="40" cellspacing="0" width="100%" class="anywhere-email">
+    <tr>
+        <td>
+            <table border="0" cellpadding="20" cellspacing="0" width="100%">
+                <tr>
+                    <td align="center" valign="top" class="bodyContent">
+                        <div>
+                            <h1>RISE ANYWHERE Flight Request Declined</h1>
+                            <p style="margin-bottom: 20px;">We regret to inform you that we were unable to fulfill your RISE ANYWHERE flight request due to aircraft availability or other operational matters.</p>
+                            <p>Please contact us at <a href="mailto:Charter@iflyrise.com">Charter@iflyrise.com</a> for more information.</p>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+
+            <table border="0" cellpadding="4" cellspacing="0" width="100%">
+                <tr>
+                    <td>
+                        <hr />
+                    </td>
+                    <td width="120">
+                        <h3 class="section-header" style="margin: 0;">Flight Details</h3>
+                    </td>
+                    <td>
+                        <hr />
+                    </td>
+                </tr>
+            </table>
+            <table border="0" cellpadding="20" cellspacing="0" width="100%">
+                <tr>
+                    <td>
+                        <h2>{{ origin.name }}, {{ origin.state }} to {{ destination.name }}, {{ destination.state }}</h2>
+
+                    </td>
+                </tr>
+            </table>
+            <table border="0" cellpadding="20" cellspacing="0" width="100%" class="flightDetails">
+                <tr>
+                    {% if is_roundtrip %}
+                        <td>
+                            <h3 class="all-caps-header">Departing | {{ depart_when}}, {{depart_date|date:"M d, Y"}}</h3>
+
+
+                            <p class="location">{{ origin.name }}, {{ origin.state }}</p>
+
+                            <center><div class="vertical-line centered" style="height: 40px;"></div> </center>
+
+                            <p class="location">{{ destination.name }}, {{ destination.state }}</p>
+
+                        </td>
+                        <td>
+                            <h3 class="all-caps-header">Returning | {{ return_when}}, {{return_date|date:"M d, Y"}}</h3>
+
+                            <p class="location">{{ destination.name }}, {{ destination.state }}</p>
+
+                            <center><div class="vertical-line centered" style="height: 40px;"></div> </center>
+
+                            <p class="location">{{ origin.name }}, {{ origin.state }}</p>
+                        </td>
+                    {% else %}
+                        <td>
+                            <h3 class="all-caps-header">Departing | {{ depart_when}}, {{depart_date|date:"d M Y"}}</h3>
+
+
+                            <p class="location">{{ origin.name }}, {{ origin.state }}</p>
+
+                            <center><div class="vertical-line centered" style="height: 40px;"></div> </center>
+
+                            <p class="location">{{ destination.name }}, {{ destination.state }}</p>
+
+                        </td>
+                    {% endif %}
+
+                </tr>
+            </table>
+
+            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                <tr>
+                    <td align="center" valign="top" style="padding-top: 40px; padding-bottom: 20px;">
+                        <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                            <tr>
+                                <td>
+                                    <p style="text-align: center; font-weight: bold; margin-bottom: 20px; font-size: 14px; color: red;">Unable to process</p>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center" valign="top" style="padding-top: 40px; padding-bottom: 40px;">
+                        <table border="0" cellpadding="0" cellspacing="0" class="button">
+                            <tr>
+                                <td valign="middle" width="250px">
+                                    <div>
+                                        <a href="mailto:Charter@iflyrise.com">Contact Us</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        <img src="http://cl.ly/100Q0H2k1E3j/footer-logo.png" width="119px" height="27px">
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+{% endblock body %}

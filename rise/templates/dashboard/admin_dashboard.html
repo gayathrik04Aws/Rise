@@ -1,0 +1,90 @@
+{% extends 'base_admin.html' %}
+
+{% load staticfiles %}
+{% load flight_tags %}
+
+{% block title %}Dashboard - {{ block.super }}{% endblock title %}
+
+{% block meta_description %}Dashboard - Dashboard{% endblock meta_description %}
+
+{% block css %}
+{% with marketing=False%}
+{{ block.super }}
+{% endwith %}
+{% endblock css %}
+
+{% block body_class %}{% endblock %}
+{% block body %}
+{% include 'admin_header_fragment.html' with dashboard=True %}
+<div class="admin-content-wrap">
+    <div class="block admin no-pb">
+        <table class="admin-rise-announcements format-summary"><tbody>
+            <tr>
+                <td class="admin-page-header"><h1>Dashboard</h1></td>
+                <td>
+                    <table class="admin-rise-announcements format-summary"><tbody>
+                        <tr>
+                            <td>Flts Sched: {{ todays_flights_count }}</td>
+                            <td>MTD Flts Flown: {{ month_day_flights_count }}</td>
+                        </tr>
+                        <tr>
+                            <td>Hours Sched: {{ todays_total_hours }}</td>
+                            <td>MTD Hours Flown: {{ total_month_day_hours }}</td>
+                        </tr>
+                        <tr>
+                            <td>Members Sched: {{ members_flown_today }}</td>
+                            <td>MTD Members Flown: {{ month_day_members }}</td>
+                        </tr>
+                        <tr>
+                            <td>Daily cost of flying: NA</td>
+                            <td>MTD cost of flying: NA</td>
+                        </tr>
+                    </tbody></table>
+                </td>
+                <td class="text-right"><a href="/riseadmin/flights/add/" class="admin-button">Add New Flight</a></td>
+            </tr>
+
+        </tbody></table>
+        <div class="admin-rise-announcements">
+            <div class="announcement tl"><span class="count">{{ total_hours }}</span> hours flown yesterday</div>
+            <div class="announcement tc"><span class="count">{{ members_flows_prev_day }}</span> members flown yesterday</div>
+            <div class="announcement tr"><span class="count">{{ on_time_yesterday }}/{{ yesterdays_flight_count }}</span> Flights On Time Yesterday</div>
+        </div>
+    </div>
+
+    <div class="section-label block admin admin-table-header">Today's Flights</div>
+
+    <table class="admin-table">
+        <thead>
+            <tr>
+                <th>Flight</th>
+                <th>Departs / Arrives</th>
+                <th>Length</th>
+                <th>Repeats</th>
+                <th>Plane</th>
+                <th>Seats filled</th>
+                <th>Load Factor</th>
+                <th>Waitlist</th>
+                <th>Alerts</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for flight in todays_flights %}
+        <tr class="link-row" href="{% url 'admin_flight_detail' flight.pk %}">
+            <td class="flight-number-cell"><b>{{ flight.flight_number }}</b></td>
+            <td class="depart-arrive-cell"><b>{{ flight.origin.code|upper }}</b> {{ flight.local_departure|date:"H:i e"}} <figure class="flight-arrow-right-green spacer"></figure> <b>{{ flight.destination.code|upper }}</b> {{ flight.local_arrival|date:"H:i e"}}</td>
+            <td>{{ flight.duration_as_timedelta }}</td>
+            <td class="repeats-cell">{% if flight.route_time %}<figure class="icon-repeat"></figure>&nbsp;&nbsp;&nbsp;{{ flight.route_time|route_time_days }}{% endif %}</td>
+            <td>{{ flight.plane }}</td>
+            <td class="seats-cell">{{ flight.seats_available|sub_seats:flight.seats_total }}/{{ flight.seats_total}}</td>
+            <td class="seats-cell">{{ flight.seats_available|load_factor:flight.seats_total }}%</td>
+            <td class="seats-cell">{{ waitlist|get_value:flight.id }}</td>
+            <td class="center alert-cell">{% if flight.is_cancelled %}cancelled{% elif flight.is_delayed %}delayed{% elif flight.is_complete %}complete{% elif flight.is_inflight %}in-flight{% else %}on-time{% endif %}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="block"></div>
+</div>
+{% endblock body %}

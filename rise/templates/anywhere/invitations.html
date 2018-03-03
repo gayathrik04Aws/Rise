@@ -1,0 +1,312 @@
+{% extends 'anywhere/base.html' %}
+
+{% load staticfiles %}
+{% load safe_settings %}
+
+{% load flight_tags %}
+{% block javascript %}
+    {{ block.super }}
+<script src="{% static 'js/anywhere_invitations.js' %}"></script>
+<link rel="stylesheet" type="text/css" href="{% static 'css/cloudsponge.css' %}">
+
+<script>
+    $(".cs_import").click(function(){
+        $(this).addClass("loading");
+    });
+
+    /* removed because doesn't work in safari
+    $('#copy-link').click(function(){
+        var copied = $(this).attr('data-clipboard');
+        copytext(copied);
+        $(this).addClass("loading");
+
+        setTimeout(function(){
+            $('#copy-link').removeClass("loading").addClass("copied").empty().prepend("<span class='icon'></span>Copied!");
+        }, 1000);
+    });
+    function copytext(text) {
+        var textField = document.createElement('textarea');
+        textField.innerText = text;
+        document.body.appendChild(textField);
+        textField.select();
+        document.execCommand('copy');
+        textField.remove();
+    }
+    */
+
+
+
+
+(function(u){
+            var d=document,s='script',a=d.createElement(s),m=d.getElementsByTagName(s)[0];
+            a.async=1;a.src=u;m.parentNode.insertBefore(a,m);
+        })
+        ('//api.cloudsponge.com/widget/{% settings_value "CLOUDSPONGE_KEY" %}.js');
+
+        /*
+        **Resize on mobile**
+        function resizeContent(){
+            var width = $(window).width();
+            if (width < 768) {
+                console.log("small");
+            }
+            else {
+                console.log("large");
+                fb.resize(600);
+            }
+        }
+        */
+        window.csPageOptions = {
+            afterSubmitContacts:populateTextarea,
+            stylesheet:"{{ cloudsponge_uri }}",
+            floatbox:{
+                enableDragMove: false,
+                outsideClickCloses: true,
+                width: 600,
+                boxScroll: false,
+                pageScroll: false
+            },
+            sources: ["gmail", "yahoo","windowslive", "outlook", "addressbook","aol"],
+
+            afterLaunch:function() {
+                $("#fbCorners2, #fbCorners, #fbShadows, #brand").remove();
+                $("#fbtrPanel").css({
+                    "position": "absolute",
+                    "right": "30px",
+                    "top": "28px",
+                    "width": "20px",
+                    "height": "20px"
+                });
+                $("#fbSubControls, #fbControls").css({
+                    "display": "block",
+                    "right": "0",
+                    "top": "0",
+                    "width": "20px",
+                    "height": "20px",
+                    "float": "none",
+                    "position": "absolute",
+                    "right": 0,
+                    "top": 0
+                });
+                $("#fbClose").css({
+                    "width": "20px",
+                    "height": "20px",
+                    "display": "block",
+                    "background-image": "url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC4AAAAuCAYAAABXuSs3AAAABGdBTUEAALGPC/xhBQAAAn9JREFUaAXN2b9Lw0AUB3ATbLu0IHQRBTfxD7CrQsTNFsVFF/8Dd90V/AdcXdx0EG07+APMPyAKbuKmWNxEW1yqrd9Xm5LWS8zdvWtycNxxSZ6fnEe4e7VGUKrVqkNtsVh0qU1igXEWrnGUy0Kh0LQrlcp+q9W6por+seu6o0mDA70L3w1qtVarnbfbbcsql8sfgOZ82JNcLrfmOM6Xbyy2LiZzD9BtPyCTyUzZlmXd+AfRX63X60dJmHkRGr7nfD7/aqOzAfxj0vAiNJxvqCu0xi0C46ZJNC7+JdMDLxDLsglCw7ZYKpVuydiBUycp+CjoPngS8FHRf+Bx4mXQQngceFl0IHyYeBV0KHwYeFX0v3CTeB10JLgJvC46MpwTz4GWgnPgudDScB08J1oJroLnRivDZfAm0FrwKPhGo7EzeAigrSme7e3yKI5K6e0OVR6mZzCjQVviB1ye8cflQlNMbTgFCcHT5U7hRFNAFjgFCsNzo+nv0dGNpeBk8oJAF6JgWOd32Wz2XnRNdYwN3v16bAZAFrgP4CzwLrovhYDl8T3wEqzZA214AJpO40uoxrIHWvAgNGZ6Eek8Wu+OKbzyVyUM7aUQaKngvqDvvFbqQwkeFU1wKibw0nBZ9C+dHy8FV0WbwEeG66K58ZHgXGhO/L9wbjQXPhRuCs2BD4SbRuvihfBhoXXwf+DDRqvi++BxoVXwPXjcaFl8B54UtAzexo+fW6ZSCB5Etu0eA4VbYqQ8Dige/UBLeY4xLzj2zyx5Dy+eTouVINwSp9PpCTpIPHnBk4Qmk2jmYfxoNpvvNso67jnDwGkqlZrzHwK8F4qzJTyM8/AdwnGFuoyxzx95qOk2ntjmJQAAAABJRU5ErkJggg==')",
+                    "background-position": "center center",
+                    "background-repeat": "no-repeat",
+                    "background-size": "20px auto",
+                    "cursor": "pointer",
+                    "float": "none",
+                    "position": "absolute",
+                    "right": 0,
+                    "top": 0
+                });
+
+                $("#cs_container_frame").css({
+                     "overflow-y": "hidden"
+                });
+                setTimeout(function(){
+                    $("a.cs_import").removeClass("loading");
+                }, 1000);
+            }
+        };
+    function populateTextarea(contacts, source, owner)
+    {
+        var parent = $("#emailList");
+        var num_children = parent[0].childElementCount;
+        var contact, name, email, entry;
+        var existingEmailBoxesFilled = false;
+        for (var i = 0; i < contacts.length; i++) {
+            contact = contacts[i];
+            name = contact.fullName();
+            email = contact.selectedEmail();
+            entry = name + "<" + email +">";
+            if (!existingEmailBoxesFilled){
+                var currentEntryAdded = false;
+                for( var j = 0; j < num_children ; j++ ){
+                    if($('#email_'+j).val().length <= 0 ){
+                        $('#email_'+j).val(entry);
+                        currentEntryAdded = true;
+                        break;
+                    }
+                }
+                if(!currentEntryAdded){
+                    existingEmailBoxesFilled = true;
+                }
+            }
+
+
+            if (existingEmailBoxesFilled){
+                num_children = parent[0].childElementCount;
+                addEmailBox();
+                $('#email_'+num_children).val(entry);
+            }
+
+        }
+    }
+</script>
+
+{% endblock %}
+
+{% block title %}Share Rise Anywhere Flight - {{ block.super }}{% endblock title %}
+
+{% block meta_description %}Share Rise Anywhere Flight{% endblock meta_description %}
+
+{% block css %}
+{% with marketing=False%}
+{{ block.super }}
+{% endwith %}
+{% endblock css %}
+
+{% block body_class %}anywhere invitations{% endblock %}
+
+
+{% block simple_content_header %}
+<div class="anywhere-header"></div>
+{% endblock %}
+{% block simple_content %}
+        <div class="circle med big anywhere">
+            <div class="progress-circle">
+
+              <div class="progress-text">
+                <span class="number">{{ object.percent_full }}%</span>
+                <span class="confirmed">Full</span>
+              </div>
+
+              <svg viewBox="0 0 32 32">
+                <circle r="16" cx="16" cy="16" stroke-dasharray="{{ object.percent_full|floatformat:'0' }} 100" class="progress"></circle>
+              </svg>
+            </div>
+        </div>
+        <div class="form white-bg invitations">
+
+
+            <div class="top-text">
+                {% if object.empty_seats > 0 %}
+                    <h1>This flight has {{ object.empty_seats }} empty spots.</h1>
+
+                {% else %}
+                    <h1>This flight is full.</h1>
+                {% endif %}
+
+                <p>This flight normally costs <b>${{ object.full_flight_cost|floatformat:0 }}</b> but by sharing it with<br>other passengers,
+                it costs as little as <b>${{ object.per_seat_cost|floatformat:0 }} per spot.</b></p>
+            </div>
+
+
+            <div class="invite-section">
+                {% if object.empty_seats > 0 %}
+                    <h2>Invite others to join your flight!</h2>
+                {% endif %}
+                <div class="card">
+                    <div class="leg-1">
+                        <div class="top-row">
+                            <div class="departing-info">
+                                    <span><strong>Departing</strong>{{  object.leg1.local_departure.date }}</span>
+                            </div>
+                        </div>
+
+                        <div class="origin">
+
+                            <div class="caption">
+                                <h5>Origin</h5>{{  object.leg1.local_departure.date }}
+                                <h1>{{ object.leg1.origin.name }}</h1>
+                                <h4 class="grey">{{ object.leg1.local_departure|time:"h:i A" }} {{ object.leg1.origin.get_timezone_display }}</h4>
+                            </div>
+                        </div>
+
+                        <div class="duration arrow">
+                          <h2>{{ object.leg1.duration|human_duration }}</h2>
+                        </div>
+
+                        <div class="destination">
+
+                            <div class="caption">
+                                <h5>Destination</h5>
+                                <h1>{{ object.leg1.destination.name }}</h1>
+
+                               <h4 class="grey">{{ object.leg1.local_arrival|time:"h:i A" }} {{ object.leg1.destination.get_timezone_display }}</h4>
+                            </div>
+                        </div>
+                    </div>
+                     {% if not object.is_oneway %}
+                    <div class="leg-2">
+                        <div class="top-row">
+                            <div class="departing-info">
+                                    <span><strong>Departing</strong> | {{  object.leg2.local_departure.date }}</span>
+                            </div>
+                        </div>
+
+                        <div class="origin">
+
+                            <div class="caption">
+                                <h5>Origin</h5>{{  object.leg2.local_departure.date }}
+                                <h1>{{ object.leg2.origin.name }}</h1>
+                                <h4 class="grey">{{ object.leg2.local_departure|time:"h:i A" }} {{ object.leg2.origin.get_timezone_display }}</h4>
+                            </div>
+                        </div>
+
+                        <div class="duration arrow">
+                          <h2>{{ object.leg2.duration|human_duration }}</h2>
+                        </div>
+
+                        <div class="destination">
+
+                            <div class="caption">
+                                <h5>Destination</h5>
+                                <h1>{{ object.leg2.destination.name }}</h1>
+
+                               <h4 class="grey">{{ object.leg2.local_arrival|time:"h:i A" }} {{ object.leg2.destination.get_timezone_display }}</h4>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div class="share link-and-fb">
+                    <div class="share-item facebook">
+                        <h5>Share via Facebook</h5>
+                        <a href="#" class="share-link" onClick="MyWindow=window.open('https://www.facebook.com/sharer/sharer.php?u=https://{{ site.domain }}{% url "refer_form" %}&site_name=RISE ANYWHERE&title={% settings_value "FACEBOOK_SHARE_LINK_TITLE" %}&description=Come fly with me! RISE ANYWHERE is a membership-based flight creation and crowdsourcing tool that let\'s you decide when and where you want to go. No airline schedules required. Click here to join my flight. http://{{ site.domain }}{{ invitation_link }}','MyWindow','width=200,height=200'); return false;"></a>
+
+
+                    </div>
+                    <div class="share-item link">
+                        <h5>Share via link</h5>
+                        <!-- <p class="share-link desktop" id="copy-link" data-clipboard="http://{{ site.domain }}{{ invitation_link }}">Copy Link</p> -->
+                        <p class="share-link mobile" id="copy-link">http://{{ site.domain }}{{ invitation_link }}</p>
+
+                    </div>
+
+                </div>
+                <hr/>
+
+                <div class="share email-share">
+                    <div class="email">
+                        <h5>Share via Email</h5>
+                        <div id="emailErrors" class="hidden"></div>
+                        <div id="emailList">
+                            <input type="text" alt="Email address" id="email_0" placeholder="Email address" />
+                            <input type="text" alt="Email address" id="email_1" placeholder="Email address" />
+                        </div>
+                        <div id="email-options">
+                            <a class="cs_import"><span>Loading Contacts</span>Select from Contacts</a>
+                            <a href="javascript:addEmailBox();">Add Email Address</a>
+                        </div>
+                    </div>
+                    <div class="center">
+                        <input type="button" class="button anywhere-blue" value="Send Invitations" onclick="javascript:sendInvitations('{{ send_email_link }}');" />
+                    </div>
+                </div>
+
+        </div>
+
+        <div class="block center">
+            <a href="{% url 'dashboard' %}" class="return"> &#9664; return to dashboard</a>
+        </div>
+
+{% endblock %}
+
+
+{% block footer %}
+{% endblock footer %}

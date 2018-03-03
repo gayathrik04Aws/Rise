@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% load staticfiles %}
+
+{% block title %}Edit Companion - {{ block.super }}{% endblock title %}
+
+{% block meta_description %}Edit Companion - Manage Account{% endblock meta_description %}
+
+{% block css %}
+{% with marketing=False%}
+{{ block.super }}
+{% endwith %}
+{% endblock css %}
+
+{% block body_class %}{% endblock %}
+
+{% block body %}
+
+{% include 'account_profile/dashboard_nav.html' %}
+<div class="section profile-body">
+    {% include 'account_profile/profile-sidenav-mobile.html' with companions=True %}
+    <div class="content-wrap app-content-wrap no-mt-mobile edit group">
+        {% include 'account_profile/profile-sidenav.html' with companion=True %}
+        <div class="profile-content-wrap">
+            <div class="detail group">
+                <form action="" method="POST" class="bare group" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <h1>Edit Companion {{ companion.get_full_name }}</h1>
+
+                    {% if form.errors %}
+                    <div class="error-message">
+                        {% for field, errors in form.errors.items %}
+                        {% for error in errors %}
+                        <div class="error-message">{{ error }}</div>
+                        {% endfor %}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    {% if messages %}
+                    {% for message in messages %}
+                    <div class="error-message">{{ message }}</div>
+                    {% endfor %}
+                    {% endif %}
+
+                    <div class="no-labels">
+                        <div class="distribute equal-width">
+
+                            <label for="id_first_name">First Name</label>
+                            <input {% if form.first_name.errors %}class="error"{% endif %} type="text" name="{{ form.first_name.html_name }}" value="{{ form.first_name.value|default:"" }}" placeholder="First Name" id="first-name"></input>
+
+                            <label for="id_last_name">Last Name</label>
+                            <input {% if form.last_name.errors %}class="error"{% endif %} type="text" name="{{ form.last_name.html_name }}" value="{{ form.last_name.value|default:"" }}" placeholder="Last Name" id="last-name"></input>
+
+                        </div>
+
+                        <label for="id_email">Email Address</label>
+                        <input {% if form.email.errors %}class="error"{% endif %} type="text" name="{{ form.email.html_name }}" value="{{ form.email.value|default:"" }}" placeholder="Email Address" id="email-address"></input>
+                        <div class="distribute equal-width">
+
+                            <label for="id_phone">Phone Number</label>
+                            <input {% if form.phone.errors %}class="error"{% endif %} type="text" name="{{ form.phone.html_name }}" value="{{ form.phone.value|default:"" }}" placeholder="Phone Number" id="phone-number"></input>
+
+                            <label for="id_mobile_phone">Cell Phone (Optional)</label>
+                            <input {% if form.mobile_phone.errors %}class="error"{% endif %} type="text" name="{{ form.mobile_phone.html_name }}" value="{{ form.mobile_phone.value|default:"" }}" placeholder="Cell Phone" id="mobile-phone-number"></input>
+                        </div>
+                    </div>
+                    <div class="equal-with-labels">
+                        <div class="full-input fl">
+                            <label for="{{ form.date_of_birth.html_name }}">Date of Birth</label>
+                            {{ form.date_of_birth }}
+                        </div>
+                        <div class="full-input fr">
+                            <label>Weight Range</label>
+                            <div class="select arrow">
+                                <span class="value">{{ form.weight.value|default:"Select" }}</span>
+                                <ul>
+                                    {% for value, text in form.weight.field.choices %}
+                                    <li value="{{ value }}">{{ text }}</li>
+                                    {% endfor %}
+                                </ul>
+                                {{ form.weight }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="page-controls">
+                        <button type="submit" class="button black">Save Companion</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock body %}
+
+{% block javascript %}
+{{ block.super }}
+<script src="{% static 'js/binaryajax.min.js' %}"></script>
+<script src="{% static 'js/exif.min.js' %}"></script>
+<script src="{% static 'js/profile.js' %}"></script>
+{% endblock javascript %}

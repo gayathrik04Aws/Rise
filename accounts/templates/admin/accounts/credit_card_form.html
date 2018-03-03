@@ -1,0 +1,53 @@
+{% extends 'base_admin.html' %}
+
+{% load staticfiles %}
+
+{% block body %}
+{% include 'admin_header_fragment.html' with accounts=True %}
+<div class="admin-content-wrap admin-form-page">
+    <h1>Update Credit Card</h1>
+
+    {% if form.errors %}
+    {% for field, errors in form.errors.items %}
+    {% for error in errors %}
+    <div class="error-message">{{ error }}</div>
+    {% endfor %}
+    {% endfor %}
+    {% endif %}
+
+    <form action="." method="POST" id="credit_card_form" autocomplete="on">
+        {% csrf_token %}
+
+        <label for="cc-number">Credit Card Number</label>
+        <input {% if form.errors %}class="error"{% endif %} type="text" id="cc-number" placeholder="Credit Card Number" data-stripe="number" data-braintree-name="number" />
+
+        <label for="cc-month">Month</label>
+        <input {% if form.errors %}class="error"{% endif %} type="text" id="cc-month" placeholder="MM" maxlength="2" pattern="\d*" data-stripe="exp-month" data-braintree-name="expiration_month" />
+
+        <label for="cc-year">Year</label>
+        <input {% if form.errors %}class="error"{% endif %} type="text" id="cc-year" placeholder="YYYY" maxlength="4" pattern="\d*" data-stripe="exp-year" data-braintree-name="expiration_year" />
+
+        <label for="cc-ccv">CVV</label>
+        <input {% if form.errors %}class="error"{% endif %} type="text" id="ccv" placeholder="CVV" autocomplete="off" pattern="\d*" data-stripe="cvc" data-braintree-name="cvv" />
+        <label for="{{ form.nickname.auto_id }}">Nickname</label>
+        {{ form.nickname.errors }}
+        {{ form.nickname }}
+        <span class="item-title">Set Default</span>
+        {{ form.is_default.errors }}
+        {{ form.is_default }}
+        <div class="center">
+            <button type="submit" class="green">Save Credit Card</button>
+        </div>
+    </form>
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+<script src="https://js.braintreegateway.com/v2/braintree.js"></script>
+<script charset="utf-8">
+    braintree.setup("{{ client_token }}", "custom", {id: "credit_card_form"});
+</script>
+<script type="text/javascript" src="{% static 'js/jquery.payment.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/payment.js' %}"></script>
+{% endblock %}

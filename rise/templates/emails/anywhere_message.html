@@ -1,0 +1,148 @@
+{% extends 'emails/base_anywhere.html' %}
+
+{% block title %}{{ title }}{% endblock title %}
+
+
+{% block body %}
+<table border="0" cellpadding="40" cellspacing="0" width="100%" class="anywhere-email">
+    <tr>
+        <td>
+            <table border="0" cellpadding="20" cellspacing="0" width="100%">
+                <tr>
+                    <td align="center" valign="top" class="bodyContent">
+                        <div>
+                            <h1>{{ title }}</h1>
+                            <p>{{ message }}</p>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+
+            <table border="0" cellpadding="4" cellspacing="0" width="100%">
+                <tr>
+                    <td>
+                        <hr />
+                    </td>
+                    <td width="120">
+                        <h3 class="section-header" style="margin: 0;">Flight Details</h3>
+                    </td>
+                    <td>
+                        <hr />
+                    </td>
+                </tr>
+            </table>
+            <table border="0" cellpadding="20" cellspacing="0" width="100%">
+                <tr>
+                    <td>
+                        <h2>{{ origin.name }}, {{ origin.state }} to {{ destination.name }}, {{ destination.state }}</h2>
+                    </td>
+                </tr>
+            </table>
+            <table border="0" cellpadding="20" cellspacing="0" width="100%" class="flightDetails">
+                <tr>
+                    {% if is_roundtrip %}
+                        <td>
+                            {% if leg1 %}
+                                <h3 class="all-caps-header">Flight: {{ leg1.flight_number }}</h3>
+                                <h3 class="all-caps-header">Departing | {{leg1.departure|date:"M d, Y"}}</h3>
+
+                                <h3 class="all-caps-header">{{ leg1.local_departure_time_display }} {{ leg1.origin.get_timezone_display }}</h3>
+                                <p class="location">{{ leg1.origin.name }} ({{ leg1.origin.code }})</p>
+
+                                <center><div class="vertical-line centered"></div> </center>
+                                <p class="duration">{{ leg1.duration }} MIN</p>
+                                <center><div class="vertical-line centered"></div> </center>
+
+                                <h3 class="all-caps-header">{{ leg1.local_arrival_time_display}} {{ leg1.destination.get_timezone_display }}</h3>
+                                <p class="location">{{ leg1.destination.name }} ({{ leg1.destination.code }})</p>
+
+                            {% else %}
+                                <h3 class="all-caps-header">Departing | {{ depart_when}}, {{depart_date|date:"M d, Y"}}</h3>
+
+                                <p class="location">{{ origin.name }}, {{ origin.state }}</p>
+
+                                <center><div class="vertical-line centered" style="height: 40px;"></div> </center>
+
+                                <p class="location">{{ destination.name }}, {{ destination.state }}</p>
+                            {% endif %}
+
+                        </td>
+                        <td>
+                            {% if leg2 %}
+                                <h3 class="all-caps-header">Flight: {{ leg2.flight_number }}</h3>
+                                <h3 class="all-caps-header">Returning | {{leg2.departure|date:"M d, Y"}}</h3>
+                                <h3 class="all-caps-header">{{ leg2.local_departure_time_display}} {{ leg2.origin.get_timezone_display }}</h3>
+                                <p class="location">{{ leg2.origin.name }} ({{ leg2.origin.code }})</p>
+
+
+                                <center><div class="vertical-line centered"></div> </center>
+                                <p class="duration">{{ leg2.duration }} MIN</p>
+                                <center><div class="vertical-line centered"></div> </center>
+
+                                <h3 class="all-caps-header">{{ leg2.local_arrival_time_display}} {{ leg2.destination.get_timezone_display }}</h3>
+                                <p class="location">{{ leg2.destination.name }} ({{ leg2.destination.code }})</p>
+                            {% else %}
+                                <h3 class="all-caps-header">Returning | {{ return_when}}, {{return_date|date:"M d, Y"}}</h3>
+
+                                <p class="location">{{ destination.name }}, {{ destination.state }}</p>
+
+                                <center><div class="vertical-line centered" style="height: 40px;"></div> </center>
+
+                                <p class="location">{{ origin.name }}, {{ origin.state }}</p>
+                            {% endif %}
+                        </td>
+                    {% else %}
+                        <td>
+                            {% if leg1 %}
+                                <h3 class="all-caps-header">Flight: {{ leg1.flight_number }}</h3>
+                                <h3 class="all-caps-header">Departing | {{leg1.departure|date:"M d, Y"}}</h3>
+
+                                <h3 class="all-caps-header">{{ leg1.local_departure_time_display }} {{ leg1.origin.get_timezone_display }}</h3>
+                                <p class="location">{{ leg1.origin.name }} ({{ leg1.origin.code }})</p>
+
+                                <center><div class="vertical-line centered"></div> </center>
+                                <p class="duration">{{ leg1.duration }} MIN</p>
+                                <center><div class="vertical-line centered"></div> </center>
+
+                                <h3 class="all-caps-header">{{ leg1.local_arrival_time_display}} {{ leg1.destination.get_timezone_display }}</h3>
+                                <p class="location">{{ leg1.destination.name }} ({{ leg1.destination.code }})</p>
+                            {% else %}
+                                <h3 class="all-caps-header">Departing | {{ depart_when}}, {{depart_date|date:"M d, Y"}}</h3>
+
+                                <p class="location">{{ origin.name }}, {{ origin.state }}</p>
+
+                                <center><div class="vertical-line centered" style="height: 40px;"></div> </center>
+
+                                <p class="location">{{ destination.name }}, {{ destination.state }}</p>
+                            {% endif %}
+
+                        </td>
+                    {% endif %}
+
+                </tr>
+            </table>
+
+            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                <tr>
+                    <td align="center" valign="top" style="padding-top: 40px; padding-bottom: 40px;">
+                        <table border="0" cellpadding="0" cellspacing="0" class="button">
+                            <tr>
+                                <td valign="middle" width="250px">
+                                    <div>
+                                        <a href="{{ protocol }}://{{ site.domain }}{% url 'anywhere_index' %}">View my requests</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        <img src="http://cl.ly/100Q0H2k1E3j/footer-logo.png" width="119px" height="27px">
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+{% endblock body %}

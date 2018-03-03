@@ -1,0 +1,459 @@
+/*
+ * Cloudsponge Widget Default Stylesheet
+ * Use this as a template if you want to override the stylesheet in the csPageOptions
+ */
+
+
+/* Globals */
+
+
+
+
+
+body {
+  font-family: 'Gotham SSm A', 'Gotham SSm B', 'Helvetica Neue', sans-serif;
+}
+a {
+	color: #099abc;
+	text-decoration: none;
+}
+h1#title {
+	font-size: 18px;
+	margin-top: 0;
+	margin-bottom: 20px;
+}
+#show-contacts {
+	overflow-y: hidden;
+	.button_to  {
+		display: block;
+		width: 100%;
+		text-align: center;
+		padding-top: 10px;
+		.submit {
+			-webkit-appearance: none;
+			-moz-appearance: none;
+			appearance: none;
+			background:none;
+			border:none;
+			border: 0;
+			border-radius: 0;
+			cursor: pointer;
+			display: block;
+			font-weight: 500;
+			font-size: 10px;
+			height: 40px;
+			letter-spacing: 2px;
+			line-height: 37px;
+			max-width: 326px;
+			margin: 0 auto;
+			text-align: center;
+			text-transform: uppercase;
+			width: 150px;
+			text-rendering: optimizeLegibility;
+			background-color: #099abc;
+			color: #fff;
+			font-weight: 700;
+			border-radius: 2px;
+		}
+	}
+
+	a.cancel {
+		display: block;
+		text-align: center;
+	    
+	    line-height: 12px;
+	    padding-top: 10px;
+		width: 150px;
+		margin: 0 auto;
+		font-size: 12px;
+		color: rgba(0,0,0,.5);
+	}
+}
+
+#cs_container {
+	width: 600px;
+}
+
+/* address_book.html.erb Layout styles */
+#container {
+  width: 100%;
+  height: 100%;
+}
+#center {
+  position: relative;
+}
+#content {
+  position: relative;
+  padding: 0 0px;
+  border-style: solid;
+  border-width: 0px;
+  overflow-y: auto;
+  height: auto;
+}
+
+#footer {
+  
+}
+
+/*
+  Global Classes
+*/
+.right {
+  float: right;
+}
+
+.clear {
+  clear: both;
+}
+
+.clear-right {
+  clear: right;
+}
+
+.clear-left {
+  clear: left;
+}
+
+.nowrap {
+  white-space:nowrap;
+  overflow: hidden;
+}
+
+#fbClose {
+  display: block;
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  background-image: url(../img/anywhere/close.png);
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: 18px auto;
+  cursor: pointer;
+}
+
+#nav {
+  float: right;
+}
+
+#nav a {
+  float: right;
+  margin-top: 3px;
+}
+
+/*
+  Page styles: index.html.erb
+*/
+#index { }
+
+#index div#sources {
+  padding: 0px;
+  margin: 30px 0 0 0px;
+  font-size: 0;
+}
+#index .source {
+	font-size: 15px;
+	padding: 0px;
+	margin: 0;
+	display: block;
+	width: 100%;
+
+}
+
+#index .source a {
+  position: relative;
+  text-decoration: none;
+  padding: 0 15px;
+  background: #FCFCFC;
+  border: 1px solid #D7E3E3;
+  height: 56px;
+  line-height: 56px;
+  font-size: 16px;
+  color: #099abc;
+  margin: 10px;
+  display: block;
+}
+
+#index .source a:nth-child(odd){
+  margin-left: 0;
+}
+
+#index .source a:nth-child(even){
+  margin-right: 0;
+}
+
+.source-logo { position: relative; height: 56px; line-height: 56px; font-size: 14px;}
+.source-logo span { height: 56px; line-height: 56px; font-size: 14px; position: relative; padding-left: 5px; font-weight: normal; }
+.source-logo img { height:16px; width:16px; }
+.source-logo .text {font-size: 14px;}
+
+.with-subtext span.text { position: relative; top: -19px; }
+.with-subtext span.subtext { position: absolute; left: 37px; top: 18px; font-size: 12px; white-space: nowrap; }
+
+
+/*
+  Page styles: show.html.erb
+*/
+
+/* Contacts display */
+
+div#contacts {
+  margin-bottom: 10px;
+  
+	#header {
+
+		a {
+			width: auto;
+			display: inline-block; 
+			padding: 10px;
+			font-size: 12px;
+		}
+		.check-all {
+			display: inline-block;
+			margin-right: 20px;
+			vertical-align: top;
+			margin-bottom: 20px;
+			margin-top: 20px;
+			a {
+			    text-transform: uppercase;
+			    font-size: 10px;
+			    height: 30px;
+				line-height: 30px;
+			    font-weight: bold;
+			    letter-spacing: 1px;
+			    padding: 0;
+			    margin-right: 5px;
+			}
+		}
+		.search {
+			display: inline-block;
+			margin-top: 20px;
+			margin-bottom: 20px;
+			vertical-align: top;
+			height: 30px;
+			line-height: 30px;
+			background: transparent;
+		  	border: 1px solid #D7E3E3;
+		  	text-transform: uppercase;
+		    font-size: 10px;
+		    font-weight: 700;
+		    letter-spacing: 1px;
+		  	color: rgba(0,0,0,.2);
+		  	padding-left: 10px;
+			input {
+				background-color: transparent;
+				border: 0px;
+				font-size: 12px;
+				font-weight: 300;
+				letter-spacing: 0px;
+			}
+		}
+	}
+
+
+
+}
+#show-contacts {
+	.source-logo {
+	    position: relative;
+	    height: auto;
+	    line-height: 1;
+	    font-size: 12px;
+
+		img {
+			display: inline-block;
+			vertical-align: middle;
+			margin-bottom: 10px;
+			width: 12px;
+			height: 12px;
+		}
+
+		span.text {
+			position: static;
+			display: inline-block;
+			vertical-align: middle;
+			height: auto;
+		    line-height: 12px;
+		    font-size: 12px;
+		    font-weight: 700;
+		    margin-bottom: 10px;
+
+		}
+
+		span.subtext {
+			position: static;
+		    display: inline-block;
+		    line-height: 12px;
+		    font-size: 12px;
+		    height: 12px;
+		    opacity: .5;
+		    padding-left: 10px;
+		    border-left: 1px solid #666666;
+		    margin-left: 10px;
+		    margin-bottom: 10px;
+		    vertical-align: middle;
+		    a {
+		    	margin-left: 5px;
+		    	display: inline-block;
+		    }
+		}
+	}
+}
+
+table#contacts-table {
+/*  max-width: 405px;*/
+  width: 100%;
+}
+/* IE8 only: This prevents the table layout from growing too wide */
+div#ie-contacts-table table { table-layout: fixed; }
+
+#contacts-table th {
+  text-align: left;
+  height: 100%;
+}
+#contacts-table tr {
+/*  max-width: 405px;*/
+	cursor: pointer;
+	td {
+		padding: 10px 0;
+	}
+}
+
+#scrolling-table {
+  background: #FCFCFC;
+  border: 1px solid #D7E3E3;
+  padding: 15px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  height: 200px;
+}
+
+#scrolling-table > * {
+  -webkit-transform: translateZ(0px);
+}
+
+p#contacts-loading {
+  padding-top: 60px;
+  text-align: center;
+}
+#scrolling-table div#importing-animation {
+  padding-top: 25px;
+}
+
+
+/*
+  csv upload styles
+*/
+
+div.fileinputs {
+  position: relative;
+  background: #FCFCFC;
+  border: 1px solid #D7E3E3;
+  text-align: center;
+  line-height: 14px;
+  padding: 17px 0;
+  
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  margin: 20px 10px;
+  overflow: hidden;
+}
+
+.fileinputs input {
+  position: absolute;
+/*  top: 0; left: 0;
+  text-align: right;
+  -moz-opacity: 0;
+  filter:alpha(opacity: 0);
+  opacity: 0;
+  z-index: 2;
+  width: 100%;
+  height: 50px;
+  cursor: pointer;
+*/
+  padding: 0;
+  top: 0;
+  right: 0;
+  margin: 0;
+  border: solid transparent;
+  border-width: 0 0 30px 200px;
+  opacity: 0;
+  filter: alpha(opacity=0);
+  -moz-transform: translate(-700px, 0) scale(8,4); /* enlarge the input so that the 'clickable portion of it expands to fill the button container */
+  direction: ltr;
+  cursor: pointer;
+}
+
+ol.upload-inst li { padding: 5px 0; }
+.csv-cancel { position: absolute; bottom: 5px; left: 0; }
+#fileinput-message { font-weight: bold; }
+
+/*
+  auth.html
+*/
+
+#webmail_auth fieldset { border-width: 0px; /*font-size: 12px;*/ padding-left: 0; margin-left: 0;}
+#webmail_auth label { width: 100px; float: left; margin: 10px 0; }
+#webmail_auth input { width: 150px; margin: 10px 0; }
+#webmail_auth input.submit { width: inherit; font-family: Verdana; margin: 10px 0; }
+
+#errorMessage {
+  margin-top: 20px;
+  font-size: 14px;
+  padding: 10px 20px;
+  border: 1px solid red;
+  background-color: #FF9400;
+  float: left;
+}
+
+#privacy-notice {
+  margin: 30px 0px;
+  font-size: 11px;
+}
+
+#squeeze {
+  text-align: center;
+  position: relative;
+  margin-top: 150px;
+}
+#squeeze p {
+  margin-top: 15px;
+}
+
+#importing {
+  text-align: center;
+  margin-top: 15px;
+  font-size: 15px;
+}
+/* had to replace te image here with something existing in our project because it broke the build */
+#importing-animation {  	
+	background-image: url("../img/anywhere/rolling.gif");
+	background-position: center center;
+	background-repeat: no-repeat;
+	background-size: 10px 10px;
+	opacity: .4;
+	height: 10px;
+    width: 10px;
+    position: relative;
+    margin: 0 auto;
+    top: -54px;
+}
+
+.cloudsponge-show {
+      z-index: 99999;
+      position: fixed;
+      width: 600px;
+      height: 600px;
+      left: 50%;
+      top: 50%;
+      transform: translateX(-50%) translateY(-50%);
+}
+
+em {
+  font-style: normal; }
+
+
+/*# sourceMappingURL=type.css.map */
+
+

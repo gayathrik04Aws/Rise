@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% load staticfiles %}
+{% load safe_settings %}
+
+{% block title %}Edit Profile - {{ block.super }}{% endblock title %}
+
+{% block meta_description %}Basic Information - Manage Account{% endblock meta_description %}
+
+{% block css %}
+{% with marketing=False%}
+{{ block.super }}
+{% endwith %}
+{% endblock css %}
+
+{% block body_class %}{% endblock %}
+{% block body %}
+{% include 'account_profile/dashboard_nav.html' %}
+<div class="section profile-body">
+    {% include 'account_profile/profile-sidenav-mobile.html' with billing_info=True %}
+    <div class="content-wrap app-content-wrap no-mt-mobile edit group">
+        {% include 'account_profile/profile-sidenav.html' with billing=True %}
+        <div class="profile-content-wrap">
+            <div class="detail group no-labels">
+                <h1>Verify Your Bank Account</h1>
+
+                {% if not user.account.onboarding_fee_paid and user.account.get_onboarding_fee_total > 0 %}
+                {% if user.account.is_corporate %}
+                <div class="deposit-charge-alert error-message center">
+                    <p style="line-height: 21px;">Your account includes {{ user.account.member_count }} team member{{ user.account.member_count|pluralize:"s" }}. Your ${{ user.account.get_onboarding_fee_total|intcomma }} (${% settings_value "DEPOSIT_COST" %}/member) deposit fee (+ {% settings_value "DEPOSIT_TAX_PERCENT" %} sales tax) will be charged, and you can check out the flight booking tool as soon as you verify your account.</p>
+                </div>
+                {% else %}
+                <div class="deposit-charge-alert error-message center">
+                    <p style="line-height: 21px;">Your ${% settings_value "DEPOSIT_COST" %} deposit fee (+ {% settings_value "DEPOSIT_TAX_PERCENT" %} sales tax) will be charged, and you can check out the flight booking tool as soon as you verify your account.</p>
+                </div>
+                {% endif %}
+                {% endif %}
+
+                <div class="center">
+                    <p>Two small deposits will be made to your account within two business days of adding your bank account. Enter the two amounts in the fields below to confirm your account. If you haven't received the deposits or have any other questions, please contact us at <a href="mailto:support@iflyrise.com">support@iflyrise.com</a>
+                    </p>
+                </div>
+
+                {% if form.errors %}
+                    {% for field, errors in form.errors.items %}
+                    {% for error in errors %}
+                    <div class="error-message">{{ error }}</div>
+                    {% endfor %}
+                    {% endfor %}
+                {% endif %}
+
+                {% if messages %}
+                {% for message in messages %}
+                <div class="error-message">{{ message }}</div>
+                {% endfor %}
+                {% endif %}
+
+                <form id="payment-form" action="." method="POST">
+                    {% csrf_token %}
+
+                    <label for="{{ form.verify_1.auto_id }}">Verification Amount 1</label>
+                    <input id="id_verify_1" max="1" min="0.0" name="verify_1" step="0.01" type="text" placeholder="0.00">
+
+                    <label for="{{ form.verify_2.auto_id }}">Verification Amount 2</label>
+                    <input id="id_verify_2" max="1" min="0.0" name="verify_2" step="0.01" type="text" placeholder="0.00">
+
+                    <button type="submit" class="button green" id="submit_ach_verification">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% with onboarding_fee=user.account.get_onboarding_fee_total %}
+{% if not user.account.onboarding_fee_paid and onboarding_fee > 0 %}
+<div id="ach_deposit_modal" class="modal-wrapper" style="z-index: 10000; opacity: 1;">
+    <div class="modal center">
+        <figure class="x-grey-lg"></figure>
+        <figure class="alert-icon"></figure>
+        <p class="thick">Thank you for adding your bank account. Your ${{ onboarding_fee|floatformat:2|intcomma }} deposit will be charged immediately after you verify your bank account.</p>
+        <div class="action-wrapper">
+            <a href="{% url 'profile_billing' %}" class="grey condensed"><figure class="arrow-left-grey"></figure> Cancel</a> |
+            <a id="confirm_ach_deposit" href="" class="grey condensed">Accept<figure class="arrow-right-grey"></figure></a>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endwith %}
+
+{% endblock body %}
+
+{% block javascript %}
+{{ block.super }}
+<script src="{% static 'js/binaryajax.min.js' %}"></script>
+<script src="{% static 'js/exif.min.js' %}"></script>
+<script src="{% static 'js/profile.js' %}"></script>
+<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+<script charset="utf-8">
+    Stripe.setPublishableKey('{{ STRIPE_PUBLISHABLE_KEY }}');
+</script>
+<script type="text/javascript" src="{% static 'js/jquery.payment.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/payment.js' %}"></script>
+{% endblock javascript %}

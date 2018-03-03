@@ -1,0 +1,441 @@
+//This partial includes styles for all standard text tags and
+//text tag styles specific to various sections and classes
+//With the exception of form elements, if it's a property of text,
+//it should be here. (should be...)
+//Standard tags are at the top, classes are at the bottom
+
+//This section also includes the font setting for the body tag
+//and properties for the "IT'S EASY. JUST..." text.
+
+
+body {
+  font-family: 'Gotham A', 'Gotham B', Helvetica, Arial, sans-serif;
+}
+
+a {
+  text-decoration: none;
+  @include transition(opacity 0.2s);
+
+  &:hover {opacity: 0.6;}
+}
+
+em {font-style: italic; font-weight: 300;}
+
+h1 {
+  color: $runway;
+  font-size: 36px;
+  font-weight: 500;
+  line-height: 40px;
+  &.marketing {
+    font-size: 36px;
+  }
+  &.sized {
+      @media screen and (max-width: 768px) {
+          font-size: 26px;
+      }
+  }
+}
+
+h2 {
+  color: $runway;
+  font-size: 19px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  line-height: 24px;
+  text-transform: uppercase;
+
+  .grey {color: $copy-grey-marketing;}
+  .number {margin-right: 10px;}
+  &.grey {color: $copy-grey-marketing;}
+}
+
+h3 {
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 24px;
+
+  &.small {
+    color: $h3-small-marketing;
+    font-size: 12px;
+    letter-spacing: 2px;
+    line-height: 18px;
+    text-transform: uppercase;
+  }
+
+  &.grey {color: $grey3;}
+}
+
+h5 {
+  font-weight: 300;
+}
+
+.all-caps {
+    letter-spacing: 2px;
+    line-height: 18px;
+    text-transform: uppercase;
+    font-size: 11px;
+    font-weight: 500;
+}
+
+b {
+    color: $runway;
+    font-weight: 500;
+}
+
+.info-header{
+    font-family: 'Tablet-Gothic-Narrow','Gotham Ssm A', 'Gotham Ssm B', Helvetica, Arial, sans-serif;
+    font-weight:400;
+}
+
+p {
+  color: #768888;
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 24px;
+
+  strong {color: $runway; font-weight: 500;}
+
+  a {
+    font-weight: 500;
+    text-decoration: none;
+    color: $land;
+  }
+
+  &.strong-grey {
+    font-weight: 500;
+  }
+}
+
+.section {
+  &.sign-up-section {
+    h2 {margin: 40px 0px 20px;}
+  }
+}
+
+span, a {
+  .grey {color: $grey3;}
+}
+
+
+.about {
+  h1 {
+    margin-bottom: 100px;
+    text-align: center;
+  }
+
+  p {font-size: 18px; line-height: 28px}
+
+  h2 {margin: 0;}
+  h3 {margin: 0;}
+}
+
+
+.button {
+
+  h3 {margin: 0px !important; line-height: 60px;}
+
+  &.grey {
+    h3 {color: $runway;}
+  }
+
+  &.green {
+    h3 {color: white;}
+  }
+}
+
+.refer{
+
+    p {
+        font-size: 18px;
+        line-height: 28px
+    }
+}
+
+
+.destinations {
+  ul {
+    li {
+      h2 {
+        display: inline-block;
+        margin-bottom: 0;
+        margin-left: 20px;
+        margin: 40px 0 0 50px;
+        letter-spacing: 0;
+      }
+
+      h3 {
+        margin: 0 auto;
+        max-width: 200px;
+        text-align: center;
+        font-size: 14px;
+      }
+
+      p {
+        margin: 0;
+        width: auto;
+        font-size: 14px;
+        @media screen and (min-width: 768px) {
+          text-align: left;
+        }
+        &.center {
+          text-align: center;
+        }
+      }
+
+      &:last-child p {
+        @media screen and (min-width: 768px) {
+            padding-left: 40px;
+        }
+      }
+    }
+  }
+
+  p {
+    display: block;
+    text-align: center;
+    margin: 50px auto 0;
+    width: 580px;
+  }
+}
+
+
+.faq {
+
+  h1 {
+    text-align: center;
+  }
+
+  .question {
+    font-weight: 500;
+    width: 100%;
+  }
+
+  .expand-state {
+    font-weight: 300;
+    text-align: right;
+  }
+
+  li {
+    &.answer {
+      color: #768888;
+      font-weight: 300;
+      line-height: 24px;
+    }
+  }
+}
+
+
+.form {
+
+  h3 {margin: 50px auto; width: 55%;}
+
+  .button h3 {
+    font-size: 12px;
+    margin: 0px auto 0px !important;
+    width: initial !important;
+  }
+
+  p {
+    display: block;
+    margin: 0px auto 20px;;
+    width: 74%;
+
+    a {
+      color: $land;
+    }
+
+    &.legal {
+      text-align: center;
+      width: 100%;
+    }
+  }
+}
+
+
+.form-page {
+  h3 {margin: 50px auto 20px;}
+  a {color: $grey2;}
+}
+
+
+.header {
+  h2 {
+    font-weight: 300;
+    margin: auto;
+    width: 100%;
+    &.new-h2 {
+        @include transition(all .2s ease-in-out);
+        text-align: center;
+        font-weight: 300;
+        font-size: 21px;
+        line-height: 29px;
+        text-transform: initial;
+        letter-spacing: 0;
+        max-width: 720px;
+        margin-bottom: 30px;
+        padding: 0 30px;
+        @media screen and (min-width: 768px) {
+            padding: 0;
+            margin-bottom: 60px;
+            font-size: 28px;
+            line-height: 39px;
+        }
+    }
+  }
+}
+
+.hero {
+  h1 {color: $grey1; position: relative; top: 3px;}
+  h3 {color: $grey1; margin-top: 133px;}
+  &.home-hero {
+      h1 {
+          font-size: 60px;
+          line-height: 60px;
+          text-transform: uppercase;
+          text-align: left;
+          font-weight: 300;
+      }
+  }
+}
+
+.legal {
+  color: #768888;
+  font-size: 9px;
+  letter-spacing: 0px;
+  line-height: 13px;
+}
+
+.learn-more {
+  h2 {font-weight: 500;}
+  p {width: 50%; margin: auto;}
+}
+
+.corporate-memberships {
+  h2 {font-weight: 500;}
+  p {width: 50%; margin: auto;}
+}
+
+
+.membership {
+
+  h1 + h3 {
+    color: $runway;
+  }
+
+  p {line-height: 24px;}
+
+  .membership-table-desktop {
+    ul {
+      font-size: 0;
+
+      li {
+        font-size: 16px;
+        font-weight: 300;
+        vertical-align: middle;
+        &:nth-child(3) {
+          line-height: 24px;
+        }
+        &.green {color: $land; font-weight: 500;}
+      }
+    }
+  }
+}
+
+.sign-up-now {
+  h2 {color: white;}
+  h3 {color: white;}
+}
+
+
+.slidey-label {
+  h3 {line-height: 160px; margin: 0px auto;}
+}
+
+
+.top-nav {
+
+  a {
+    color: $footerlink;
+
+    &.green {
+      color: $land;
+    }
+
+    &.active {
+      color: $grey1;
+      pointer-events: none;
+    }
+  }
+
+  p {
+    font-size: 10px;
+    letter-spacing: 1px;
+    line-height: 10px;
+    text-transform: uppercase;
+  }
+}
+
+
+.transition-header {
+  display: block;
+  text-align: center;
+  left: 0px;
+  padding: 20px;
+  position: absolute;
+  top: -56px;
+  width: 100%;
+
+  span {
+    width: 300px;
+    display: block;
+    margin: auto;
+    padding: 10px;
+    position: relative;
+    &:after {
+      background: white;
+      content: '';
+      display: block;
+      height: 2px;
+      position: absolute;
+      top: 45%;
+      width: 90%;
+      z-index: -1;
+    }
+  }
+}
+
+.no-wrap {
+  white-space: nowrap;
+}
+.price-calculator{
+
+
+    h1{
+      color:#fff;
+    }
+    h2{
+      color:$grey3;
+    }
+    h3{
+        color:$grey3;
+    }
+    p{
+      color:#fff;
+      &.tagline{
+          color:$grey3;
+          width: 50%;
+          margin: auto;
+          text-align:center;
+          margin-bottom:50px;
+      }
+    }
+    #calculator-results{
+        color:#fff;
+        font-size:50px;
+
+        span{
+            color:#fff;
+            font-size:50px;
+        }
+    }
+}

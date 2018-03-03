@@ -1,0 +1,563 @@
+.card {
+  display: block;
+  background-color: transparent;
+  border-bottom: 1px solid #D8D8D8;
+  margin: 0 auto;
+  position: relative;
+  overflow:hidden;
+  width: 100%;
+  text-align: left;
+  padding: 30px 15px;
+  &:last-child {
+    border-top: 0px;
+  }
+
+  h5 {
+    font-size: 11px;
+    margin: 0;
+    color: $sky;
+    text-transform: uppercase;
+    letter-spacing: 1.6px;
+    font-weight: 500;
+    line-height: 11px;
+    margin-bottom: 4px;
+  }
+
+  h1 {
+    margin: 0;
+    font-size: 14px;
+    line-height: 22px;
+    font-weight: 700;
+  }
+
+  h4 {
+    margin: 0;
+    font-size: 11px;
+    line-height: 11px;
+    letter-spacing: 0;
+    font-family: 'Gotham SSm A', 'Gotham SSm B', sans-serif;
+    font-weight: 300;
+    text-transform: uppercase;
+    color: $copy-dark;
+  }
+
+  &.grey {
+    background-color: $grey2;
+  }
+
+  &.cancelled{
+    opacity:0.4;
+
+      &.dismissed{
+        visibility:hidden;
+        opacity:0;
+        transition: visibility .8s linear, opacity .8s linear;
+      }
+  }
+  .circle.x-large {
+    margin-right: 10px;
+    overflow:visible;
+    @media screen and (min-width: 769px) {
+      margin-right: 20px;
+    }
+  }
+  .pencil-green,.move-me {
+    cursor: pointer;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+  }
+  
+  .top-row {
+    font-size: 14px;
+    color: red;
+    margin-bottom: 15px;
+    
+    .departing-info {
+      font-family: 'din';
+      text-transform: uppercase;
+      font-size: 16px;
+      font-weight: 300;
+      color: #768888;
+      display: inline;
+      strong {
+        padding-right: 10px;
+        margin-right: 10px;
+        border-right: 1px solid rgba(0,0,0,.2);
+        height: 15px;
+        line-height: 15px;
+        display: inline-block;
+        margin-top: 0;
+      }
+    }
+    .seats {
+      text-align: left;
+      font-family: 'din';
+      text-transform: uppercase;
+      font-size: 16px;
+      font-weight: 700;
+      color: #079ABB;
+      display: inline;
+      margin-left: 10px;
+    }
+  }
+
+  .bottom-row {
+    font-size: 0;
+    &:after {
+      content: '';
+      width: 100%;
+      display: inline-block;
+    }
+  }
+
+
+
+/*  styles for card sections ----------------------- */
+
+
+  .airports {
+    vertical-align: top;
+    display: inline-block;
+    width: 100%;
+    padding-top: 6px;
+  }
+
+  .origin {
+    display:inline-block;
+    vertical-align: middle;
+    width: calc(50% - 35px);
+  }
+
+  .destination {
+    display:inline-block;
+    vertical-align: middle;
+    width: calc(50% - 35px);
+  }
+
+  .oneway-or-rt {
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 20px;
+    line-height: 10px;
+    height: 20px;
+    width: 60px;
+    color: #A1B2B2;
+    font-weight: 100;
+    text-align: center;
+    
+    span {
+      display: block;
+    }
+  }    
+  .block-wrapper {
+    display: block;
+    padding-top: 10px;
+    .seats {
+      white-space: pre-line;
+      display: inline-block;
+      vertical-align: top;
+      margin-right: 28px;
+    }
+
+    .price {
+      display: inline-block;
+      vertical-align: top;
+    }
+  }
+
+  .card-buttons {
+    width: 100%;
+    margin-left: 74px;
+    a {
+      display: inline-block;
+      width: auto;
+      margin: 10px 0 0 0;
+      &.ghost {
+        margin-left: 10px;
+      }
+    }
+    @media screen and (min-width: 480px) {
+      width: auto;
+      margin-left: 0;
+      display: inline-block;
+      text-align: right;
+    }
+  }
+
+  .circle {
+    width: 64px;
+    height: 64px;
+    font-family: 'din';
+    font-weight: 300;
+    color: #fff;
+    margin: 0;
+    position: relative;
+    display: block;
+    vertical-align: top;
+    font-size: 18px;
+    margin: 0 10px 0 0;
+
+    @media screen and (min-width: 360px) {
+      display: inline-block;
+      margin: 0 20px 0 0;
+    }
+
+
+    .progress-circle {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 64px;
+      height: 64px;
+      display: block;
+      margin: 0px;
+      box-shadow: 0 0 0 3px #D8D8D8 inset;
+      border-radius: 50%;
+      pointer-events: none;
+
+      .progress-text {
+        color: #079ABB;
+        text-align: center;
+        @include center(all);
+        .number {
+          display: block;
+          font-size: 21px;
+          font-weight: 100;
+          margin-bottom: 8px;
+          font-family: 'din';
+          line-height: 14px;
+          -webkit-font-smoothing:antialiased;
+          text-rendering: optimizeLegibility;
+        }
+        .confirmed {
+            display: block;
+            font-size: 12px;
+            text-transform: uppercase;
+            line-height: 8px;
+            font-weight: 700;
+            font-family: 'din';
+            text-align: center;
+            -webkit-font-smoothing:antialiased;
+            text-rendering: optimizeLegibility;
+            &.not {
+              font-size: 12px;
+              line-height: 12px;
+            }
+        }
+        .city-code {
+          font-size: 21px;
+          line-height: 1;
+        }
+      }
+      svg {
+        transform: rotate(-90deg) rotateX(-180deg);
+      }
+    }
+    .city-code {
+      @include center(all);
+    }    
+    &.anywhere {
+      line-height: 64px;
+      font-size: 24px;
+      font-weight: 100;
+      color: #079ABB;
+      span {
+        color: #079ABB;
+        span {
+          display: block;
+          font-size: 8px;
+          text-transform: uppercase;
+          line-height: 16px;
+          margin-top: -16px;
+          font-weight: 700;
+        }
+      }
+    }
+  }
+
+  #upcoming-flights & {
+    .riseanywhere-logo {
+      background-image: url(../img/anywhere/flight-logo.png);
+      background-size: 117px 12px;
+      width: 117px;
+      height: 12px;
+      margin: 0px 0px 15px 0px;
+    }
+  }  
+
+  #available-flights & {
+    .riseanywhere-logo {
+      background-image: url(../img/anywhere/flight-logo.png);
+      background-size: 117px 12px;
+      width: 117px;
+      height: 12px;
+      margin: 30px 30px -10px 30px;
+    }
+    .card-buttons {
+      margin-left: 0;
+    }
+    .origin {
+      width: auto;
+    }
+    .destination {
+      width: auto;
+    }
+  }
+  #upcoming-flights &, #pending-flights & {
+    .card-buttons {
+      position: absolute;
+      top: 12px;
+      right: 15px;
+      width: auto;
+      a {
+        font-size: 10px;
+        min-width: 80px;
+        letter-spacing: 2.6px;
+        height: 28px;
+        line-height: 28px;
+      }
+    }
+    @media screen and (min-width: 360px) {
+      .card-buttons {
+        display: block;
+      }
+      .airports {
+        width: calc(100% - 84px);
+      }
+    }
+  }
+  
+  #upcoming-flights & {
+    .oneway-or-rt {
+      vertical-align: bottom;
+    }
+    .origin, .destination {
+      vertical-align: bottom;
+      .caption {
+        width: 100%;
+        padding-top: 20px;
+      }
+    }
+    @media screen and (min-width: 480px) {
+      .oneway-or-rt {
+        vertical-align: middle;
+      }
+      .origin, .destination {
+        vertical-align: middle;
+        .caption {
+          width: calc(100% - 84px);
+          padding-top: 0px;
+        }
+      }
+    }
+  }
+
+  .mobile-right {
+    display: inline-block;
+  }
+}
+
+p.no-flights {
+  font-size: 10px;
+  font-weight: 700;
+  color: #a1b2b2;
+  width: 100%;
+  display: block;
+  text-align: center;
+  position: relative;
+  top: 60px;
+  margin: 0;
+  padding: 0;
+}
+
+////\\\\ Mobile *************************
+@media screen and (min-width: 768px) {
+  .card {
+    width: 60%;
+
+    .circle {
+      vertical-align: middle;
+      margin-right: 20px;
+      display: inline-block;
+    }
+
+    .mobile_right {
+      width: calc(100% - 84px);
+      .card-buttons {        
+        width: 20%;
+        a {
+          width: 50px;
+          margin-right: 20px;
+        }
+      }
+    }
+    h5 {
+      font-size: 12px;
+    }
+
+    h1 {
+      font-size: 16px;
+    }
+
+    h4 {
+      font-size: 12px;
+      line-height: 12px;
+    }
+    .airports {
+      width: auto;
+    }
+  }
+}
+
+////\\\\ Tablet Breakpoint *************************
+
+@media screen and (min-width: 1024px) {
+  .origin-and-destination {
+    display: none;
+  }
+
+  .card {
+    display: block;
+    font-size: 0;
+    padding-left: 0;
+    padding-right: 0;
+    text-align: left;
+    width: 100%;
+
+    .bottom-row {
+      .airports {
+        vertical-align: middle;
+        width: calc(75% - 84px);
+      }
+      .origin {
+        display: inline-block;
+        text-align: left;
+      }
+      .destination {
+        display: inline-block;
+        text-align: left;
+      }
+      .oneway-or-rt {
+        text-align: center;
+        display: inline-block;
+      }
+      .card-buttons {
+        display: inline-block;
+        margin: 0;
+        width: 23%;
+        text-align: right;
+        float: right;
+        a {
+          margin: 0;
+        }
+      }
+      
+      .block-wrapper {
+        display: inline;
+        padding-top: 0;
+        vertical-align: middle;
+        padding: 0 15px;
+        .seats {
+          width: auto;
+          margin-left: auto;
+          vertical-align: middle;
+          padding: 0 15px;
+          margin: 0;
+        }
+        .price {
+          width: auto;
+          vertical-align: middle;
+          padding: 0 15px;
+          margin: 0;
+        }
+      }
+
+    }
+    .badge {
+      display: none;
+      vertical-align: middle;
+      border: 0;
+      font-size: 0;
+
+      figure {
+        margin: 0;
+        width: 20px;
+        text-align: center;
+      }
+      .circle.small {
+        &:first-of-type {
+          margin-left: 0;
+        }
+      }
+    }
+    .badge-wrap {
+      &.badge-right {
+        .badge-wrap {
+          right: 20px;
+        }
+      }
+      &.badge-left {
+        .badge-wrap {
+          left: -3px;
+        }
+      }
+      .badge-wrap {
+        top: 20px;
+      }
+    }
+    
+
+    .fluid-full-width {
+      .airports {
+        width: calc(100% - 84px);
+        padding-top: 0;
+      }
+      .card-buttons {
+        a {
+          text-align: center;
+          &.ghost {
+            margin-left: 10px;
+          }
+        }
+      }
+    }
+
+
+
+  }
+
+}
+
+
+.anywhere {
+  .section {
+    .content-wrap {
+      .interstitial {
+        margin-left: 60px;
+        margin-right: 60px;
+      }
+    }
+  }
+}
+
+
+
+
+svg {
+  border-radius: 50%;
+}
+
+circle {
+  fill: transparent;
+  
+  stroke-width: 3;
+  &.progress {
+    stroke: #079ABB;
+  }
+  &.full-circle {
+    stroke: #D8D8D8;
+  }
+}
+
+

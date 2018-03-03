@@ -1,0 +1,17 @@
+{% extends 'emails/base.txt' %}
+
+{% block content %}Your statement is available.
+
+{% if not subscription.account.is_manual %}
+Your {{ payment_method }} will be automatically billed on {{ subscription.next_bill_date|date:"d F Y" }}.
+{% else %}
+Please submit your payment to Rise.
+{% endif %}
+
+{{ subscription.description }} - ${{ subscription.amount|floatformat:2 }}
+7.5% Federal Excise Tax - ${{ subscription.tax|floatformat:2 }}
+
+TOTAL: ${{ subscription.total|floatformat:2 }}
+
+{{ protocol }}://{{ site.domain }}{% url 'profile' %}
+{% endblock content %}

@@ -1,0 +1,95 @@
+.chat_message_header_system {
+    margin: 0;
+}
+
+.chat_message_system {
+    background: none;
+    display: block;
+    color: $label_color;
+    text-transform: uppercase;
+    font-size: 10.4px;
+    letter-spacing: 2px;
+    line-height: 12px;
+    margin: 0 0 27px;
+
+    // Hide these events
+    // https://trello.com/c/EpQcWOxE/236-chat-widget-only-the-agent-name-has-left-at-time-string-should-surface-when-a-desk-agent-resolves-the-conversation
+    &.chat_system_event_1002 {
+        display: none;
+    }
+}
+
+.chat_message_time {
+    color: $light_green;
+    font-size: 10.4px;
+    letter-spacing: 2px;
+    line-height: 12px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 0;
+}
+
+.chat_bottom_area {
+    color: black;
+    padding: 5px;
+    position: absolute;
+    right: 0px;
+    left: 20px;
+    bottom: 20px;
+}
+
+.chat_message, .chat_message_header_agent, .chat_message_header_customer {
+    border: none;
+    position: relative;
+    padding: 0;
+}
+
+.chat_message {
+    // border-bottom: $horizontal_rules solid 1px;
+    padding: 0 0 23px;
+    margin-bottom: 20px;
+    border-bottom: $horizontal_rules solid 1px;
+
+    &_text {
+        margin: 0;
+        padding-left: 77px;
+    }
+
+    .chat_message_time {
+        display: none !important;
+    }
+}
+
+.customer_thumb, .agent_thumb {
+    width: 55px;
+    height: 54px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-right: 20px;
+
+    img {
+        width: 100%;
+        height: 100%;
+    }
+}
+
+// 'x' icon next to end chat button
+img.icon_button {
+    display: none;
+}
+
+.chat_timer_block {
+    float: none;
+}
+
+// 'Send' button is wrapped in a span
+.input_text + span {
+    display: block;
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 77px;
+
+}

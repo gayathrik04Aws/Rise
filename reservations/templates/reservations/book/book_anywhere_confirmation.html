@@ -1,0 +1,152 @@
+{% extends 'anywhere/base.html' %}
+{% load flight_tags %}
+{% load humanize %}
+{% load staticfiles %}
+
+{% block title %}Booking - {{ block.super }}{% endblock title %}
+
+{% block meta_description %}Booking - Flights Confirmed{% endblock meta_description %}
+
+
+
+{% block body_class %}booking flight-confirmed anywhere anywhere-confirmed{% endblock %}
+
+
+{% include 'reservations/book/anywhere_booking_nav.html' with flights=True hide_booking_breadcrumbs=True %}
+
+{% block simple_content_header %}
+
+<div class="anywhere-header">Rise Anywhere</div>
+{% endblock %}
+{% block simple_content %}
+
+  <div class="top-text">
+    {% if flightset.leg2 == None %}
+      <h1>THANK YOU FOR JOINING THIS FLIGHT</h1>
+    {% else %}
+      <h1>THANK YOU FOR JOINING THESE FLIGHTS</h1>
+    {% endif %}
+
+
+    {% if flightset.confirmation_status == "CONFIRMED" %}
+      <p>This flight has been confirmed and your payment method charged.</p>
+    {% else %}
+      <p>This flight is not yet confirmed.<br>
+      We will notify you when the flight has met capacity requirements and is cleared for take off.</p>
+    {% endif %}
+      <p>Plans change?  We're here to help. Call <a href="tel:+18447668313">844-766-8313</a> to speak to a RISE representative.</p>
+    {% if verify == "a" %}
+      <p><strong>You must verify your bank account before you can be confirmed on this flight.</strong> Click <a href="{% url 'profile_billing_bank_account_verify'%}">here</a> to verify your bank account.</p>
+    {% endif %}
+  </div>
+
+  <div class="block center reservation-actions">
+    {# <a href=""><figure class="passbook"></figure><h4>Add to Passbook</h4></a>#}
+    <a href="{% url 'reservation_ical' reservation.pk %}" target="_blank"><figure class="calendar-icon"></figure><h4>Add to Calendar</h4></a>
+    <a href="{% url 'reservation_email' reservation.pk %}" target="_blank"><figure class="email"></figure><h4>Email</h4></a>
+    {# <a href=""><figure class="print"></figure><h4>Print Invoice</h4></a>#}
+  </div>
+
+  <div class="block">
+
+    {% with flight_reservations=reservation.flightreservation_set.all %}
+    {% for flight_reservation in flight_reservations %}
+    {% with flight=flight_reservation.flight %}
+
+
+
+    <div class="card">
+      <div class="top-row">
+        {% if flight.flight_type != 'R' %}
+        <div class="badge"><figure class="{% if flight.flight_type == 'F' %}funflight-solid{% elif flight.flight_type == 'P' %}promo-solid{% endif %}"></figure></div>
+        {% endif %}
+
+        {% if flight_reservation.has_companions %}
+        <a href="{% url 'book_companions' flight_reservation.pk %}"><figure class="pencil-green"></figure></a>
+        {% endif %}
+      </div>
+      <!--
+      <div class="origin-and-destination">
+        <h5>Origin &amp; Destination</h5>
+        <div class="flight-details">
+          <span class="airport">{{ flight.origin.code }}</span> {{ flight.local_departure.date|date:'d M'}} / {{ flight.local_departure|time:"h:i A" }}<br />
+          <span class="airport">{{ flight.destination.code }}</span> {{ flight.local_arrival.date|date:'d M'}} / {{ flight.local_arrival|time:"h:i A" }}
+        </div>
+      </div>
+      -->
+
+      <div class="origin">
+        <div class="circle med gradient {{ flight.origin.city|remove_spaces_lower_case }}">
+            <span class="city-code">{{ flight.origin.code }}</span>
+            {% if flight.flight_type != 'R' %}
+              <div class="badge-wrap">
+                <figure class="{% if flight.flight_type == 'F' %}funflight-solid{% elif flight.flight_type == 'P' %}promo-solid{% endif %}"></figure>
+              </div>
+            {% endif %}
+        </div>
+
+        <div class="caption">
+          <h5>Origin</h5>
+          <h1>{{ flight.origin.city }}, {{ flight.origin.state }}</h1>
+          <h4 class="grey">{{ flight.local_departure.date|date:'M d, Y'}} / {{ flight.local_departure|time:"h:i A" }}</h4>
+        </div>
+      </div>
+
+      <div class="oneway-or-rt">
+        &rarr;
+      </div>
+
+      <div class="destination">
+        <div class="circle med gradient {{ flight.destination.city|remove_spaces_lower_case }}">
+           <span class="city-code">{{ flight.destination.code }}</span>
+        </div>
+        <div class="caption">
+          <h5>Destination</h5>
+          <h1>{{ flight.destination.city }}, {{ flight.destination.state }}</h1>
+          <h4 class="grey">{{ flight.local_arrival.date|date:'M d, Y'}} / {{ flight.local_arrival|time:"h:i A" }}</h4>
+        </div>
+      </div>
+
+
+
+    </div>
+
+
+
+    {% endwith %}
+    {% endfor %}
+    {% endwith %}
+  </div>
+        <div class="cost-container rise-stacker rise-stack-sm rise-stacker-remove-margins">
+          <div class="cost-unit flight-subtotal">
+              <div class="caption">
+                  <h5>Subtotal:</h5>
+                  <h1>${{ reservation.calculate_anywhere_seat_cost|floatformat:0}}</h1>
+              </div>
+          </div>
+          <div class="cost-unit flight-tax">
+              <div class="caption">
+                  <h5>Tax:</h5>
+                  <h1>${{ reservation.calculate_anywhere_tax|floatformat:0}}</h1>
+              </div>
+          </div>
+          <div class="cost-unit">
+              <div class="caption total-flight-cost">
+                  <h5>Total Cost:</h5>
+                  <h1>${{ reservation.calculate_anywhere_totalcost|floatformat:0}}</h1>
+              </div>
+          </div>
+      </div>
+
+
+
+
+  <div class="block center rise-stacker rise-stack-sm">
+    <a class="button green" href="{% url 'anywhere_index' %}">Book another</a>
+    <div class="interstitial">
+      <span class="lined">Or</span>
+    </div>
+    <a class="button dark-grey" href="{% url 'dashboard' %}">Go to member profile</a>
+  </div>
+
+{% endblock %}

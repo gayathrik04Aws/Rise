@@ -1,0 +1,66 @@
+.interstitial { // This could be renamed, I'm not exactly sure what to call this kind of element, also font is wrong
+  text-align: center;
+  span {
+    color: $sky;
+    font-family: 'din';
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    position: relative;
+    text-transform: uppercase;
+    &.grey {
+      background-color: #eae8e8;
+    }
+    &.lined {
+      width: 100px;
+      display: block;
+      margin:0 auto;
+      &:before {
+        background: $grey4;
+        content: '';
+        display: block;
+        height: 2px;
+        left: 15px;
+        position: absolute;
+        top: 50%;
+        width: 20px;
+        @include transform(translateY(-50%));
+      }
+      &:after {
+        background: $grey4;
+        content: '';
+        display: block;
+        height: 2px;
+        right: 15px;
+        position: absolute;
+        top: 50%;
+        width: 20px;
+        @include transform(translateY(-50%));
+      }
+    }
+  }
+  &.header {
+    position: relative;
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAAXNSR0IArs4c6QAAABZJREFUCB1jYCAWMN64ceM/sYox1QEA1dUDiY6HDq0AAAAASUVORK5CYII=);
+    background-repeat: repeat-x;
+    background-position: center center;
+    margin-bottom: 36px;
+    span {
+      padding: 0 15px;
+      -webkit-font-smoothing:antialiased;
+      text-rendering: optimizeLegibility;
+      font-size: 18px;
+    }
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .interstitial {
+    display: inline-block;
+    
+    &.header {
+      display: block;
+      
+    }
+  }
+}

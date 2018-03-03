@@ -1,0 +1,155 @@
+{% extends 'base_admin.html' %}
+
+{% load staticfiles %}
+
+{% block title %}Flights - Load Factors{% endblock title %}
+
+{% block meta_description %}Dashboard - List Airports{% endblock meta_description %}
+
+{% block body %}
+{% include 'admin_header_fragment.html' with nav_airports=True %}
+<div class="admin-content-wrap">
+    <div class="block admin no-pb">
+        <div class="admin-page-header no-bb">
+            <div class="fl">
+                <h1>Flight Load Factor</h1>
+            </div>
+            <div class="fr">
+                <form action="." method="POST">
+                    {% csrf_token %}
+                    <button type="submit" class="green">Download</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <br/><br/>
+
+    <div class="detail-section">
+        <h3>Overall Load</h3>
+        <p>
+            {{ load_overall|floatformat:6 }}%
+        </p>
+    </div>
+
+    <div class="detail-section">
+        <h3>Load by Year</h3>
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Year</th>
+                    <th>Load Factor</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for key,value in load_by_year.iteritems %}
+                <tr>
+                    <td><b>{{ key }}</b></td>
+                    <td>{{ value|floatformat:6 }}%</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="detail-section">
+        <h3>Load by Day of Week</h3>
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Day of Week</th>
+                    <th>Load Factor</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for key,value in load_by_day_of_week.iteritems %}
+                <tr>
+                    <td><b>{{ key }}</b></td>
+                    <td>{{ value|floatformat:6 }}%</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="detail-section">
+        <h3>Load by Day of Week by Flight</h3>
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Day of Week - Flight Number</th>
+                    <th>Load Factor</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for key,value in load_by_day_of_week_by_flight.iteritems %}
+                <tr>
+                    <td><b>{{ key }}</b></td>
+                    <td>{{ value|floatformat:6 }}%</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="detail-section">
+        <h3>Load by Month</h3>
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Month</th>
+                    <th>Load Factor</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for key,value in load_by_month.iteritems %}
+                <tr>
+                    <td><b>{{ key }}</b></td>
+                    <td>{{ value|floatformat:6 }}%</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="detail-section">
+        <h3>Load by Week</h3>
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Week</th>
+                    <th>Load Factor</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for key,value in load_by_week.iteritems %}
+                <tr>
+                    <td><b>{{ key }}</b></td>
+                    <td>{{ value|floatformat:6 }}%</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="detail-section">
+        <h3>Load by Day</h3>
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Day</th>
+                    <th>Load Factor</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for key,value in load_by_day.iteritems %}
+                <tr>
+                    <td><b>{{ key }}</b></td>
+                    <td>{{ value|floatformat:6 }}%</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock body %}

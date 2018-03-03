@@ -1,0 +1,154 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block title %}Edit Profile - {{ block.super }}{% endblock title %}
+
+{% block meta_description %}Basic Information - Manage Account{% endblock meta_description %}
+
+{% block css %}
+{% with marketing=False%}
+{{ block.super }}
+{% endwith %}
+{% endblock css %}
+
+{% block body_class %}{% endblock %}
+{% block body %}
+{% include 'account_profile/dashboard_nav.html' %}
+<div class="section profile-body">
+        {% include 'account_profile/profile-sidenav-mobile.html' with basic_info=True %}
+    <div class="content-wrap app-content-wrap no-mt-mobile edit group">
+        {% include 'account_profile/profile-sidenav.html' with profile=True %}
+        <div class="profile-content-wrap">
+        <div class="detail group">
+        <div class="edit-profile-header">
+        <h1>Basic Information</h1>
+        </div>
+            <form action="" method="POST" class="bare profile-edit-form group" enctype="multipart/form-data">
+                {% csrf_token %}
+
+
+                {% if form.errors %}
+                <div class="error-message">
+                {% for field, errors in form.errors.items %}
+                {% for error in errors %}
+                  {{ error }}<br/>
+                {% endfor %}
+                {% endfor %}
+                </div>
+                {% endif %}
+
+                {% if messages %}
+                {% for message in messages %}
+                    <div class="error-message">{{ message }}</div>
+                {% endfor %}
+                {% endif %}
+
+                <div class="no-labels">
+
+                    <div class="distribute equal-width singles">
+                        <label for="id_first_name">First Name</label>
+                        <input {% if form.first_name.errors %}class="error"{% endif %} type="text" name="{{ form.first_name.html_name }}" value="{{ form.first_name.value|default:"" }}" placeholder="First Name" id="first-name"></input>
+                        <label for="id_last_name">Last Name</label>
+                        <input {% if form.last_name.errors %}class="error"{% endif %} type="text" name="{{ form.last_name.html_name }}" value="{{ form.last_name.value|default:"" }}" placeholder="Last Name" id="last-name"></input>
+                    </div>
+
+                    <label for="id_email">Email Address</label>
+                    <input {% if form.email.errors %}class="error"{% endif %} type="text" name="{{ form.email.html_name }}" value="{{ form.email.value|default:"" }}" placeholder="Email Address" id="email-address"></input>
+                    <label for="id_company">Company</label>
+                    <input {% if form.company_name.errors %}class="error"{% endif %} type="text" name="{{ form.company_name.html_name }}" value="{{ form.company_name.value|default:"" }}" placeholder="Company" id="company-name"></input>
+
+                    <div class="distribute equal-width singles">
+                        <label for="id_phone">Phone Number</label>
+                        <input {% if form.phone.errors %}class="error"{% endif %} type="text" name="{{ form.phone.html_name }}" value="{{ form.phone.value|default:"" }}" placeholder="Phone Number" id="id_phone"></input>
+                        <label for="id_mobile_phone">Cell Phone (Optional)</label>
+                        <input {% if form.mobile_phone.errors %}class="error"{% endif %} type="text" name="{{ form.mobile_phone.html_name }}" value="{{ form.mobile_phone.value|default:"" }}" placeholder="Cell Phone" id="id_mobile_phone"></input>
+                    </div>
+
+                    <label for="id_ship_street_1">Street Address Line 1</label>
+                    <input {% if form.ship_street_1.errors %}class="error"{% endif %} type="text" name="{{ form.ship_street_1.html_name }}" value="{{ form.ship_street_1.value|default:"" }}" placeholder="Street Address Line 1" id="ship-street-1"></input>
+                    <label for="id_ship_street_2">Street Address Line 2</label>
+                    <input {% if form.ship_street_2.errors %}class="error"{% endif %} type="text" name="{{ form.ship_street_2.html_name }}" value="{{ form.ship_street_2.value|default:"" }}" placeholder="Street Address Line 2" id="ship-street-2"></input>
+                    <label for="id_ship_city">City</label>
+                    <input {% if form.city.errors %}class="error"{% endif %} type="text" name="{{ form.ship_city.html_name }}" value="{{ form.ship_city.value|default:"" }}" placeholder="City" id="ship-city"></input>
+
+                    <div class="distribute equal-width">
+                        <div class="select arrow">
+                          <span class="value">{{ form.ship_state.value|default:"Select" }}</span>
+                          <ul>
+                              {% for value, text in form.ship_state.field.choices %}
+                              <li value="{{ value }}">{{ text }}</li>
+                              {% endfor %}
+                          </ul>
+                          {{ form.ship_state }}
+                        </div>
+                        <label for="id_postal_code">Zip</label>
+                        <input {% if form.ship_postal_code.errors %}class="error"{% endif %} type="text" name="{{ form.ship_postal_code.html_name }}" value="{{ form.ship_postal_code.value|default:"" }}" placeholder="Zip" id="postal-code"></input>
+                    </div>
+                </div> <!-- /.no-labels -->
+                    <div class="equal-with-labels">
+                        <div class="full-input fl">
+                            <label for="id_date_of_birth">Date of Birth</label>
+                            <input class="date-formatter {% if form.date_of_birth.errors %}error{% endif %}" type="text" name="{{ form.date_of_birth.html_name }}" value="{{ form.date_of_birth.value|date:"m/d/Y"|default:"" }}" placeholder="MM/DD/YEAR" id="date-of-birth"></input>
+                        </div>
+                        <div class="full-input fr">
+                            <label>Weight Range</label>
+                            <div class="select arrow">
+                              <span class="value">{{ form.weight.value|default:"Select" }}</span>
+                              <ul>
+                                  {% for value, text in form.weight.field.choices %}
+                                  <li value="{{ value }}">{{ text }}</li>
+                                  {% endfor %}
+                              </ul>
+                              {{ form.weight }}
+                            </div>
+                        </div>
+                    </div>
+
+                <label>My Origin Airport</label>
+
+                <div class="selection-grid">
+                {% for choice in form.origin_airport.field.choices %}
+                {% with airport=choice.2 %}
+                <div class="select-city selection-grid-item">
+                     <label class="check-radio-block" for="origin-city-{{ forloop.counter }}">
+                        <input id="origin-airport-{{ forloop.counter }}" name="{{ form.origin_airport.name }}" type="radio" value="{{ choice.0 }}" {% if form.origin_airport.value|safe == choice.0|safe %}checked="checked"{% endif %}>
+                        <span><em>{{ airport.code|upper }}</em> {{ airport.name }}</span>
+                     </label>
+                </div>
+                {% endwith %}
+                {% endfor %}
+                </div>
+                {% comment %}
+                {# <label>Food Preferences</label> #}
+                <label>Drink Preferences</label>
+                <div class="selection-grid">
+                {% for checkbox in form.food_options %}
+                <div class="select-food-options selection-grid-item">
+                    <label class="check-radio-block" for="food-options-{{ forloop.counter }}">
+                        <input id="food-options-{{ forloop.counter }}" name="{{ checkbox.name }}" type="checkbox" value="{{ checkbox.choice_value }}" {% if checkbox.is_checked %}checked="checked"{% endif %}>
+                        <span>{{ checkbox.choice_label }}</span>
+                    </label>
+                </div>
+                {% endfor %}
+                </div>
+                {% endcomment %}
+                <label>Food Restrictions</label>
+                <textarea {% if form.allergies.errors %}class="error"{% endif %} type="text" name="{{ form.allergies.html_name }}" id="allergies" placeholder="Enter any food allergies or restrictions">{{ form.allergies.value|default:"" }}</textarea>
+                <hr class="mt10" />
+                <div class="page-controls">
+                    <input type="submit" class="button black" value="Update Info">
+                </div>
+            </form>
+        </div>
+        </div> <!-- /.profile-content-wrap -->
+  </div>
+</div>
+{% endblock body %}
+
+{% block javascript %}
+{{ block.super }}
+<script src="{% static 'js/binaryajax.min.js' %}"></script>
+<script src="{% static 'js/exif.min.js' %}"></script>
+<script src="{% static 'js/profile.js' %}"></script>
+{% endblock javascript %}

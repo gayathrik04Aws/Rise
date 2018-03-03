@@ -1,0 +1,22 @@
+{% extends 'accounts/signup.html' %}
+{% load safe_settings %}
+
+{% block intro %}
+<h2>A private air travel membership service</h2>
+<p>Bypass remote airport parking, long lines, over-crowded flights and car rental buses. Just drive up, step aboard, and enjoy flying again.  We offer 3 levels of membership. You choose the level that’s best for you.</p>
+
+<h2>One Monthly Fee. Fly All You Want</h2>
+<p>Rise caters to the needs of frequent Texas travelers. We’re offering multiple scheduled flights a day between Dallas and Houston on weekdays, and Rise Fun Flights to Austin, Vail, Seaside and other destinations on weekends. We’ll add more cities and flights based on member preferences and demand.</p>
+
+<h2>Starting at $1650 Per Month</h2>
+<p>No long-term contracts and no hidden fees.</p>
+
+<h2>Reserve Your Spot to Become A Member</h2>
+
+<p>Rise has a limited number of memberships available and even fewer Founding Memberships, but it's easy and risk-free to reserve your spot.</p>
+
+<p class="strong-grey" style="width: 100%; line-height: 32px;">Just pay a one-time deposit of ${% settings_value "DEPOSIT_COST" %} 
+    + {% settings_value "DEPOSIT_TAX_PERCENT" %} sales tax, which covers your initiation fee.<br>Your membership will not start until we start to fly later this fall.<br>Your deposit is fully refundable if you don't fly with us.</p>
+
+<p>Not ready to fly? <a href="{% url 'notify' %}">Subscribe to Rise updates.</a></p>
+{% endblock intro %}

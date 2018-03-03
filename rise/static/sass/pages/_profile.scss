@@ -1,0 +1,356 @@
+.profile-body {
+  h1 {
+    display: none;
+  }
+  .detail.group {
+    h2 {
+      @include tablet-gothic-family;
+      text-transform: uppercase;
+      font-size: 20px;
+      font-weight: 700;
+      display: inline-block;
+      letter-spacing: 1px;
+      text-rendering: optimizeLegibility;
+      margin-top: 20px;
+    }
+    .avatar-actions {
+      float: right;
+      h5 {
+          display: inline-block;
+      }
+    }
+  }
+}
+
+.profile-page-header {
+  @include clearfix;
+  border-bottom: 1px solid $grey2;
+  padding: 5px 0;
+}
+
+.edit-profile-header {
+  @include clearfix;
+}
+
+.account-profile-header {
+  @include clearfix;
+  padding: 20px 0;
+  font-size: 14px;
+  border-bottom: 1px solid $grey2;
+  line-height: 19px;
+  .title {
+    @include gotham-family;
+    font-weight: 700;
+    color: $runway;
+    letter-spacing: 0;
+    text-rendering: optimizeLegibility;
+    &.offset {
+      display: inline-block;
+      width: 50px;
+    }
+  }
+  .secondary {
+    @include gotham-family;
+    &.break {
+      display: block;
+    }
+  }
+  .icon {
+  }
+  .h-left {
+    float: left;
+  }
+  .h-right {
+    float: right;
+    a * {
+      display: inline-block;
+      vertical-align: middle;
+    }
+    a span {
+      display: none;
+      margin-left: 15px;
+    }
+    &.align {
+      margin-top: 8px;
+    }
+  }
+  label {
+    margin-top: 0;
+  }
+  &.no-mobile {
+    display: none;
+  }
+  a.small {
+    text-transform: uppercase;
+  }
+}
+
+.profile-page-control {
+  margin-top: 25px;
+}
+
+a#change-avatar {
+  vertical-align: middle;
+  display: inline-block;
+  figure, h5 {
+    vertical-align: middle;
+    display: inline-block;
+  }
+}
+
+.pass-wrapper {
+  margin: 20px 0;
+}
+
+.passes {
+  @include clearfix;
+  width: 100%;
+  * {
+    display: inline-block;
+    vertical-align: middle;
+  }
+  figure {
+  }
+  h3 {
+    @include tablet-gothic-family;
+    font-size: 15px;
+    color: $sky;
+    letter-spacing: 1px;
+    font-weight: 300;
+    text-rendering: optimizeLegibility;
+    width: 48%;
+    margin: 0 0 0 15px;
+  }
+  p {
+    width: 36%;
+    @include gotham-family;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 10px;
+    color: $runway;
+    text-align: right;
+    float: right;
+    margin: 5px 0;
+  }
+}
+
+.item-title {
+  // This is the same for both profile-items and profile-items-additional
+  font-size: 10px;
+  text-transform: uppercase;
+  color: #A1B2B2;
+  line-height: 34px;
+  letter-spacing: 2px;
+  width: 120px;
+  display: inline-block;
+  &.multiline {
+    float: left;
+  }
+}
+
+.item-value {
+  font-size: 14px;
+  color: #132323;
+  line-height: 34px;
+  width: 100%;
+  display: inline-block;
+  label.check-radio-block {
+    margin-top: 0;
+  }
+  &.multiline {
+    float: left;
+    margin-left: 4px;
+    margin-top: 5px;
+    line-height: 24px;
+  }
+}
+
+.profile-items-wrapper {
+  margin: 0;
+}
+
+ul.profile-items {
+  @include clearfix;
+  li {
+    @include clearfix;
+    &.half {
+      height: 45px;
+      float: left;
+      @include calc(width, '100% - 40%');
+      .item-title {
+        width: 100%;
+        line-height: 30px;
+      }
+      .item-value {
+        width: initial;
+        display: block;
+        line-height: 4px;
+        font-weight: 700;
+      }
+      &.fee {
+        width: 40%;
+      }
+    }
+    .item-value {
+      @include calc(width, '100% - 125px');
+      &.multiline {
+          float: none;
+          margin-left: 0;
+          margin-top: 0;
+        }
+    }
+    .item-title {
+      &.multiline {
+        float: none;
+        vertical-align: top;
+      }
+    }
+  }
+
+  &.border-bottom {
+    border-bottom: 1px solid $grey2;
+    padding-bottom: 20px;
+  }
+}
+
+ul.profile-items-additional {
+  @include clearfix;
+  li {
+    margin-bottom: 8px;
+  }
+  .item-title {
+    width: initial;
+    line-height: 20px;
+  }
+  .item-value {
+    display: block;
+    line-height: 21px;
+    width: 100%;
+  }
+}
+
+
+///////\\\\ Tablet Break
+@media screen and (min-width: 768px) {
+  .profile-content-wrap {
+    display: inline-block;
+  }
+  .profile-items-wrapper {
+    margin: 30px 0;
+  }
+  .profile-body {
+    h1 {
+      display: block;
+      line-height: 40px;
+    }
+    .detail.group {
+      width: 505px;
+      margin: 0 auto;
+      h2 {
+        margin: 0 0 20px 0;
+      }
+      ul.profile-items {
+        margin: 0;
+        li {
+          width: 50%;
+          height: 60px;
+          display: inline-block;
+          float: left;
+          &.tall {
+            height: 80px;
+          }
+          span {
+            display: block;
+            &.item-title {
+              line-height: 16px;
+            }
+            &.item-value {
+              line-height: 21px;
+              font-size: 14px;
+              padding-right: 20px;
+              width: 100%;
+              &.multiline {
+                margin: 0;
+                width: 100%;
+                display: block;
+              }
+            }
+          }
+        }
+        &.border-bottom {
+          padding: 30px 0;
+          li {
+            height: auto;
+            .item-title {
+              margin-bottom: 6px;
+            }
+          }
+        }
+      }
+      ul.profile-items-additional {
+        margin: 0;
+        li {
+          margin-bottom: 20px;
+        }
+      }
+    }
+  }
+  .account-profile-header {
+    padding-top: 0;
+    line-height: 21px;
+    .secondary {
+      &.break {
+        display: inline;
+      }
+    }
+    .h-right {
+      a span {
+        display: inline;
+        font-weight: 700;
+        @include tablet-gothic-family;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: $sky;
+      }
+    }
+    .title.offset {
+    }
+    label {
+      margin-bottom: 10px;
+    }
+    &.no-mobile {
+      display: block;
+    }
+  }
+  .profile-page-header {
+    border-bottom: 0;
+  }
+  .pass-wrapper {
+    @include clearfix;
+    margin: 0 0 30px;
+  }
+  .passes {
+    width: 50%;
+    float: left;
+    h3 {
+      width: 79%;
+    }
+    p {
+      margin: 0 0 0 40px;
+      float: none;
+      width: initial;
+    }
+    &.plans {
+      width: 100%;
+      p {
+        margin: 5px 0 15px;
+        float: right;
+      }
+    }
+  }
+  .profile-page-control {
+    input.dark.reveal {
+      margin: 0;
+    }
+  }
+}

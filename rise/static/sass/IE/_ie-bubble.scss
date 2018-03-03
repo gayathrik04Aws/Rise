@@ -1,0 +1,24 @@
+.bubble {
+  display: inline-block;
+  margin: 20px auto;
+  vertical-align: middle;
+  &:after {
+    border-top: 10px solid transparent;
+    border-left: 20px solid $grey3;
+    border-right: 0;
+    border-bottom: 10px solid transparent;
+    bottom: auto;
+    left: auto;
+    right: -20px;
+    top: 38%;
+    @include transform(translateY(-50%));
+  }
+  p {
+    display: inline-block;
+  }
+  .action-block {
+    display: inline-block;
+    margin: 0 10px;
+    width: auto;
+  }
+}

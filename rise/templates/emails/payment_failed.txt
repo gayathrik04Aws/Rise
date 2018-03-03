@@ -1,0 +1,9 @@
+{% extends 'emails/base.txt' %}
+
+{% block content %}There is a problem with your payment.
+
+We couldn't charge your {{ payment_method }} for your membership. Please go to your account to make sure that your payment information is correct and up-to-date, or contact us at MEMBERS@IFLYRISE.COM or 844-FLY-RISE.
+
+{{ protocol }}://{{ site.domain }}{% url 'profile_billing' %}
+
+{% endblock content %}

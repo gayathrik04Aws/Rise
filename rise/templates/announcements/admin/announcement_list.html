@@ -1,0 +1,123 @@
+{% extends 'base_admin.html' %}
+
+{% load staticfiles %}
+{% load humanize %}
+
+{% block title %}Dashboard - List Announcements{% endblock title %}
+
+{% block meta_description %}Dashboard - List Announcements{% endblock meta_description %}
+
+{% block body %}
+{% include 'admin_header_fragment.html' with announcements=True %}
+<div class="admin-content-wrap">
+    <div class="block admin no-pb">
+        <div class="admin-page-header no-bb">
+            <div class="fl">
+                <h1>Announcements</h1>
+            </div>
+            <div class="fr">
+                <div class="add-page-item">
+                    <a href="{% url 'admin_announcements_add' %}" class="add-page-item">+ Add New Announcement</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br/><br/>
+    <table class="admin-table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Message</th>
+                <th>Date</th>
+                <th>Created By</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for announcement in announcement_list %}
+            <tr class="link-row" href="{% url 'admin_announcements_detail' announcement.pk %}">
+                <td><b>{{ announcement.title }}</b></td>
+                <td>{{ announcement.message|truncatechars:64 }}</td>
+                <td>{{ announcement.created|date:"d M / h:i A" }}</td>
+                <td>{{ announcement.created_by }}</td>
+                <td>
+                    <span class="delete-announcement">
+                        <a href="{% url 'admin_announcements_delete' pk=announcement.pk %}" title="Delete">
+                            <figure class="icon-trashcan"></figure>
+                        </a>
+                    </span>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="cf">
+        <a class="button green fl" href="{% url 'admin_announcements_add' %}">Add New Announcement</a>
+    </div>
+</div>
+<div class="divider"></div>
+<div class="admin-content-wrap">
+<h1>Notification Text</h1><br/>
+    <form action="/riseadmin/announcements/" method="POST">
+        {% csrf_token %}
+    <div>This form lets RISE change the text for messages that are used both for email notifications and for on-screen messages.
+    If the sms, email or message box says "Not used" that means that this message type is not used and should not be populated.
+    <br><br>
+    The list below shows the "tags" for the currently selected message type that can be used in the message to substitute various dynamic information.
+    Note that the spelling and brackets must match exactly for the data substitution to occur.</div>
+    <br>
+    <div class="cf" id="divSubstitutionInfo">
+    </div><br/>
+            <div class="select arrow">
+                <span class="value"></span>
+
+                <ul>
+                    {% for value, text in form.message_key.field.choices %}
+                    <li value="{{ value }}">{{ text }}</li>
+                    {% endfor %}
+                </ul>
+                {{ form.message_key }}
+            </div>
+            <label for="{{ form.sms_text.auto_id }}">SMS Text</label>
+             <input type="text" name="{{ form.sms_text.html_name }}" value="{{ form.sms_text.value}}" placeholder="SMS Text" id="sms_text"></input>
+
+            <label for="{{ form.email_text.auto_id }}">Email Text</label>
+            <textarea name="{{ form.email_text.html_name }}" value="{{ form.email_text.value }}" placeholder=""   id="email_text"></textarea>
+
+         <label for="{{ form.message_box_text.auto_id }}">Message Box Text</label>
+            <textarea name="{{ form.message_box_text.html_name }}" value="{{ form.message_box_text.value }}" placeholder=""   id="message_box_text"></textarea>
+
+        <button type="submit" >Submit</button>
+    </form>
+</div>
+{% endblock body %}
+{% block javascript %}
+
+<script type="text/javascript">
+    $(document).ready(function() {
+         messageKeyChange()
+         $('#id_message_key').change(messageKeyChange);
+    });
+
+
+    function messageKeyChange(){
+
+        var messagekey = $('#id_message_key').val();
+        $.ajax({
+                "type"     : "GET",
+                "url"      : "{% url 'automated_message_key'%}?key="+messagekey,
+                "dataType" : "json",
+                "cache"    : false,
+                "success"  : function(json) {
+                     $('#sms_text').val(json.sms_text);
+                     $('#email_text').val(json.email_text);
+                     $('#message_box_text').val(json.message_box_text);
+                     $('#divSubstitutionInfo').html(json.substitution_info);
+                }
+        });
+    }
+</script>
+
+{% endblock javascript %}
+
+

@@ -1,0 +1,7 @@
+{% extends 'emails/base.txt' %}
+{% block content %}{{ subject }} on {{ flight.flight_number }}
+
+On a scale of 1-10, how likely would you be to recommend Rise to a colleague or friend?
+
+Submit Feedback: https://www.surveymonkey.com/r/PT9LVNZ
+{% endblock content %}

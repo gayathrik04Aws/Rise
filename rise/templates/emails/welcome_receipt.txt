@@ -1,0 +1,12 @@
+{% extends 'emails/base.txt' %}
+
+{% block content %}Welcome!
+
+You're now officially a member of the Rise community. Be on the look out for an email from members@iflyrise.com with information about completing your member profile, selecting a membership tier, and booking flights.
+
+Questions? Contact us at members@iflyrise.com or 844-FLY-RISE.
+
+${{ charge.amount|floatformat:2 }} - {{ charge.description }}
+
+TOTAL: ${{ charge.amount|floatformat:2 }}
+{% endblock content %}

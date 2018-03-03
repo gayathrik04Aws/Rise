@@ -1,0 +1,305 @@
+{% extends 'base.html' %}
+{% load flight_tags %}s
+{% load staticfiles %}
+{% load humanize %}
+{% load account_tags %}
+
+{% block title %}Dashboard - {{ block.super }}{% endblock title %}
+
+{% block meta_description %}Dashboard - Manage Account{% endblock meta_description %}
+
+{% block css %}
+{% with marketing=False%}
+{{ block.super }}
+{% endwith %}
+{% endblock css %}
+
+{% block body_class %}dashboard{% endblock %}
+{% block body %}
+{% if user|anywhere_only %}
+    {% include 'account_profile/dashboard_anywhere.html' %}
+{% else %}
+      {% include 'account_profile/dashboard_nav.html' with dashboard=True %}
+  <div class="block pattern banner-{{ user.user_profile.origin_airport|default:"dallas"|lower }} dashboard-banner center">
+    <div class="distribute dashboard-banner-top">
+      <div class="left-side">
+        <figure class="logo-darkbg inline"></figure>
+      </div>
+      <div class="right-side">
+        <a href="{% url 'logout' %}" class="logout">Logout</a>
+        {% if perms.accounts.can_fly %}
+        <a href="{% url 'book_from' %}" class="button inline green">Book Now</a>
+        <!-- <div class="lets-fly-button">
+          <a class="button inline green">Book Now</a>
+            <div class="lets-fly-dropdown">
+              <h5>Depart from</h5>
+              <ul>
+                {% for airport in airports %}
+                  <li><a href="{% url 'book_when' airport.code %}">{{ airport.name }}</a></li>
+                {% endfor %}
+              </ul>
+            </div>
+        </div> -->
+        {% endif %}
+      </div>
+    </div>
+    <div class="block member-name">
+      <h1 class="white">{{ user.get_full_name }}</h1>
+      <div class="member-name-info">
+          {% if user.account.is_corp %}
+          {{ user.account.company_name }} / {{ user.user_profile.title }}
+          {% endif %}
+        <span class="member-since">Since {{ user.account.activated.year }}</span>
+      </div>
+    </div>
+    <div class="member-location">
+    <div class="hover toggle-expandable popover-button popover-control">
+        <span class="toggle-expandable popover-control">
+            <figure class="location"></figure><span id="user-origin">{{ user.user_profile.origin_airport.name|default:"Dallas" }}, {{ user.user_profile.origin_airport.state|default:"TX" }}</span>
+        </span>
+        <div class="popover home-location">
+          <h5>Hometown</h5>
+          <ul data-action="{% url 'profile_update_origin' %}">
+              {% for airport in airports %}
+                  <li {% if airport.pk == user.user_profile.origin_airport.pk %}class="active"{% endif %} data-origin_pk={{ airport.pk }}>{{ airport.name }}, {{ airport.state }}</li>
+              {% endfor %}
+          </ul>
+        </div>
+    </div>
+    </div>
+  </div>
+
+  <div class="content-wrap">
+    <div class="block profile-stats">
+      <div class="left-side">
+        <div class="stat">
+          <span class="stat-number">{{ flights_completed|stringformat:'02d' }}</span>
+          <span class="stat-name">Flight{{ flights_completed|pluralize }} Completed</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number">{{ hours|stringformat:'02d' }}</span>
+          <span class="stat-name">Hour{{ hours|pluralize }} <br/>in Air</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number">{{ hours_saved|stringformat:'02d' }}</span>
+          <span class="stat-name">Hours <br/>Saved</span>
+        </div>
+      </div>
+      <div class="avatar">
+        <div class="badge-wrap badge-right">
+          <div class="circle large">
+            <img src="{{ user.avatar_url }}">
+          </div>
+          <div class="badge-wrap">
+            <a href="{% url 'profile' %}"><figure class="icon-settings"></figure></a>
+            {% if user.account.is_suspended %}
+              <div class="badge-wrap right">
+                <figure class="user-alert"></figure>
+              </div>
+            {% endif %}
+            {% if user.account.is_pending or user.account.is_pending_ach %}
+              <div class="badge-wrap right">
+                <figure class="user-alert"></figure>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      <div class="right-side">
+        {% if perms.accounts.can_mange_invites %}
+        <div class="stat">
+          <span class="stat-number">{{ user.account.invites|stringformat:'02d' }}</span>
+          <span class="stat-name">Invitation{{ user.account.invites|pluralize }} Remaining</span>
+        </div>
+        {% else %}
+        <div class="stat">
+            <span class="stat-number">{{ user.account.flying_member_count|stringformat:'02d' }}</span>
+            <span class="stat-name">Flying Member{{ user.account.flying_member_count|pluralize }}</span>
+        </div>
+        {% endif %}
+        <div class="stat">
+          <span class="stat-number">{{ user.account.total_available_passes|stringformat:'02d' }}</span>
+          <span class="stat-name">Available Legs</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number">{{ user.account.total_available_companion_passes|stringformat:'02d' }}</span>
+          <span class="stat-name">Companion Pass{{ user.account.total_available_companion_passes|pluralize:"es" }}</span>
+        </div>
+      </div>
+    </div>
+
+    {% if perms.accounts.can_manage_billing and user.account.need_verify_bank_account %}
+    <div class="block showcase-block">
+      <div id="showcase" class="force-bg-white">
+        <figure class="alert-icon"></figure>
+        <div class="showcase-slide bubble">
+          <div class="showcase-message">
+            <p>Please verify your bank account</p>
+            <a class="action-block green" href="{% url 'profile_billing_bank_account_verify' %}" title="Verify Bank Account">
+                Verify Bank Account
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% elif announcements %}
+    <div class="block showcase-block">
+      <div id="showcase" class="force-bg-white">
+        <figure class="alert-icon"></figure>
+        {% for announcement in announcements %}
+        <div class="showcase-slide bubble">
+          <div class="showcase-message">
+            <p>{{ announcement.message|truncatechars:64 }}</p>
+            <a class="action-block green" href="{{ announcement.link }}" title="{{ announcement.title }}">
+                {{ announcement.link_name }}
+            </a>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+
+
+  <div id="dashboard-flights-wrapper">
+    <div class="block">
+      <div class="riseapp-row visible_1024">
+        <div class="col-sm-6">
+          <a class="button green lg book-button vertical-margin-lg" href="{% url 'book_from' %}">Book a Flight</a>
+          <p class="rise-learn-more rise-wedged-spacing">&nbsp;</p>
+        </div>
+        <div class="col-sm-6">
+          <a class="button anywhere-blue lg book-button vertical-margin-lg" href="{% url 'anywhere_index' %}">Create a Flight</a>
+          <p class="rise-learn-more rise-wedged-spacing"><a href="{{ WP_URL }}/rise-anywhere-faqs/" target="_blank">Learn More</a></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="block row {% if pending_reservations or unapproved_requests or waitlist %} {% if upcoming_flight_reservations %} {% else %} hidden_1024 {% endif %} {% else %} rsa-full-width {% endif %} " id="upcoming-flights">
+      <div class="hidden_1024">
+        <a class="button green lg book-button" href="{% url 'book_from' %}">Book a Flight</a>
+        <p class="rise-learn-more rise-wedged-spacing">&nbsp;</p>
+      </div>
+      <div class="interstitial header">
+        <span class="bg-white">Upcoming Flights</span>
+      </div>
+      <div class="flights-list">
+        {% if upcoming_flight_reservations %}
+          {% include "account_profile/confirmed_reservations.html" %}
+        {% else %}
+          <p class="no-flights">You have no upcoming flights.</p>
+        {% endif %}
+      </div>
+    </div>
+    <div class="block row {% if upcoming_flight_reservations %} {% if pending_reservations or unapproved_requests or waitlist %} {% else %} hidden_1024 {% endif %} {% else %} rsa-full-width {% endif %}" id="pending-flights">
+      <div class="hidden_1024">
+        <a class="button anywhere-blue lg book-button" href="{% url 'anywhere_index' %}">Create a Flight</a>
+        <p class="rise-learn-more rise-wedged-spacing"><a href="{{ WP_URL }}/rise-anywhere-faqs/" target="_blank">Learn More</a></p>
+      </div>
+        <div class="interstitial header">
+          <span class="bg-white">Pending Flights</span>
+        </div>
+        <div class="flights-list">
+        {% if pending_reservations or unapproved_requests or waitlist %}
+          {% include "account_profile/pending_reservations.html" %}
+        {% else %}
+          <p class="no-flights">You have no pending flights.</p>
+        {% endif %}
+        </div>
+    </div>
+  </div>
+
+    <div class="block row full-width-link view-all">
+      <a href="{% url 'reservations' 'upcoming' %}" class="button text-only">View All Reservations</a>
+    </div>
+
+    <div class="block row" id="discover-anywhere">
+      <div class="interstitial header">
+        <span class="bg-white">Discover Rise Anywhere</span>
+      </div>
+      {% comment %}<div class="promos">
+        <div class="promo promo-1">
+          <h2 class="promo-title">Promo Title</h2>
+          <p>Text goes here</p>
+        </div>
+        <div class="promo promo-2">
+          <h2 class="promo-title">Promo Title</h2>
+          <p>Text goes here</p>
+        </div>
+        <div class="promo promo-3">
+          <h2 class="promo-title">Promo Title</h2>
+          <p>Text goes here</p>
+        </div>
+      </div>{% endcomment %}
+      <h2>Join a Flight</h2>
+      <p>With <span>Rise Anywhere</span> you can join a shared flight and split the cost.</p>
+      <a href="{{ WP_URL }}/rise-anywhere-faqs/" target="_blank">Learn More</a>
+    </div>
+
+    <div class="block row" id="available-flights">
+        {% include "anywhere/available_flights.html" %}
+    </div>
+    <div class="block row full-width-link">
+      <a class="button anywhere-blue xl view-all" href="{% url 'anywhere_index' %}">view all</a>
+    </div>
+
+   {% comment %} {% if perms.accounts.can_manage_team or perms.accounts.can_manage_companions %}
+    <div class="block row">
+      <div class="interstitial header">
+        <span class="grey">{% if user.account.is_corporate %}Members{% else %}Companions{% endif %}</span>
+      </div>
+      <div class="avatar-grid">
+        <ul>
+            {% for member in members %}
+            <li class="companion">
+                <div class="badge-wrap badge-left">
+                    <div class="circle medium">
+                        <img src="{{ member.avatar_url }}">
+                    </div>
+                    <div class="badge-wrap">
+                        <a href="{% if user.account.is_corporate %}{% url 'profile_members_delete' member.id %}{% else %}{% url 'profile_companions_delete' member.id %}{% endif %}"><figure class="remove-companion"></figure></a>
+                    </div>
+                </div>
+                <p class="thick">{{ member.first_name }} <span class="surname">{{ member.last_name }}</span></p>
+                {% if member.account.company_name %}<span class="company"><h4 class="grey">{{ companion.account.company_name }}</h4></span>{% endif %}
+            </li>
+            {% endfor %}
+            <li>
+                <div class="badge-wrap badge-right">
+                    <div class="circle medium">
+                        <a href="{% if user.account.is_corporate %}{% url 'profile_members_add' %}{% else %}{% url 'profile_companions_add' %}{% endif %}"><img src="{% static 'img/icon-default-user-small.png' %}"></a>
+                        <div class="badge-wrap">
+                            <figure class="plus-green-solid"></figure>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+      </div>
+    </div>
+    {% endif %}{% endcomment %}
+
+  </div>
+
+
+{% endif %}
+{% endblock body%}
+
+{% block sticky-elements %}
+    {% if perms.accounts.can_mange_invites and not user|anywhere_only %}
+    <div class="block white center">
+        <figure class="invites"></figure>
+        <p>You have <em>{{ user.account.invites|num2words }}</em> invitation{{ user.account.invites|pluralize }} remaining</p>
+        <a href="{% url 'profile_invitations' %}" class="action-block green">View Invites</a>
+    </div>
+    {% endif %}
+{% endblock sticky-elements %}
+
+{% block javascript %}
+{{ block.super }}
+<script src="{% static 'js/binaryajax.min.js' %}"></script>
+<script src="{% static 'js/exif.min.js' %}"></script>
+<script src="{% static 'js/profile.js' %}"></script>
+<script src="{% static 'js/anywhere_flights.js' %}"></script>
+{% endblock javascript %}

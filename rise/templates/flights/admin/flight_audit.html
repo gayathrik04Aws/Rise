@@ -1,0 +1,57 @@
+{% extends 'base_admin.html' %}
+
+{% load staticfiles %}
+{% load humanize %}
+{% load flight_tags %}
+{% load tz %}
+
+{% block title %}Dashboard - Flight {{ object.flight_number }}{% endblock title %}
+
+{% block meta_description %}Dashboard - Flight {{ object.flight_number }}{% endblock meta_description %}
+
+{% block body_class %}{% endblock %}
+{% block body %}
+{% include 'admin_header_fragment.html' with flights=True %}
+<div class="admin-detail-view admin-form-page detail-page" id="flight-details">
+    <div class="cf">
+        <h1 class="fl"><a href="{% url 'admin_flight_detail' object.id %}">Flight {{ object.flight_number }}</a></h1>
+    </div>
+
+    <div class="detail-section">
+        <h2>Audit Logs</h2>
+
+        <table class="admin-table no-border no-hover">
+            <thead>
+                <tr>
+                    <th>Timestamp</th>
+                    <th>Actor</th>
+                    <th>Changes</th>
+                </tr>
+            </thead>
+            <tbody class="billing">
+                {% localtime on %}
+                {% for log in logs %}
+                <tr>
+                    <td>{{ log.timestamp|date:"m/d/y h:i A" }}</td>
+                    <td>{{ log.actor.get_full_name }}</td>
+                    <td>
+                        {% for field, values in log.changes_dict.iteritems %}
+                        {{ field }}: {{ values.0 }} → {{ values.1 }}<br>
+                        {% endfor %}
+                    </td>
+                </tr>
+                {% endfor %}
+                {% endlocaltime %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock body %}
+
+{% block javascript %}
+<script type="text/javascript">
+$('#id_status').on('change', function () {
+    $('#id_status_form').submit();
+});
+</script>
+{% endblock javascript %}

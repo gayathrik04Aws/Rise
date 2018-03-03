@@ -1,0 +1,45 @@
+{% extends 'base_admin.html' %}
+
+{% load staticfiles %}
+
+{% block title %}Dashboard - List Airports{% endblock title %}
+
+{% block meta_description %}Dashboard - List Airports{% endblock meta_description %}
+
+{% block body %}
+{% include 'admin_header_fragment.html' with nav_airports=True %}
+<div class="admin-content-wrap">
+    <div class="block admin no-pb">
+        <div class="admin-page-header no-bb">
+            <div class="fl">
+                <h1>Airports</h1>
+            </div>
+            <div class="fr">
+                <div class="add-page-item">
+                    <a href="{% url 'admin_add_airport' %}" class="add-page-item">+ Add New Airport</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br/><br/>
+    <table class="admin-table">
+        <thead>
+            <tr>
+                <th>Code</th>
+                <th>Name</th>
+                <th>Address</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for airport in airport_list %}
+            <tr class="link-row" href="{% url 'admin_airport' airport.pk %}">
+                <td><b>{{ airport.code }}</b></td>
+                <td>{{ airport.name }}</td>
+                <td>{{ airport.street_1 }}{% if airport.street_2 %} {{ airport.street_2 }}{% endif %}, {{ airport.city }}, {{ airport.state }} {{ airport.postal_code }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock body %}

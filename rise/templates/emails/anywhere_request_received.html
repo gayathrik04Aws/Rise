@@ -1,0 +1,124 @@
+{% extends 'emails/base_anywhere.html' %}
+
+{% block title %}{{ title }}{% endblock title %}
+
+
+{% block body %}
+<table border="0" cellpadding="40" cellspacing="0" width="100%" class="anywhere-email">
+    <tr>
+        <td>
+            <table border="0" cellpadding="20" cellspacing="0" width="100%">
+                <tr>
+                    <td align="center" valign="top" class="bodyContent">
+                        <div>
+                            <h1>RISE ANYWHERE Flight Request Received</h1>
+                            <p style="margin-bottom: 20px;">We have received your RISE ANYWHERE flight request and are working to fulfill it.</p>
+                            <p style="margin-bottom: 20px;">The flight request is for {{creator_name}}{% if passengers > 1 %} and {{ passengers }} passengers{% elif passengers == 1 %} and {{ passengers }} passenger {% endif %}</p>
+                            {% if sharing == 'PRIVATE' %}
+                                <p>You have chosen to book the entire aircraft for your flight.</p>
+                            {% elif sharing == 'PUBLIC' %}
+                                 <p>Once approved, we'll notify you and post it to the RISE ANYWHERE portal so other members can view and book it.  You may also invite your contacts.  Please let those you invite know whether or not you wish for them to share the link with others.</p>
+                                {% else %}
+                                 <p>Once approved, we'll notify you and send you a link so you can invite others to join.  The flight will only be viewable by you and those who receive the link. Please let those you invite know whether or not you wish for them to share the link with others.</p>
+                            {% endif %}
+                        </div>
+                    </td>
+                </tr>
+            </table>
+
+            <table border="0" cellpadding="4" cellspacing="0" width="100%">
+                <tr>
+                    <td>
+                        <hr />
+                    </td>
+                    <td width="120">
+                        <h3 class="section-header" style="margin: 0;">Flight Details</h3>
+                    </td>
+                    <td>
+                        <hr />
+                    </td>
+                </tr>
+            </table>
+            <table border="0" cellpadding="20" cellspacing="0" width="100%">
+                <tr>
+                    <td>
+                        <h2>{{ origin.name }}, {{ origin.state }} to {{ destination.name }}, {{ destination.state }}</h2>
+
+                    </td>
+
+                </tr>
+            </table>
+            <table border="0" cellpadding="20" cellspacing="0" width="100%" class="flightDetails">
+
+                <tr>
+                    {% if is_roundtrip %}
+                        <td>
+                            <h3 class="all-caps-header">Departing | {{ depart_when}}, {{depart_date|date:"M d, Y"}}</h3>
+
+
+                            <p class="location">{{ origin.name }}, {{ origin.state }}</p>
+
+                            <center><div class="vertical-line centered" style="height: 40px;"></div> </center>
+
+                            <p class="location">{{ destination.name }}, {{ destination.state }}</p>
+
+                        </td>
+                        <td>
+                            <h3 class="all-caps-header">Returning | {{ return_when}}, {{return_date|date:"M d, Y"}}</h3>
+
+                            <p class="location">{{ destination.name }}, {{ destination.state }}</p>
+
+                            <center><div class="vertical-line centered" style="height: 40px;"></div> </center>
+
+                            <p class="location">{{ origin.name }}, {{ origin.state }}</p>
+                        </td>
+                    {% else %}
+                        <td>
+                            <h3 class="all-caps-header">Departing | {{ depart_when}}, {{depart_date|date:"M d, Y"}}</h3>
+
+
+                            <p class="location">{{ origin.name }}, {{ origin.state }}</p>
+
+                            <center><div class="vertical-line centered" style="height: 40px;"></div> </center>
+
+                            <p class="location">{{ destination.name }}, {{ destination.state }}</p>
+
+                        </td>
+                    {% endif %}
+
+                </tr>
+            </table>
+            {% if estimated_cost > -1 %}
+            <table border="0" cellpadding="20" cellspacing="0" width="100%" class="price-table">
+                <tr>
+                    <td>
+                        <span class="price-subheader">Estimated Cost:</span>
+                        <p class="price-bottom">${{ your_estimated_total|floatformat:0 }}</p>
+                    </td>
+                </tr>
+            </table>
+            {% endif %}
+            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                <tr>
+                    <td align="center" valign="top" style="padding-top: 40px; padding-bottom: 40px;">
+                        <table border="0" cellpadding="0" cellspacing="0" class="button">
+                            <tr>
+                                <td valign="middle" width="250px">
+                                    <div>
+                                        <a href="{{ protocol }}://{{ site.domain }}{% url 'dashboard' %}">View my flights</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        <img src="http://cl.ly/100Q0H2k1E3j/footer-logo.png" width="119px" height="27px">
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+{% endblock body %}

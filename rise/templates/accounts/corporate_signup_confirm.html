@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+{% load humanize %}
+
+{% block title %}Register - {{ block.super }}{% endblock title %}
+
+{% block meta_description %}Register - Register{% endblock meta_description %}
+
+{% block css %}
+{% with marketing=False%}
+{{ block.super }}
+{% endwith %}
+{% endblock css %}
+
+{% block body_class %}register-account{% endblock %}
+{% block body %}
+
+    <div class="content-wrap app-content-wrap">
+        <div class="block center">
+            <a href="/"><figure class="logo-form"></figure></a>
+        </div>
+    </div>
+    <div class="block white">
+        <div class="form">
+          <section class="sign-up-section">
+
+            <form action="." method="POST" id="sign-up">
+                <div class="block center">
+                    <h1>Corporate Sign Up</h1>
+                </div>
+                {% csrf_token %}
+
+                {% if form.errors %}
+                <div class="error-message">
+                {% for field, errors in form.errors.items %}
+                {% for error in errors %}
+                  {{ error }}<br/>
+                {% endfor %}
+                {% endfor %}
+                </div>
+                {% endif %}
+
+                {% if messages %}
+                {% for message in messages %}
+                    <div class="error-message">{{ message }}</div>
+                {% endfor %}
+                {% endif %}
+
+                <div class="no-labels">
+                    <div class="distribute equal-width">
+                        <label for="id_first_name">Your First Name</label>
+                        <input {% if form.first_name.errors %}class="error"{% endif %} type="text" name="{{ form.first_name.html_name }}" value="{{ form.first_name.value|default:"" }}" placeholder="Your First Name" id="first-name"></input>
+                        <label for="id_last_name">Your Last Name</label>
+                        <input {% if form.last_name.errors %}class="error"{% endif %} type="text" name="{{ form.last_name.html_name }}" value="{{ form.last_name.value|default:"" }}" placeholder="Your Last Name" id="last-name"></input>
+                    </div>
+
+                    <label for="id_company">Company Name</label>
+                    <input {% if form.company.errors %}class="error"{% endif %} type="text" name="{{ form.company.html_name }}" value="{{ form.company.value|default:"" }}" placeholder="Company Name" id="company"></input>
+
+                    <div class="distribute equal-width">
+                        <label for="id_email">Your Company Email</label>
+                        <input {% if form.email.errors %}class="error"{% endif %} type="email" name="{{ form.email.html_name }}" value="{{ form.email.value|default:"" }}" placeholder="Your Company Email" id="email-address"></input>
+
+                        <label for="id_phone">Your Phone Number</label>
+                        <input {% if form.phone.errors %}class="error"{% endif %} type="text" name="{{ form.phone.html_name }}" value="{{ form.phone.value|default:"" }}" placeholder="Your Phone Number" id="phone-number"></input>
+                    </div>
+                </div>
+                <div class="corp-signup-calc">
+                        <div>
+                            <label for="id_member_count">Members</label>
+                            <input {% if form.member_count.errors %}class="error"{% endif %} type="number" name="{{ form.member_count.html_name }}" value="{{ form.member_count.value|default:"" }}" placeholder="Members" id="{{ form.member_count.auto_id }}" />
+                        </div>
+                        <div class="calc-green calc-multiply">x</div>
+                        <div>
+                            <label for="id_pass_count">Legs</label>
+                            <input {% if form.pass_count.errors %}class="error"{% endif %} type="number" name="{{ form.pass_count.html_name }}" value="{{ form.pass_count.value|default:"" }}" placeholder="Legs" id="{{ form.pass_count.auto_id }}" />
+                        </div>
+                        <div class="calc-green calc-equals">=</div>
+                        <div class="calc-totals">
+                            <label for="id_total">Total</label>
+                            <span id="monthly_total">$0.00</span>
+                        </div>
+
+                </div>
+                <div class="one-time-deposit">
+                    <label>One-time Deposit</label><span id="deposit">$0.00</span>
+                </div>
+                <div class="center">
+                    <button class="green" type="submit">Continue to Payment Info</button>
+                </div>
+                <p class="legal">By submitting this form you agree Rise is permitted to contact you regarding your membership and general updates. Rise will never sell or rent your information to a third party.</p>
+            </form>
+
+          </section>
+      </div>
+    </div>
+    <br/>
+    <div class="block center">
+        <a href="{{ WP_URL }}" class="return"> &#9664; Return to Home</a>
+    </div>
+    <br/>
+{% endblock body %}

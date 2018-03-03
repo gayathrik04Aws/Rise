@@ -1,0 +1,41 @@
+//This partial includes styles that remove or change default browser styles
+//
+
+
+* {
+  box-sizing: border-box;  //Everything set to border-box. Because why would you want it any other way?
+  -webkit-tap-highlight-color: rgba(0,0,0,0);  //Disables highlight when an element is tapped in mobile browsers (For Webkit browsers only)
+}
+
+a, input[type="text"], input[type="checkbox"], input[type="email"], input[type="radio"], select { //Removes highlight from input elements when clicked in order to preserve appearance
+  &:active {
+    outline: 0px;
+  }
+
+  &:focus {
+    outline: 0px;
+  }
+}
+
+html, body {  //Reset page margins and padding
+  height: 100%;
+  margin: 0px;
+  padding: 0px;
+  width: 100%;
+}
+
+img {
+  border: 0;
+}
+
+.group{ //clearfix
+
+    &:after {
+	visibility: hidden;
+	display: block;
+	font-size: 0;
+	content: " ";
+	clear: both;
+	height: 0;
+	}
+}

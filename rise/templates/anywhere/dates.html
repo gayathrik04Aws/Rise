@@ -1,0 +1,103 @@
+{% extends 'anywhere/base.html' %}
+{% load rise_utils %}
+{% load account_tags %}
+{% load staticfiles %}
+{% block booking-nav %}
+    {% include 'reservations/book/anywhere_booking_nav.html' %}
+{% endblock %}
+{% block simple_content %}
+    <div class="section">
+
+        <div class="content-wrap date-select">
+
+            <form method="POST" action="">
+                {% csrf_token %}
+                {{ form.depart_date.errors }}
+                {{ form.return_date.errors }}
+                <br/>
+                <div class="fields date">
+                    <div class="calendaricon"><figure class="calendar-icon"></figure></div>
+                    {{ form.depart_date.label_tag }}
+                    {{ form.depart_date|pickadate_data }}
+
+                    <div class="when">
+                        {{ form.depart_when.label_tag }}
+                        {{ form.depart_when }}
+                    </div>
+                </div>
+
+            {% if object.is_round_trip %}
+                <div class="fields date">
+
+                     <div class="calendaricon"><figure class="calendar-icon"></figure></div>
+                    {{ form.return_date.label_tag }}
+                    {{ form.return_date|pickadate_data }}
+                    <div class="when">
+                         {{ form.return_when.label_tag }}
+                        {{ form.return_when }}
+                    </div>
+                </div>
+            {% endif %}
+                <div class="full-width-link">
+                    <button type="submit" class="button anywhere-blue lg">Continue</button>
+                </div>
+            </form>
+        </div>
+        <div id="anywhere-date-pickers">
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascript %}
+{{ block.super }}
+    <script>
+        (function() {
+            var $departDate = $('#{{ form.depart_date.id_for_label }}');
+            var $returnDate = $('#{{ form.return_date.id_for_label }}');
+
+            var $departPicker = null;
+            var $returnPicker = null;
+
+            //var fmt = 'dddd, mmmm d';
+            var fmt = 'mmm dd, yyyy';
+            var fmtSubmit = 'yyyy-mm-dd';
+
+            $departDate.pickadate({
+                container: '#anywhere-date-pickers',
+                format: fmt,
+                formatSubmit: fmtSubmit,
+                hiddenName: true,
+                onSet: function(ctx) {
+                    if('select' in ctx && $returnPicker != null)
+                        $returnPicker.set('min', new Date(ctx.select));
+                }
+
+            });
+            $departPicker = $departDate.pickadate('picker');
+            $departPicker.set('min', new Date());
+
+            if($returnDate.length > 0) {
+                $returnDate.pickadate({
+                    container: '#anywhere-date-pickers',
+                    format: fmt,
+                    formatSubmit: fmtSubmit,
+                    hiddenName: true,
+                    onSet: function(ctx) {
+                        if('select' in ctx)
+                            $departPicker.set('max', new Date(ctx.select));
+                    }
+                });
+                $returnPicker = $returnDate.pickadate('picker');
+
+                $returnPicker.set('min', new Date());
+
+                if($returnPicker.get()) {
+                    $departPicker.set('max', $returnPicker.get());
+                }
+                if($departPicker.get()) {
+                    $returnPicker.set('min', $departPicker.get());
+                }
+            }
+        })();
+    </script>
+{% endblock %}

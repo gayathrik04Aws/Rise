@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+
+{% block title %}Events - {{ block.super }}{% endblock title %}
+
+{% block meta_description %}Sign up and join Rise, the southwest’s first fly all you want membership. Starting at $1,650 for unlimited flights between Dallas, Houston, and Austin.{% endblock meta_description %}
+
+{% block body_class %}grey{% endblock body_class %}
+
+{% block body %}
+<div class="section form-page">
+    <div class="content-wrap">
+        <a href="/" class="logo-form"><img src="{% static 'img/logo-form.png' %}" alt="I Fly Rise Logo" class="logo-form"></a>
+        <div class="form">
+
+            <h2>WANT TO RECEIVE THE INVITE?</h2>
+
+            <p>Let us invite you to one of our Rise Cocktails Over Dallas or Rise Cocktails Over Houston events. There’s no better way to experience Rise than in the skies. We will be hosting a Rise hangar happy hour, and would love for you to join us. We will have limited seating to join us in the skies for a ride around Dallas or Houston while enjoying your cocktail. Just tell us where to send the invitation and we’ll get it right out to you, but space is limited, so take advantage of this Fly Rise on us opportunity while you can.</p>
+
+            <p>Thanks for your interest in Rise, the first fly all you want membership air travel company in the southwest! We are still accepting founding membership applications, but we’re filling up fast.</p>
+
+            <p class="all-caps">HAVE SOME QUESTIONS AND WANT TO TALK TO SOMEONE NOW? CALL US! 844‑359-7473</p>
+
+            <form action="." method="POST" id="updates">
+                {% csrf_token %}
+
+                {% if messages %}
+                {% for message in messages %}
+                {% if message.level == 20 %}
+                <div class="form-success">
+                {% else %}
+                <div class="error-message">
+                {% endif %}
+                {{ message }}
+                </div>
+                {% endfor %}
+                {% endif %}
+
+                {% if form.errors %}
+                <div class="error-message">
+                {% for field, errors in form.errors.items %}
+                {% for error in errors %}
+                {{ error }}<br/>
+                {% endfor %}
+                {% endfor %}
+                </div>
+                {% endif %}
+
+
+                <fieldset class="no-labels">
+                    <label for="id_first_name">First Name</label>
+                    <input {% if form.first_name.errors %}class="error"{% endif %} type="text" name="{{ form.first_name.html_name }}" value="{{ form.first_name.value|default:"" }}" placeholder="First Name" id="first-name"></input>
+                    <label for="id_last_name">Last Name</label>
+                    <input {% if form.last_name.errors %}class="error"{% endif %} type="text" name="{{ form.last_name.html_name }}" value="{{ form.last_name.value|default:"" }}" placeholder="Last Name" id="last-name"></input>
+                    <label for="id_email">Email Address</label>
+                    <input {% if form.email.errors %}class="error"{% endif %} type="email" name="{{ form.email.html_name }}" value="{{ form.email.value|default:"" }}" placeholder="Email Address" />
+
+                    <span class="button green"><button type="submit"><h3>Notify Me</h3></button></span>
+                </fieldset>
+            </form>
+        </div>
+    <a href="/"><h3 class="small"><div class="arrow-left"></div>Return Home</h3></a>
+  </div>
+</div>
+{% endblock body %}

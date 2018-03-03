@@ -1,0 +1,40 @@
+{% extends 'base_admin.html' %}
+
+{% load staticfiles %}
+
+{% block title %}Dashboard - {% if plane %}Update{% else %}Create{% endif %} Plane{% endblock title %}
+
+{% block meta_description %}Dashboard - {% if plane %}Update{% else %}Create{% endif %} Plane{% endblock meta_description %}
+
+{% block body_class %}{% endblock %}
+{% block body %}
+{% include 'admin_header_fragment.html' with nav_planes=True %}
+<div class="admin-content-wrap admin-form-page">
+    <h1>{% if plane %}Update{% else %}Add New{% endif %} Plane</h1>
+    <form method="post" action="">
+        {% csrf_token %}
+
+        <div class="select arrow">
+            <span class="value">{{ form.model.value|default:"Select" }}</span>
+            <ul>
+                {% for value, text in form.model.field.choices %}
+                <li value="{{ value }}">{{ text }}</li>
+                {% endfor %}
+            </ul>
+            {{ form.model }}
+        </div>
+
+        {{ form.registration }}
+
+        {{ form.seats }}
+
+        <div class="center">
+            <button type="submit" class="green">{% if plane %}Update{% else %}Create{% endif %} Plane</button>
+        </div>
+    </form>
+
+    <div class="center">
+        <a href="{% url 'admin_planes' %}" class="return-to-profile">&#9664; Return To Planes</a>
+    </div>
+</div>
+{% endblock body %}

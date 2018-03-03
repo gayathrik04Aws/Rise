@@ -1,0 +1,84 @@
+{% extends 'base_admin.html' %}
+
+{% load humanize %}
+
+{% block title %}{{ block.super }} - Accounts{% endblock %}
+
+{% block body %}
+{% include 'admin_header_fragment.html' with accounts=True %}
+<div class="admin-detail-view">
+    <div class="block admin">
+        <div class="admin-page-header no-bb">
+            <h1>
+                <a href="{% url 'admin_flight_detail' flightreservation.flight.pk %}">Flight {{ flightreservation.flight.flight_number }}</a>
+                &gt; Flight Reservation {{ flightreservation.pk }}</h1>
+        </div>
+        <div>
+
+            <h2>Departs</h2>
+
+            <p>
+                {{ flightreservation.flight.local_departure|date:"m/d/Y h:i A" }}
+            </p>
+
+            <h2>Passengers</h2>
+
+            {% for passenger in flightreservation.passenger_set.all %}
+                <p>
+                    {{ passenger.userprofile.get_full_name }}{% if passenger.companion %} (Companion){% endif %}
+                </p>
+            {% endfor %}
+
+            <h2>Account</h2>
+
+            <a href="{% url 'admin_account' flightreservation.reservation.account.pk %}">
+                {{ flightreservation.reservation.account.account_name }}
+            </a>
+
+            {% if flightreservation.pass_count %}
+                <h2>Passes Used</h2>
+
+                <p>{{ flightreservation.pass_count }}</p>
+
+            {% endif %}
+
+            {% if flightreservation.buy_pass_count %}
+                <h2>Passes Bought</h2>
+
+                <p>{{ flightreservation.buy_pass_count }}</p>
+
+            {% endif %}
+
+            {% if flightreservation.flight.flight_type != 'A' %}
+                {% if flightreservation.cost %}
+                    <h2>Cost</h2>
+
+                    <p>{{ flightreservation.cost }}</p>
+                {% endif %}
+            {% else %}
+                {% if flightreservation.cost %}
+                        <h2>Spot Cost</h2>
+                        <p>{{ flightreservation.cost }}</p>
+                         {% if flightreservation.tax %}
+                             <h2>Tax</h2>
+                            <p>  {{ flightreservation.tax }}</p>
+                         {% endif %}
+                        {% if flightreservation.other_charges %}
+                             <h2>{{ flightreservation.flight.anywhere_details.other_cost_desc }}</h2>
+                             <p>flightreservation.other_charges</p>
+                         {% endif %}
+                         <h2>Total</h2>
+                        <p>{{ flightreservation.anywhere_total_cost }}</p>
+
+                {% endif %}
+            {% endif %}
+
+            <h2>Reserved by</h2>
+
+            <p>{{ flightreservation.reservation.created_by.get_full_name }}</p>
+
+
+        </div>
+    </div>
+</div>
+{% endblock body %}

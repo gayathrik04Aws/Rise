@@ -1,0 +1,60 @@
+{% extends 'base_admin.html' %}
+
+{% load staticfiles %}
+
+{% block title %}Cancel Flight {{ flight.flight_number }}{% endblock title %}
+
+{% block css %}
+{% with marketing=False%}
+{{ block.super }}
+{% endwith %}
+{% endblock css %}
+
+{% block body_class %}{% endblock %}
+
+{% block body %}
+{% include 'admin_header_fragment.html' with flights=True %}
+<div class="admin-content-wrap admin-form-page">
+    <h1>Cancel <a href="{% url 'admin_flight_detail' flight.pk %}">Flight {{ flight.flight_number }}</a></h1>
+
+    {% if form.errors %}
+    <div class="error-message">
+        {% for field, errors in form.errors.items %}
+        {% for error in errors %}
+        {{ error }}<br/>
+        {% endfor %}
+        {% endfor %}
+    </div>
+    {% endif %}
+    <form method="post" action="">
+        {% csrf_token %}
+
+        {{ form.message }}
+
+        <div class="center">
+            <button type="submit" class="green">Cancel Flight {{ flight.flight_number }}</button>
+        </div>
+    </form>
+    {% with passengers=flight.get_passengers %}
+    {% if passengers %}
+    <div class="center">
+        This message will be sent to the following passengers:
+        <ul>
+            {% for passenger in passengers %}
+            <li>{{ passenger.user.get_full_name }} via
+                {% if passenger.user.user_profile.alert_flight_email and passenger.user.user_profile.alert_flight_sms %}email and SMS
+                {% elif passenger.user.user_profile.alert_flight_email %}email
+                {% elif passenger.user.user_profile.alert_flight_sms %}SMS
+                {% else %}nothing
+                {% endif %}
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+    {% endwith %}
+    <div class="center">
+        <a href="{% url 'admin_flight_detail' flight.pk %}" class="return-to-profile">&#9664; Return To Flight {{ flight.flight_number }}</a>
+    </div>
+</div>
+{% endblock body %}

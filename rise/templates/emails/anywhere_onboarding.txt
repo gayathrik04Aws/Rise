@@ -1,0 +1,16 @@
+{% extends 'emails/base.txt' %}
+
+{% block content %}Welcome to RISE ANYWHERE!
+We are excited to have you flying with us, and look forward to serving you soon.
+
+IFLYRISE.COM IS READY FOR YOUR PROFILE INPUT
+To reach a Rise Consultant at any time, call (844) 359-7473 or email members@iflyrise.com
+
+Click the link below to personalize your RISE ANYWHERE account, and to start booking flights right away.
+
+Travel Better,
+
+The Rise Team
+
+{{ protocol }}://{{ site.domain }}{{ user.generate_register_login_url }}
+{% endblock content %}

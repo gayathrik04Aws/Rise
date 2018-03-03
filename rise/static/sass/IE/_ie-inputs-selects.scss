@@ -1,0 +1,135 @@
+.select {
+  background-color: $grey1;
+  background-image: url(../img/1x/row-expand.png);
+  -ms-background-position-x: 95%;
+  -ms-background-position-y: center;
+  border: 1px solid $grey3;
+  margin: 10px 0;
+  max-width: 265px;
+  &.sort-page-control {
+      line-height: 40px;
+      height: 40px;
+      max-width: 190px;
+  }
+  &.fullwidth {
+      max-width: none;
+  }
+  &.dark {
+    background-image: url(../img/1x/plus-black.png);
+  }
+  &.expand {
+    background-image: url(../img/1x/row-collapse.png);
+  }
+  &.arrow {
+    &:after {
+      background-image: url(../img/1x/arrow-down.png);
+    }
+  }
+  &.fullscreen {
+    font-size: 120px;
+    height: 100px;
+    margin-top: initial;
+    vertical-align: middle;
+    .value {
+      padding-left: 80px;
+      &.hide {
+        display: none;
+      }
+    }
+    ul {
+      display: none;
+      height: auto;
+      top: -175%;
+      &.expand {
+        display: block;
+      }
+    }
+    li {
+      font-size: 70px;
+      height: 100px;
+      letter-spacing: 3px;
+      line-height: 70px;
+      &:hover {
+        color: $land;
+      }
+      &.active {
+        height: 130px;
+        line-height: 100px;
+        padding-left: 80px;
+        font-size: 120px;
+        -ms-background-position-x: 95%;
+        -ms-background-position-y: center;
+        &:after {
+          background-image: url(../img/check-green-lg.png);
+          background-size: 36px 28px;
+          height: 28px;
+          margin-left: 40px;
+          margin-bottom: 25px;
+          width: 36px;
+        }
+      }
+    }
+  }
+}
+
+input {
+  background-color: $input-bg;
+  border: 1px solid $input-border;
+  color: $sky;
+  font-family:  'Gotham Ssm A', 'Gotham Ssm B';
+  font-size: 14px;
+  height: 50px;
+  line-height: 50px; // Typically pixel-based, Chrome has bug which renders pixel-based incorrectly though
+  margin: 10px 0;
+  padding: 0 25px;
+  position: relative;
+  width: 100%;
+  &[type=search] {
+    border: 0;
+    border: 1px solid $grey2;
+    background-color: $grey1;
+    background-image: url(../img/1x/icon-mag.png);
+    -ms-background-position-x: 95%;
+    -ms-background-position-y: center;
+    &.dark {
+      background-image: url(../img/1x/mag-black.png);
+    }
+    &.reveal {
+        background-color: white;
+        width: 30px;
+        border: 0;
+        height: 40px;
+        line-height: 40px;
+        border-left: 1px solid $grey2;
+        float: right;
+        background-position: right center;
+        padding-right: 15px;
+        &:focus {
+            width: 200px;
+            box-shadow: none;
+        }
+    }
+    &.admin-reveal {
+        @extend input[type=search].reveal;
+        float: none;
+        margin-right: 20px;
+        padding-right: 50px;
+        border-left: 0;
+        border-right: 1px solid $grey2;
+        background-position: right 15px center;
+        &:focus {
+            width: 250px;
+        }
+    }
+  }
+  &[type=radio] {
+    background-image: none;
+  }
+  &[type=checkbox] {
+    background-image: none;
+  }
+}
+
+.textarea {
+    margin: 20px 0;
+}

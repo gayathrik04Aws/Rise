@@ -1,0 +1,109 @@
+{% load account_tags %}
+
+  {% for obj in flightset_list %}
+  <div class="card card-available-flights">
+    <div class="top-row">
+        <div class="departing-info">
+          <strong>{% if not obj.is_oneway %}ROUND TRIP {% else %}ONE WAY {% endif %}</strong>{% if not obj.is_oneway %}{{ obj.leg1.local_departure|date:"M d"}}-{{ obj.leg2.local_departure|date:"M d, Y"}} {% else %} {{ obj.leg1.local_departure|date:"M d, Y"}} {% endif %}
+        </div>
+    </div>
+
+    <div class="fluid-full-width bottom-row">
+
+      <div class="rtable-wrapper">
+
+        <div class="rtable-wrap">
+
+          <div class="circle med anywhere">
+            <div class="progress-circle">
+
+              <div class="progress-text">
+                <span class="number">{{ obj.percent_full|floatformat:"0" }}%</span>
+                <span class="confirmed">Full</span>
+              </div>
+
+              <svg viewBox="0 0 32 32">
+                <circle r="16" cx="16" cy="16" stroke-dasharray="{{ obj.percent_full|floatformat:"0" }} 100" class="progress"></circle>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="rtable-wrap rtable-primary">
+          <div class="airports">
+
+            <div class="rblocker rblocker-md">
+              <div class="origin">
+                <h5>Origin</h5>
+                <h1>{{ obj.origin.city }}, {{ obj.origin.state }}</h1>
+              </div>
+
+              <div class="oneway-or-rt">
+                {% if not obj.is_oneway %}
+                <span>&larr;</span>
+                <span>&rarr;</span>
+                {% else %}
+                &rarr;
+                {% endif %}
+              </div>
+
+              <div class="destination">
+                  <h5>Destination</h5>
+                  <h1>{{ obj.destination.city }}, {{ obj.destination.state }}</h1>
+              </div>
+            </div>
+
+            <div class="block-wrapper">
+              <div class="seats">
+                <h5>Spots Left</h5>
+                <h1>{{ obj.empty_seats}} of {{obj.total_seats }}</h1>
+              </div>
+
+              <div class="price">
+                <h5 class="add_asterisk">Price Per Spot</h5>
+                <h1>${{ obj.per_seat_cost|floatformat:"0" }}</h1>
+              </div>
+            </div>
+
+            <div class="card-buttons">
+              {% if user|user_on_flight:obj.leg1 %}
+                  <a href="{% url 'invite_anywhere' slug=obj.public_key %}" class="button anywhere-blue sm">Share</a>
+              {% else %}
+                  <a href="{% url 'join_anywhere' slug=obj.public_key %}" class="button anywhere-blue sm">Join</a>
+              {% endif %}
+                  <a href="{% url 'anywhere_flight_info' slug=obj.public_key %}" class="button anywhere-blue ghost sm">Details</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  {% empty %}
+      <h5 style="text-align:center;">No available flights found.</h5>
+  {% endfor %}
+
+  {% if flightset_list|length > 0 %}
+      <div class="simple_centering_wrap">
+        <h5 class="add_asterisk add_before">Price does not include 7.5% Federal Excise Tax</h5>
+      </div>
+  {% endif %}
+
+
+  {% if not empty and not hide_flightset_pager %}
+      <div class="flightset-list">
+          {% for page_num in flightset_list.paginator.page_range %}
+              {% if page_num == flightset_list.number %}
+                 <span class="selected-page">{{ page_num }}</span>
+              {% else %}
+                  <a href="javascript:getAvailableAnywhereFlights('{% url 'available_flights' page_num %}?page_size={{ flightset_list.paginator.per_page }}');">{{ page_num }}  </a>
+              {% endif %}
+          {% endfor %}
+      </div>
+  {% endif %}
+
+
+
+
+

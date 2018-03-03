@@ -1,0 +1,31 @@
+{% extends 'base_admin.html' %}
+
+{% block body %}
+    {% include 'admin_header_fragment.html' with announcements=True %}
+    <div class="admin-content-wrap admin-form-page">
+        <h1>{% if announcement %}Update {% else %}Create {% endif %} Announcement</h1>
+
+        <form action="." method="POST">
+            {% csrf_token %}
+
+            <label for="{{ form.title.auto_id }}">Title:</label>
+            {{ form.title.errors }}
+            {{ form.title }}
+
+            <label for="{{ form.message.auto_id }}">Message:</label>
+            {{ form.message.errors }}
+            {{ form.message }}
+
+            <label for="{{ form.link.auto_id }}">Link URL:</label>
+            {{ form.link.errors }}
+            {{ form.link }}
+
+            <label for="{{ form.link_name.auto_id }}">Link Name:</label>
+            {{ form.link_name.errors }}
+            {{ form.link_name }}
+
+            <button type="submit" class="green">Save Announcement</button>
+
+        </form>
+    </div>
+{% endblock %}

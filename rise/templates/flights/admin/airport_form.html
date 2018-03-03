@@ -1,0 +1,73 @@
+{% extends 'base_admin.html' %}
+
+{% load staticfiles %}
+
+{% block title %}Dashboard - {% if airport %}Update{% else %}Create{% endif %} Airport{% endblock title %}
+
+{% block meta_description %}Dashboard - {% if airport %}Update{% else %}Create{% endif %} Airport{% endblock meta_description %}
+
+{% block body %}
+{% include 'admin_header_fragment.html' with nav_airports=True %}
+<div class="admin-content-wrap admin-form-page">
+    <h1>{% if airport %}Update{% else %}Add New{% endif %} Airport</h1>
+
+    {% if form.errors %}
+    <div class="error-message">
+        {% for field, errors in form.errors.items %}
+        {% for error in errors %}
+        {{ error }}<br/>
+        {% endfor %}
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <form method="POST" action=".">
+        {% csrf_token %}
+
+        <div class="distribute equal-width">
+            {{ form.name }}
+
+            {{ form.code }}
+        </div>
+
+        {{ form.street_1 }}
+
+        {{ form.street_2 }}
+
+        {{ form.city }}
+
+        <div class="distribute equal-width">
+            <div class="select arrow">
+                <span class="value">{{ form.weight.value|default:"Select" }}</span>
+                <ul>
+                    {% for value, text in form.state.field.choices %}
+                    <li value="{{ value }}">{{ text }}</li>
+                    {% endfor %}
+                </ul>
+                {{ form.state }}
+            </div>
+            {{ form.postal_code }}
+        </div>
+
+        {{ form.details }}
+
+        <div class="select arrow">
+            <span class="value">{{ form.timezone.value|default:"Select" }}</span>
+            <ul>
+                {% for value, text in form.timezone.field.choices %}
+                <li value="{{ value }}">{{ text }}</li>
+                {% endfor %}
+            </ul>
+            {{ form.timezone }}
+        </div>
+
+
+        <div class="center">
+            <button type="submit" class="green">{% if airport %}Update{% else %}Create{% endif %} Airport</button>
+        </div>
+    </form>
+    <div class="center">
+        <a href="{% url 'admin_airports' %}" class="return-to-profile">&#9664; Return To Airports</a>
+    </div>
+</div>
+{% endblock body %}

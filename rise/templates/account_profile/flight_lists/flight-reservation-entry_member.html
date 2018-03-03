@@ -1,0 +1,27 @@
+
+<!-- fre is short for 'flight reservation entry' -->
+<!-- reservation_entry is passed in as a variable in the include declaration -->
+{% if reservation_entry %}
+    <div class="member reservation-row fre-mobile fre-member {% if reservation_entry.is_cancelled %}cancelled{% else %}fadeIn{% endif %}">
+        <div class="member-wrap member-photo">
+            <div class="circle medium no-m" style="background:url({{ reservation_entry.primary_passenger.user.avatar_url }}) 0 0 no-repeat;background-size:100% 100%" id="avatar-image"></div>
+        </div>
+        <div class="member-wrap member-details">
+            <span class="member-name-cell">
+                {{ reservation_entry.primary_passenger.userprofile.get_full_name }}
+            </span>
+            <span class="flight-no-cell t-gothic sky">
+                No. {{ reservation_entry.flight.flight_number }}
+            </span>
+            <span class="orig-dest-cell t-gothic">
+                <b>{{ reservation_entry.flight.origin.code}}</b>
+                <figure class="flight-arrow-right-green spacer"></figure>
+                <b>{{ reservation_entry.flight.destination.code }}</b>
+            </span>
+            <span class="date-time-cell t-gothic sky">
+                {{ reservation_entry.flight.local_departure|date:"d M" }}
+            </span>
+        </div>
+    </div>
+{% endif %}
+

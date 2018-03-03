@@ -1,0 +1,190 @@
+.popover-button:hover {
+  cursor: pointer;
+}
+
+.popover {
+  background-color: $modal-grey;
+  border: 1px solid $grey2;
+  box-shadow: 0 0 3px 1px rgba(0,0,0,0.025);
+  display: none;
+  line-height: initial;
+  font-size: initial;
+  white-space: nowrap;
+  width: auto;
+  position: absolute;
+  text-align: left;
+  // padding: 5px 20px;
+  @include calc(top, '100% - 10px');
+  z-index: 500;
+  @include transform-origin(50% 0%);
+  li {
+    @extend p;
+    display: block;
+    font-weight: 500;
+    &.active {
+      background-image: url(../img/check-green-sm.png);
+      background-size: 12px 9px;
+      background-position: center right;
+      background-repeat: no-repeat;
+    }
+    margin: 10px 0;
+    padding: 0 40px 0 0;
+    &.row {
+      border-top: 1px solid $grey2;
+      margin: 0 -20px;
+      padding: 10px 15px;
+    }
+    &.sky {
+      color: $sky;
+    }
+  }
+  a {
+    display: block;
+  }
+  &.show {
+    display: block;
+  }
+  &.no-top {
+    top: initial;
+  }
+}
+
+.mobile-nav-dropdown {
+  position: fixed;
+  top: 80px;
+  width: 100%;
+  z-index: 8000;
+  ul {
+    margin: 0;
+    padding: 0;
+  }
+  li {
+    list-style-type: none;
+    &.active {
+      background-image: url(../img/check-green-sm.png);
+      background-size: 12px 9px;
+      background-position: center right;
+      background-repeat: no-repeat;
+    }
+  }
+  a {
+    background-color: $grey1;
+    border-top: 1px solid $grey2;
+    color: $copy-grey;
+    display: block;
+    font-size: 12px;
+    letter-spacing: 2px;
+    padding: 20px;
+    text-transform: uppercase;
+    width: 100%;
+    &:first-child {
+      border: 0;
+    }
+    &.green {
+      color: $land
+    }
+  }
+}
+
+.flight-table, .dashboard .member-location, .chart-key-desktop {
+  .popover {
+    background-color: $runway-translucent;
+    border-radius: 5px;
+    border: 0;
+    height: auto;
+    padding: 20px;
+    right: 60px;
+    top: -20px;
+    width: 150px;
+    white-space: normal;
+    @include transition(all 0.2s ease-in);
+    @include transform-origin(120% 20px);
+    @include transform(scale(0));
+    &.show {
+      @include transition(all 0.8s cubic-bezier(0,1.21,.18,1));
+      @include transform(scale(1));
+    }
+    h5 {
+      margin: 0;
+      line-height: 20px;
+    }
+    a, li, p {
+      color: #ffffff;
+      display: block;
+      font-weight: 300;
+      font-size: 14px;
+      line-height: 26px;
+      margin: 0;
+      padding: 0;
+      text-transform: none;
+      @include transition(none);
+      &.active {
+        background-image: url(../img/1x/check-green-sm.png);
+        background-repeat: no-repeat;
+        background-position: right;
+        background-size: 12px 9px;
+        padding-right: 25px;
+      }
+    }
+    &:after {
+      border-left: 16px solid $runway-translucent;
+      border-top: 6px solid transparent;
+      border-bottom: 6px solid transparent;
+      content: '';
+      display: block;
+      position: absolute;
+      right: -16px;
+      top: 24px;
+    }
+    &.down {
+      top: 40px;
+      right: -120px;
+    }
+    &.down:after {
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      border-bottom: 16px solid $runway-translucent;
+      border-top: 0;
+      left: 20px;
+      right: initial;
+      top: -16px;
+    }
+    &.home-location {
+      @include transform(translatex(-25%));
+    }
+  }
+}
+
+.popover-greeting {
+  color: $sky;
+  font-weight: 500;
+  font-size: 14px;
+  display: inherit;
+  padding: 35px 35px 10px;
+}
+
+a.sign-out-popover {
+  display: block;
+  padding: 15px 35px;
+  border-top: 1px solid $grey2;
+  font-size: 10px;
+  text-transform: uppercase;
+  font-weight: 500;
+  letter-spacing: 2px;
+}
+
+////\\\\ Desktop Breakpoint *************************
+
+@media screen and (min-width: 1024px) {
+  .mobile-nav-dropdown {
+    display: none;
+  }
+  .flight-table, .dashboard .member-location, .chart-key-desktop {
+    .popover {
+      width: 220px;
+      &.down {
+        right: -187px;
+      }
+    }
+  }
+}

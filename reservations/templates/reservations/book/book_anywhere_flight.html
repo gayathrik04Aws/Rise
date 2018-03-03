@@ -1,0 +1,222 @@
+{% extends 'anywhere/base.html' %}
+
+{% load flight_tags %}
+{% load staticfiles %}
+
+{% block title %}Booking - {{ block.super }}{% endblock title %}
+
+{% block meta_description %}Booking - Anywhere Flights{% endblock meta_description %}
+
+{% block css %}
+{% with marketing=False%}
+{{ block.super }}
+{% endwith %}
+{% endblock css %}
+
+{% block body_class %}anywhere anywhere-flight-book{% endblock %}
+
+{% block body %}
+
+{% include 'reservations/book/anywhere_booking_nav.html' with flights=True %}
+<div class="section">
+  <div class="content-wrap">
+
+  {% comment %}  <div class="block white distribute flight-date-header">
+      <h1 class="inline">Flights {{ date|date:'M d, Y' }}</h1><button type="button" class="inline grey toggle-chart-key">Chart Key</button>
+    </div>{% endcomment %}
+
+
+
+    <div class="top-text">
+
+        <h1>Please approve your booking</h1>
+
+        <p>By clicking approve, you are reserving a spot on this RISE ANYWHERE flight.<br/> We will notify you of all final flight and cost details prior to processing your payment.</p>
+
+    </div>
+    <div class="anywhere-notices" align="center">
+
+      <!--Table labels
+      <div class="block row white flight-table table-labels">
+        <div class="origin">
+          Origin
+        </div>
+        <div class="arrow">&nbsp;</div>
+        <div class="duration">
+        </div>
+        <div class="destination">
+          Destination
+        </div>
+        <div class="flight-number"></div>
+    {#      <div class="flight-cost">Cost</div>  Needs a style class to put in right place#}
+        <div class="actions"></div>
+      </div>-->
+    </div>
+
+    <div class="block row itinerary" data-flight-id="{{ flightset.leg1.pk }}" data-destination="{{ flightset.leg1.destination.code|upper }}" data-all-flights="true">
+      <h2>Your flight details</h2>
+      <div class="card">
+        <div class="leg-1">
+            <div class="top-row">
+                <div class="departing-info">
+                        <span><strong>Flight #{{ flightset.leg1.flight_number }}</strong><span class="divider"></span>{{ flightset.leg1.local_departure|date:"M d, Y" }}</span>
+                </div>
+            </div>
+            <!-- <div class="badge-wrap">
+             {% comment %} {% if flightset.leg1.is_fun_flight %}<figure class="funflight-solid"></figure>{% endif %}
+              {% if flightset.leg1.is_promotional_flight %}<figure class="promo-solid"></figure>{% endif %}{% endcomment %}
+            </div> -->
+            <div class="origin">
+
+                <div class="caption">
+                    <h5>Origin</h5> <!-- {{ flightset.leg1.origin.code }} -->
+                    <h1>{{ flightset.leg1.origin.city }}, {{ flightset.leg1.origin.state }}</h1>
+                    <h4 class="grey">{{ flightset.leg1.local_departure|time:"h:i A" }} {{ flightset.leg1.origin.get_timezone_display }}</h4>
+                </div>
+            </div>
+
+            <div class="duration arrow">
+              <h2>{{ flightset.leg1.duration|human_duration }}</h2>
+            </div>
+
+            <div class="destination">
+
+                <div class="caption">
+                    <h5>Destination</h5> <!-- {{ flightset.leg1.destination.code }} -->
+                    <h1>{{ flightset.leg1.destination.city }}, {{ flightset.leg1.destination.state }}</h1>
+
+                   <h4 class="grey">{{ flightset.leg1.local_arrival|time:"h:i A" }} {{ flightset.leg1.destination.get_timezone_display }}</h4>
+                </div>
+            </div>
+        </div>
+        {% if flightset.leg2 != None %}
+        <div class="leg-2">
+            <div class="top-row">
+                <div class="departing-info">
+                        <span><strong>Flight #{{ flightset.leg2.flight_number }}</strong><span class="divider"></span>{{ flightset.leg2.local_departure|date:"M d, Y" }}</span>
+                </div>
+            </div>
+
+            <!-- <div class="badge-wrap">
+             {% comment %} {% if flightset.leg2.is_fun_flight %}<figure class="funflight-solid"></figure>{% endif %}
+              {% if flightset.leg2.is_promotional_flight %}<figure class="promo-solid"></figure>{% endif %}{% endcomment %}
+            </div> -->
+            <div class="origin">
+
+                <div class="caption">
+                    <h5>Origin</h5> <!-- {{ flightset.leg1.origin.code }} -->
+                    <h1>{{ flightset.leg2.origin.city }}, {{ flightset.leg2.origin.state }}</h1>
+                    <h4 class="grey">{{ flightset.leg2.local_departure|time:"h:i A" }} {{ flightset.leg2.origin.get_timezone_display }}</h4>
+                </div>
+            </div>
+
+            <div class="duration arrow">
+              <h2>{{ flightset.leg2.duration|human_duration }}</h2>
+            </div>
+
+            <div class="destination">
+
+                <div class="caption">
+                    <h5>Destination</h5> <!-- {{ flightset.leg1.destination.code }} -->
+                    <h1>{{ flightset.leg2.destination.city }}, {{ flightset.leg2.destination.state }}</h1>
+
+                   <h4 class="grey">{{ flightset.leg2.local_arrival|time:"h:i A" }} {{ flightset.leg2.destination.get_timezone_display }}</h4>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+    <div class="block row">
+      <div class="cost-container rise-stacker rise-stack-sm rise-stacker-remove-margins">
+          <div class="cost-unit">
+              <div class="caption">
+                  <h5>Spots</h5>
+
+                  <h1>1</h1>
+              </div>
+          </div>
+          <div class="cost-unit">
+              <div class="caption">
+                  <h5>Cost</h5>
+                  <!--
+                  <label id="lblCost">${{ object.per_seat_cost|floatformat:0 }}</label>
+                  <label id="lblTax">+ ${{ object.per_seat_tax|floatformat:0 }}</label> -->
+                  <h1>${{ flightset.per_seat_cost|floatformat:0}}</h1>
+              </div>
+          </div>
+           <div class="cost-unit">
+              <div class="caption">
+                  <h5>Tax</h5>
+                  <!--
+                  <label id="lblCost">${{ object.per_seat_cost|floatformat:0 }}</label>
+                  <label id="lblTax">+ ${{ object.per_seat_tax|floatformat:0 }}</label> -->
+                  <h1>${{ flightset.per_seat_tax|floatformat:0}}</h1>
+              </div>
+          </div>
+          <div class="cost-unit">
+              <div class="caption">
+                  <h5>Your Total</h5>
+                  <!--
+                  <label id="lblCost">${{ object.per_seat_cost|floatformat:0 }}</label>
+                  <label id="lblTax">+ ${{ object.per_seat_tax|floatformat:0 }}</label> -->
+                  <h1>${{ flightset.per_seat_with_tax|floatformat:0}}</h1>
+              </div>
+          </div>
+      </div>
+    </div>
+
+    <div class="block row full-width-link">
+      <form action="." method="POST" class="fullscreen" id="anywhere_form">
+        {% csrf_token %}
+        <input type="hidden" id="flightset_key" name="flightset" value="{{ flightset.public_key }}"/>
+          <input type="hidden" id="verify" name="verify" value="{{ verify }}"/>
+        <div id="flight_buttons" class="block center">
+          <button name="confirm-book" class="button anywhere-blue lg" type="submit">Approve</button>
+        </div>
+      </form>
+    </div>
+
+
+
+
+      <div class="actions">
+        {% comment %}{% if flight.is_full or not flight.is_available %}
+        <figure class="mag popover-button">
+          <div class="popover">
+            <a href="{% url 'book_similar_flights' flight_pk=flight.pk %}">Search for similar flights</a>
+          </div>
+        </figure>
+        {% endif %}
+        {% if flight.is_full or not flight.is_available %}
+        <figure class="hourglass popover-button">
+          <div class="popover">
+            <h5>Flight Alert</h5>
+            <ul>
+              <li>SMS Text</li>
+              <li>Email</li>
+              <li><a href="{% url 'flight_waitlist' pk=flight.pk %}" class="waitlist">Add to Waitlist</a></li> {# TODO: make this a dynamic call #}
+            </ul>
+          </div>
+        </figure>
+        {% endif %}{% endcomment %}
+      </div>
+<div id="cancel_policy_modal" class="modal-wrapper" style="z-index: 10000; opacity: 1;">
+    <div class="modal center">
+        <a href="javascript:closeCancellationModal();"><figure class="x-grey-lg"></figure></a>
+        <figure class="alert-icon"></figure>
+         <h2>Cancellation Notification</h2>
+
+       <p class="thick">Please note that cancellations made within 72 hours of departure cannot be refunded.</p>
+        <a id="confirm_policy"  href="javascript:submitForm();" class="action-block grey condensed">Continue?<figure class="arrow-right-grey"></figure></a>
+    </div>
+</div>
+
+  </div>
+</div>
+{% endblock body %}
+{% block javascript %}
+    {{ block.super }}
+    <script src="{% static 'js/reservations.js' %}"></script>
+        <script src="{% static 'js/cancellation_popup.js' %}"></script>
+{% endblock javascript %}

@@ -1,0 +1,13 @@
+{
+    "payment_method": "credit card",
+    "subscription": {
+        "amount": 1000,
+        "tax": 200,
+        "total": 1200,
+        "description": "Corporate Subscription",
+        "next_bill_date": 12345768,
+        "account": {
+            "is_manual": false
+        }
+    }
+}

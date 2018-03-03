@@ -1,0 +1,42 @@
+.bubble, .showcase-content {
+  background-color: white;
+  border-radius: 10px;
+  display: table;
+  max-width: 681px;
+  text-align: center;
+  padding: 20px;
+  position: relative;
+  width: 100%;
+  .action-block {
+    margin: 10px 0 0 0;
+  }
+  .showcase-message {
+    display: table-cell;
+    vertical-align: middle;
+  }
+
+////\\\\ Desktop Breakpoint *************************
+
+  @media screen and (min-width: 1024px) {
+    vertical-align: middle;
+    &:after {
+      border-top: 10px solid transparent;
+      border-left: 20px solid $grey3;
+      border-right: 0;
+      border-bottom: 10px solid transparent;
+      bottom: initial;
+      left: initial;
+      right: -20px;
+      top: 50%;
+      @include transform(translateY(-50%));
+    }
+    p {
+      display: inline-block;
+    }
+    .action-block {
+      display: inline-block;
+      margin: 0 10px;
+      width: auto;
+    }
+  }
+}

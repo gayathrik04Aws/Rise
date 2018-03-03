@@ -1,0 +1,181 @@
+{% extends 'base_admin.html' %}
+{% load account_tags %}
+{% load safe_settings %}
+
+{% block body %}
+    {% include 'admin_header_fragment.html' with accounts=True %}
+    <div class="admin-content-wrap admin-form-page">
+        <h1>{% if member %}Edit {{ member.get_full_name }}{% else %}Create User{% endif %}</h1>
+
+        <form action="." method="POST">
+            {% csrf_token %}
+
+            {% if form.errors %}
+                <div class="error-message">
+                {% for field, errors in form.errors.items %}
+                {% for error in errors %}
+                  {{ error }}<br/>
+                {% endfor %}
+                {% endfor %}
+                </div>
+            {% endif %}
+
+            <label for="{{ form.first_name.auto_id }}">First Name</label>
+            {{ form.first_name.errors }}
+            {{ form.first_name }}
+
+            <label for="{{ form.last_name.auto_id }}">Last Name</label>
+            {{ form.last_name.errors }}
+            {{ form.last_name }}
+
+            <label for="{{ form.email.auto_id }}">Email</label>
+            {{ form.email.errors }}
+            {{ form.email }}
+
+            {{ form.is_active.errors }}
+
+            <label class="check-radio-block"> {{ form.is_active }}<span> Is Active</span></label>
+
+            <p><i>Inactive users cannot login or have any action taken on them within the system, regardless of their assigned roles.</i></p>
+
+            <label for="{{ form.groups.auto_id }}">Roles</label>
+
+
+            {{ form.groups.errors }}
+            {% for checkbox in form.groups %}
+            <label class="check-radio-block">
+                <input id="groups-{{ forloop.counter }}" name="{{ checkbox.name }}" type="checkbox" value="{{ checkbox.choice_value }}" {% if checkbox.is_checked %}checked="checked"{% endif %}> <span>{{ checkbox.choice_label }} {% if not member_paid and account.is_full and is_staff|role_is_chargeable:checkbox.choice_label %}(subject to ${{ fee|floatformat:0 }} one-time fee){% endif %}</span>
+            </label>
+            {% endfor %}
+            {% if account.is_full and not is_staff and not member_paid %}
+                    <div id="divPaymentMethod">
+                    <label for="{{ form.payment_method.auto_id }}" class="center">--SELECT PAYMENT METHOD--</label>
+                    {{ form.payment_method.errors }}
+
+                    <div class="select arrow">
+                        <span class="value">{{ form.payment_method.value|default:"Select" }}</span>
+                      <ul>
+                           {% for choice in form.payment_method.field.choices %}
+                           <li value="{{ choice.0 }}" >{{ choice.1 }} {% if choice.0|is_default_payment_method %} -- DEFAULT{% endif %}</li>
+                           {% endfor %}
+                       </ul>
+                      <select id="id_payment_method" name="payment_method" >
+                      {% for choice in form.payment_method.field.choices %}
+                        <option value="{{ choice.0 }}" {% if choice.0|is_default_payment_method %}selected{% endif %}>{{ choice.1 }} {% if choice.0|is_default_payment_method %} -- DEFAULT{% endif %}</option>
+                        {% endfor %}
+                    </select>
+                    </div>
+                    </div>
+                {% if user.is_admin %}
+                 <label class="check-radio-block"> {{ form.override_charge }}<span>Override charge</span></label>
+                {% endif %}
+                    <p><b>This account is full.</b></p><p> Additional flying members are subject to a one-time fee of ${{ fee|floatformat:0 }}.</p><p>
+                    Coordinator only members are not subject to this fee.</p>
+                    {% else %}
+                    <div id="divPaymentMethod" class="hidden"></div>
+            {% endif %}
+
+            <label for="{{ form.phone.auto_id }}">Phone</label>
+            {{ form.phone.errors }}
+            {{ form.phone }}
+
+            <label for="{{ form.mobile_phone.auto_id }}">Cell</label>
+            {{ form.mobile_phone.errors }}
+            {{ form.mobile_phone }}
+
+            <label for="{{ form.ship_street_1.auto_id }}">Street Address Line 1</label>
+            {{ form.ship_street_1.errors }}
+            {{ form.ship_street_1 }}
+
+            <label for="{{ form.ship_street_2.auto_id }}">Street Address Line 2</label>
+            {{ form.ship_street_2.errors }}
+            {{ form.ship_street_2 }}
+
+            <label for="{{ form.ship_city.auto_id }}">City</label>
+            {{ form.ship_city.errors }}
+            {{ form.ship_city }}
+
+            <div class="equal-with-labels">
+                <div class="full-input fl">
+                    <label for="{{ form.ship_state.auto_id }}">State</label>
+                    {{ form.ship_state.errors }}
+                    <div class="select arrow">
+                        <span class="value"></span>
+                        <ul>
+                            {% for value, text in form.ship_state.field.choices %}
+                            <li value="{{ value }}">{{ text }}</li>
+                            {% endfor %}
+                        </ul>
+                        {{ form.ship_state }}
+                    </div>
+                </div>
+                <div class="full-input fr">
+                    <label for="{{ form.ship_postal_code.auto_id }}">Zip</label>
+                    {{ form.ship_postal_code.errors }}
+                    {{ form.ship_postal_code }}
+                </div>
+            </div>
+
+            <div class="equal-with-labels">
+                <div class="full-input fl">
+                    <label for="{{ form.date_of_birth.auto_id }}">Date of Birth</label>
+                    <input class="date-formatter {% if form.date_of_birth.errors %}error{% endif %}" type="text" name="{{ form.date_of_birth.html_name }}" value="{{ form.date_of_birth.value|date:"m/d/Y"|default:"" }}" placeholder="MM/DD/YEAR" id="date-of-birth" />
+                </div>
+                <div class="full-input fr">
+                    <label for="{{ form.weight.auto_id }}">Weight Range</label>
+                    <div class="select arrow">
+                      <span class="value">{{ form.weight.value|default:"Select" }}</span>
+                      <ul>
+                          {% for value, text in form.weight.field.choices %}
+                          <li value="{{ value }}">{{ text }}</li>
+                          {% endfor %}
+                      </ul>
+                      {{ form.weight }}
+                    </div>
+                </div>
+            </div>
+
+            <label>My Origin Airport</label>
+
+            <div class="selection-grid">
+            {% for choice in form.origin_airport.field.choices %}
+            {% with airport=choice.2 %}
+            <div class="select-city selection-grid-item">
+                 <label class="check-radio-block" for="origin-city-{{ forloop.counter }}">
+                    <input id="origin-airport-{{ forloop.counter }}" name="{{ form.origin_airport.name }}" type="radio" value="{{ choice.0 }}" {% if form.origin_airport.value|safe == choice.0|safe %}checked="checked"{% endif %}>
+                    <span><em>{{ airport.code|upper }}</em> {{ airport.name }}</span>
+                 </label>
+            </div>
+            {% endwith %}
+            {% endfor %}
+            </div>
+
+            <label>Food Restrictions</label>
+            <textarea {% if form.allergies.errors %}class="error"{% endif %} type="text" name="{{ form.allergies.html_name }}" id="allergies" placeholder="Enter any food allergies or restrictions">{{ form.allergies.value|default:"" }}</textarea>
+
+            <button type="submit" class="green">Save User</button>
+
+        </form>
+    </div>
+<div id="memberChargeModal" class="modal-wrapper" style="z-index: 10000; opacity: 1;">
+    <div class="modal center">
+        <figure class="x-grey-lg"></figure>
+        <figure class="alert-icon"></figure>
+        <p class="thick">The member's payment method will now be charged ${% settings_value "DEPOSIT_COST" %} + ${% settings_value "DEPOSIT_TAX_PERCENT" %} sales tax. Continue with payment?</p>
+        <a id="confirm_credit_card_payment" href="javascript:submitAddUpdateMemberForm();" class="action-block grey condensed">Confirm Payment<figure class="arrow-right-grey"></figure></a>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascript %}
+{{ javascript.super }}
+<script type="text/javascript">
+    $('input[name="groups"]').on('change', function(){
+        var roles = $('input[name="groups"]:checked');
+        if (roles.length > 0){
+            //console.log('roles = ' + roles);
+            // TODO: make phone and Date of Birth required
+        }
+    });
+</script>
+{% endblock javascript %}

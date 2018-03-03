@@ -1,0 +1,8 @@
+{
+    "flight": {
+        "is_cancelled": true,
+        "is_delayed": false,
+        "flight_number": "1234"
+    },
+    "message": "This is the flight message"
+}

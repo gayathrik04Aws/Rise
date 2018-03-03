@@ -1,0 +1,76 @@
+{% extends 'base_admin.html' %}
+
+{% load staticfiles %}
+{% load humanize %}
+{% load flight_tags %}
+
+{% block title %}Background Check for Flight {{ object.flight_number }}{% endblock title %}
+
+{% block meta_description %}Background Check for Flight {{ object.flight_number }}{% endblock meta_description %}
+
+{% block body_class %}{% endblock %}
+{% block body %}
+{% include 'admin_header_fragment.html' with flights=True %}
+<div class="admin-content-wrap">
+    <div class="cf">
+        <h1 class="">Flight {{ object.flight_number }} - Background Check</h1>
+        <span class="fl">Departs/Arrives: <b>{{ object.origin.code|upper }}</b> {{ object.local_departure|date:"H:i e"}} &nbsp;<figure class="flight-arrow-right-green spacer"></figure> &nbsp;<b>{{ object.destination.code|upper }}</b> {{ object.local_arrival|date:"H:i e"}}</span>
+    </div>
+
+    <div class="flight-status-announcement">
+        Status: {{ object.get_status_display }}
+        <figure class="flight-alert-{% if object.is_cancelled %}cancel{% elif object.is_delayed %}delayed{% elif flight.is_complete %}complete{% else %}on-time{% endif %}"></figure>
+    </div>
+    {% if object.get_passengers %}
+    <div class="detail-section">
+        <b class="cf">Passengers</b>
+
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Date of Birth</th>
+                    <th>Background Check Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for passenger in object.get_passengers %}
+                <tr>
+                    <td>{{ passenger.userprofile.get_full_name }}</td>
+                    <td>{{ passenger.date_of_birth|date:"d F, Y" }}</td>
+                    <td>
+                        <div class='check-background-check'>
+                            <form action="{% url 'admin_background_check_update' flight_pk=object.pk passenger_pk=passenger.pk %}" method="POST" class="update-background-check">
+                                {% csrf_token %}
+                                <label class="check-radio-block">
+                                    <input class="change-background-check-status" type="radio" name="background_status" value="{{ passenger.BACKGROUND_NOT_STARTED }}" {% if passenger.background_status == passenger.BACKGROUND_NOT_STARTED %}checked="checked"{%endif%}>
+                                    <span>Not Started</span>
+                                </label>
+                                <label class="check-radio-block">
+                                    <input class="change-background-check-status" type="radio" name="background_status" value="{{ passenger.BACKGROUND_PASSED }}" {% if passenger.background_status == passenger.BACKGROUND_PASSED %}checked="checked"{%endif%}>
+                                    <span>Passed</span>
+                                </label>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+    {% if perms.accounts.can_view_flights %}
+    <div class="center">
+        <a href="{% url 'admin_flight_detail' object.pk %}" class="return-to-profile">&#9664; Return to Flight Detail</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock body %}
+
+{% block javascript %}
+<script type="text/javascript">
+$('#id_status').on('change', function () {
+    $('#id_status_form').submit();
+});
+</script>
+{% endblock javascript %}

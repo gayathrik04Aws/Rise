@@ -1,0 +1,8 @@
+.interstitial {
+    display: inline-block;
+    margin: 0 50px;
+    &.header {
+        display: block;
+        margin: initial;
+    }
+}

@@ -1,0 +1,507 @@
+figure {
+  background-repeat: no-repeat;
+  background-position: center;
+  display: inline-block;
+  margin: 0;
+  &.accepted {
+      background-image: url(../img/icon-accepted.png);
+      background-size: 20px 20px;
+      height: 20px;
+      width: 20px;
+  }
+  &.alert-icon {
+      background-image: url(../img/icon-alert.png);
+      background-size: 45px 45px;
+      height: 48px;
+      width: 48px;
+  }
+  &.arrow-back {
+      background-image: url(../img/arrow-back.png);
+      background-size: 8px 6px;
+      height: 6px;
+      margin-right: 10px;
+      vertical-align: middle;
+      width: 8px;
+  }
+  &.arrow-down {
+      background-image: url(../img/arrow-down.png);
+      background-size: 6px 5px;
+      height: 5px;
+      width: 6px;
+  }
+  &.arrow-left-grey {
+      background-image: url(../img/arrow-left-grey.png);
+      background-size: 8px 6px;
+      height: 6px;
+      width: 8px;
+  }
+  &.arrow-right-grey {
+      background-image: url(../img/arrow-right-grey.png);
+      background-size: 12px 12px;
+      height: 12px;
+      vertical-align: top;
+      width: 12px;
+  }
+  &.arrow-reservation-route {
+      background-image: url(../img/arrow-reservation-route.png);
+      background-size: 23px 45px;
+      height: 45px;
+      width: 23px;
+  }
+  &.arrow-down-green {
+      background-image: url(../img/arrow-down-green.png);
+      background-size: 20px 20px;
+      height: 20px;
+      width: 20px;
+  }
+    &.large-arrow-down-green {
+        background-image: url(../img/large-arrow-down-green.png);
+        background-size: 29px 17px;
+        height: 29px;
+        width: 29px;
+    }
+  &.bell {
+      background-image: url(../img/icon-bell.png);
+      background-size: 16px 16px;
+      height: 16px;
+      width: 16px;
+  }
+  &.calendar-icon {
+      background-image: url(../img/icon-calendar.png);
+      background-size: 20px 20px;
+      height: 20px;
+      width: 20px;
+  }
+  &.camera-circle {
+      background-image: url(../img/icon-camera-circle.png);
+      background-size: 25px 25px;
+      height: 25px;
+      width: 25px;
+      @media screen and (min-width: 768px) {
+          background-size: 50px 50px;
+          height: 50px;
+          width: 50px;
+      }
+  }
+  &.check-green-sm {
+      background-image: url(../img/check-green-sm.png);
+      background-size: 12px 9px;
+      height: 9px;
+      margin-right: 10px;
+      width: 12px;
+  }
+  &.check-grey-sm {
+      background-image: url(../img/check-grey-sm.png);
+      background-size: 12px 9px;
+      height: 9px;
+      margin-right: 10px;
+      width: 12px;
+  }
+  &.check-green-lg {
+      background-image: url(../img/check-green-lg.png);
+      background-size: 18px 14px;
+      height: 14px;
+      width: 18px;
+  }
+  &.check-solid-grey {
+      background-image: url(../img/check-solid-grey.png);
+      background-size: 20px 20px;
+      height: 20px;
+      width: 20px;
+      @media screen and (min-width: 768px) {
+          background-size: 30px 30px;
+          height: 30px;
+          width: 30px;
+      }
+  }
+  &.check-solid-green {
+      background-image: url(../img/check-solid-green.png);
+      background-size: 20px 20px;
+      height: 20px;
+      width: 20px;
+      @media screen and (min-width: 768px) {
+          background-size: 30px 30px;
+          height: 30px;
+          width: 30px;
+      }
+  }
+  &.companion-passes {
+      background-image: url(../img/icon-companion-passes.png);
+      background-size: 21px 18px;
+      height: 18px;
+      width: 21px;
+  }
+  &.default-user-small {
+      background-image: url(../img/icon-default-user-small.png);
+      background-size: 40px 40px;
+      height: 40px;
+      vertical-align: middle;
+      width: 40px;
+  }
+  &.email {
+      background-image: url(../img/icon-email.png);
+      background-size: 22px 20px;
+      height: 20px;
+      width: 22px;
+  }
+  &.funflight-solid {
+      background-image: url(../img/icon-funflight-solid.png);
+      background-size: 30px 30px;
+      height: 30px;
+      width: 30px;
+  }
+  &.funflight {
+      background-image: url(../img/icon-funflight.png);
+      background-size: 12px 13px;
+      height: 13px;
+      width: 12px;
+  }
+  &.member-flight-arrow {
+    background-image: url(../img/member-flight-arrow.png);
+    background-size: contain;
+    height: 25px;
+    width: 20px;
+  }
+  &.flight-arrow-right-green {
+      background-image: url(../img/flight-arrow-right-green.png);
+      background-size: 8px 14px;
+      height: 14px;
+      width: 8px;
+  }
+  &.flight-arrow-right-grey {
+      background-image: url(../img/flight-arrow-right-grey.png);
+      background-size: 8px 14px;
+      height: 14px;
+      width: 8px;
+  }
+  &.flight-card-arrow-sm {
+      background-image: url(../img/flight-card-arrow-sm.png);
+      background-size: 23px 36px;
+      height: 36px;
+      width: 23px;
+  }
+  &.flight-card-arrow-lg {
+      background-image: url(../img/flight-card-arrow-lg.png);
+      background-size: 44px 85px;
+      height: 85px;
+      width: 44px;
+  }
+  &.flight-alert-on-time {
+      background-image: url(../img/flight-alert-on-time.png);
+      background-size: 6px 6px;
+      height: 6px;
+      width: 6px;
+  }
+  &.flight-alert-cancel {
+      background-image: url(../img/flight-alert-cancel.png);
+      background-size: 6px 6px;
+      height: 6px;
+      width: 6px;
+  }
+  &.flight-alert-delayed {
+      background-image: url(../img/flight-alert-delayed.png);
+      background-size: 6px 6px;
+      height: 6px;
+      width: 6px;
+  }
+  &.flight-alert-complete {
+      background-image: url(../img/flight-alert-complete.png);
+      background-size: 6px 6px;
+      height: 6px;
+      width: 6px;
+  }
+  &.icon-settings {
+      background-color: $land;
+      border-radius: 100%;
+      background-image: url(../img/icon-settings.png);
+      background-size: 38px 38px;
+      height: 38px;
+      width: 38px;
+      &:hover {
+        @include transform(rotate(90deg));
+      }
+      @media screen and (min-width: 1024px) {
+          height: 50px;
+          width: 50px;
+      }
+  }
+  &.icon-info {
+      background-image: url(../img/icon-info.png);
+      background-size: 20px 20px;
+      height: 20px;
+      width: 20px;
+      &:hover,
+      &.active {
+          background-image: url(../img/icon-info-green.png);
+      }
+  }
+  &.icon-cancel {
+      background-image: url(../img/icon-cancel.png);
+      background-size: 20px 20px;
+      height: 20px;
+      width: 20px;
+  }
+  &.icon-repeat {
+      background-image: url(../img/icon-repeat.png);
+      background-size: 13px 12px;
+      height: 12px;
+      width: 13px;
+  }
+  &.icon-trashcan {
+      background-image: url(../img/icon-trashcan.png);
+      background-size: 18px 21px;
+      height: 21px;
+      width: 18px;
+  }
+  &.icon-camera {
+      background-image: url(../img/icon-camera.png);
+      background-size: 18px 16px;
+      height: 16px;
+      width: 18px;
+  }
+  &.booking-icon {
+    background-image: url(../img/how-works-2.png);
+    background-size: 80px 80px;
+    height: 80px;
+    width: 80px;
+  }
+  &.invites {
+      background-image: url(../img/icon-invites.png);
+      background-size: 22px 24px;
+      height: 24px;
+      width: 22px;
+  }
+  &.invites-grey {
+      background-image: url(../img/icon-invites-grey.png);
+      background-size: 22px 24px;
+      height: 24px;
+      width: 22px;
+  }
+  &.logomark {
+      background-image: url(../img/logomark.png);
+      background-size: 41px 20px;
+      height: 20px;
+      width: 41px;
+  }
+  &.logo {
+      background-image: url(../img/logo.png);
+      background-size: 85px 20px;
+      height: 20px;
+      width: 85px;
+  }
+  &.logo-darkbg {
+      background-image: url(../img/logo-rise.png);
+      background-size: 85px 20px;
+      height: 20px;
+      width: 85px;
+      @media screen and (min-width: 768px) {
+          background-size: 114px 27px;
+          height: 27px;
+          width: 114px;
+      }
+  }
+  &.location {
+      background-image: url(../img/icon-location.png);
+      background-size: 10px 14px;
+      height: 14px;
+      width: 10px;
+  }
+  &.logo-form {
+      background-color: $grey2;
+      background-image: url(../img/logo-form.png);
+      background-size: 100px 24px;
+      height: 24px;
+      width: 100px;
+      @media screen and (min-width: 768px) {
+          background-size: 100px 24px;
+          height: 24px;
+          width: 100px;
+      }
+  }
+  &.mag {
+      background-image: url(../img/icon-mag.png);
+      background-size: 17px 16px;
+      height: 16px;
+      width: 17px;
+  }
+  &.passbook {
+      background-image: url(../img/icon-passbook.png);
+      background-size: 20px 20px;
+      height: 20px;
+      width: 20px;
+  }
+  &.pencil-green {
+      background-image: url(../img/icon-pencil-green.png);
+      background-size: 14px auto;
+      background-position: center center;
+      height: 19px;
+      width: 18px;
+  }
+  &.pencil-grey {
+      background-image: url(../img/icon-pencil-grey.png);
+      background-size: 14px auto;
+      background-position: center center;
+      height: 19px;
+      width: 18px;
+      &:hover {
+          background-image: url(../img/icon-pencil-green.png);
+      }
+  }
+  &.plane-green {
+      background-image: url(../img/icon-plane-green.png);
+      background-size: 20px 20px;
+      height: 20px;
+      width: 20px;
+  }
+  &.plane-grey {
+      background-image: url(../img/icon-plane-grey.png);
+      background-size: 20px 20px;
+      height: 20px;
+      width: 20px;
+  }
+  &.print {
+      background-image: url(../img/icon-print.png);
+      background-size: 20px 21px;
+      height: 21px;
+      width: 20px;
+  }
+  &.promo-solid {
+      background-image: url(../img/icon-promo-solid.png);
+      background-size: 30px 30px;
+      height: 30px;
+      width: 30px;
+  }
+  &.promo {
+      background-image: url(../img/icon-promo.png);
+      background-size: 13px 13px;
+      height: 13px;
+      width: 13px;
+  }
+  &.plus-grey-lg {
+      background-image: url(../img/plus-grey-lg.png);
+      background-size: 12px 12px;
+      height: 12px;
+      width: 12px;
+      vertical-align: middle;
+      margin-top: 5px;
+  }
+  &.plus-green-solid {
+      background-color: $land;
+      background-image: url(../img/plus-green-solid.png);
+      background-size: 20px 20px;
+      border-radius: 100%;
+      height: 20px;
+      width: 20px;
+      @media screen and (min-width: 768px) {
+          background-size: 25px 25px;
+          height: 30px;
+          width: 30px;
+      }
+  }
+  &.question {
+      background-image: url(../img/icon-question.png);
+      background-size: 15px 15px;
+      height: 15px;
+      width: 15px;
+  }
+  &.question-green {
+      background-image: url(../img/icon-question-green.png);
+      background-size: 15px 15px;
+      height: 15px;
+      width: 15px;
+  }
+  &.remove-companion {
+      background-color: $red;
+      border-radius: 100%;
+      background-image: url(../img/icon-remove-companion.png);
+      background-size: 20px 20px;
+      height: 20px;
+      width: 20px;
+      @media screen and (min-width: 768px) {
+          background-size: 25px 25px;
+          height: 30px;
+          width: 30px;
+      }
+  }
+  &.sms-passes {
+      background-image: url(../img/icon-sms-passes.png);
+      background-size: 21px 18px;
+      height: 18px;
+      width: 21px;
+  }
+  &.star {
+      background-image: url(../img/star.png);
+      background-size: 9.5px 9px;
+      height: 9px;
+      width: 9.5px;
+  }
+  &.user-alert {
+    background-image: url(../img/icon-useralert.png);
+    background-size: 23px 23px;
+    height: 23px;
+    width: 23px;
+  }
+  &.user {
+    background-image: url(../img/icon-user.png);
+    background-size: 20px 20px;
+    height: 20px;
+    width: 20px;
+  }
+  &.x-grey-sm {
+      background-image: url(../img/icon-x-grey-sm.png);
+      background-size: 10px 10px;
+      height: 10px;
+      margin-right: 10px;
+      width: 10px;
+  }
+  &.x-green-sm {
+      background-image: url(../img/x-green-sm.png);
+      background-size: 12px 12px;
+      height: 12px;
+      width: 12px;
+  }
+  &.x-grey-lg {
+      background-image: url(../img/icon-x-grey-lg.png);
+      background-size: 18px 18px;
+      height: 18px;
+      width: 18px;
+  }
+    &.hourglass {
+        background-image: url(../img/icon-waitlist.png);
+        background-size: 16px 16px;
+        height: 16px;
+        width: 16px;
+    }
+}
+
+.icon-with-label {
+  * {
+    display: inline-block;
+    vertical-align: middle;
+  }
+  span {
+    @include tablet-gothic-family;
+    color: $sky;
+    text-transform: uppercase;
+    font-size: 15px;
+    letter-spacing: 1px;
+    margin-left: 15px;
+  }
+}
+
+.figure-mobile {
+  display: inline-block;
+  @media screen and (min-width: 768px) {
+    display: none;
+  }
+}
+.figure-desktop {
+  display: none;
+  @media screen and (min-width: 768px) {
+    display: inline-block;
+  }
+}
+
+#print-page{
+    cursor:pointer;
+}

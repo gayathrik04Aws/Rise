@@ -1,0 +1,489 @@
+{% extends 'base_admin.html' %}
+
+{% load tz %}
+{% load humanize %}
+{% load account_tags %}
+
+{% block title %}{{ block.super }} - Accounts{% endblock %}
+
+{% block body %}
+{% include 'admin_header_fragment.html' with accounts=True %}
+<div class="admin-detail-view">
+    <div class="avatar fl">
+      <div class="badge-wrap badge-right">
+        <div class="circle large no-m" style="background:url({{ account.primary_user.avatar_url }}) 0 0 no-repeat;background-size:100% 100%" id="avatar-image">
+            <!--<img src="{{ user.avatar_url }}">-->
+        </div>
+      </div>
+    </div>
+    <div class="admin-details-wrap">
+        <div class="admin-page-header">
+            <div class="fl">
+                <h1>{{ account.account_name }}</h1>
+
+                <div class="contained-item admin">
+                    <span class="title">Status </span>
+                    <span class="value">{{ account.get_status_display }}</span>
+
+                </div>
+                {% if account.is_pending or account.has_unsigned_contract %}
+                <div class="contained-item admin" style="margin-left: 20px;">
+                    <a href="{% url 'admin_account_send_onboarding_email' account.pk %}" class="">Resend Onboarding Email</a>
+                </div>
+                {% endif %}
+            </div>
+            <div class="fr">
+                <label class="check-radio-block member">
+                    <span>Founding</span>
+                    <input type="checkbox" disabled="disabled" {% if account.founder %}checked="checked"{% endif %}>
+                </label>
+                <br/>
+                <label class="check-radio-block member">
+                    <span>VIP</span>
+                    <input type="checkbox" disabled="disabled" {% if account.vip %}checked="checked"{% endif %}>
+                </label>
+            </div>
+        </div>
+
+        <div class="detail-section">
+            <ul class="profile-items">
+                <li class="tall">
+                    <span class="item-title multiline">Address</span>
+                    <span class="item-value multiline">
+                        {{ account.primary_profile.shipping_address.street_1 }}<br/>
+                        {% if account.primary_profile.shipping_address.street_2 %}
+                            {{ account.primary_profile.shipping_address.street_2 }}<br/>
+                        {% endif %}
+                        {{ account.primary_profile.shipping_address.city }},
+                        {{ account.primary_profile.shipping_address.state }}
+                        {{ account.primary_profile.shipping_address.postal_code }}
+                    </span>
+                </li>
+                <li>
+                    <span class="item-title">Primary Phone</span>
+                    <span class="item-value">{{ account.primary_profile.phone }}</span>
+                </li>
+                <li>
+                    <span class="item-title">Cell</span>
+                    <span class="item-value">{{ account.primary_profile.mobile_phone }}</span>
+                </li>
+                <li>
+                    <span class="item-title">Email</span>
+                    <span class="item-value">
+                        <a href="mailto:{{ account.primary_profile.email }}" class="underline-link">
+                            {{ account.primary_profile.email }}
+                        </a>
+                    </span>
+                </li>
+                <li>
+                    <span class="item-title">DOB</span>
+                    <span class="item-value">{{ account.primary_profile.date_of_birth }}</span>
+                </li>
+            </ul>
+        </div>
+
+        <div class="detail-section">
+            <label>Membership Information</label>
+            <ul>
+        {% if account.is_corporate %}
+                <li>
+                    <span><b>Corporate Membership</b></span>&nbsp;&nbsp;
+                    <span>${{ account.corporate_amount|floatformat:2|intcomma }} per month</span>
+                </li>
+                {% if account.activated %}
+                <li>
+                    <span><b>Account Activated</b></span>&nbsp;&nbsp;
+                    <span>{{ account.activated|date:"m/d/y h:i A" }}</span>
+                </li>
+                {% endif %}
+                <li class="corporate-li">
+                    <div>
+                        <figure class="user"></figure>
+                        <span class="admin-corporate-label">Member Count</span>
+                    </div>
+                    <span class="admin-corporate-value">{{ account.total_flying_members_count }} / {{ account.member_count }}</span>
+                    <i>(Total Flying Members Ever Active) / (# of TRACKABLE Onboarding Fees PAID)</i>
+                    <i>If the first number is higher than the second, some members were not charged properly for onboarding. Companions & coordinators are not counted in either value.</i>
+                    <b>IMPORTANT - Before 6/20/2016, the only time the paid member count was set was during initial account creation, so if there were manual charges for additional users, they may not be reflected in this number until it has been manually adjusted.  Users added after 6/20/16 should be counted properly.</b>
+                </li>
+                <li class="corporate-li">
+                    <div>
+                        <figure class="sms-passes"></figure>
+                        <span class="admin-corporate-label">Pass Count</span>
+                    </div>
+                    <span class="admin-corporate-value">{{ account.pass_count }} / Month</span>
+                </li>
+                <li class="corporate-li">
+                    <div>
+                        <figure class="companion-passes"></figure>
+                        <span class="admin-corporate-label">Companion Pass Count</span>
+                    </div>
+                    <span class="admin-corporate-value">{{ account.companion_pass_count }} / Month</span>
+                </li>
+                <a href="{% url 'admin_account_edit' pk=account.pk %}" class="admin-button invite">EDIT ACCOUNT</a>&nbsp;&nbsp;&nbsp;
+                <a href="{% url 'admin_account_invitations' account.pk %}" class="admin-button invite">MANAGE INVITES</a>
+        {% else %}
+                <li>
+                {% if account.contract == None %}
+                    <span><b>{{ account.plan.name }}</b></span>&nbsp;&nbsp;
+
+                    {% elif account.contract_end_date %}
+
+                   <span><b>{{ account.contract.description_without_price }}</b>&nbsp;&nbsp;(ends {{ account.contract_end_date|date:"m/d/y" }})&nbsp;&nbsp;</span><br>
+
+                    {% else %}
+                     <span><b>{{ account.contract.description_without_price }}</b>&nbsp;&nbsp;(not yet activated)</span>&nbsp;&nbsp;<br>
+
+                {% endif %}
+                    <span>${{ account|active_plan_pricing|floatformat:0|intcomma }} per month</span><br><br>
+                {% if account|has_discounted_plan %}
+                   <span><i>This user's subscription predates the current pricing for their plan.</i></span>
+                    {% endif %}
+                </li>
+                {% if account.activated %}
+                <li>
+                    <span><b>Account Activated</b></span>&nbsp;&nbsp;
+                    <span>{{ account.activated|date:"m/d/y h:i A" }}</span>
+                </li>
+                {% endif %}
+                <li>
+
+                </li>
+                <li>
+                    <span><b>{{ account.plan.pass_count }}</b> Passes per Month</span>
+                </li>
+                <li>
+                    <span><b>{{ account.plan.companion_passes }}</b> Companion Passes per Month</span>
+                </li>
+                <li>
+                    <span><b>{{ account.invites }}</b> Invites</span>
+                </li>
+                <a href="{% url 'admin_account_edit' pk=account.pk %}" class="admin-button invite">EDIT ACCOUNT</a>
+                <a href="{% url 'admin_account_invitations' account.pk %}" class="admin-button invite">MANAGE INVITES</a>
+                {% if perms.accounts.can_merge_accounts %}<a href="#" id="merge_account_modal_button" class="admin-button">MERGE ACCOUNT</a>{% endif %}
+        {% endif %}
+            </ul>
+        </div>
+
+        <div class="detail-section">
+            <label>Passes</label>
+            <ul>
+                <li>
+                    <span class="admin-detail-label">Available Passes</span>
+                    <span>{{ account.available_passes }}</span>
+                </li>
+                <li>
+                    <span class="admin-detail-label">Available Companion Passes</span>
+                    <span>{{ account.available_companion_passes }}</span>
+                </li>
+                <li>
+                    <span class="admin-detail-label">Complimentary Passes</span>
+                    <span>{{ account.complimentary_passes }}</span>
+                </li>
+                <li>
+                    <span class="admin-detail-label">Complimentary Companion Passes</span>
+                    <span>{{ account.complimentary_companion_passes }}</span>
+                </li>
+            </ul>
+        </div>
+
+
+        <div class="detail-section {% if recent_charges %}{% endif %}">
+            <label>Billing</label>
+            <p>
+                {% with subscription=account.get_subscription %}
+                {% if subscription %}
+                <br>
+                <b>Subscription</b><br>
+                Status: {{ subscription.get_status_display }}<br>
+                Amount: ${{ subscription.amount|floatformat:2|intcomma }} + 7.5% ${{ subscription.tax|floatformat:2|intcomma }} = ${{ subscription.total|floatformat:2|intcomma }}<br>
+                {{ subscription.period_start|date:"m/d/y" }} - {{ subscription.period_end|date:"m/d/y" }}<br>
+                {% endif %}
+                {% endwith %}
+                <br/>
+                <b>Payment Method</b>&nbsp;&nbsp;{{ account.get_payment_method_display }}
+                <br/>
+                {% with credit_cards=account.get_all_credit_cards %}
+                {% if credit_cards %}
+                {% for credit_card in credit_cards %}
+                <div class="credit-cards">
+                    <div class="full-credit-card">
+                        <div class="credit-card-information">
+                            <span class="credit-card-head">{{ credit_card.brand }} ••••••••••••{{ credit_card.last4 }}</span><br/>
+                            Expires {{ credit_card.exp_month }}/{{ credit_card.exp_year }}<br/>
+                            {% if credit_card.billing_payment_method.nickname  %}
+                                {{ credit_card.billing_payment_method.nickname }}<br/>
+                            {% endif %}
+                            {% if credit_card.is_default %}Default Payment Method
+                            {% else %}
+                            <a href="{% url 'default_payment_method' account.pk credit_card.billing_payment_method_id %}">Make default payment method</a>
+                            {% endif %}
+                        </div>
+                        <div class="credit-card-action">
+                            <a href="{% url 'admin_account_credit_card_delete' account.pk  credit_card.id %}">
+                                <figure class="icon-trashcan"></figure>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                {% endif %}
+                <br/>
+                {% endwith %}
+                {% with bank_accounts=account.get_all_bank_account %}
+                {% if bank_accounts %}
+                {% for bank_account in bank_accounts %}
+                <div class="credit-cards">
+                    <div class="full-credit-card">
+                        <div class="credit-card-information">
+                            <span class="credit-card-head">{{ bank_account.bank_name }} ({{ bank_account.routing_number }}) ••••••••••••{{ bank_account.last4 }}</span><br/>
+                            {% if bank_account.billing_payment_method.nickname  %}
+                                {{ bank_account.billing_payment_method.nickname }}<br/>
+                            {% endif %}
+                            {% if not bank_account.verified %}
+                            <a href="{% url 'admin_account_bank_account_verify' account.pk %}" class="admin-button">VERIFY BANK ACCOUNT</a>
+                            {% endif %}
+                            <br>
+                            {% if bank_account.is_default %}Default Payment Method
+                            {% elif bank_account.verified %}
+                            <a href="{% url 'default_payment_method' account.pk bank_account.billing_payment_method_id %}">Make default payment method</a>
+                            {% endif %}
+                        </div>
+                        <div class="credit-card-action">
+                            <a href="{% url 'admin_account_bank_account_delete' account.pk  bank_account.id %}">
+                                <figure class="icon-trashcan"></figure>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                {% endif %}
+                {% endwith %}
+                 <div class="page-controls">
+                    <a href="{% url 'admin_account_bank_account' account.pk %}" class="admin-button">Add a New Bank Account</a>
+                    <a href="{% url 'admin_account_credit_card' account.pk %}" class="admin-button">Add a New Card</a>
+                </div>
+            </p>
+
+            {% if recent_charges %}
+            <label>Recent Charges</label><br/>
+            <table class="admin-table no-border no-hover">
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Created</th>
+                        <th>Amount</th>
+                    </tr>
+                </thead>
+                <tbody class="billing">
+                    {% for charge in recent_charges %}
+                    <tr class="link-row {% if charge.has_failed %}error-background{% endif %}" href="{% url 'admin_account_charge' charge.account_id charge.id %}">
+                        <td class="charge-type"><b>{% if charge.is_credit_card %}Credit Card{% elif charge.is_bank_account %}ACH{% else %}Manual{% endif %}</b></td>
+                        <td><b>{% localtime on %}{{ charge.created|date:"m/d/y h:i A" }}{% endlocaltime %}</b></td>
+                        <td><b>${{ charge.amount|floatformat:2|intcomma }}</b></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% endif %}
+            {% if recent_charges %}
+                <a href="{% url 'admin_account_charges' account.pk %}" class="admin-button">VIEW ALL CHARGES</a>&nbsp;&nbsp;
+            {% endif %}
+            {% if perms.accounts.can_charge_members %}
+                <a href="{% url 'admin_account_charges_add' account.pk %}" class="admin-button">ADD NEW CHARGE</a>
+            {% endif %}
+
+
+
+        </div>
+
+        {% if upcoming_flight_reservations %}
+        <div class="detail-section">
+            <label>Upcoming Flights</label>
+            <table class="admin-table no-border">
+            {% for flight_reservation in upcoming_flight_reservations %}
+                <tr class="link-row" href="{% url 'admin_flight_reservation' flight_reservation.id %}">
+                    <td><b>{{ flight_reservation.flight.flight_number }}</b></td>
+                    <td>
+                        <b>{{ flight_reservation.flight.origin.code }}</b>
+                        {{ flight_reservation.flight.local_departure|date:"h:i A" }}
+                        <figure class="flight-arrow-right-green spacer"></figure>
+                        <b>{{ flight_reservation.flight.destination.code }}</b>
+                        {{ flight_reservation.flight.local_arrival|date:"h:i A" }}
+                    </td>
+                    <td style="text-transform: capitalize;">{{ flight_reservation.flight.local_departure|date:"b d, Y" }}
+                </tr>
+            {% endfor %}
+            </table>
+        </div>
+        {% endif %}
+
+        <div class="detail-section">
+            <a href="{% url 'admin_account_reservations' account.pk %}" class="green small">VIEW ALL RESERVATIONS</a>
+        </div>
+
+
+        <div class="detail-section no-bb no-pb">
+            {% if account.is_corporate %}
+                <span class="cf">
+                    <span class="section-label">Account Users</span>
+                    {% if account.is_full %}
+                    <p><b>This account is full.</b></p>
+                        <p>Adding new flying members will incur a one-time charge of ${{ fee }}.  Coordinator-only members will not incur a charge.</p>
+                    {% endif %}
+                     <p><i>Team Members without roles were added as members.  They differ from companions in that they should have been charged an onboarding fee, unless they only ever had the coordinator role.  If they have no roles they will have to pay for legs like companions but will not be flagged as companions in order to track that they previously paid a one-time fee.</i></p>
+
+                    <a href="{% url 'admin_account_add_user' account.pk %}" class="add-member">+ Add New Team Member</a>
+                </span>
+                <br/>
+                <table class="admin-table no-border no-hover">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Role(s)</th>
+                        </tr>
+                    </thead>
+                    {% with users=account.get_all_member_profiles %}
+                    {% for user in users %}
+                    <tr class="link-row" href="{% url 'admin_account_user' account.id user.id %}">
+                        <td class="account-user"><b><a href="{% url 'admin_account_user' account.id user.id %}">{{ user.get_full_name }}</a></b></td>
+                        <td class="account-user">{% if user.user and not user.user.is_active %}INACTIVE{% endif %}{% if user == account.primary_profile %}Primary Account User, {% endif %}{{ user.user.groups.all|join:", " }}</td>
+                    </tr>
+                    {% endfor %}
+                    {% endwith %}
+                </table>
+                   {% with companions=account.get_companion_profiles %}
+                <br/>
+                  <span class="section-label">Companions</span><br>
+                       <i>Companions have not paid a one-time fee and require companion passes or a per-leg charge.</i>
+                {% if companions %}
+                     <div class="actionable-row">
+                    <div class="actions">
+                     <a href="{% url 'admin_account_add_user' account.pk %}" class="add-member">+ Add New Companion</a>
+               </div></div>
+                {% for companion in companions %}
+                <div class="actionable-row">
+                    <div class="left-side">
+                        {{ companion.get_full_name }}
+                    </div>
+                    <div class="actions">
+                        <a href="{% url 'admin_account_user' account.id companion.id %} ">
+                            <figure class="icon-info"></figure>
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+
+                    {% else %}
+                <div class="actionable-row">
+                    <div class="left-side">
+                        <b>No Companions</b>
+                    </div>
+                   <div class="actions">
+                        <a href="{% url 'admin_account_add_user' account.pk %}" class="add-page-item">+ Add New Companion</a>
+                   </div>
+                </div>
+                       {% endif %}
+                    {% endwith %}
+            {% else %}
+                  <span class="section-label">Users</span>
+                <br/>
+                <table class="admin-table no-border no-hover">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Role(s)</th>
+                        </tr>
+                    </thead>
+                    {% with member=account.primary_profile %}
+                    {% if member and member.user and member.user.groups %}
+                    <tr class="link-row" href="{% url 'admin_account_user' account.id member.id %}">
+                        <td class="account-user"><b>{{ member.get_full_name }}</b></td>
+                        <td class="account-user">{{ member.user.groups.all|join:", " }}</td>
+                    </tr>
+                    {% endif %}
+                    {% endwith %}
+                </table>
+
+
+                {% with companions=account.get_companion_profiles %}
+                <br/>
+                <label>Companions</label>
+                {% if companions %}
+                {% for companion in companions %}
+                <div class="actionable-row">
+                    <div class="left-side">
+                        {{ companion.get_full_name }}
+                    </div>
+                    <div class="actions">
+                        <a href="{% url 'admin_account_user' account.id companion.id %} ">
+                            <figure class="icon-info"></figure>
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+                <a href="{% url 'admin_account_add_user' account.pk %}" class="add-page-item">+ Add New Companion</a>
+                {% else %}
+                <div class="actionable-row">
+                    <div class="left-side">
+                        <b>No Companions</b>
+                    </div>
+                    <div class="actions">
+                        <a href="{% url 'admin_account_add_user' account.pk %}" class="add-page-item">+ Add New Companion</a>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% endwith %}
+
+            {% endif %}
+        </div>
+        <div class="page-controls">
+            <a href="{% url 'admin_account_edit' pk=account.pk %}" class="button green">Edit Account</a>
+        </div>
+    </div><!-- /.account-details-wrap -->
+</div>
+
+{% if perms.accounts.can_merge_accounts %}
+<div id="merge_modal" class="modal-wrapper" style="display: none; z-index: 10000; opacity: 1;">
+    <div class="modal center">
+        <figure class="x-grey-lg"></figure>
+        <h1 class="small">Merge Account</h1>
+        <p class="small">Please choose a corporate account below for this user to be merged in to.</p>
+
+        <div class="block row center">
+            <div class="select arrow fullwidth">
+                <span class="value"></span>
+                <ul>
+                    {% for corporate_account in corporate_accounts %}
+                    <li value="{{ corporate_account.id }}">{{ corporate_account.account_name }}</li>
+                    {% endfor %}
+                </ul>
+                <select id="id_corporate_account" name="corporate_account" data-url="{% url 'admin_account_merge' account.id %}">
+                    {% for corporate_account in corporate_accounts %}
+                    <option value="{{ corporate_account.id }}">{{ corporate_account.account_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <a href="#" id="merge_corporate_account" class="upgrade button green">Merge into Corporate Account</a>
+        </div>
+        <a href="" class="dismiss action-block grey condensed">Cancel Merge<figure class="arrow-right-grey"></figure></a>
+    </div>
+</div>
+
+<div id="merge_success_modal" class="modal-wrapper" style="display: none; z-index: 10000; opacity: 1;">
+    <div class="modal center">
+        <figure class="x-grey-lg"></figure>
+        <h1 class="small">Success!</h1>
+        <p class="small">The selected account has been merged. The corporate account can be accessed below.</p>
+
+        <div class="block row center">
+            <a href="#" id="corporate_account_link" class="upgrade button green">View Corporate Account</a>
+        </div>
+        <a href="" class="dismiss action-block grey condensed">Cancel Merge<figure class="arrow-right-grey"></figure></a>
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}

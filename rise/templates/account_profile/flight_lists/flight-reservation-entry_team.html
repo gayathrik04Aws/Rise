@@ -1,0 +1,81 @@
+
+<!-- fre is short for 'flight reservation entry' -->
+<!-- reservation_entry is passed in as a variable in the include declaration -->
+{% if reservation_entry %}
+    <div class="member-row link-row reservation-row mobile fadeIn fre-mobile fre-team" href="{% url 'reservation_detail' reservation_entry.pk %}"
+        {% if reservation_entry.primary_passenger.userprofile %}
+            data-member="{{ reservation_entry.primary_passenger.userprofile.pk }}"
+        {% endif %}>
+
+        {% if reservation_entry.is_cancelled %}
+            <div class="message-layer">
+                <figure class="x-grey-lg"></figure>
+                <div class="valign">
+                    <h4 class='grey'>Flight {{ reservation_entry.flight.flight_number }}</h4>
+                    <p>
+                        {% if reservation_entry.cancelled_by == request.user %}
+                            You cancelled this flight{% if reservation_entry.date_cancelled %} on {{ reservation_entry.date_cancelled|date:"F d, Y"  }}{% endif %}.
+                        {% elif reservation_entry.date_cancelled %}
+                            {% if flight_reservation.cancellation_reason %}{{ flight_reservation.cancellation_reason }}{% else %}Flight was cancelled {% endif %}  {% if reservation_entry.date_cancelled %} on {{ reservation_entry.date_cancelled|date:"F d, Y"  }}{% endif %}.
+                        {% endif %}
+                        For questions, call <a href="tel:844-332-4780">844 332 4780</a>.
+                    </p>
+                </div>
+            </div>
+        {% endif %}
+
+        <div class="member-wrap member-photo">
+            <div class="badge-wrap badge-left">
+                <div class="circle medium no-m" style="background:url({{ reservation_entry.primary_passenger.user.avatar_url }}) 0 0 no-repeat;background-size:100% 100%" id="avatar-image"></div>
+                {% if reservation_entry.flight.is_fun_flight %}
+                <div class="badge-wrap">
+                    <figure class="funflight-solid"></figure>
+                </div>
+                {% elif reservation_entry.flight.is_promotional_flight %}
+                <div class="badge-wrap">
+                    <figure class="promo-solid"></figure>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="member-wrap member-details">
+            <span class="member-name-cell">
+                <span class="fre-detail">{{ reservation_entry.primary_passenger.userprofile.get_full_name }}</span>
+            </span>
+            <span class="orig-dest-cell t-gothic secondary">
+                <div class="caption">
+                    <h5>Origin</h5>
+                    <h1>{{ reservation_entry.flight.origin.code}}</h1>
+                </div>
+                <div class="oneway-or-rt">
+                    <figure class="flight-arrow-right-green spacer"></figure>
+                </div>
+                <div class="caption">
+                    <h5>Destination</h5>
+                    <h1>{{ reservation_entry.flight.destination.code }}</h1>
+                </div>
+
+
+                <!--b>{{ reservation_entry.flight.origin.code}}</b>
+                <figure class="flight-arrow-right-green spacer"></figure>
+                <b>{{ reservation_entry.flight.destination.code }}</b-->
+            </span>
+            <span class="flight-no-cell t-gothic sky secondary">
+                <span class="fre-descriptor">Flight Number</span>: <span class="fre-detail">{{ reservation_entry.flight.flight_number }}</span>
+            </span>
+            <span class="date-time-cell t-gothic sky upper secondary">
+                <span class="fre-descriptor">Date / Time</span>: <span class="fre-detail">{{ reservation_entry.flight.local_departure|date:"M d, h:i A" }}</span>
+            </span>
+            <span class="flight-detail-cell">
+                <a href="{% url 'reservation_detail' flight_reservation.pk %}" class="button anywhere-green sm">Flight Details</a>
+            </span>
+        </div>
+
+        <!--div class="reservation-detail-wrap">
+            <a href="{% url 'reservation_detail' flight_reservation.pk %}">
+                <figure class="icon-info"></figure>
+            </a>
+        </div-->
+    </div>
+{% endif %}

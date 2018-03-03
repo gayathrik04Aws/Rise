@@ -1,0 +1,169 @@
+
+{% extends 'base_admin.html' %}
+
+{% load staticfiles %}
+
+{% block title %}Dashboard - Update Flight{% endblock title %}
+
+{% block meta_description %}Dashboard - Update Flight{% endblock meta_description %}
+
+{% block css %}
+{% with marketing=False%}
+{{ block.super }}
+{% endwith %}
+{% endblock css %}
+
+{% block body_class %}{% endblock %}
+{% block body %}
+{% include 'admin_header_fragment.html' with flights=True %}
+<div class="admin-content-wrap admin-form-page">
+    <h1>Update Flight</h1>
+
+    {% if form.errors %}
+        <div class="error-message">
+        {% for field, errors in form.errors.items %}
+        {% for error in errors %}
+          {{ error }}<br/>
+        {% endfor %}
+        {% endfor %}
+        </div>
+    {% endif %}
+    <form method="post" action="">
+        {% csrf_token %}
+
+    <fieldset>
+    <h1>Update Rise Anywhere Flight</h1>
+
+    {% if form.errors %}
+        <div class="error-message">
+        {% for field, errors in form.errors.items %}
+        {% for error in errors %}
+          {{ field }}: {{ error }}<br/>
+        {% endfor %}
+        {% endfor %}
+        </div>
+    {% endif %}
+        {% csrf_token %}
+        <div class="labels-for-equal-width admin-two">
+            <label>Origin</label>
+            <label>Destination</label>
+        </div>
+        <div class="distribute equal-width">
+            <div class="select arrow">
+              <span class="value">Origin Airport</span>
+              <ul>
+                  {% for value, text in form.origin.field.choices %}
+                  <li value="{{ value }}">{{ text }}</li>
+                  {% endfor %}
+              </ul>
+              {{ form.origin }}
+            </div>
+            <div class="select arrow">
+              <span class="value">Destination Airport</span>
+              <ul>
+                  {% for value, text in form.destination.field.choices %}
+                  <li value="{{ value }}">{{ text }}</li>
+                  {% endfor %}
+              </ul>
+              {{ form.destination }}
+            </div>
+        </div>
+        <div class="labels-for-equal-width admin-two">
+            <label>Plane</label>
+            <label>Departure Date</label>
+        </div>
+        <div class="distribute equal-width">
+            <div class="select arrow">
+              <span class="value">{{ form.plane.value|default:"Select" }}</span>
+              <ul>
+                  {% for value, text in form.plane.field.choices %}
+                  <li value="{{ value }}">{{ text }}</li>
+                  {% endfor %}
+              </ul>
+              {{ form.plane }}
+            </div>
+            {{ form.start_date }}
+        </div>
+        <div class="labels-for-equal-width admin-three">
+            <label>Takeoff Time</label>
+            <label>Duration</label>
+        </div>
+        <div class="distribute equal-width">
+            {{ form.takeoff_time }}
+            {{ form.duration }}
+            <div class="estimated-arrival">
+                <span class="ten">Estimated<br/>Arrival</span>
+                <span>00:00:00 CST</span>
+            </div>
+        </div>
+        <!-- <input type="text" placeholder="Pilot Name" name="pilot_name"> -->
+        <div class="select arrow">
+            <span class="value">Pilot Name</span>
+            <ul>
+                {% for value, text in form.pilot.field.choices %}
+                <li value="{{ value }}">{{ text }}</li>
+                {% endfor %}
+            </ul>
+            {{ form.pilot }}
+        </div>
+         <div class="labels-for-equal-width admin-two">
+            <label>Copilot</label>
+            <label>Flight Number</label>
+        </div>
+        <div class="distribute equal-width">
+            <!-- <input type="text" placeholder="Co-pilot Name" name="copilot_name"> -->
+            <div class="select arrow">
+                <span class="value">Co-Pilot Name</span>
+                <ul>
+                    {% for value, text in form.copilot.field.choices %}
+                    <li value="{{ value }}">{{ text }}</li>
+                    {% endfor %}
+                </ul>
+                {{ form.copilot }}
+            </div>
+            {{ form.flight_number }}
+        </div>
+
+         <div class="labels-for-equal-width admin-two">
+            <label>Sharing</label>
+            <label>Full Flight Cost</label>
+        </div>
+         <div class="distribute equal-width">
+            <div class="select arrow">
+                <span class="value">Sharing</span>
+                <ul>
+                    {% for value, text in form.sharing.field.choices %}
+                    <li value="{{ value }}">{{ text }}</li>
+                    {% endfor %}
+                </ul>
+                {{ form.sharing }}
+            </div>
+            {{ form.full_flight_cost }}
+        </div>
+     <div class="labels-for-equal-width admin-two">
+            <label>Other Cost</label>
+            <label>Other Cost Description</label>
+        </div>
+        <div class="distribute equal-width">
+            {{ form.other_cost }}
+            {{ form.other_cost_desc }}
+        </div>
+    {% for hidden in form.hidden_fields %}
+        {{ hidden }}
+    {% endfor %}
+    </fieldset>
+
+     <div class="center">
+            <button type="submit" class="green">Update Flight</button>
+        </div>
+    </form>
+    <div class="center">
+        <a href="{% url 'admin_dashboard' %}" class="return-to-profile">&#9664; Return To Dashboard</a>
+    </div>
+</div>
+{% endblock body %}
+
+{% block javascript %}
+{{ block.super }}
+<script src="{% static 'js/jquery.formset.js' %}"></script>
+{% endblock javascript %}

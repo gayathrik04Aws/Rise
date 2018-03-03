@@ -1,0 +1,107 @@
+{% extends 'base_admin.html' %}
+
+{% load staticfiles %}
+
+{% block title %}Users - {{ block.super }}{% endblock title %}
+
+{% block meta_description %}Users - Dashboard{% endblock meta_description %}
+
+{% block css %}
+{% with marketing=False%}
+{{ block.super }}
+{% endwith %}
+{% endblock css %}
+
+{% block body_class %}{% endblock %}
+{% block body %}
+{% include 'admin_header_fragment.html' with users=True %}
+<div class="admin-detail-view">
+    <div class="block admin">
+        <div class="admin-page-header no-bb">
+            <h1><a href="{% url 'admin_account' account_user.account.pk %}">{{ account_user.account.account_name }}</a> > {{ account_user.get_full_name }}</h1>
+        {% if perms.accounts.can_edit_members %}
+            <a href="{% url 'admin_user_send_welcome_email' account_user.account.pk account_user.user.pk %}" class="button green">Resend Welcome Email</a>
+            {% if perms.accounts.can_reset_user_password %}
+            <a href="{% url 'admin_user_password_reset' account_user.account.pk account_user.user.pk %}" class="button grey">Reset Password</a>
+            {% endif %}
+        {% endif %}
+        {% if not account_user.user.is_active %}<p><b>THIS USER IS INACTIVE.</b></p>{% endif %}
+        </div>
+        <div>
+
+            <ul class="profile-items group">
+                <li>
+                    <span class="item-title">Email</span>
+                    <span class="item-value">{{ account_user.email|truncatechars:30 }}</span>
+                </li>
+                <li>
+                    <span class="item-title">Account</span>
+                    <span class="item-value"><a href="{% url 'admin_account' account_user.account.id %}">{{ account_user.account.account_name }}</a></span>
+                </li>
+                <li>
+                    <span class="item-title">Phone</span>
+                    <span class="item-value">{{ account_user.phone }}</span>
+                </li>
+                <li>
+                    <span class="item-title">Cell</span>
+                    <span class="item-value">{{ account_user.mobile_phone }}</span>
+                </li>
+                <li class="tall">
+                    <span class="item-title multiline">Address</span>
+                    <span class="item-value multiline">
+                        {{ account_user.shipping_address.street_1 }}<br/>
+                        {% if account_user.shipping_address.street_2 %}
+                            {{ account_user.shipping_address.street_2 }}<br/>
+                        {% endif %}
+                        {{ account_user.shipping_address.city }},
+                        {{ account_user.shipping_address.state }}
+                        {{ account_user.shipping_address.postal_code }}
+                    </span>
+                </li>
+                <li class="tall">
+                    <span class="item-title">Weight Range</span>
+                    <span class="item-value">{{ account_user.get_weight_display }}</span>
+                </li>
+                <li>
+                    <span class="item-title">Date of Birth</span>
+                    <span class="item-value">{{ account_user.date_of_birth }}</span>
+                </li>
+                <li>
+                    <span class="item-title">Origin Airport</span>
+                    <span class="item-value">{{ account_user.origin_airport.name }}</span>
+                </li>
+            </ul>
+            <ul class="profile-items-additional">
+                {% comment %}
+                <li>
+                    {# <span class="item-title">Food Preferences</span> #}
+                    <span class="item-title">Drink Preferences</span>
+                    <span class="item-value">
+                        {{ account_user.user_profile.food_options.all|join:", " }}
+                    </span>
+                </li>
+                {% endcomment %}
+                <li>
+                    <span class="item-title">Allergies</span>
+                    <span class="item-value allergies">{{ account_user.allergies }}</span>
+                </li>
+                </li>
+            </ul>
+            <hr>
+            {% if perms.accounts.can_edit_members %}
+            <div class="page-controls">
+                <a href="{% url 'admin_account_user_edit' account_user.account.id account_user.id %}" class="button green inline">Edit Info</a>
+                {% if account_user.user %}
+                <a href="{% url 'admin_user_password' account_user.account.id account_user.user.id %}" class="button dark-grey inline">Update Password</a>
+                {% endif %}
+            </div>
+            <hr>
+            <div class="page-controls">
+                <a href="{% url 'admin_account_user_add_note' account_user.account.id account_user.id %}" class="button dark-grey inline">Add Note</a>
+                <a href="{% url 'admin_account_user_notes' account_user.account.id account_user.id %}" class="button dark-grey inline">View Notes</a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

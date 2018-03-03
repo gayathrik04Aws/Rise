@@ -1,0 +1,236 @@
+// Chat screen
+.chat-widget--connected {
+    height: 100%;
+    background: $white;
+
+    @import 'overrides';
+
+    &__header {
+        position: fixed;
+        top: 0;
+        z-index: 4;
+        width: 100%;
+        height: 48px;
+        background: $green;
+        overflow: hidden;
+        padding: 12px 48px;
+    }
+
+    &__logo {
+        float: left;
+        width: 79px;
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    &__session {
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
+        float: right;
+
+        &__end, &__timer {
+            display: inline-block;
+
+            a {
+                font-size: 10.4px;
+                text-transform: uppercase;
+                letter-spacing: 2px;
+                line-height: 12px;
+                color: $white;
+            }
+        }
+
+        &__timer {
+            border-right: solid 1px $white;
+            padding-right: 20px;
+
+            .chat_timer_block {
+                line-height: 13px;
+            }
+        }
+
+        &__end {
+            position: relative;
+            padding-left: 20px;
+            left: -4px;
+        }
+    }
+
+    &__initial-question {
+        position: fixed;
+        top: 48px;
+        z-index: 2;
+        width: 100%;
+        background: $ash;
+        padding: 23px 48px 27px;
+
+        span[class$='__label'] {
+            display: block;
+            color: $label_color;
+            text-transform: uppercase;
+            font-size: 10.4px;
+            letter-spacing: 2px;
+            line-height: 12px;
+            margin: 0 0 13px;
+        }
+
+        &__text {
+            color: $dark-bg;
+            font-size: 13px;
+            line-height: 16px;
+            margin: 0;
+        }
+    }
+
+    &__messages {
+        height: 490px;
+        position: relative;
+        top: 91px;
+        background: $white;
+        overflow-y: scroll;
+        padding: 31px 48px 18px;
+
+        .customer_thumb {
+            background-image: url('https://cfa084d658b491813884-326c6674e44e477b9197a3210586152e.ssl.cf1.rackcdn.com/img/chat/rise-chat_avatar.png');
+            background-repeat: no-repeat;
+            background-size: 100%;
+            background-position: center center;
+
+            @media	only screen and (-webkit-min-device-pixel-ratio: 1.3), only screen and (-o-min-device-pixel-ratio: 13/10), only screen and (min-resolution: 120dpi) {
+                background-image: url('https://cfa084d658b491813884-326c6674e44e477b9197a3210586152e.ssl.cf1.rackcdn.com/img/chat/rise-chat_avatar@2x.png');
+            }
+
+            img {
+                display: none;
+            }
+        }
+    }
+
+    #chat_waiting_area {
+        left: 0;
+        bottom: 0;
+        top: 207px;
+        position: relative;
+    }
+
+    &__overlay-wrapper {
+        height: 100%;
+        position: relative;
+        margin: 48px 0 0;
+    }
+
+    &__overlay {
+        display: none;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba($white, 0.85);
+        z-index: 3;
+
+        &.show {
+            display: block;
+        }
+    }
+
+    &__new-message {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        z-index: 4;
+
+        .chat_send_area_ended {
+            border-top: $horizontal_rules solid 1px;
+
+            .chat_send_area_ended_inside {
+                position: static;
+                background: none;
+                padding: 39px 51px;
+
+                // 'Yes' option for chat transcripts
+                a[data-remote="true"] {
+
+                }
+            }
+
+            &_inside > div, &_inside #chat_transcript_email_question {
+                color: $label_color;
+                text-transform: uppercase;
+                letter-spacing: 2px;
+                line-height: 20px;
+                font-size: 10.4px;
+            }
+
+            #chat_transcript_email_question {
+                a {
+                    text-decoration: none;
+                    display: block;
+
+                    &:hover {
+                        text-decoration: none;
+                    }
+
+                    &:first-of-type {
+                        color: #7FA84F;
+                        margin: 20px 0 10px;
+                    }
+
+                    &:last-of-type {
+                        color: #F07380;
+                    }
+                }
+                img {
+                    display: none;
+                }
+            }
+        }
+
+        .chat_bottom_area {
+            position: relative;
+            height: auto;
+            // border-top: $horizontal_rules solid 1px;
+            left: 0;
+            bottom: 0;
+            margin: 0;
+            padding: 0;
+        }
+
+        form {
+            padding: 0;
+        }
+
+        .input_text {
+            display: inline-block;
+            position: static;
+            width: 82%;
+            padding: 15px 0 15px 48px;
+
+            input.chat_text_area {
+                font-size: 14px;
+                line-height: 17px;
+                width: 100%;
+                border: none;
+                margin: 0;
+                padding: 12px 0;
+
+                &:focus {
+                    border: none;
+                }
+            }
+        }
+
+        .widget_button_chat_send {
+            @extend %submit-button;
+            height: auto;
+            width: 77px;
+            border: none;
+            margin: 0;
+            padding: 12px 15px;
+            float: none;
+            position: static;
+        }
+    }
+}

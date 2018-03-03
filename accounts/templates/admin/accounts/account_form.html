@@ -1,0 +1,271 @@
+{% extends 'base_admin.html' %}
+
+{% load staticfiles %}
+{% load account_tags %}
+
+{% block title %}{{ block.super }} - Accounts{% endblock %}
+
+{% block css %}
+{% with marketing=False%}
+{{ block.super }}
+{% endwith %}
+{% endblock css %}
+
+{% block body %}
+    {% include 'admin_header_fragment.html' with accounts=True %}
+    <div class="admin-content-wrap admin-form-page">
+        <h1>Account</h1>
+        <form action="." method="POST" id="account-edit">
+            {% csrf_token %}
+
+            {% if form.errors %}
+            <div class="error-message">
+                {% for field, errors in form.errors.items %}
+                {% for error in errors %}
+                {{ error }}<br/>
+                {% endfor %}
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <label for="{{ form.account_type.auto_id }}">Account Type</label>
+            {{ form.account_type.errors }}
+            <div class="select arrow">
+                <span class="value"></span>
+                <ul>
+                    {% for value, text in form.account_type.field.choices %}
+                    <li value="{{ value }}">{{ text }}</li>
+                    {% endfor %}
+                </ul>
+                {{ form.account_type }}
+            </div>
+
+            {% if perms.accounts.can_edit_account_status %}
+            {% if form.status %}
+            <label for="{{ form.status.auto_id }}">Status</label>
+            <div class="select arrow">
+                <span class="value"></span>
+                <ul id="ulStatus" >
+                    {% for value, text in form.status.field.choices %}
+                    <li value="{{ value }}">{{ text }}</li>
+                    {% endfor %}
+                </ul>
+                {{ form.status }}
+            </div>
+            {% endif %}
+            {% endif %}
+
+            <label class="check-radio-block">
+                {{ form.founder }}
+                <span>Founding</span>
+            </label>
+
+            <label class="check-radio-block">
+                {{ form.vip }}
+                <span>VIP</span>
+            </label>
+            <label class="check-radio-block">
+                {{ form.do_not_charge }}
+                <span>Do not Charge</span>
+            </label>
+
+            {% if form.primary_profile %}
+            <label for="{{ form.primary_profile.auto_id }}">Primary User</label>
+            {{ form.primary_profile.errors }}
+            <div class="select arrow">
+                <span class="value"></span>
+                <ul>
+                    {% for value, text in form.primary_profile.field.choices %}
+                    <li value="{{ value }}">{{ text }}</li>
+                    {% endfor %}
+                </ul>
+                {{ form.primary_profile }}
+            </div>
+            {% endif %}
+
+            <label for="{{ form.payment_method.auto_id }}">Payment Method</label>
+            <div class="select arrow">
+                <span class="value">Select Payment Method</span>
+                <ul>
+                    {% for value, text in form.payment_method.field.choices %}
+                    <li value="{{ value }}">{{ text }}</li>
+                    {% endfor %}
+                </ul>
+                {{ form.payment_method }}
+            </div>
+
+            {% if perms.accounts.can_manage_plan %}
+            <fieldset id="individual_account_type" class="account-type {% if object.account_type == 'C' %}hidden{% endif %}">
+                <label for="{{ form.plan.auto_id }}">Plan</label>
+                <div class="select arrow">
+                    <span class="value"></span>
+                    <ul>
+                        {% for value, text in form.plan.field.choices %}
+                        <li value="{{ value }}">{{ text }}</li>
+                        {% endfor %}
+                    </ul>
+                    {{ form.plan }}
+                </div>
+            </fieldset>
+
+            <fieldset id="individual_contract_type" {% if object != None and object.account_type == 'C' %}class="hidden"{% elif  object != None and not object.plan.name|requires_contract %}class="hidden"{% endif %}">
+                <label for="{{ form.contract.auto_id }}">Contract</label>
+                <div class="select arrow">
+                    <span id="spanContract" class="value"></span>
+                    <ul id="ulContract">
+                        {% for value, text in form.contract.field.choices %}
+                        <li value="{{ value }}">{{ text }}</li>
+                        {% endfor %}
+                    </ul>
+                    {{ form.contract}}
+                </div>
+            </fieldset>
+
+            <label id="lblDoNotRenew" class="check-radio-block  {% if object != None and object.account_type == 'C' %}hidden{% elif  object != None and not object.plan.name|requires_contract %}hidden {% endif %}" for="{{ form.do_not_renew.auto_id }}">
+              {{ form.do_not_renew.errors }}
+              {{ form.do_not_renew }}
+              <span>Do not renew subscription</span>
+            </label>
+
+            <label class="check-radio-block" for="{{ form.manual_deposit.auto_id }}">
+              {{ form.onboarding_fee_paid.errors }}
+              {{ form.onboarding_fee_paid }}
+              <span>Onboarding Fee Paid</span>
+            </label>
+
+            {% endif %}
+
+
+            <fieldset id="corporate_account_type" class="account-type">
+                <label for="{{ form.company_name.auto_id }}">Company Name</label>
+                {{ form.company_name.errors }}
+                {{ form.company_name }}
+
+                <label for="{{ form.corporate_amount.auto_id }}">Payment Amount</label>
+                {{ form.corporate_amount.errors }}
+                {{ form.corporate_amount }}
+
+                <label for="{{ form.member_count.auto_id }}">Member Count</label>
+                {{ form.member_count.errors }}
+                {{ form.member_count }}
+
+                <label for="{{ form.pass_count.auto_id }}">Pass Count</label>
+                {{ form.pass_count.errors }}
+                {{ form.pass_count }}
+
+                <label for="{{ form.companion_pass_count.auto_id }}">Companion Pass Count</label>
+                {{ form.companion_pass_count.errors }}
+                {{ form.companion_pass_count }}
+
+            </fieldset>
+
+            <label for="{{ form.complimentary_passes.auto_id }}">Complimentary Pass Count</label>
+            {{ form.complimentary_passes.errors }}
+            {{ form.complimentary_passes }}
+
+            <label for="{{ form.complimentary_companion_passes.auto_id }}">Complimentary Companion Pass Count</label>
+            {{ form.complimentary_companion_passes.errors }}
+            {{ form.complimentary_companion_passes }}
+
+
+            <button type="submit" class="green" id="admin-save-account">Save Account</button>
+
+        </form>
+    </div>
+
+
+    <div id="plan_change_modal" class="modal-wrapper" style="z-index: 10000; opacity: 1;">
+        <div class="modal center">
+            <figure class="x-grey-lg"></figure>
+            <figure class="alert-icon"></figure>
+            <p class="thick">The plan for this account has been changed and will result in an automated update to the payment.</p>
+            <div class="action-wrapper">
+                <a href="" class="grey condensed"><figure class="arrow-left-grey"></figure> Cancel</a> |
+                <a id="confirm_plan_change" href="" class="grey condensed">Confirm<figure class="arrow-right-grey"></figure></a>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascript %}
+{{ block.super }}
+<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+<script charset="utf-8">
+    Stripe.setPublishableKey('{{ STRIPE_PUBLISHABLE_KEY }}');
+</script>
+    <script type="text/javascript">
+    function planChange(){
+                    var planid = $('#id_plan').val();
+                    $.ajax({
+                            "type"     : "GET",
+                            "url"      : "{% url 'plan_contract_choices'%}?plan="+planid,
+                            "dataType" : "json",
+                            "cache"    : false,
+                            "success"  : function(json) {
+                                $('#id_contract >option').remove();
+                                $('#ulContract >li').remove();
+                                for(var j = 0; j < json.length; j++){
+                                    $('#id_contract').append($('<option></option>').val(json[j][0]).html(json[j][1]));
+                                    $('#ulContract').append($('<li></li>').val(json[j][0]).html(json[j][1]));
+                                }
+                                if(json.length == 0 || json == '[]'){
+                                    $('#individual_contract_type').addClass('hidden');
+                                    $('#lblDoNotRenew').addClass('hidden');
+                                    $('#id_contract').val();
+                                    $('#spanContract').html();
+                                    //add cancelled option to dropdown if not already there.
+                                    var cancelled = $('#id_status option:contains("Cancelled")');
+                                    if(cancelled.length==0){
+                                         $('#id_status').append($('<option></option>').val('C').html('Cancelled'));
+                                         $('#ulStatus').append($('<li id="liStatusCancelled"></li>').val('C').html('Cancelled'));
+                                    }
+                                    $('#id_do_not_renew').prop("checked",false);
+                                }else{
+                                    $('#individual_contract_type').removeClass('hidden');
+                                    $('#id_contract').val(json[json.length-1][0]);
+                                    $('#spanContract').html(json[json.length-1][1]);
+                                    $('#lblDoNotRenew').removeClass('hidden');
+                                    //remove cancelled option from dropdown if it exists.
+                                    var cancelled = $('#id_status option:contains("Cancelled")');
+
+                                    if(cancelled.length > 0){
+                                        var status = document.getElementById("id_status");
+                                        var index = cancelled.index();
+                                        status.remove(index);
+                                        status = $('#ulStatus')[0];
+                                        for(var i=status.children.length-1; i>=0; i--){
+                                            if(status.children[i].innerHTML=="Cancelled"){
+                                                var item = status.children[i];
+                                                $(item).remove();
+                                            }
+                                        }
+
+                                    }
+                                }
+                            }
+                    });
+                };
+  function accountTypeChange(){
+        var type = $('#id_account_type').val();
+        if(type == 'C'){
+            $('#individual_contract_type').addClass('hidden');
+            $('#lblDoNotRenew').addClass('hidden');
+        }else{
+            planChange();
+        }
+    };
+     $(document).ready(function() {
+         $('#id_plan').change(planChange);
+         $('#id_account_type').change(accountTypeChange);
+         $('#id_contract >option').show();
+        });
+
+// based on the type, action will be loaded
+
+
+
+    </script>
+<script type="text/javascript" src="{% static 'js/jquery.payment.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/payment.js' %}"></script>
+{% endblock javascript %}

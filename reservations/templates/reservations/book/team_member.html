@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% load flight_tags %}
+{% load staticfiles %}
+
+{% block title %}Booking - {{ block.super }}{% endblock title %}
+
+{% block meta_description %}Booking - Flights{% endblock meta_description %}
+
+{% block css %}
+{% with marketing=False%}
+{{ block.super }}
+{% endwith %}
+{% endblock css %}
+
+{% block body_class %}booking flight-select{% endblock %}
+{% block body %}
+
+{% include 'reservations/book/booking_nav.html' with flights=True %}
+
+<div class="content-wrap app-content-wrap">
+    <div class="block white">
+        <div class="center">
+            <figure class="booking-icon"></figure>
+        </div>
+        <h1 class="center">Which team member would you like to book a flight for?</h1>
+
+        <form action="{% url 'book_team_member' %}" method="POST">
+            {% csrf_token %}
+            {% with flying_members=user.account.get_flying_members %}
+            <div class="select corporate-team-member dark">
+                <span class="value">Member</span>
+                <ul>
+                    {% for member in flying_members  %}
+                    <li value="{{ member.id }}">{{ member.get_full_name }}</li>
+                    {% endfor %}
+                </ul>
+                <select name="member">
+                    {% for member in flying_members  %}
+                    <option value="{{ member.id }}" {% if member == user %}selected="selected"{% endif %}>{{ member.get_full_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            {% endwith %}
+            <div class="center">
+                <button type="submit" class="lets-fly-booking">Let's Fly &#9654;</button>
+            </div>
+        </form>
+        {% if perms.accounts.can_manage_companions %}
+        <div class="flight-table-filters">
+            {% comment %}
+            <div class="select">
+                <span class="value">Filter Results</span>
+                <ul>
+                    <li>Filter</li>
+                    <li>Filter</li>
+                    <li>Filter</li>
+                </ul>
+            </div>
+            {% endcomment %}
+            <div class="select">
+                <span class="value">No. of Passengers</span>
+                <ul>
+                    {% for value, text in companion_form.companion_count.field.choices %}
+                    <li value="{{ value }}">{{ text }}</li>
+                    {% endfor %}
+                </ul>
+                <form id="companion_count" action="." method="POST">
+                    {% csrf_token %}
+                    {{ companion_form.companion_count }}
+                </form>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock body %}
+
+{% block javascript %}
+{{ block.super }}
+<script src="{% static 'js/reservations.js' %}"></script>
+{% endblock javascript %}

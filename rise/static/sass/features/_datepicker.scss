@@ -1,0 +1,103 @@
+#ui-datepicker-div {
+    @include tablet-gothic-family;
+    background-color: $grey1;
+    border: 1px solid $grey2;
+    border-bottom: 0;
+    width: 220px;
+    text-transform: uppercase;
+    font-size: 14px;
+
+    .ui-datepicker-title {
+        text-align: center;
+        color: $sky;
+        letter-spacing: 1px;
+        .ui-datepicker-year {
+            display: none;
+        }
+    }
+
+    .ui-datepicker-other-month a {
+        color: $sky;
+        opacity: .5;
+    }
+
+    .ui-datepicker-header {
+        padding: 10px;
+        line-height: 14px;
+    }
+
+    .ui-datepicker-prev,
+    .ui-datepicker-next {
+        background-size: 8px 14px;
+        background-repeat: no-repeat;
+        height: 14px;
+        width: 8px;
+        color: transparent;
+    }
+
+    .ui-datepicker-next {
+        background-image: url(../img/arrow-right-green.png);
+        background-position: right center;
+        float: right;
+        
+    }
+
+    .ui-datepicker-prev {
+        background-image: url(../img/arrow-left-green.png);
+        background-position: left center;
+        float: left;
+    }
+
+    table {
+        width: 100%;
+        text-align: center;
+        th {
+            border: 1px solid $grey2;
+            color: $sky;
+            font-weight: 300;
+            height: 32px;
+            &:first-child {
+                border-left: 0;
+            }
+        }
+        td {
+            border: 1px solid $grey2;
+            height: 32px;
+            a {
+                color: $runway;
+                &.ui-state-active {
+                   color: $land;
+                }
+            }
+            &.ui-datepicker-current-day {
+                border: 2px solid $land;
+            }
+            &:hover {
+                background: $grey2;
+            }
+            &:first-child {
+                border-left: 0;
+            }
+        }
+    }
+}
+
+input.datepicker-input {
+    @include tablet-gothic-family;
+    border: 0;
+    background-color: transparent;
+    background-image: url(../img/icon-calendar.png);
+    background-size: 20px 20px;
+    background-repeat: no-repeat;
+    background-position: right center;
+    color: $sky;
+    text-transform: uppercase;
+    font-size: 20px;
+    letter-spacing: 1px;
+    padding: 0;
+    width: 250px;
+    &:focus {
+        border: 0;
+        box-shadow: none;
+    }
+}

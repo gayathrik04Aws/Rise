@@ -1,0 +1,1743 @@
+/* Colors*/
+/* Input Colors */
+/*Footer*/
+/*Marketing Colors*/
+/* more colors */
+/* Sizes and breakpoints */
+/* Base sizes */
+@-moz-keyframes fadeIn {
+  0% {
+    opacity: 0; }
+  100% {
+    opacity: 1; } }
+@-webkit-keyframes fadeIn {
+  0% {
+    opacity: 0; }
+  100% {
+    opacity: 1; } }
+@-o-keyframes fadeIn {
+  0% {
+    opacity: 0; }
+  100% {
+    opacity: 1; } }
+@-ms-keyframes fadeIn {
+  0% {
+    opacity: 0; }
+  100% {
+    opacity: 1; } }
+@keyframes fadeIn {
+  0% {
+    opacity: 0; }
+  100% {
+    opacity: 1; } }
+@-moz-keyframes fadeOut {
+  0% {
+    opacity: 1; }
+  100% {
+    opacity: 0; } }
+@-webkit-keyframes fadeOut {
+  0% {
+    opacity: 1; }
+  100% {
+    opacity: 0; } }
+@-o-keyframes fadeOut {
+  0% {
+    opacity: 1; }
+  100% {
+    opacity: 0; } }
+@-ms-keyframes fadeOut {
+  0% {
+    opacity: 1; }
+  100% {
+    opacity: 0; } }
+@keyframes fadeOut {
+  0% {
+    opacity: 1; }
+  100% {
+    opacity: 0; } }
+body {
+  font-family: 'Gotham A', 'Gotham B', Helvetica, Arial, sans-serif; }
+
+a {
+  text-decoration: none;
+  -webkit-transition: opacity 0.2s;
+  -moz-transition: opacity 0.2s;
+  -ms-transition: opacity 0.2s;
+  -o-transition: opacity 0.2s;
+  transition: opacity 0.2s; }
+  a:hover {
+    opacity: 0.6; }
+
+em {
+  font-style: italic;
+  font-weight: 300; }
+
+h1 {
+  color: #142323;
+  font-size: 36px;
+  font-weight: 500;
+  line-height: 40px; }
+  h1.marketing {
+    font-size: 36px; }
+  @media screen and (max-width: 768px) {
+    h1.sized {
+      font-size: 26px; } }
+
+h2 {
+  color: #142323;
+  font-size: 19px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  line-height: 24px;
+  text-transform: uppercase; }
+  h2 .grey {
+    color: #cbccca; }
+  h2 .number {
+    margin-right: 10px; }
+  h2.grey {
+    color: #cbccca; }
+
+h3 {
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 24px; }
+  h3.small {
+    color: #9ea9a9;
+    font-size: 12px;
+    letter-spacing: 2px;
+    line-height: 18px;
+    text-transform: uppercase; }
+  h3.grey {
+    color: #e4e2e2; }
+
+h5 {
+  font-weight: 300; }
+
+.all-caps {
+  letter-spacing: 2px;
+  line-height: 18px;
+  text-transform: uppercase;
+  font-size: 11px;
+  font-weight: 500; }
+
+b {
+  color: #142323;
+  font-weight: 500; }
+
+.info-header {
+  font-family: 'Tablet-Gothic-Narrow','Gotham Ssm A', 'Gotham Ssm B', Helvetica, Arial, sans-serif;
+  font-weight: 400; }
+
+p {
+  color: #768888;
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 24px; }
+  p strong {
+    color: #142323;
+    font-weight: 500; }
+  p a {
+    font-weight: 500;
+    text-decoration: none;
+    color: #01AF70; }
+  p.strong-grey {
+    font-weight: 500; }
+
+.section.sign-up-section h2 {
+  margin: 40px 0px 20px; }
+
+span .grey, a .grey {
+  color: #e4e2e2; }
+
+.about h1 {
+  margin-bottom: 100px;
+  text-align: center; }
+.about p {
+  font-size: 18px;
+  line-height: 28px; }
+.about h2 {
+  margin: 0; }
+.about h3 {
+  margin: 0; }
+
+.button h3 {
+  margin: 0px !important;
+  line-height: 60px; }
+.button.grey h3 {
+  color: #142323; }
+.button.green h3 {
+  color: white; }
+
+.refer p {
+  font-size: 18px;
+  line-height: 28px; }
+
+.destinations ul li h2 {
+  display: inline-block;
+  margin-bottom: 0;
+  margin-left: 20px;
+  margin: 40px 0 0 50px;
+  letter-spacing: 0; }
+.destinations ul li h3 {
+  margin: 0 auto;
+  max-width: 200px;
+  text-align: center;
+  font-size: 14px; }
+.destinations ul li p {
+  margin: 0;
+  width: auto;
+  font-size: 14px; }
+  @media screen and (min-width: 768px) {
+    .destinations ul li p {
+      text-align: left; } }
+  .destinations ul li p.center {
+    text-align: center; }
+@media screen and (min-width: 768px) {
+  .destinations ul li:last-child p {
+    padding-left: 40px; } }
+.destinations p {
+  display: block;
+  text-align: center;
+  margin: 50px auto 0;
+  width: 580px; }
+
+.faq h1 {
+  text-align: center; }
+.faq .question {
+  font-weight: 500;
+  width: 100%; }
+.faq .expand-state {
+  font-weight: 300;
+  text-align: right; }
+.faq li.answer {
+  color: #768888;
+  font-weight: 300;
+  line-height: 24px; }
+
+.form h3 {
+  margin: 50px auto;
+  width: 55%; }
+.form .button h3 {
+  font-size: 12px;
+  margin: 0px auto 0px !important;
+  width: initial !important; }
+.form p {
+  display: block;
+  margin: 0px auto 20px;
+  width: 74%; }
+  .form p a {
+    color: #01AF70; }
+  .form p.legal {
+    text-align: center;
+    width: 100%; }
+
+.form-page h3 {
+  margin: 50px auto 20px; }
+.form-page a {
+  color: #eae8e8; }
+
+.header h2 {
+  font-weight: 300;
+  margin: auto;
+  width: 100%; }
+  .header h2.new-h2 {
+    -webkit-transition: all 0.2s ease-in-out;
+    -moz-transition: all 0.2s ease-in-out;
+    -ms-transition: all 0.2s ease-in-out;
+    -o-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
+    text-align: center;
+    font-weight: 300;
+    font-size: 21px;
+    line-height: 29px;
+    text-transform: initial;
+    letter-spacing: 0;
+    max-width: 720px;
+    margin-bottom: 30px;
+    padding: 0 30px; }
+    @media screen and (min-width: 768px) {
+      .header h2.new-h2 {
+        padding: 0;
+        margin-bottom: 60px;
+        font-size: 28px;
+        line-height: 39px; } }
+
+.hero h1 {
+  color: #f8f8f8;
+  position: relative;
+  top: 3px; }
+.hero h3 {
+  color: #f8f8f8;
+  margin-top: 133px; }
+.hero.home-hero h1 {
+  font-size: 60px;
+  line-height: 60px;
+  text-transform: uppercase;
+  text-align: left;
+  font-weight: 300; }
+
+.legal {
+  color: #768888;
+  font-size: 9px;
+  letter-spacing: 0px;
+  line-height: 13px; }
+
+.learn-more h2 {
+  font-weight: 500; }
+.learn-more p {
+  width: 50%;
+  margin: auto; }
+
+.corporate-memberships h2 {
+  font-weight: 500; }
+.corporate-memberships p {
+  width: 50%;
+  margin: auto; }
+
+.membership h1 + h3 {
+  color: #142323; }
+.membership p {
+  line-height: 24px; }
+.membership .membership-table-desktop ul {
+  font-size: 0; }
+  .membership .membership-table-desktop ul li {
+    font-size: 16px;
+    font-weight: 300;
+    vertical-align: middle; }
+    .membership .membership-table-desktop ul li:nth-child(3) {
+      line-height: 24px; }
+    .membership .membership-table-desktop ul li.green {
+      color: #01AF70;
+      font-weight: 500; }
+
+.sign-up-now h2 {
+  color: white; }
+.sign-up-now h3 {
+  color: white; }
+
+.slidey-label h3 {
+  line-height: 160px;
+  margin: 0px auto; }
+
+.top-nav a {
+  color: #a1b2b2; }
+  .top-nav a.green {
+    color: #01AF70; }
+  .top-nav a.active {
+    color: #f8f8f8;
+    pointer-events: none; }
+.top-nav p {
+  font-size: 10px;
+  letter-spacing: 1px;
+  line-height: 10px;
+  text-transform: uppercase; }
+
+.transition-header {
+  display: block;
+  text-align: center;
+  left: 0px;
+  padding: 20px;
+  position: absolute;
+  top: -56px;
+  width: 100%; }
+  .transition-header span {
+    width: 300px;
+    display: block;
+    margin: auto;
+    padding: 10px;
+    position: relative; }
+    .transition-header span:after {
+      background: white;
+      content: '';
+      display: block;
+      height: 2px;
+      position: absolute;
+      top: 45%;
+      width: 90%;
+      z-index: -1; }
+
+.no-wrap {
+  white-space: nowrap; }
+
+.price-calculator h1 {
+  color: #fff; }
+.price-calculator h2 {
+  color: #e4e2e2; }
+.price-calculator h3 {
+  color: #e4e2e2; }
+.price-calculator p {
+  color: #fff; }
+  .price-calculator p.tagline {
+    color: #e4e2e2;
+    width: 50%;
+    margin: auto;
+    text-align: center;
+    margin-bottom: 50px; }
+.price-calculator #calculator-results {
+  color: #fff;
+  font-size: 50px; }
+  .price-calculator #calculator-results span {
+    color: #fff;
+    font-size: 50px; }
+
+figure {
+  background-repeat: no-repeat;
+  background-position: center;
+  display: inline-block;
+  margin: 0; }
+  figure.question {
+    background-image: url(../img/1x/icon-question.png);
+    background-size: 15px 15px;
+    height: 15px;
+    width: 15px; }
+  figure.question-green {
+    background-image: url(../img/1x/icon-question-green.png);
+    background-size: 15px 15px;
+    height: 15px;
+    width: 15px; }
+  figure.accepted {
+    background-image: url(../img/icon-accepted.png);
+    background-size: 20px 20px;
+    height: 20px;
+    width: 20px; }
+  figure.alert-icon {
+    background-image: url(../img/1x/icon-alert.png);
+    background-size: 45px 45px;
+    height: 48px;
+    width: 48px; }
+  figure.bell {
+    background-image: url(../img/1x/icon-bell.png);
+    background-size: 16px 16px;
+    height: 16px;
+    width: 16px; }
+  figure.calendar-icon {
+    background-image: url(../img/1x/icon-calendar.png);
+    background-size: 20px 20px;
+    height: 20px;
+    width: 20px; }
+  figure.companion-passes {
+    background-image: url(../img/1x/icon-companion-passes.png);
+    background-size: 21px 18px;
+    height: 18px;
+    width: 21px; }
+  figure.default-user-small {
+    background-image: url(../img/1x/icon-default-user-small.png);
+    background-size: 40px 40px;
+    height: 40px;
+    vertical-align: middle;
+    width: 40px; }
+  figure.email {
+    background-image: url(../img/1x/icon-email.png);
+    background-size: 22px 20px;
+    height: 20px;
+    width: 22px; }
+  figure.funflight-solid {
+    background-image: url(../img/1x/icon-funflight-solid.png);
+    background-size: 30px 30px;
+    height: 30px;
+    width: 30px; }
+  figure.funflight {
+    background-image: url(../img/1x/icon-funflight.png);
+    background-size: 12px 13px;
+    height: 13px;
+    width: 12px; }
+  figure.mag {
+    background-image: url(../img/1x/icon-mag.png);
+    background-size: 17px 16px;
+    height: 16px;
+    width: 17px; }
+  figure.passbook {
+    background-image: url(../img/1x/icon-passbook.png);
+    background-size: 20px 20px;
+    height: 20px;
+    width: 20px; }
+  figure.pencil-green {
+    background-image: url(../img/1x/icon-pencil-green.png);
+    background-size: 18px 19px;
+    height: 19px;
+    width: 18px; }
+  figure.pencil-grey {
+    background-image: url(../img/icon-pencil-grey.png);
+    background-size: 18px 19px;
+    height: 19px;
+    width: 18px; }
+    figure.pencil-grey:hover {
+      background-image: url(../img/1x/icon-pencil-green.png); }
+  figure.plane-green {
+    background-image: url(../img/1x/icon-plane-green.png);
+    background-size: 20px 20px;
+    height: 20px;
+    width: 20px; }
+  figure.plane-grey {
+    background-image: url(../img/1x/icon-plane-grey.png);
+    background-size: 20px 20px;
+    height: 20px;
+    width: 20px; }
+  figure.print {
+    background-image: url(../img/1x/icon-print.png);
+    background-size: 20px 21px;
+    height: 21px;
+    width: 20px; }
+  figure.promo-solid {
+    background-image: url(../img/1x/icon-promo-solid.png);
+    background-size: 30px 30px;
+    height: 30px;
+    width: 30px; }
+  figure.promo {
+    background-image: url(../img/1x/icon-promo.png);
+    background-size: 13px 13px;
+    height: 13px;
+    width: 13px; }
+  figure.check-green-sm {
+    background-image: url(../img/1x/check-green-sm.png);
+    background-size: 12px 9px;
+    height: 9px;
+    margin-right: 10px;
+    width: 12px; }
+  figure.check-grey-sm {
+    background-image: url(../img/check-grey-sm.png);
+    background-size: 12px 9px;
+    height: 9px;
+    margin-right: 10px;
+    width: 12px; }
+  figure.check-green-lg {
+    background-image: url(../img/1x/check-green-lg.png);
+    background-size: 18px 14px;
+    height: 14px;
+    width: 18px; }
+  figure.x-grey-sm {
+    background-image: url(../img/1x/icon-x-grey-sm.png);
+    background-size: 10px 10px;
+    height: 10px;
+    margin-right: 10px;
+    width: 10px; }
+  figure.x-green-sm {
+    background-image: url(../img/1x/x-green.png);
+    background-size: 12px 12px;
+    height: 12px;
+    width: 12px; }
+  figure.x-grey-lg {
+    background-image: url(../img/1x/icon-x-grey-lg.png);
+    background-size: 18px 18px;
+    height: 18px;
+    width: 18px; }
+  figure.arrow-down {
+    background-image: url(../img/1x/arrow-down.png);
+    background-size: 6px 5px;
+    height: 5px;
+    width: 6px; }
+  figure.arrow-left-grey {
+    background-image: url(../img/1x/arrow-left-grey.png);
+    background-size: 8px 6px;
+    height: 6px;
+    width: 8px; }
+  figure.arrow-right-grey {
+    background-image: url(../img/1x/arrow-right-grey.png);
+    background-size: 12px 12px;
+    height: 12px;
+    vertical-align: top;
+    width: 12px; }
+  figure.plus-grey-lg {
+    background-image: url(../img/1x/plus-grey-lg.png);
+    background-size: 12px 12px;
+    height: 12px;
+    width: 12px;
+    vertical-align: middle;
+    margin-top: 5px; }
+  figure.flight-arrow-right-green {
+    background-image: url(../img/1x/flight-arrow-right.png);
+    background-size: 8px 14px;
+    height: 14px;
+    width: 8px; }
+  figure.flight-arrow-right-grey {
+    background-image: url(../img/1x/flight-arrow-right-grey.png);
+    background-size: 8px 14px;
+    height: 14px;
+    width: 8px; }
+  figure.arrow-reservation-route {
+    background-image: url(../img/arrow-reservation-route.png);
+    background-size: 23px 45px;
+    height: 45px;
+    width: 23px; }
+  figure.icon-settings {
+    background-color: transparent;
+    border-radius: 100%;
+    background-image: url(../img/1x/icon-settings.png);
+    background-size: 38px 38px;
+    height: 50px;
+    width: 50px; }
+    @media screen and (min-width: 1024px) {
+      figure.icon-settings {
+        height: 50px;
+        width: 50px; } }
+  figure.icon-info {
+    background-image: url(../img/1x/icon-info-grey.png);
+    background-size: 20px 20px;
+    height: 20px;
+    width: 20px; }
+    figure.icon-info.active {
+      background-image: url(../img/1x/icon-info-green.png); }
+  figure.icon-repeat {
+    background-image: url(../img/icon-repeat.png);
+    background-size: 13px 12px;
+    height: 12px;
+    width: 13px; }
+  figure.icon-trashcan {
+    background-image: url(../img/1x/icon-trashcan.png);
+    background-size: 18px 21px;
+    height: 21px;
+    width: 18px; }
+  figure.icon-camera {
+    background-image: url(../img/1x/icon-camera.png);
+    background-size: 18px 16px;
+    height: 16px;
+    width: 18px; }
+  figure.logomark {
+    background-image: url(../img/1x/logomark.png);
+    background-size: 41px 20px;
+    height: 20px;
+    width: 41px; }
+  figure.sms-passes {
+    background-image: url(../img/1x/icon-sms-passes.png);
+    background-size: 21px 18px;
+    height: 18px;
+    width: 21px; }
+  figure.logo {
+    background-image: url(../img/1x/logo.png);
+    background-size: 85px 20px;
+    height: 20px;
+    width: 85px; }
+  figure.star {
+    background-image: url(../img/star.png);
+    background-size: 9.5px 9px;
+    height: 9px;
+    width: 9.5px; }
+  figure.logo-darkbg {
+    background-image: url(../img/1x/logo-rise.png);
+    background-size: 85px 20px;
+    height: 27px;
+    width: 114px; }
+  figure.arrow-down-green {
+    background-image: url(../img/1x/arrow-down-green.png);
+    background-size: 20px 20px;
+    height: 20px;
+    width: 20px; }
+  figure.flight-card-arrow-sm {
+    background-image: url(../img/1x/flight-card-arrow-sm.png);
+    background-size: 23px 36px;
+    height: 36px;
+    width: 23px; }
+  figure.flight-card-arrow-lg {
+    background-image: url(../img/flight-card-arrow-lg.png);
+    background-size: 44px 85px;
+    height: 85px;
+    width: 44px; }
+  figure.plus-green-solid {
+    background-color: transparent;
+    background-image: url(../img/1x/plus-green-solid.png);
+    background-size: 30px 30px;
+    border-radius: 100%;
+    height: 20px;
+    width: 20px; }
+  figure.invites {
+    background-image: url(../img/icon-invites.png);
+    background-size: 22px 24px;
+    height: 24px;
+    width: 22px; }
+  figure.invites-grey {
+    background-image: url(../img/icon-invites-grey.png);
+    background-size: 22px 24px;
+    height: 24px;
+    width: 22px; }
+  figure.user-alert {
+    background-image: url(../img/icon-useralert.png);
+    background-size: 23px 23px;
+    height: 23px;
+    width: 23px; }
+  figure.user {
+    background-image: url(../img/icon-user.png);
+    background-size: 20px 20px;
+    height: 20px;
+    width: 20px; }
+  figure.camera-circle {
+    background-image: url(../img/icon-camera-circle.png);
+    background-size: 25px 25px;
+    height: 50px;
+    width: 50px; }
+  figure.location {
+    background-image: url(../img/icon-location.png);
+    background-size: 10px 14px;
+    height: 14px;
+    width: 11px; }
+  figure.remove-companion {
+    background-color: transparent;
+    border-radius: 100%;
+    background-image: url(../img/1x/icon-remove-companion.png);
+    height: 30px;
+    width: 30px; }
+  figure.check-solid-grey {
+    background-image: url(../img/check-solid-grey.png);
+    height: 30px;
+    width: 30px; }
+  figure.check-solid-green {
+    background-image: url(../img/check-solid-green.png);
+    height: 30px;
+    width: 30px; }
+  figure.arrow-back {
+    background-image: url(../img/arrow-back.png);
+    background-size: 8px 6px;
+    height: 6px;
+    margin-right: 10px;
+    vertical-align: middle;
+    width: 8px; }
+  figure.flight-alert-on-time {
+    background-image: url(../img/flight-alert-on-time.png);
+    background-size: 6px 6px;
+    height: 6px;
+    width: 6px; }
+  figure.flight-alert-cancel {
+    background-image: url(../img/flight-alert-cancel.png);
+    background-size: 6px 6px;
+    height: 6px;
+    width: 6px; }
+  figure.flight-alert-delayed {
+    background-image: url(../img/flight-alert-delayed.png);
+    background-size: 6px 6px;
+    height: 6px;
+    width: 6px; }
+  figure.flight-alert-complete {
+    background-image: url(../img/flight-alert-complete.png);
+    background-size: 6px 6px;
+    height: 6px;
+    width: 6px; }
+  figure.logo-form {
+    background-image: url(../img/1x/logo-form.png);
+    background-size: 114px 27px;
+    background-size: 114px;
+    width: 27px; }
+  figure.hourglass {
+    background-image: url(../img/1x/icon-waitlist.png);
+    background-size: 16px 16px;
+    height: 16px;
+    width: 16px; }
+
+.icon-with-label * {
+  display: inline-block;
+  vertical-align: middle; }
+.icon-with-label span {
+  font-family: 'tablet-gothic-condensed', sans-serif;
+  color: #a1b2b2;
+  text-transform: uppercase;
+  font-size: 15px;
+  letter-spacing: 1px;
+  margin-left: 15px; }
+
+.figure-mobile {
+  display: inline-block; }
+  @media screen and (min-width: 768px) {
+    .figure-mobile {
+      display: none; } }
+
+.figure-desktop {
+  display: none; }
+  @media screen and (min-width: 768px) {
+    .figure-desktop {
+      display: inline-block; } }
+
+.dropdown-alert {
+  background-color: #142323;
+  top: -100%; }
+
+.modal-wrapper {
+  display: none; }
+  .modal-wrapper.show {
+    display: block; }
+
+.alert {
+  background: #e4e2e2; }
+  .alert .badge {
+    margin-bottom: 0; }
+
+.badge {
+  display: block;
+  margin: 0; }
+
+.button.inline, button.inline {
+  width: auto; }
+
+.select {
+  background-color: #f8f8f8;
+  background-image: url(../img/1x/row-expand.png);
+  -ms-background-position-x: 95%;
+  -ms-background-position-y: center;
+  border: 1px solid #e4e2e2;
+  margin: 10px 0;
+  max-width: 265px; }
+  .select.sort-page-control {
+    line-height: 40px;
+    height: 40px;
+    max-width: 190px; }
+  .select.fullwidth {
+    max-width: none; }
+  .select.dark {
+    background-image: url(../img/1x/plus-black.png); }
+  .select.expand {
+    background-image: url(../img/1x/row-collapse.png); }
+  .select.arrow:after {
+    background-image: url(../img/1x/arrow-down.png); }
+  .select.fullscreen {
+    font-size: 120px;
+    height: 100px;
+    margin-top: initial;
+    vertical-align: middle; }
+    .select.fullscreen .value {
+      padding-left: 80px; }
+      .select.fullscreen .value.hide {
+        display: none; }
+    .select.fullscreen ul {
+      display: none;
+      height: auto;
+      top: -175%; }
+      .select.fullscreen ul.expand {
+        display: block; }
+    .select.fullscreen li {
+      font-size: 70px;
+      height: 100px;
+      letter-spacing: 3px;
+      line-height: 70px; }
+      .select.fullscreen li:hover {
+        color: #01AF70; }
+      .select.fullscreen li.active {
+        height: 130px;
+        line-height: 100px;
+        padding-left: 80px;
+        font-size: 120px;
+        -ms-background-position-x: 95%;
+        -ms-background-position-y: center; }
+        .select.fullscreen li.active:after {
+          background-image: url(../img/check-green-lg.png);
+          background-size: 36px 28px;
+          height: 28px;
+          margin-left: 40px;
+          margin-bottom: 25px;
+          width: 36px; }
+
+input {
+  background-color: rgba(234, 232, 232, 0.15);
+  border: 1px solid #d7e3e3;
+  color: #a1b2b2;
+  font-family: 'Gotham Ssm A', 'Gotham Ssm B';
+  font-size: 14px;
+  height: 50px;
+  line-height: 50px;
+  margin: 10px 0;
+  padding: 0 25px;
+  position: relative;
+  width: 100%; }
+  input[type=search] {
+    border: 0;
+    border: 1px solid #eae8e8;
+    background-color: #f8f8f8;
+    background-image: url(../img/1x/icon-mag.png);
+    -ms-background-position-x: 95%;
+    -ms-background-position-y: center; }
+    input[type=search].dark {
+      background-image: url(../img/1x/mag-black.png); }
+    input[type=search].reveal, input[type=search].admin-reveal {
+      background-color: white;
+      width: 30px;
+      border: 0;
+      height: 40px;
+      line-height: 40px;
+      border-left: 1px solid #eae8e8;
+      float: right;
+      background-position: right center;
+      padding-right: 15px; }
+      input[type=search].reveal:focus, input[type=search].admin-reveal:focus {
+        width: 200px;
+        box-shadow: none; }
+    input[type=search].admin-reveal {
+      float: none;
+      margin-right: 20px;
+      padding-right: 50px;
+      border-left: 0;
+      border-right: 1px solid #eae8e8;
+      background-position: right 15px center; }
+      input[type=search].admin-reveal:focus {
+        width: 250px; }
+  input[type=radio] {
+    background-image: none; }
+  input[type=checkbox] {
+    background-image: none; }
+
+.textarea {
+  margin: 20px 0; }
+
+.block.fullscreen {
+  display: table-cell;
+  height: 100%; }
+  .block.fullscreen *.hide {
+    display: none; }
+
+.block.pattern.background-austin {
+  background-image: url(../img/background_images/desktop/image-bg-austin.jpg);
+  background-size: auto 100%; }
+.block.pattern.background-telluride {
+  background-image: url(../img/background_images/desktop/image-bg-telluride.jpg);
+  background-size: auto 100%; }
+.block.pattern.background-dallas {
+  background-image: url(../img/background_images/desktop/image-bg-dallas.jpg);
+  background-size: auto 100%; }
+.block.pattern.background-houston {
+  background-image: url(../img/background_images/desktop/image-bg-houston.jpg);
+  background-size: auto 100%; }
+.block.pattern.background-vail {
+  background-image: url(../img/background_images/desktop/image-bg-vail.jpg);
+  background-size: auto 100%; }
+.block.pattern.background-corpuschristi {
+  background-image: url(../img/background_images/desktop/image-bg-corpuschristi.jpg);
+  background-size: auto 100%; }
+.block.pattern.background-neworleans {
+  background-image: url(../img/background_images/desktop/image-bg-neworleans.jpg);
+  background-size: auto 100%; }
+.block.pattern.background-oklahomacity {
+  background-image: url(../img/background_images/desktop/image-bg-oklahomacity.jpg);
+  background-size: auto 100%; }
+.block.pattern.background-sanantonio {
+  background-image: url(../img/background_images/desktop/image-bg-sanantonio.jpg);
+  background-size: auto 100%; }
+.block.pattern.background-santafe {
+  background-image: url(../img/background_images/desktop/image-bg-santafe.jpg);
+  background-size: auto 100%; }
+.block.pattern.background-shreveport {
+  background-image: url(../img/background_images/desktop/image-bg-shreveport.jpg);
+  background-size: auto 100%; }
+.block.pattern.background-spring {
+  background-image: url(../img/background_images/desktop/image-bg-spring.jpg);
+  background-size: auto 100%; }
+.block.pattern.background-tulsa {
+  background-image: url(../img/background_images/desktop/image-bg-tulsa.jpg);
+  background-size: auto 100%; }
+.block.pattern.background-lubbock {
+  background-image: url(../img/background_images/desktop/image-bg-lubbock.jpg);
+  background-size: auto 100%; }
+.block.pattern.background-aspen {
+  background-image: url(../img/background_images/desktop/image-bg-aspen.jpg);
+  background-size: auto 100%; }
+.block.pattern.background-steamboat {
+  background-image: url(../img/background_images/desktop/image-bg-steamboat.jpg);
+  background-size: auto 100%; }
+
+.circle.small {
+  background-color: transparent; }
+.circle.large {
+  border: 15px solid rgba(234, 232, 232, 0.2);
+  height: 180px;
+  width: 180px; }
+  .circle.large.no-m {
+    height: 100px;
+    width: 100px;
+    border: 0; }
+.circle img {
+  top: 0;
+  left: 0; }
+
+.badge-wrap .badge-wrap {
+  top: 25%; }
+.badge-wrap.badge-right .badge-wrap {
+  right: -10px; }
+.badge-wrap.badge-left .badge-wrap {
+  left: -10px; }
+
+nav {
+  background: #f8f8f8;
+  border-bottom: 1px solid #eae8e8;
+  height: 80px;
+  position: fixed;
+  top: 0;
+  text-align: justify;
+  font-size: 0;
+  z-index: 8000;
+  width: 100%; }
+  nav.basic {
+    padding: 0 25px; }
+  nav.light {
+    background: rgba(216, 216, 216, 0.15);
+    border: 0; }
+    nav.light .logo {
+      background-image: url(../img/logo-darkbg.png); }
+    nav.light h5 a {
+      color: #ffffff; }
+  nav * {
+    display: inline-block;
+    vertical-align: middle; }
+  nav .circle img {
+    vertical-align: initial; }
+  nav .nav-button {
+    border-left: 1px solid #eae8e8;
+    cursor: pointer;
+    height: 100%;
+    line-height: 80px;
+    position: relative;
+    text-align: center; }
+    nav .nav-button:hover {
+      background-color: rgba(0, 0, 0, 0.02); }
+  nav .left-side {
+    height: 100%; }
+    nav .left-side .nav-button:first-child {
+      border-left: 0; }
+  nav .right-side {
+    height: 100%; }
+  nav.rise-admin .nav-button {
+    border-left: 0; }
+  nav.rise-admin .rise-admin-wrapper {
+    display: block;
+    width: 1065px;
+    margin: 0 auto;
+    height: 79px; }
+  nav.rise-admin .left-side {
+    margin-right: 150px; }
+    nav.rise-admin .left-side .nav-button {
+      width: 127px; }
+  nav.rise-admin .right-side {
+    height: 100%;
+    float: right;
+    text-align: right; }
+    nav.rise-admin .right-side .avatar {
+      max-width: 73px;
+      padding-left: 8px; }
+      nav.rise-admin .right-side .avatar .popover {
+        right: 15px; }
+        nav.rise-admin .right-side .avatar .popover.show {
+          display: block !important; }
+      nav.rise-admin .right-side .avatar.active figure {
+        -webkit-transform: rotateX(-180deg);
+        -moz-transform: rotateX(-180deg);
+        -ms-transform: rotateX(-180deg);
+        -o-transform: rotateX(-180deg);
+        transform: rotateX(-180deg); }
+  nav.rise-admin .nav-button {
+    width: 80px; }
+  nav.rise-admin ul.basic-nav {
+    font-size: 12px;
+    line-height: 80px;
+    margin: 0;
+    margin-right: 10px; }
+    nav.rise-admin ul.basic-nav li {
+      padding: 0 5px; }
+      nav.rise-admin ul.basic-nav li:first-child:before {
+        content: ""; }
+      nav.rise-admin ul.basic-nav li:before {
+        content: "/";
+        position: relative;
+        font-size: 10px;
+        font-weight: bold;
+        color: #d8d8d8;
+        padding-right: 13px; }
+      nav.rise-admin ul.basic-nav li a {
+        color: #a1b2b2;
+        font-size: 10px;
+        letter-spacing: 2px;
+        font-weight: 500;
+        text-transform: uppercase; }
+        nav.rise-admin ul.basic-nav li a.rise-admin-active {
+          color: #01AF70; }
+        nav.rise-admin ul.basic-nav li a:hover {
+          color: #01AF70; }
+  nav.booking:after {
+    content: "";
+    display: table;
+    clear: both; }
+  nav.booking .left-side {
+    height: 100%; }
+    nav.booking .left-side .nav-button {
+      width: 80px; }
+  nav.booking .right-side {
+    float: right;
+    height: 100%;
+    max-width: 328px;
+    width: 93%; }
+  nav.booking .nav-button {
+    width: 25%; }
+  nav.profile {
+    top: -100%; }
+    nav.profile:after {
+      content: "";
+      display: table;
+      clear: both; }
+    nav.profile .left-side .nav-button {
+      width: 127px; }
+    nav.profile.show {
+      top: 0; }
+    nav.profile .right-side {
+      float: right;
+      width: 100%;
+      max-width: 328px; }
+      nav.profile .right-side .nav-button {
+        width: 71%; }
+      nav.profile .right-side .avatar {
+        max-width: 80px;
+        padding-left: 8px; }
+        nav.profile .right-side .avatar .popover {
+          display: none;
+          right: 15px;
+          padding: 0 20px; }
+        nav.profile .right-side .avatar.active figure {
+          -webkit-transform: rotateX(-180deg);
+          -moz-transform: rotateX(-180deg);
+          -ms-transform: rotateX(-180deg);
+          -o-transform: rotateX(-180deg);
+          transform: rotateX(-180deg); }
+      nav.profile .right-side a.book-now-link {
+        font-size: 10px;
+        font-weight: 500;
+        letter-spacing: 2px;
+        color: #01AF70;
+        text-transform: uppercase;
+        display: block;
+        font-family: 'Gotham SSm A', 'Gotham SSm B', sans-serif; }
+  nav .nav-button.passes {
+    float: none;
+    position: relative;
+    width: 50%; }
+    nav .nav-button.passes div {
+      line-height: initial;
+      width: 50%; }
+      nav .nav-button.passes div:first-child {
+        border-right: 1px solid #eae8e8; }
+    nav .nav-button.passes figure {
+      margin-left: 5px; }
+    nav .nav-button.passes .popover {
+      display: none;
+      text-align: left;
+      left: -10%;
+      padding: 20px;
+      width: auto;
+      -webkit-transform: translateX(-50%);
+      -moz-transform: translateX(-50%);
+      -ms-transform: translateX(-50%);
+      -o-transform: translateX(-50%);
+      transform: translateX(-50%); }
+      nav .nav-button.passes .popover h4, nav .nav-button.passes .popover p {
+        display: block;
+        margin: 0; }
+      nav .nav-button.passes .popover h4 {
+        line-height: initial;
+        margin-top: 0; }
+      nav .nav-button.passes .popover h3 {
+        color: #a1b2b2;
+        display: block;
+        font-size: 14px;
+        font-weight: 500;
+        margin: 0;
+        width: 100%; }
+      nav .nav-button.passes .popover p {
+        display: block;
+        line-height: 18px;
+        text-align: left;
+        width: 100%; }
+      nav .nav-button.passes .popover.show {
+        display: block; }
+  nav:after {
+    content: '';
+    display: inline-block;
+    width: 100%; }
+  nav h5 {
+    margin: 5px;
+    margin-right: 0;
+    font-size: 9.16px; }
+
+.nav-button.flights .popover {
+  background: #ffffff;
+  left: -170px;
+  padding: 10px;
+  width: 410px; }
+.nav-button.flights .origin {
+  display: inline-block; }
+.nav-button.flights .destination {
+  display: inline-block; }
+.nav-button.flights .flight-card-arrow-sm {
+  display: inline-block;
+  margin: 0 15px; }
+.nav-button.flights .booked-flight-number {
+  margin-right: 10px;
+  vertical-align: top; }
+.nav-button.flights .booked-flight-details h2 {
+  margin: 0;
+  line-height: 0;
+  font-weight: 700; }
+.nav-button.flights .booked-flight-details h4 {
+  color: #a1b2b2;
+  display: block;
+  font-weight: 500;
+  line-height: 0; }
+  .nav-button.flights .booked-flight-details h4 + br {
+    display: none; }
+
+.nav-breadcrumb {
+  background: url(../img/flight-card-arrow-lg.png);
+  background-repeat: no-repeat;
+  background-size: auto 80px;
+  background-position: right;
+  border-left: 0;
+  cursor: pointer;
+  color: #a1b2b2;
+  display: inline-block;
+  height: 100%;
+  line-height: 80px;
+  padding: 0 20px;
+  padding-right: 35px;
+  position: relative;
+  text-align: center;
+  width: initial; }
+  .nav-breadcrumb a {
+    color: #a1b2b2; }
+  .nav-breadcrumb.hide {
+    display: none; }
+  .nav-breadcrumb .plane-green {
+    display: none;
+    margin-right: 15px; }
+  .nav-breadcrumb span {
+    vertical-align: top; }
+  .nav-breadcrumb h4 {
+    margin: 0; }
+  .nav-breadcrumb.active {
+    color: #142323; }
+    .nav-breadcrumb.active a {
+      color: #142323; }
+    .nav-breadcrumb.active .plane-green {
+      display: inline-block; }
+
+html, body {
+  height: 100%; }
+
+.content-wrap {
+  height: 100%; }
+
+.actionable-row {
+  text-align: justify; }
+  .actionable-row:after {
+    content: '';
+    display: inline-block;
+    width: 100%; }
+
+.left-side {
+  display: inline-block;
+  text-align: left; }
+
+.actions {
+  display: inline-block; }
+
+form {
+  text-align: left;
+  margin: auto;
+  max-width: 500px; }
+  form .select {
+    max-width: 100%; }
+  form.fullscreen {
+    display: table;
+    max-width: none;
+    width: 100%;
+    height: 100%; }
+
+.distribute:after {
+  content: "";
+  display: table;
+  clear: both; }
+.distribute input {
+  display: table-cell;
+  margin: 0;
+  width: 33%; }
+.distribute .select {
+  margin: 0; }
+
+.flight-table {
+  font-size: 0; }
+  .flight-table .origin .airport, .flight-table .destination .airport {
+    background-repeat: no-repeat;
+    background-size: 100%;
+    background-position: center;
+    border-radius: 100%;
+    color: #ffffff;
+    display: inline-block;
+    font-family: 'din';
+    font-size: 20px;
+    font-weight: 300;
+    height: 60px;
+    letter-spacing: 1px;
+    line-height: 60px;
+    margin-right: 10px;
+    overflow: hidden;
+    text-align: center;
+    vertical-align: middle;
+    width: 60px; }
+    .flight-table .origin .airport.austin, .flight-table .destination .airport.austin {
+      background-image: url(../img/circle-thumbs/gradient/thumb-austin.png); }
+    .flight-table .origin .airport.telluride, .flight-table .destination .airport.telluride {
+      background-image: url(../img/circle-thumbs/gradient/thumb-telluride.png); }
+    .flight-table .origin .airport.dallas, .flight-table .destination .airport.dallas {
+      background-image: url(../img/circle-thumbs/gradient/thumb-dallas.png); }
+    .flight-table .origin .airport.houston, .flight-table .destination .airport.houston {
+      background-image: url(../img/circle-thumbs/gradient/thumb-houston.png); }
+    .flight-table .origin .airport.midland, .flight-table .destination .airport.midland {
+      background-image: url(../img/circle-thumbs/gradient/thumb-midland.png); }
+    .flight-table .origin .airport.vail, .flight-table .destination .airport.vail {
+      background-image: url(../img/circle-thumbs/gradient/thumb-vail.png); }
+    .flight-table .origin .airport.vegas, .flight-table .destination .airport.vegas {
+      background-image: url(../img/circle-thumbs/gradient/thumb-vegas.png); }
+    .flight-table .origin .airport.corpuschristi, .flight-table .destination .airport.corpuschristi {
+      background-image: url(../img/circle-thumbs/gradient/thumb-corpuschristi.png); }
+    .flight-table .origin .airport.neworleans, .flight-table .destination .airport.neworleans {
+      background-image: url(../img/circle-thumbs/gradient/thumb-neworleans.png); }
+    .flight-table .origin .airport.oklahomacity, .flight-table .destination .airport.oklahomacity {
+      background-image: url(../img/circle-thumbs/gradient/thumb-oklahomacity.png); }
+    .flight-table .origin .airport.sanantonio, .flight-table .destination .airport.sanantonio {
+      background-image: url(../img/circle-thumbs/gradient/thumb-sanantonio.png); }
+    .flight-table .origin .airport.santafe, .flight-table .destination .airport.santafe {
+      background-image: url(../img/circle-thumbs/gradient/thumb-santafe.png); }
+    .flight-table .origin .airport.shreveport, .flight-table .destination .airport.shreveport {
+      background-image: url(../img/circle-thumbs/gradient/thumb-shreveport.png); }
+    .flight-table .origin .airport.spring, .flight-table .destination .airport.spring {
+      background-image: url(../img/circle-thumbs/gradient/thumb-spring.png); }
+    .flight-table .origin .airport.tulsa, .flight-table .destination .airport.tulsa {
+      background-image: url(../img/circle-thumbs/gradient/thumb-tulsa.png); }
+    .flight-table .origin .airport.lubbock, .flight-table .destination .airport.lubbock {
+      background-image: url(../img/circle-thumbs/gradient/thumb-lubbock.png); }
+    .flight-table .origin .airport.aspen, .flight-table .destination .airport.aspen {
+      background-image: url(../img/circle-thumbs/gradient/thumb-aspen.png); }
+    .flight-table .origin .airport.steamboat, .flight-table .destination .airport.steamboat {
+      background-image: url(../img/circle-thumbs/gradient/thumb-steamboat.png); }
+  .flight-table.full {
+    background-image: url(../img/1x/pattern-green.png); }
+    .flight-table.full .actions figure {
+      cursor: pointer;
+      display: table-cell;
+      position: relative; }
+  .flight-table .origin {
+    width: 27.16763%; }
+  .flight-table .city-name {
+    display: block;
+    margin: 0;
+    text-transform: none; }
+  .flight-table .destination {
+    width: 33.81503%; }
+  .flight-table .duration {
+    display: inline-block;
+    width: 22.35067%;
+    position: relative;
+    padding-right: 40px;
+    text-align: center;
+    z-index: 0; }
+    .flight-table .duration span {
+      background-color: #ffffff;
+      color: #142323;
+      font-family: 'Gotham Ssm A', 'Gotham Ssm B';
+      font-weight: 500;
+      padding: 0 10px; }
+    .flight-table .duration:after {
+      background: #eae8e8;
+      bottom: 10px;
+      content: '';
+      display: block;
+      height: 1px;
+      position: relative;
+      z-index: -1; }
+  .flight-table .flight-number {
+    text-align: left;
+    width: 6.35838%; }
+    .flight-table .flight-number figure {
+      display: none; }
+  .flight-table .actions {
+    display: inline-table;
+    width: 10.30829%; }
+  .flight-table .arrow {
+    display: none; }
+  .flight-table.table-labels {
+    border-top: 0; }
+    .flight-table.table-labels .duration:after {
+      display: none; }
+    .flight-table.table-labels .flight-number {
+      width: 16.57033%; }
+      .flight-table.table-labels .flight-number:after {
+        content: 'Flight No.'; }
+    .flight-table.table-labels .actions {
+      display: none; }
+  .flight-table .popover {
+    background-color: #142323;
+    border-radius: 5px;
+    border: 0;
+    display: none;
+    height: auto;
+    padding: 20px;
+    right: 60px;
+    top: -20px;
+    width: 150px;
+    white-space: normal; }
+    .flight-table .popover.show {
+      display: block; }
+    .flight-table .popover h5 {
+      margin: 0;
+      line-height: 20px; }
+    .flight-table .popover a, .flight-table .popover li {
+      color: #ffffff;
+      display: block;
+      font-weight: 300;
+      font-size: 14px;
+      line-height: 26px;
+      margin: 0;
+      padding: 0;
+      text-transform: none;
+      -webkit-transition: none;
+      -moz-transition: none;
+      -ms-transition: none;
+      -o-transition: none;
+      transition: none; }
+      .flight-table .popover a.active, .flight-table .popover li.active {
+        background-image: url(../img/1x/check-green-sm.png);
+        background-repeat: no-repeat;
+        background-position: right;
+        background-size: 12px 9px;
+        padding-right: 25px; }
+    .flight-table .popover:after {
+      border-left: 16px solid #142323;
+      border-top: 6px solid transparent;
+      border-bottom: 6px solid transparent;
+      content: '';
+      display: block;
+      position: absolute;
+      right: -16px;
+      top: 24px; }
+
+.profile-stats {
+  height: 90px;
+  margin: auto;
+  max-width: 1040px;
+  padding: 0;
+  text-align: center;
+  width: 100%; }
+  .profile-stats .avatar {
+    display: inline-block;
+    position: relative;
+    top: -100px;
+    z-index: 500; }
+  .profile-stats .left-side {
+    display: inline-block;
+    height: 100%;
+    vertical-align: top; }
+    .profile-stats .left-side .stat {
+      border-left: 1px solid #d8d8d8;
+      padding-left: 30px;
+      text-align: left; }
+  .profile-stats .right-side {
+    display: inline-block;
+    height: 100%;
+    vertical-align: top; }
+    .profile-stats .right-side .stat {
+      border-right: 1px solid #d8d8d8;
+      padding-right: 30px;
+      text-align: right; }
+  .profile-stats .stat {
+    display: inline-block;
+    vertical-align: bottom;
+    width: 32%; }
+  .profile-stats .stat-number {
+    color: #01AF70;
+    display: block;
+    font-family: tablet-gothic-condensed;
+    font-size: 30px;
+    font-weight: 300; }
+  .profile-stats .stat-name {
+    color: #a1b2b2;
+    display: block;
+    font-family: 'Gotham Ssm A', 'Gotham Ssm B';
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    line-height: 12px;
+    text-transform: uppercase; }
+  .profile-stats .left-side, .profile-stats .right-side {
+    width: 40%; }
+
+.calendar-nav {
+  margin-bottom: 0; }
+  .calendar-nav .arrow-back {
+    background-image: url(../img/1x/arrow-left-green.png); }
+  .calendar-nav .arrow-forward {
+    background-image: url(../img/1x/arrow-right-green.png); }
+
+.calendar {
+  height: 600px;
+  font-size: 42px;
+  font-weight: 300; }
+  .calendar li {
+    height: 100px;
+    line-height: 100px; }
+    .calendar li.full {
+      background-image: url(../img/1x/pattern-green.png); }
+    .calendar li.cal-label {
+      display: inline-block; }
+    .calendar li.out-of-month, .calendar li.unavailable {
+      color: #eae8e8; }
+
+.origin-and-destination {
+  display: none; }
+
+.card {
+  display: table;
+  font-size: 0;
+  height: 170px;
+  padding: 0;
+  text-align: left; }
+  .card .circle.x-large {
+    margin-right: 20px; }
+  .card .badge {
+    display: none; }
+  .card .origin {
+    background-image: url(../img/flight-card-arrow-lg.png);
+    background-repeat: no-repeat;
+    background-size: auto 100%;
+    background-position: right;
+    display: table-cell;
+    height: 100%;
+    padding-left: 30px;
+    vertical-align: middle;
+    width: 41.94793%; }
+  .card .destination {
+    border-right: 2px solid #eae8e8;
+    display: table-cell;
+    height: 100%;
+    padding-left: 20px;
+    vertical-align: middle;
+    width: 35.19769%; }
+  .card .passengers {
+    display: table-cell;
+    height: 100%;
+    text-align: center;
+    vertical-align: middle;
+    width: 22.85439%; }
+  .card .badge-wrap.badge-right .badge-wrap {
+    right: 20px; }
+  .card .badge-wrap.badge-left .badge-wrap {
+    left: -3px; }
+  .card .badge-wrap .badge-wrap {
+    top: 20px; }
+
+.bubble {
+  display: inline-block;
+  margin: 20px auto;
+  vertical-align: middle; }
+  .bubble:after {
+    border-top: 10px solid transparent;
+    border-left: 20px solid #e4e2e2;
+    border-right: 0;
+    border-bottom: 10px solid transparent;
+    bottom: auto;
+    left: auto;
+    right: -20px;
+    top: 38%;
+    -webkit-transform: translateY(-50%);
+    -moz-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    -o-transform: translateY(-50%);
+    transform: translateY(-50%); }
+  .bubble p {
+    display: inline-block; }
+  .bubble .action-block {
+    display: inline-block;
+    margin: 0 10px;
+    width: auto; }
+
+.popover.show {
+  display: block !important; }
+
+.mobile-nav-dropdown {
+  display: none; }
+
+.pagination {
+  display: inline-block;
+  margin: 0;
+  margin-left: 40px;
+  position: relative;
+  top: 50%; }
+  .pagination li {
+    display: block;
+    margin: 10px 0; }
+
+.chart-key-desktop {
+  display: block; }
+
+button.inline.toggle-chart-key, .toggle-chart-key {
+  display: none; }
+
+.interstitial {
+  display: inline-block;
+  margin: 0 50px; }
+  .interstitial.header {
+    display: block;
+    margin: initial; }
+
+.dashboard nav.profile {
+  -webkit-transform: translateY(-100%);
+  -moz-transform: translateY(-100%);
+  -ms-transform: translateY(-100%);
+  -o-transform: translateY(-100%);
+  transform: translateY(-100%); }
+  .dashboard nav.profile.show {
+    -webkit-transform: translateY(0);
+    -moz-transform: translateY(0);
+    -ms-transform: translateY(0);
+    -o-transform: translateY(0);
+    transform: translateY(0); }
+
+.dashboard-banner {
+  height: 295px;
+  position: relative;
+  z-index: 500; }
+  .dashboard-banner.block.pattern {
+    background-size: cover;
+    background-position: center; }
+  .dashboard-banner .button {
+    margin: 0; }
+  .dashboard-banner .mobile {
+    display: none; }
+  .dashboard-banner .desktop {
+    display: block; }
+
+.dashboard-banner-top {
+  margin-bottom: 20px;
+  max-width: 1040px;
+  margin: 0 auto;
+  text-align: left; }
+  .dashboard-banner-top .right-side {
+    float: right; }
+
+.logout {
+  color: rgba(20, 35, 35, 0.9);
+  display: inline-block;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  margin: 0 15px;
+  text-transform: uppercase; }
+
+.member-name h1 {
+  line-height: 24px; }
+
+.member-name-info {
+  color: rgba(255, 255, 255, 0.5);
+  display: block;
+  font-family: 'din';
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 1px;
+  line-height: 20px;
+  text-transform: uppercase; }
+
+.member-since {
+  display: block;
+  font-size: 10px;
+  font-weight: 300;
+  letter-spacing: 1.5px;
+  line-height: 12px;
+  text-transform: uppercase; }
+
+.dashboard .member-location {
+  bottom: 20px;
+  color: rgba(255, 255, 255, 0.5);
+  display: block;
+  font-family: 'din';
+  font-weight: 700;
+  font-size: 15px;
+  left: 0;
+  letter-spacing: 1px;
+  line-height: 20px;
+  max-width: 1040px;
+  position: absolute;
+  text-align: right;
+  text-transform: uppercase;
+  width: 100%; }
+  .dashboard .member-location figure {
+    margin-right: 10px;
+    position: relative; }
+    .dashboard .member-location figure .popover {
+      right: 40px; }
+    .dashboard .member-location figure .popover ul {
+      padding: 0; }
+    .dashboard .member-location figure .popover li {
+      cursor: pointer; }
+
+.lets-fly-button {
+  display: inline-block;
+  position: relative;
+  width: 160px;
+  height: 50px;
+  vertical-align: middle; }
+  .lets-fly-button .button {
+    left: 0;
+    position: absolute;
+    top: 0;
+    z-index: 500; }
+
+.lets-fly-dropdown {
+  background: #142323;
+  border-radius: 3px;
+  display: none;
+  left: 50%;
+  margin-top: 12px;
+  overflow: hidden;
+  padding: 30px;
+  padding-top: 35px;
+  padding-bottom: 0;
+  text-align: left;
+  -webkit-transform: translateX(-10px);
+  -moz-transform: translateX(-10px);
+  -ms-transform: translateX(-10px);
+  -o-transform: translateX(-10px);
+  transform: translateX(-10px);
+  width: 180px;
+  z-index: 400; }
+  .lets-fly-dropdown.show {
+    display: block; }
+  .lets-fly-dropdown li {
+    color: #ffffff;
+    cursor: pointer;
+    font-family: 'din';
+    font-size: 20px;
+    font-weight: 300;
+    letter-spacing: 1px;
+    line-height: 30px;
+    text-transform: uppercase; }
+    .lets-fly-dropdown li:before {
+      background-color: #979797;
+      border-radius: 100%;
+      content: '';
+      display: inline-block;
+      height: 10px;
+      margin-right: 15px;
+      margin-bottom: 4px;
+      vertical-align: middle;
+      width: 10px; }
+    .lets-fly-dropdown li.active:before {
+      background-color: #01AF70; }
+
+.booking .flight-table-filters {
+  border-top: 1px solid #eae8e8;
+  margin-top: 80px;
+  text-align: center; }
+  .booking .flight-table-filters .select {
+    background-color: #f8f8f8;
+    display: inline-block;
+    height: 50px;
+    line-height: 50px;
+    margin: 0 25px;
+    text-align: left;
+    position: relative;
+    top: -25px; }
+  .booking .flight-table-filters.rise-remove-borders {
+    border: 0; }
+
+.flight-select .flight-date-header {
+  display: none; }
+.flight-select form {
+  max-width: none; }
+
+/*# sourceMappingURL=ie8.css.map */

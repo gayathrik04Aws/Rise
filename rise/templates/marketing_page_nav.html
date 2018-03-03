@@ -1,0 +1,36 @@
+{% load staticfiles %}
+<div class="section top-nav internal-nav">
+  <div class="content-wrap">
+    <a href="/" class="nav-logo align-nav"><img src="{% static 'img/logolg_darkbg_tm.png' %}" alt="I Fly Rise Logo" id="top-nav-logo"></a>
+    <p class="top-nav-links align-nav {% if user.is_authenticated %}set-width{% endif %}">
+    	<a href="{{ WP_URL }}/faq/" {% if faq %}class="active"{% endif %}>FAQ</a> /
+    	<a href="{{ WP_URL }}/about/" {% if about %}class="active"{% endif %}>About</a> /
+    	<a href="{{ WP_URL }}/blog/">Blog</a> /
+    {% if user.is_authenticated %}
+    	<a href="tel:1-844-332-4742">844 332 4742</a></p>
+	<div class="align-nav nav-button avatar toggle-expandable popover-button">
+		<div class="badge-wrap badge-left popover-control toggle-expandable">
+    		<div class="circle marketing">
+    		    <img src="{{ user.avatar_url }}">
+        		<div class="badge-wrap">
+        		    <figure class="arrow-down-green"></figure>
+        		</div>
+    		</div>
+		</div>
+		<div class="popover">
+			<ul>
+				<li class="grey">Hi, {{ user.first_name }}</li>
+				<a href="{% url 'dashboard' %}"><li {% if dashboard %}class="active"{% endif %}>Dashboard</li></a>
+				<a href="{% url 'profile' %}"><li {% if profile %}class="active"{% endif %}>Manage Account</li></a>
+				<a href="{% url 'reservations' 'upcoming' %}"><li {% if reservations %}class="active"{% endif %}>Reservations</li></a>
+				<a href="{{ WP_URL }}"><li>Rise Homepage</li></a>
+				<a href="{% url 'logout' %}" class="green small"><li class="row">Sign Out</li></a>
+			</ul>
+		</div>
+	</div>
+    {% else %}
+    	 <a class="green" href="/sign-up/">Sign Up Now</a> /
+         <a href="tel:1-844-332-4742">844 332 4742</a></p>
+    {% endif %}
+  </div>
+</div>

@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% load tz %}
+
+{% load staticfiles %}
+
+{% block title %}Payment History - {{ block.super }}{% endblock title %}
+
+{% block meta_description %}Payment History - Manage Account{% endblock meta_description %}
+
+{% block css %}
+{% with marketing=False%}
+{{ block.super }}
+{% endwith %}
+{% endblock css %}
+
+{% block body_class %}{% endblock %}
+{% block body %}
+{% include 'account_profile/dashboard_nav.html' %}
+<div class="section profile-body">
+    {% include 'account_profile/profile-sidenav-mobile.html' with billing_info=True %}
+    <div class="content-wrap app-content-wrap no-mt-mobile group">
+        {% include 'account_profile/profile-sidenav.html' with billing=True %}
+        <div class="profile-content-wrap">
+            <div class="detail group">
+                <h1>Payment History</h1>
+                <span class="section-label">Payment History</span>
+                <ul class="recent-history">
+                    <li class="mobile no-bb">
+                        <div class="change-info">
+                            <span class="label one">Item</span>
+                            <span class="label two">Purchase Date</span>
+                        </div>
+                        <div>
+                            <span class="label three">Value</span>
+                        </div>
+                    </li>
+                    {% for charge in charge_list %}
+                    <li>
+                        <div class="change-info">
+                            <span class="">{{ charge.description }}</span>
+                            <span class="move">{# <figure class="icon-repeat"></figure> #}{% localtime on %}{{ charge.created|date:"m d Y" }}{% endlocaltime %}</span>
+                        </div>
+                        <div>
+                            <span class="price">${{ charge.amount|floatformat:2|intcomma }}</span>
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div> <!-- /.detail.group -->
+        </div> <!-- /.profile-content-wrap -->
+    </div> <!-- /.content-wrap -->
+</div> <!-- /.profile-body -->
+{% endblock body %}
+
+{% block javascript %}
+{{ block.super }}
+<script src="{% static 'js/binaryajax.min.js' %}"></script>
+<script src="{% static 'js/exif.min.js' %}"></script>
+<script src="{% static 'js/profile.js' %}"></script>
+{% endblock javascript %}

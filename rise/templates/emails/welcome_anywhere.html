@@ -1,0 +1,36 @@
+{% extends 'emails/base_anywhere.html' %}
+
+{% block title %}{{ title }}{% endblock title %}
+
+
+{% block body %}
+<table border="0" cellpadding="40" cellspacing="0" width="100%" class="anywhere-email">
+    <tr>
+        <td>
+            <table border="0" cellpadding="20" cellspacing="0" width="100%">
+                <tr>
+                    <td align="center" valign="top" class="bodyContent">
+                        <div>
+                            <h1>Welcome to RISE ANYWHERE</h1>
+
+
+                            <p style="margin-bottom: 20px;">You're now officially a member of the RISE community.  Your free RISE ANYWHERE limited membership entitles you to book seats on RISE ANYWHERE charter flights.</p>
+                            <p>Questions? Contact us at <a href="mailto:members@iflyrise.com">members@iflyrise.com</a> or <a href="tel://8443597473">844-FLY-RISE</a>.</p>
+
+                        </div>
+                    </td>
+                </tr>
+            </table>
+
+
+            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                <tr>
+                    <td align="center">
+                        <img src="http://cl.ly/100Q0H2k1E3j/footer-logo.png" width="119px" height="27px">
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+{% endblock body %}

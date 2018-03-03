@@ -1,0 +1,17 @@
+.companion-select {
+    background-color: #ffffff;
+    form {
+        max-width: none;
+    }
+
+    .companion-check {
+        &.checked {
+            figure {
+                background-image: url(../img/check-solid-green.png);
+            }
+        }
+        input[type=checkbox] {
+            display: none;
+        }
+    }
+}

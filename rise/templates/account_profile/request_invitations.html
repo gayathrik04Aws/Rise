@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+{% load humanize %}
+{% load account_tags %}
+
+{% block title %}Request Invitations - {{ block.super }}{% endblock title %}
+
+{% block meta_description %}Request Invitations{% endblock meta_description %}
+
+{% block body_class %}{% endblock %}
+{% block body %}
+<div class="section profile-nav">
+    <div class="logo-wrapper">
+        <a href="/"><img src="{% static 'img/logolg_darkbg_alt.png' %}" alt="I Fly Rise Logo" id="profile-nav-logo"></a>
+    </div>
+    <div class="book">
+        <a href="{% url 'book_from' %}">Book Now</a>
+    </div>
+    <div class="profile-home">
+        <a href="{% url 'profile' %}" class="round">
+            {% if user.avatar_url %}
+                <img src="{{user.avatar_url}}" alt="profile image" class="round">
+            {% endif %}
+        </a>
+    </div>
+</div>
+<div class="section profile-body">
+    <div class="content-wrap group">
+        <div class="sidenav">
+            <div class="profile" style="background-image:url({{ user.avatar_url }})" id="avatar-image">
+            </div>
+            <form action="{% url 'profile_avatar' %}" method="POST" id="update-avatar" class="bare group" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="file" name="avatar" value="{{ user.avatar }}" id="avatar-file-input" accept="image/*" style="display:none"></input>
+                <a href="profile/change-picture" id="change-avatar">Change Picture</a>
+            </form>
+            <h2>manage account</h2>
+            <p>Signed in as {{ user.first_name }}</p>
+            <a href="/logout">Sign Out</a>
+            <ul class="profile-menu">
+                <li><a href="/profile/">Basic Info</a></li>
+                <li><a href="{% url 'profile_plan' %}">Plan Options</a></li>
+                <li><a href="{% url 'profile_billing' %}">Billing Info</a></li>
+            {% if user.account.account_type == user.account.TYPE_CORPORATE %}
+                <li><a href="{% url 'profile_members' %}">Team Members</a></li>
+            {% else %}
+                <li><a href="{% url 'profile_companions' %}">Companions</a></li>
+            {% endif %}
+                <li><a href="/profile/notifications/">Notifications</a></li>
+                {% if user.account.account_type == user.account.TYPE_INDIVIDUAL %}<li class="current"><a href="/profile/invitations/">Invitations</a></li>{% endif %}
+                <li><a href="/profile/personal-info/">Personal Info</a></li>
+            </ul>
+      </div>
+      <div class="detail group">
+        <h1>Invitations</h1>
+        <p>You have {{ account.account_invitations.count|default:0|num2words }} invitation{{ account.account_invitations.count|pluralize }}</p>
+        <ul class="invitation-instructions">
+            <li><strong>If one sent invite is accepted</strong> you will be awarded with a
+                complimentary bottle of champagne on your next flight.</li>
+            <li><strong>If three sent invites are accepted,</strong> you will
+                be awarded with a free Companion Pass</li>
+        </ul>
+        <h2>{{ unredeemed_invitations.count|num2words }} Pending</h2>
+        <ul class="invitations-list">
+            {% for curr_invite in unredeemed_invitations %}
+            <li class="invitation group">
+                <strong>{{ curr_invite.first_name }} {{ curr_invite.last_name }}</strong>
+                Sent {{curr_invite.created_on|date:"m/d/Y" }}
+            </li>
+            {% endfor %}
+        </ul>
+        <h2>{{ unredeemed_invitations.count|num2words }} Completed</h2>
+        <ul class="invitations-list">
+            {% for curr_invite in redeemed_invitations %}
+            <li class="invitation group">
+                <strong>{{ curr_invite.first_name }} {{ curr_invite.last_name }}</strong>
+                Accepted via {{ curr_invite.get_invite_type_display }} on {{curr_invite.redeemed_on|date:"m/d/Y" }}
+            </li>
+            {% endfor %}
+        </ul>
+        <hr>
+        <div class='group'>
+            <div class="two-column">
+                <a href="{% url 'profile_edit' %}" class="btn btn-full btn-edit">Request More Invites</a>
+            </div>
+            <div class="two-column">
+                <a href="{% url 'profile_edit' %}" class="btn btn-full btn-dark">Send an Invite</a>
+            </div>
+        </div>
+      </div>
+  </div>
+</div>
+{% endblock body %}
+
+{% block javascript %}
+    {{ block.super }}
+    <script src="{% static 'js/binaryajax.min.js' %}"></script>
+    <script src="{% static 'js/exif.min.js' %}"></script>
+    <script src="{% static 'js/profile.js' %}"></script>
+{% endblock javascript %}

@@ -1,0 +1,181 @@
+@media screen{
+    // only show these elements on print media
+    .show-print{
+        display:none;
+    }
+}
+
+@media print,
+       (-o-min-device-pixel-ratio: 5/4),
+       (-webkit-min-device-pixel-ratio: 1.25),
+       (min-resolution: 120dpi) {
+    /* Style adjustments for high resolution devices */
+
+}
+
+@media print {
+/***********
+* print css defaults
+************/
+    *,
+    *:before,
+    *:after {
+        color: #000;
+    }
+    a,
+    a:visited {
+        text-decoration: underline;
+    }
+
+
+    a[href^="#"]:after,
+    a[href^="javascript:"]:after {
+        content: "";
+    }
+
+    pre,
+    blockquote {
+        border: 1px solid #999;
+        page-break-inside: avoid;
+    }
+
+    /*
+     * Printing Tables:
+     * http://css-discuss.incutio.com/wiki/Printing_Tables
+     */
+
+    thead {
+        display: table-header-group;
+    }
+
+    tr,
+    img {
+        page-break-inside: avoid;
+    }
+
+    img {
+        max-width: 100% !important;
+    }
+
+    p,
+    h2,
+    h3 {
+        orphans: 3;
+        widows: 3;
+    }
+
+    h2,
+    h3 {
+        page-break-after: avoid;
+    }
+
+/**********
+* specific styles
+**********/
+    .hide-print{
+        display:none!important;
+    }
+    .show-print{
+        display:block!important;
+    }
+    table.show-print{
+        display:table!important;
+    }
+
+    nav{
+        position:static;
+
+        &.profile,
+        &.show{
+            display:none!important;
+        }
+        .basic-nav{
+            display:none;
+        }
+        .avatar{
+            display:none;
+        }
+        .rise-admin-wrapper{
+            width:98%!important;
+        }
+    }
+    .logo{
+        display:inline-block;
+        height: 20px;
+        width: 85px;
+    }
+    .dashboard-banner.block.pattern{
+        background:$land !important;
+    }
+    .section-label{
+
+        &.admin{
+            padding-top:0;
+        }
+    }
+    .footer{
+        display:none;
+    }
+    .select{
+        border:0;
+
+        .value{
+            display:none;
+        }
+        ul{
+            display:none;
+            &.expand{
+                display:none;
+            }
+        }
+        select{
+            background:$grey2 !important;
+            color:#000;
+            display:block;
+            -webkit-appearance: menulist;
+            -moz-appearance: menulist;
+            -ms-appearance: menulist;
+            -o-appearance: menulist;
+            appearance: menulist;
+            border:1px solid #ccc;
+        }
+    }
+    .admin-content-wrap{
+        margin-top:0px!important;
+
+        .admin-form-page{
+            width:98%!important;
+        }
+    }
+    a.return-to-profile{
+        display:none;
+    }
+
+    input[type=checkbox], input[type=radio] {
+        -moz-appearance: checkbox!important;
+        -ms-appearance: checkbox!important;
+        -o-appearance: checkbox!important;
+        -webkit-appearance: checkbox!important;
+        appearance: checkbox!important;
+        background-image:none!important;
+    }
+
+    // flight mainifest
+    .flight-status-announcement{
+        margin-top:0;
+    }
+    #id_status_form{
+        display:none;
+    }
+
+    .manifest-label{
+        color:#000!important;
+        font-size:16px!important;
+        font-weight:600!important;
+        line-height:21px!important;
+        text-transform:uppercase;
+    }
+    .manifest-member-notes{
+        page-break-before: always;
+    }
+}
